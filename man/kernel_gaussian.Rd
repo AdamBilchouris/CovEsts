@@ -16,7 +16,7 @@ A vector of values.
 }
 \description{
 This computes the isotropic Gaussian kernel, which is valid for \eqn{\mathbb{R}^{d}.}
-\deqn{a(\tau) = \exp(-\tau^{2} / \theta).}
+\deqn{a(\tau;\theta) = \exp(-\tau^{2} / \theta).}
 }
 \examples{
 x <- 1

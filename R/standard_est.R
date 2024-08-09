@@ -63,6 +63,7 @@ standard_est_single <- function(X, tau, N=length(X), meanX=mean(X), pd=TRUE) {
 #' @param N The length of the vector X.
 #' @param meanX The average value of the observations.
 #' @param pd Whether a positive definite estimate should be used.
+#' @param type Whether the autocovariance or autocorrelation should be computed, options: 'covariance', 'correlation'.
 #'
 #' @return The autocovariance up to lag upperTau for the time series X.
 #' @export
