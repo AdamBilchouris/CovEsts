@@ -237,7 +237,7 @@ kernel_matern <- function(x, theta, nu) {
 #' x <- 1
 #' kernel_cauchy(x, 2, 1, 1)
 #' x <- c(1, 2, 3)
-#' kernel_cauchy(x, 0, 2, 3)
+#' kernel_cauchy(x, 1, 2, 3)
 kernel_cauchy <- function(x, theta, alpha, beta) {
   stopifnot(theta > 0, alpha > 0, alpha <= 2, beta >= 0, length(x) >= 1, all(x >= 0))
   return((1 + (x / theta)^alpha)^(-(beta / alpha)))

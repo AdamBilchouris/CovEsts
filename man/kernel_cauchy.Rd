@@ -26,7 +26,7 @@ This computes the isotropic Cauchy kernel, which is valid for \eqn{\mathbb{R}^{d
 x <- 1
 kernel_cauchy(x, 2, 1, 1)
 x <- c(1, 2, 3)
-kernel_cauchy(x, 0, 2, 3)
+kernel_cauchy(x, 1, 2, 3)
 }
 \references{
 Table 4.2 of Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. In Advances in Geographic Information Science. Springer Netherlands. https://doi.org/10.1007/978-94-024-1918-4
