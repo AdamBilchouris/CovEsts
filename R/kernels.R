@@ -78,7 +78,7 @@ kernel_exponential <- function(x, theta) {
 #' kernel_wave(x, 0.2)
 kernel_wave <- function(x, theta) {
   stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-  return(sapply(x, function(t) ifelse(t == 0, 1, (theta / t) * sin(t / theta))))
+  return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (theta / t) * sin(t / theta)))))
 }
 
 #' Isotropic Rational Quadratic Kernel.
@@ -102,7 +102,7 @@ kernel_wave <- function(x, theta) {
 #' kernel_rational_quadratic(x, 0.2)
 kernel_rational_quadratic <- function(x, theta) {
   stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-  return(1 - (x^2 / (x^2 + theta)))
+  return(sapply(x, function(t) ifelse(t == Inf, 0, 1 - (t^2 / (t^2 + theta)))))
 }
 
 #' Isotropic Spherical Kernel.
@@ -187,7 +187,7 @@ kernel_circular <- function(x, theta) {
 #' kernel_bessel_j(x, 1, 2, 2)
 kernel_bessel_j <- function(x, theta, nu, dim) {
   stopifnot(theta > 0, nu >= (dim/2) - 1, length(x) >= 1, all(x >= 0))
-  return(sapply(x, function(t) ifelse(t == 0, 1, (2^nu) * gamma(nu + 1) * (besselJ(t / theta, nu) / ((t / theta)^nu)))))
+  return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (2^nu) * gamma(nu + 1) * (besselJ(t / theta, nu) / ((t / theta)^nu))))))
 }
 
 #' Isotropic Matérn Kernel.
@@ -214,7 +214,7 @@ kernel_bessel_j <- function(x, theta, nu, dim) {
 #' kernel_matern(x, 0.5, 2)
 kernel_matern <- function(x, theta, nu) {
   stopifnot(theta > 0, nu > 0, length(x) >= 1, all(x >= 0))
-  return(sapply(x, function(t) ifelse(t == 0, 1, (((sqrt(2 * nu) * t / theta)^nu) / (2^(nu - 1) * gamma(nu))) * besselK(sqrt(2 * nu) * t / theta, nu))))
+  return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (((sqrt(2 * nu) * t / theta)^nu) / (2^(nu - 1) * gamma(nu))) * besselK(sqrt(2 * nu) * t / theta, nu)))))
 }
 
 #' Isotropic Cauchy Kernel.
