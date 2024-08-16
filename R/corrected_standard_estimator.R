@@ -37,13 +37,16 @@
 #' # Custom kernel
 #' my_kernel <- function(x, theta, params) {
 #'   stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-#'   return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (sin((t^params[1]) / theta) / ((t^params[1]) / theta)) * cos((t^params[2]) / theta)))))
+#'   return(sapply(x, function(t) ifelse(t == 0, 1,
+#'          ifelse(t == Inf, 0,
+#'          (sin((t^params[1]) / theta) / ((t^params[1]) / theta)) * cos((t^params[2]) / theta)))))
 #' }
 #' X <- rnorm(1000)
 #' Y <- c(X[1], X[2])
 #' for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 #' plot(Y)
-#' plot(corrected_standard_estimator(Y, length(Y)-1, "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE))
+#' plot(corrected_standard_estimator(Y, length(Y)-1,
+#'      "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE))
 corrected_standard_estimator <- function(X, upperTau, kernel, kernel_params=c(), N_T=0.1*length(X), N=length(X), meanX=mean(X), pd=TRUE, type='covariance', customKernel = FALSE) {
   stopifnot(is.logical(customKernel), N >= 0, length(X) > 0, is.vector(X), N == length(X), is.logical(pd), upperTau >= 0, upperTau <= (N - 1),
             type %in% c('covariance', 'correlation'))

@@ -62,13 +62,16 @@ plot(corrected_standard_estimator(Y, length(Y)-1,
 # Custom kernel
 my_kernel <- function(x, theta, params) {
   stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-  return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (sin((t^params[1]) / theta) / ((t^params[1]) / theta)) * cos((t^params[2]) / theta)))))
+  return(sapply(x, function(t) ifelse(t == 0, 1,
+         ifelse(t == Inf, 0,
+         (sin((t^params[1]) / theta) / ((t^params[1]) / theta)) * cos((t^params[2]) / theta)))))
 }
 X <- rnorm(1000)
 Y <- c(X[1], X[2])
 for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 plot(Y)
-plot(corrected_standard_estimator(Y, length(Y)-1, "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE))
+plot(corrected_standard_estimator(Y, length(Y)-1,
+     "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE))
 }
 \references{
 Yaglom AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.
