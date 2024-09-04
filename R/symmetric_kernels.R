@@ -20,7 +20,7 @@
 #' kernel_symm_gaussian(x, 1)
 #' x <- c(-3, -2, -1, 0, 1, 2, 3)
 #' kernel_symm_gaussian(x, 0.2)
-kernel_symm_gaussian <- function(x, theta) {
+kernel_symm_gaussian <- function(x, theta, ...) {
   stopifnot(theta > 0, length(x) >= 1, !any(is.na(x)))
   returnVals <- exp(-(x^2) / theta)
   return(sqrt(pi * theta)^(-1) * returnVals)
@@ -49,7 +49,7 @@ kernel_symm_gaussian <- function(x, theta) {
 #' kernel_symm_wave(x, 1)
 #' x <- c(-3, -2, -1, 0, 1, 2, 3)
 #' kernel_symm_wave(x, 0.2)
-kernel_symm_wave <- function(x, theta) {
+kernel_symm_wave <- function(x, theta, ...) {
   stopifnot(theta > 0, length(x) >= 1, !any(is.na(x)))
   returnVals <- sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (theta / t) * sin(t / theta))))
   return((sqrt(theta^(-2)) / pi) * returnVals)
@@ -74,7 +74,7 @@ kernel_symm_wave <- function(x, theta) {
 #' kernel_symm_rational_quadratic(x, 1)
 #' x <- c(-3, -2, -1, 0, 1, 2, 3)
 #' kernel_symm_rational_quadratic(x, 0.2)
-kernel_symm_rational_quadratic <- function(x, theta) {
+kernel_symm_rational_quadratic <- function(x, theta, ...) {
   stopifnot(theta > 0, length(x) >= 1, !any(is.na(x)))
   returnVals <- sapply(x, function(t) ifelse(t == Inf, 0, 1 - (t^2 / (t^2 + theta))))
   return(((pi * sqrt(theta))^(-1)) * returnVals)
