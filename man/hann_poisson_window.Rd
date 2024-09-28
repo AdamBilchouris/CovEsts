@@ -4,12 +4,14 @@
 \alias{hann_poisson_window}
 \title{Hann-Poisson Window.}
 \usage{
-hann_poisson_window(x, alpha)
+hann_poisson_window(x, alpha, ...)
 }
 \arguments{
 \item{x}{A vector of values at which the window is computed at.}
 
 \item{alpha}{A real number which controls the height of the spike. A negative alpha creates a large positive peak, try to avoid negative values above \eqn{-5} unless otherwise needed.}
+
+\item{...}{Extra unusued arguments.}
 }
 \value{
 A vector of values.

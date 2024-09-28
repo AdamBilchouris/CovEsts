@@ -4,12 +4,14 @@
 \alias{power_sine_window}
 \title{Power Sine Window.}
 \usage{
-power_sine_window(x, a)
+power_sine_window(x, a, ...)
 }
 \arguments{
 \item{x}{A vector of values at which the window is computed at.}
 
 \item{a}{A positive number indicating the power.}
+
+\item{...}{Extra unusued arguments.}
 }
 \value{
 A vector of values.

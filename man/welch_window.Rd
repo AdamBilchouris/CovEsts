@@ -4,10 +4,12 @@
 \alias{welch_window}
 \title{Welch Window.}
 \usage{
-welch_window(x)
+welch_window(x, ...)
 }
 \arguments{
 \item{x}{A vector of values at which the window is computed at.}
+
+\item{...}{Extra unusued arguments.}
 }
 \value{
 A vector of values.

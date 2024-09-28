@@ -4,12 +4,14 @@
 \alias{kernel_symm_gaussian}
 \title{Symmetric Gaussian Kernel.}
 \usage{
-kernel_symm_gaussian(x, theta)
+kernel_symm_gaussian(x, theta, ...)
 }
 \arguments{
 \item{x}{A vector of values of at least length 1.}
 
 \item{theta}{Scale parameter, \eqn{\theta > 0.}}
+
+\item{...}{Extra arguments. Unused.}
 }
 \value{
 A vector of values.

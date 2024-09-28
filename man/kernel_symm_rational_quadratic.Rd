@@ -4,12 +4,14 @@
 \alias{kernel_symm_rational_quadratic}
 \title{Symmetric Rational Quadratic Kernel.}
 \usage{
-kernel_symm_rational_quadratic(x, theta)
+kernel_symm_rational_quadratic(x, theta, ...)
 }
 \arguments{
 \item{x}{A vector of values of at least length 1.}
 
 \item{theta}{Scale parameter, \eqn{\theta > 0.}}
+
+\item{...}{Extra arguments. Unused.}
 }
 \value{
 A vector of values.

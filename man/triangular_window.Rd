@@ -4,10 +4,12 @@
 \alias{triangular_window}
 \title{Triangular Window.}
 \usage{
-triangular_window(x)
+triangular_window(x, ...)
 }
 \arguments{
 \item{x}{A vector of values at which the window is computed at.}
+
+\item{...}{Extra unusued arguments.}
 }
 \value{
 A vector of values.

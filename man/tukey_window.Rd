@@ -4,10 +4,12 @@
 \alias{tukey_window}
 \title{Tukey Window.}
 \usage{
-tukey_window(x)
+tukey_window(x, ...)
 }
 \arguments{
 \item{x}{A vector of values at which the window is computed at.}
+
+\item{...}{Extra unusued arguments.}
 }
 \value{
 A vector of values.

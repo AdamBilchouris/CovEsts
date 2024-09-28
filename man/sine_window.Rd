@@ -4,10 +4,12 @@
 \alias{sine_window}
 \title{Sine Window.}
 \usage{
-sine_window(x)
+sine_window(x, ...)
 }
 \arguments{
 \item{x}{A vector of values at which the window is computed at.}
+
+\item{...}{Extra unusued arguments.}
 }
 \value{
 A vector of values.

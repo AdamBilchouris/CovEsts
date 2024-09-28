@@ -4,12 +4,14 @@
 \alias{blackman_window}
 \title{Blackman Window.}
 \usage{
-blackman_window(x, alpha)
+blackman_window(x, alpha, ...)
 }
 \arguments{
 \item{x}{A vector of values at which the window is computed at.}
 
 \item{alpha}{A real number which controls the height of the spike. A negative alpha creates a positive peak and a positive alpha creates a negative peak.}
+
+\item{...}{Extra unusued arguments.}
 }
 \value{
 A vector of values.

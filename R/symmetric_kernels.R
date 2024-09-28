@@ -11,6 +11,7 @@
 #'
 #' @param x A vector of values of at least length 1.
 #' @param theta Scale parameter, \eqn{\theta > 0.}
+#' @param ... Extra arguments. Unused.
 #'
 #' @return A vector of values.
 #' @export
@@ -40,6 +41,7 @@ kernel_symm_gaussian <- function(x, theta, ...) {
 #'
 #' @param x A vector of values of at least length 1.
 #' @param theta Scale parameter, \eqn{\theta > 0.}
+#' @param ... Extra arguments. Unused.
 #'
 #' @return A vector of values.
 #' @export
@@ -65,6 +67,7 @@ kernel_symm_wave <- function(x, theta, ...) {
 #'
 #' @param x A vector of values of at least length 1.
 #' @param theta Scale parameter, \eqn{\theta > 0.}
+#' @param ... Extra arguments. Unused.
 #'
 #' @return A vector of values.
 #' @export
