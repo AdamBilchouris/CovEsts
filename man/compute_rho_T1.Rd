@@ -10,7 +10,7 @@ compute_rho_T1(
   T1,
   h,
   Xij_mat,
-  kernel = "gaussian",
+  kernel_name = "gaussian",
   kernel_params = c(),
   custom_kernel = FALSE
 )
@@ -26,7 +26,7 @@ compute_rho_T1(
 
 \item{Xij_mat}{The matrix of pairwise covariance values.}
 
-\item{kernel}{The name of the kernel function to be used. Possible values are:
+\item{kernel_name}{The name of the kernel function to be used. Possible values are:
 "gaussian", "wave", "rational_quadratic", and "bessel_j".}
 
 \item{kernel_params}{Any parameters for the kernel function.}

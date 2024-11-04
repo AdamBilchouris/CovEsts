@@ -1,120 +1,133 @@
 # Tukey window
-test_that("tukey_window() works", {
-  expect_equal(tukey_window(c(1, 2, 3) / 3), c(0.25, 0.75, 1))
+test_that("window(, \"tukey\") works", {
+  expect_equal(window(c(1, 2, 3) / 3, "tukey"), c(0.25, 0.75, 1))
 })
 
-test_that("tukey_window() fails for empty x", {
-  expect_error(tukey_window(c()))
+test_that("window(, \"tukey\") fails for empty x", {
+  expect_error(window(c(), "tukey"))
 })
 
-test_that("tukey_window() fails for a single negative x", {
-  expect_error(tukey_window(c(0.1 , 0.3, -0.02)))
+test_that("window(, \"tukey\") fails for a single negative x", {
+  expect_error(window(c(0.1 , 0.3, -0.02), "tukey"))
 })
 
-test_that("tukey_window() fails for a single x above 1", {
-  expect_error(tukey_window(c(0.1 , 0.3, 1.02)))
+test_that("window(, \"tukey\") fails for a single x above 1", {
+  expect_error(window(c(0.1 , 0.3, 1.02), "tukey"))
 })
 
 # Triangular window
-test_that("triangular_window() works", {
-  expect_equal(triangular_window(c(1, 2, 3) / 4), c(0.25, 0.5, 0.75))
+test_that("window(, \"trianguar\") works", {
+  expect_equal(window(c(1, 2, 3) / 4, "triangular"), c(0.25, 0.5, 0.75))
 })
 
-test_that("triangular_window() fails for empty x", {
-  expect_error(triangular_window(c()))
+test_that("window(, \"trianguar\") fails for empty x", {
+  expect_error(window(c(), "triangular"))
 })
 
-test_that("triangular_window() fails for a single negative x", {
-  expect_error(triangular_window(c(0.1 , 0.3, -0.02)))
+test_that("window(, \"trianguar\") fails for a single negative x", {
+  expect_error(window(c(0.1 , 0.3, -0.02), "triangular"))
 })
 
-test_that("triangular_window() fails for a single x above 1", {
-  expect_error(triangular_window(c(0.1 , 0.3, 1.02)))
+test_that("window(, \"trianguar\") fails for a single x above 1", {
+  expect_error(window(c(0.1 , 0.3, 1.02), "triangular"))
 })
 
 # Sine window
-test_that("sine_window() works", {
-  expect_equal(sine_window(c(0, 1/3, 1/2, 2/3)), c(0, sin(pi/6), sin(pi/4), sin(pi/3)))
+test_that("window(, \"sine\") works", {
+  expect_equal(window(c(0, 1/3, 1/2, 2/3), "sine"), c(0, sin(pi/6), sin(pi/4), sin(pi/3)))
 })
 
-test_that("sine_window() fails for empty x", {
-  expect_error(sine_window(c()))
+test_that("window(, \"sine\") fails for empty x", {
+  expect_error(window(c(), "sine"))
 })
 
-test_that("sine_window() fails for a single negative x", {
-  expect_error(sine_window(c(0.1 , 0.3, -0.02)))
+test_that("window(, \"sine\") fails for a single negative x", {
+  expect_error(window(c(0.1 , 0.3, -0.02), "sine"))
 })
 
-test_that("sine_window() fails for a single x above 1", {
-  expect_error(sine_window(c(0.1 , 0.3, 1.02)))
+test_that("window(, \"sine\") fails for a single x above 1", {
+  expect_error(window(c(0.1 , 0.3, 1.02), "sine"))
 })
 
 # Power sine window
-test_that("power_sine_window() works", {
-  expect_equal(power_sine_window(c(0, 1/3, 1/2, 2/3), 2), c(0, 0.25, 0.5, 0.75))
+test_that("window(, \"power_sine\", ) works", {
+  expect_equal(window(c(0, 1/3, 1/2, 2/3), "power_sine", c(2)), c(0, 0.25, 0.5, 0.75))
 })
 
-test_that("power_sine_window() fails for empty x", {
-  expect_error(power_sine_window(c(), 2))
+test_that("window(, \"power_sine\", ) fails for empty x", {
+  expect_error(window(c(), "power_sine", c(2)))
 })
 
-test_that("power_sine_window() fails for a single negative x", {
-  expect_error(power_sine_window(c(0.1 , 0.3, -0.02), 2))
+test_that("window(, \"power_sine\", ) fails for a single negative x", {
+  expect_error(window(c(0.1 , 0.3, -0.02), "power_sine", c(2)))
 })
 
-test_that("power_sine_window() fails for a single x above 1", {
-  expect_error(power_sine_window(c(0.1 , 0.3, 1.02), 2))
+test_that("window(, \"power_sine\", ) fails for a single x above 1", {
+  expect_error(window(c(0.1 , 0.3, 1.02), "power_sine", c(2)))
+})
+
+test_that("window(, \"power_sine\", ) fails for a <= 0", {
+  expect_error(window(c(0.1 , 0.3, 1.02), "power_sine", c(0)))
+  expect_error(window(c(0.1 , 0.3, 1.02), "power_sine", c(-1)))
 })
 
 # Blackman window
-test_that("blackman_window() works", {
-  expect_equal(blackman_window(c(0, 1/3, 1/2, 2/3), 2), c(0, -1.25, -1.5, -0.75))
+test_that("window(, \"blackman\", ) works", {
+  expect_equal(window(c(0, 1/3, 1/2, 2/3), "blackman", c(2)), c(0, -1.25, -1.5, -0.75))
 })
 
-test_that("blackman_window() fails for empty x", {
-  expect_error(blackman_window(c(), 2))
+test_that("window(, \"blackman\", ) fails for empty x", {
+  expect_error(window(c(), "blackman", c(2)))
 })
 
-test_that("blackman_window() fails for a single negative x", {
-  expect_error(blackman_window(c(0.1 , 0.3, -0.02), 2))
+test_that("window(, \"blackman\", ) fails for a single negative x", {
+  expect_error(window(c(0.1 , 0.3, -0.02), "blackman", c(2)))
 })
 
-test_that("blackman_window() fails for a single x above 1", {
-  expect_error(blackman_window(c(0.1 , 0.3, 1.02), 2))
+test_that("window(, \"blackman\", ) fails for a single x above 1", {
+  expect_error(window(c(0.1 , 0.3, 1.02), "blackman", c(2)))
+})
+
+test_that("window(, \"blackman\", ) fails for a nonreal alpha.", {
+  expect_error(window(c(0.1 , 0.3, 1.02), "blackman", c(1i)))
 })
 
 # Hann-Poisson window
-test_that("hann_poisson_window() works", {
-  expect_equal(hann_poisson_window(c(0, 1/3, 1/2, 2/3), 0.5), c(0, (1 / 2) * (1 - cos(pi * (1/3))) * exp(- (0.5 * abs(1 - (1/3)))),
+test_that("window(, \"hann_poisson\", ) works", {
+  expect_equal(window(c(0, 1/3, 1/2, 2/3), "hann_poisson", c(0.5)), c(0, (1 / 2) * (1 - cos(pi * (1/3))) * exp(- (0.5 * abs(1 - (1/3)))),
                                                                 (1 / 2) * (1 - cos(pi * (1/2))) * exp(- (0.5 * abs(1 - (1/2)))),
                                                                 ((1 / 2) * (1 - cos(pi * (2/3))) * exp(- (0.5 * abs(1 - (2/3)))))))
 })
 
-test_that("hann_poisson_window() fails for empty x", {
-  expect_error(hann_poisson_window(c(), 2))
+test_that("window(, \"hann_poisson\", ) fails for empty x", {
+  expect_error(window(c(), "hann_poisson", c(2)))
 })
 
-test_that("hann_poisson_window() fails for a single negative x", {
-  expect_error(hann_poisson_window(c(0.1 , 0.3, -0.02), 2))
+test_that("window(, \"hann_poisson\", ) fails for a single negative x", {
+  expect_error(window(c(0.1 , 0.3, -0.02), "hann_poisson", c(2)))
 })
 
-test_that("hann_poisson_window() fails for a single x above 1", {
-  expect_error(hann_poisson_window(c(0.1 , 0.3, 1.02), 2))
+test_that("window(, \"hann_poisson\", ) fails for a single x above 1", {
+  expect_error(window(c(0.1 , 0.3, 1.02), "hann_poisson", c(2)))
+})
+
+test_that("window(, \"blackman\", ) fails for a nonreal alpha.", {
+  expect_error(window(c(0.1 , 0.3, 1.02), "hann_poisson", c(1i)))
 })
 
 # Welch window
-test_that("welch_window() works", {
-  expect_equal(welch_window(c(0, 1/3, 1/2, 2/3)), c(0, 1 - ((1/3)-1)^2, 0.75, 1 - ((2/3)-1)^2))
+test_that("window(, \"welch\") works", {
+  expect_equal(window(c(0, 1/3, 1/2, 2/3), "welch"), c(0, 1 - ((1/3)-1)^2, 0.75, 1 - ((2/3)-1)^2))
 })
 
-test_that("welch_window() fails for empty x", {
-  expect_error(welch_window(c(), 2))
+test_that("window(, \"welch\") fails for empty x", {
+  expect_error(window(c(), "welch"))
 })
 
-test_that("welch_window() fails for a single negative x", {
-  expect_error(welch_window(c(0.1 , 0.3, -0.02), 2))
+test_that("window(, \"welch\") fails for a single negative x", {
+  expect_error(window(c(0.1 , 0.3, -0.02), "welch"))
 })
 
-test_that("welch_window() fails for a single x above 1", {
-  expect_error(welch_window(c(0.1 , 0.3, 1.02), 2))
+test_that("window(, \"welch\") fails for a single x above 1", {
+  expect_error(window(c(0.1 , 0.3, 1.02), "welch"))
 })

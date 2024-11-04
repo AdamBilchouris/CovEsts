@@ -1,141 +1,86 @@
-# The functions in this file are intended to be used with the tapered estimator.
+# The function in this file are intended to be used with the tapered estimator.
 # Despite being called windows, they are 'half' of the window.
 # At 0, the window has a value of 0, at 1 it has a value of 1.
 
-#' Tukey Window.
+#' 1D window functions.
 #'
-#' This function computes the Tukey window.
+#' A window function in this context is a continuous nondecreasing function such that at 0 it is 0, and at 1, it is 1.
+#' This computes one of the window functions listed below.
+#'
+#' \strong{Tukey Window}.
 #' \deqn{w(x) = \frac{1}{2} \cos(\pi x) , x \in [0, 1].}
+#' The \code{params} argument is empty, see the example.
 #'
-#' @param x A vector of values at which the window is computed at.
-#' @param ... Extra unusued arguments.
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' X <- c(0.1, 0.5, 0.75)
-#' tukey_window(X)
-tukey_window <- function(x, ...) {
-  stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1))
-  return((1/2) * (1- cos(pi * x)))
-}
-
-#' Triangular Window.
-#'
-#' This computes the triangular window.
+#' \strong{Triangular Window}.
 #' \deqn{w(x) = x, x \in [0, 1].}
+#' The \code{params} argument is empty, see the example.
 #'
-#' @param x A vector of values at which the window is computed at.
-#' @param ... Extra unusued arguments.
+#' \strong{Sine Window}.
+#' \deqn{w(x) = x, x \in [0, 1].}
+#' The \code{params} argument is empty, see the example.
 #'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' X <- c(0.1, 0.5, 0.75)
-#' triangular_window(X)
-triangular_window <- function(x, ...) {
-  stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1))
-  return(x)
-}
-
-#' Sine Window.
-#'
-#' This computes the sine window.
-#' \deqn{w(x) = \sin(\pi x / 2), x \in [0, 1].}
-#'
-#' @param x A vector of values at which the window is computed at.
-#' @param ... Extra unusued arguments.
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' X <- c(0.1, 0.5, 0.75)
-#' sine_window(X)
-sine_window <- function(x, ...) {
-  stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1))
-  return(sin(pi * x / 2))
-}
-
-#' Power Sine Window.
-#'
-#' This computes the power sine window.
+#' \strong{Power Sine Window}.
 #' \deqn{w(x) = \sin^{a}(\pi x / 2), x \in [0, 1], a > 0.}
+#' The \code{params} argument is of the form \code{c(\eqn{a})}.
 #'
-#' @param x A vector of values at which the window is computed at.
-#' @param a A positive number indicating the power.
-#' @param ... Extra unusued arguments.
+#' \strong{Blackman Window}.
+#' \deqn{w(x) = ( (1 - \alpha) / 2) - (1/2) \cos(\pi x) + (\alpha / 2) \cos(2 \pi x), x \in [0, 1], \alpha \in \mathbb{R} .}
+#' The \code{params} argument is of the form \code{c(\eqn{\alpha})}.
 #'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' X <- c(0.1, 0.5, 0.75)
-#' power_sine_window(X, 3.2)
-power_sine_window <- function(x, a, ...) {
-  stopifnot(length(x) >= 1, a > 0, all(x >= 0), all(x <= 1))
-  return((sin(pi * x / 2)^(a)))
-}
-
-#' Blackman Window.
-#'
-#' This computes the Blackman window.
-#' \deqn{w(x) = ( (1 - \alpha) / 2) - (1/2) \cos(\pi x) + (\alpha / 2) \cos(2 \pi x), x \in [0, 1], \alpha \in \mathbb{R}.}
-#' As \eqn{\alpha} increases, the function
-#'
-#' @param x A vector of values at which the window is computed at.
-#' @param alpha A real number which controls the height of the spike. A negative alpha creates a positive peak and a positive alpha creates a negative peak.
-#' @param ... Extra unusued arguments.
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' X <- c(0.1, 0.5, 0.75)
-#' blackman_window(X, 1.34)
-blackman_window <- function(x, alpha, ...) {
-  stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1))
-  return(((1 - alpha) / 2)  - (1 / 2) * cos(pi*x) + (alpha / 2) * cos(2*pi*x))
-}
-
-#' Hann-Poisson Window.
-#'
-#' This computes the Hann-Poisson window.
+#' \strong{Hann-Poisson Window}.
 #' \deqn{w(x) = (1/2) (1 - \cos(\pi x)) \exp( - (\alpha \left|1 - x \right|) ) , x \in [0, 1], \alpha \in \mathbb{R} .}
+#' The \code{params} argument is of the form \code{c(\eqn{\alpha})}.
 #'
-#' @param x A vector of values at which the window is computed at.
-#' @param alpha A real number which controls the height of the spike. A negative alpha creates a large positive peak, try to avoid negative values above \eqn{-5} unless otherwise needed.
-#' @param ... Extra unusued arguments.
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' X <- c(0.1, 0.5, 0.75)
-#' hann_poisson_window(X, 0.2)
-hann_poisson_window <- function(x, alpha, ...) {
-  stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1))
-  return((1 / 2) * (1 - cos(pi * x)) * exp(- (alpha * abs(1 - x))))
-}
-
-#' Welch Window.
-#'
-#' This computes the Welch  window.
+#' \strong{Welch Window}.
 #' \deqn{w(x) = 1 - (x - 1)^2 , x \in [0, 1] . }
+#' The \code{params} argument is empty, see the example.
 #'
-#' @param x A vector of values at which the window is computed at.
-#' @param ... Extra unusued arguments.
+#' @param x A vector of values of at least length 1.
+#' @param name The name of the kernel. Options are: "tukey", "triangular", "sine", "power_sine", "blackman", "hann_poisson", "welch".
+#' @param params A vector of parameters for the windows. See the documentation below for the position of the parameters.
 #'
 #' @return A vector of values.
 #' @export
 #'
 #' @examples
-#' X <- c(0.1, 0.5, 0.75)
-#' welch_window(X)
-welch_window <- function(x, ...) {
-  stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1))
-  return(1 - (x-1)^2)
-}
+#' x <- c(0.2, 0.4, 0.6)
+#' window(x, "tukey")
+#' window(x, "triangular")
+#' window(x, "sine")
+#' window(x, "power_sine", c(0.7))
+#' window(x, "blackman", c(-0.7))
+#' window(x, "hann_poisson", c(-0.7))
+#' window(x, "welch")
+window <- function(x, name, params=c(1)) {
+  stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1), is.vector(params), length(params) > 0, is.numeric(params[1]))
+  stopifnot(name %in% c("tukey", "triangular", "sine", "power_sine",
+                        "blackman", "hann_poisson", "welch"))
 
+  # params is lenght 1 by default.
+  if(length(params) == 1) {
+    if(name == "tukey") {
+      return((1/2) * (1- cos(pi * x)))
+    }
+    else if(name == "triangular") {
+      return(x)
+    }
+    else if(name == "sine") {
+      return(sin(pi * x / 2))
+    }
+    else if(name == "power_sine") {
+      stopifnot(params[1] > 0)
+      return((sin(pi * x / 2)^(params[1])))
+    }
+    else if(name == "blackman") {
+      return(((1 - params[1]) / 2)  - (1 / 2) * cos(pi*x) + (params[1] / 2) * cos(2*pi*x))
+    }
+    else if(name == "hann_poisson") {
+      return((1 / 2) * (1 - cos(pi * x)) * exp(- (params[1] * abs(1 - x))))
+    }
+    else if(name == "welch") {
+      return(1 - (x-1)^2)
+    }
+    stop(paste0("Unknown kernel: ", name))
+  }
+  stop(paste0("length(params) is not 1."))
+}

@@ -7,7 +7,7 @@
 corrected_standard_estimator(
   X,
   upperTau,
-  kernel,
+  kernel_name,
   kernel_params = c(),
   N_T = 0.1 * length(X),
   N = length(X),
@@ -22,7 +22,7 @@ corrected_standard_estimator(
 
 \item{upperTau}{The maximum upper lag to compute the autocovariance function. upperTau \eqn{< N-1.}}
 
-\item{kernel}{The choice of kernel. Possible values are:
+\item{kernel_name}{The choice of kernel. Possible values are:
 "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".}
 
 \item{kernel_params}{If the kernel has any parameters, pass them as a vector.}

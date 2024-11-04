@@ -7,8 +7,8 @@
 compute_taper_single(
   x,
   rho,
-  window,
-  window_params = c(),
+  window_name,
+  window_params = c(1),
   custom_window = FALSE
 )
 }
@@ -17,10 +17,10 @@ compute_taper_single(
 
 \item{rho}{A scale paramter, greater than 0.}
 
-\item{window}{The window function to use, one of
+\item{window_name}{The window function to use, one of
 "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch".}
 
-\item{window_params}{Any paramters of the window function.}
+\item{window_params}{Any parameters of the window function.}
 
 \item{custom_window}{Whether or not a custom window is used (boolean). Put its parameters in window_params.}
 }

@@ -10,7 +10,7 @@ compute_adjusted(
   meanX,
   t,
   h,
-  kernel = "gaussian",
+  kernel_name = "gaussian",
   kernel_params = c(),
   custom_kernel = FALSE,
   pd = TRUE
@@ -27,7 +27,7 @@ compute_adjusted(
 
 \item{h}{Bandwidth parameter.}
 
-\item{kernel}{The name of the kernel function to be used. Possible values are:
+\item{kernel_name}{The name of the kernel function to be used. Possible values are:
 "gaussian", "wave", "rational_quadratic", and "bessel_j".}
 
 \item{kernel_params}{Any parameters for the kernel function.}

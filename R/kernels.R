@@ -6,107 +6,30 @@
 # Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers.
 # In Advances in Geographic Information Science. Springer Netherlands. https://doi.org/10.1007/978-94-024-1918-4
 
-#' Isotropic Gaussian Kernel.
+#' Isotropic 1D kernels.
 #'
+#' This computes one of the isotropic kernels listed below.
+#'
+#' \strong{Gaussian Kernel}.
 #' This computes the isotropic Gaussian kernel, which is valid for \eqn{\mathbb{R}^{d}.}
 #' \deqn{a(\tau;\theta) = \exp(-\tau^{2} / \theta).}
+#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
 #'
-#' @references Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
-#'
-#' @param x A vector of values of at least length 1.
-#' @param theta Scale parameter, \eqn{\theta > 0.}
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' x <- 1
-#' kernel_gaussian(x, 1)
-#' x <- c(1, 2, 3)
-#' kernel_gaussian(x, 0.2)
-kernel_gaussian <- function(x, theta) {
-  stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-  return(exp(-(x^2) / theta))
-}
-
-#' Isotropic Exponential Kernel.
-#'
-#' This computes the isotropic Gaussian kernel, which is valid for \eqn{\mathbb{R}^{d}.}
-#' \deqn{a(\tau;\theta) = \exp(-\tau / \theta).}
-#'
-#' @references
-#' Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
-#'
-#' @param x A vector of values of at least length 1.
-#' @param theta Scale parameter, \eqn{\theta > 0.}
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' x <- 1
-#' kernel_exponential(x, 1)
-#' x <- c(1, 2, 3)
-#' kernel_exponential(x, 0.2)
-kernel_exponential <- function(x, theta) {
-  stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-  return(exp(-(x) / theta))
-}
-
-#' Isotropic Wave (Cardinal Sine) Kernel.
-#'
+#' \strong{Isotropic Wave (Cardinal Sine) Kernel}.
 #' This computes the isotropic wave (cardinal sine) kernel, which is valid for \eqn{\mathbb{R}^{3}.}
 #' \deqn{a(\tau;\theta) = \begin{cases}
-#' \frac{\theta}{\tau} \sin\left( \frac{\tau}{\theta} \right), & \tau \neq = 0 \\
+#' \frac{\theta}{\tau} \sin\left( \frac{\tau}{\theta} \right), & \tau \neq 0 \\
 #' 1, & \tau = 0
 #' \end{cases} .
 #' }
+#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
 #'
-#' @references
-#' Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
-#'
-#' @param x A vector of values of at least length 1.
-#' @param theta Scale parameter, \eqn{\theta > 0.}
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' x <- 1
-#' kernel_wave(x, 1)
-#' x <- c(1, 2, 3)
-#' kernel_wave(x, 0.2)
-kernel_wave <- function(x, theta) {
-  stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-  return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (theta / t) * sin(t / theta)))))
-}
-
-#' Isotropic Rational Quadratic Kernel.
-#'
+#' \strong{Isotropic Rational Quadratic Kernel}.
 #' This computes the isotropic rational quadratic kernel, which is valid for \eqn{\mathbb{R}^{d}.}
 #' \deqn{a(\tau;\theta) = 1 - \frac{\tau^{2}}{\tau^{2} + \theta}.}
+#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
 #'
-#' @references
-#' Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
-#'
-#' @param x A vector of values of at least length 1.
-#' @param theta Scale parameter, \eqn{\theta > 0.}
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' x <- 1
-#' kernel_rational_quadratic(x, 1)
-#' x <- c(1, 2, 3)
-#' kernel_rational_quadratic(x, 0.2)
-kernel_rational_quadratic <- function(x, theta) {
-  stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-  return(sapply(x, function(t) ifelse(t == Inf, 0, 1 - (t^2 / (t^2 + theta)))))
-}
-
-#' Isotropic Spherical Kernel.
-#'
+#' \strong{Isotropic Spherical Kernel}.
 #' This computes the isotropic spherical kernel, which is valid for \eqn{\mathbb{R}^{3}.}
 #' \deqn{a(\tau;\theta) =
 #' \begin{cases}
@@ -114,28 +37,9 @@ kernel_rational_quadratic <- function(x, theta) {
 #' 0 & \text{otherwise}
 #' \end{cases} .
 #' }
+#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
 #'
-#' @references
-#' Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
-#'
-#' @param x A vector of values of at least length 1.
-#' @param theta Scale parameter, \eqn{\theta > 0.}
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' x <- 1
-#' kernel_spherical(x, 2)
-#' x <- c(1, 2, 3)
-#' kernel_spherical(x, 2)
-kernel_spherical <- function(x, theta) {
-  stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-  return(sapply(x, function(t) ifelse(t < theta, 1 - ((3/2) * (t / theta)) + ((1/2) * (t / theta)^3), 0)))
-}
-
-#' Isotropic Circular Kernel.
-#'
+#' \strong{Isotropic Circular Kernel}.
 #' This computes the isotropic circular kernel, which is valid for \eqn{\mathbb{R}^{2}.}
 #' \deqn{a(\tau;\theta) =
 #' \begin{cases}
@@ -143,102 +47,97 @@ kernel_spherical <- function(x, theta) {
 #' 0 & \text{otherwise}
 #' \end{cases} .
 #' }
+#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
 #'
-#' @references
-#' Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
-#'
-#' @param x A vector of values of at least length 1.
-#' @param theta Scale parameter, \eqn{\theta > 0.}
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' x <- 1
-#' kernel_circular(x, 2)
-#' x <- c(1, 2, 3)
-#' kernel_circular(x, 2)
-kernel_circular <- function(x, theta) {
-  stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-  return(sapply(x, function(t) ifelse(t < theta, ((2 / pi) * acos(t / theta)) - ((2 / pi) * (t / theta) * sqrt(1 - (t / theta)^2)), 0)))
-}
-
-#' Isotropic Bessel Kernel.
-#'
-#' This computes the isotropic Bessel kernel, which is valid for \eqn{\mathbb{R}^{d}} for \eqn{\nu \geq \frac{d}{2} - 1.}
-#' \deqn{a(\tau; \nu) = 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau) \tau^{-\nu} ,}
-#' where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind.
-#'
-#' @references
-#' Table 4.2 of Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. In Advances in Geographic Information Science. Springer Netherlands. https://doi.org/10.1007/978-94-024-1918-4
-#'
-#' @param x A vector of values of at least length 1.
-#' @param theta Scale parameter, \eqn{\theta > 0.}
-#' @param nu Parameter defining strength of periodicity \eqn{\nu \geq \frac{\text{dim}}{2} - 1.}
-#' @param dim The dimension of the isotropic kernel.
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' x <- 1
-#' kernel_bessel_j(x, 1, -0.5, 1)
-#' x <- c(1, 2, 3)
-#' kernel_bessel_j(x, 1, 2, 2)
-kernel_bessel_j <- function(x, theta, nu, dim) {
-  stopifnot(theta > 0, nu >= (dim/2) - 1, length(x) >= 1, all(x >= 0))
-  return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (2^nu) * gamma(nu + 1) * (besselJ(t / theta, nu) / ((t / theta)^nu))))))
-}
-
-#' Isotropic Matérn Kernel.
-#'
+#' \strong{Isotropic Matérn Kernel}.
 #' This computes the isotropic Matérn kernel, which is valid for \eqn{\mathbb{R}^{d}} for \eqn{\nu > 0.}
 #' \deqn{a(\tau; \nu) = \left(\sqrt{2\nu} \frac{\tau}{\theta} \right)^{\nu} \left(2^{\nu - 1} \Gamma(\nu) \right)^{-1} K_{\nu}\left( \sqrt{2\nu} \frac{\tau}{\theta} \right) ,}
 #' where \eqn{K_{\nu}(\cdot)} is the modified Bessel function of the second kind.
+#' The \code{params} argument is of the form \code{c(\eqn{\theta, \nu})}.
 #'
-#' @references
-#' Table 4.2 of Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. In Advances in Geographic Information Science. Springer Netherlands. https://doi.org/10.1007/978-94-024-1918-4
-#' Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
+#' \strong{Isotropic Bessel Kernel}.
+#' This computes the isotropic Bessel kernel, which is valid for \eqn{\mathbb{R}^{d}} for \eqn{\nu \geq \frac{d}{2} - 1.}
+#' \deqn{a(\tau; \nu) = 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau) \tau^{-\nu} ,}
+#' where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind.
+#' The \code{params} argument is of the form \code{c(\eqn{\theta, \nu, d})}.
 #'
-#' @param x A vector of values of at least length 1.
-#' @param theta Scale parameter, \eqn{\theta > 0.}
-#' @param nu A parameter \eqn{\nu > 0.}
-#'
-#' @return A vector of values.
-#' @export
-#'
-#' @examples
-#' x <- 1
-#' kernel_matern(x, 2, 1)
-#' x <- c(1, 2, 3)
-#' kernel_matern(x, 0.5, 2)
-kernel_matern <- function(x, theta, nu) {
-  stopifnot(theta > 0, nu > 0, length(x) >= 1, all(x >= 0))
-  return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (((sqrt(2 * nu) * t / theta)^nu) / (2^(nu - 1) * gamma(nu))) * besselK(sqrt(2 * nu) * t / theta, nu)))))
-}
-
-#' Isotropic Cauchy Kernel.
-#'
+#' \strong{Isotropic Cauchy Kernel}.
 #' This computes the isotropic Cauchy kernel, which is valid for \eqn{\mathbb{R}^{d}} for \eqn{0 < \alpha \leq 2} and \eqn{\beta \geq 0.}
 #' \deqn{a(\tau ; \theta, \alpha, \beta) = (1 + (\tau / \theta)^{\alpha})^{-(\beta / \alpha)} .}
+#' The \code{params} argument is of the form \code{c(\eqn{\theta, \alpha, \beta})}.
 #'
 #' @references
+#' Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
 #' Table 4.2 of Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. In Advances in Geographic Information Science. Springer Netherlands. https://doi.org/10.1007/978-94-024-1918-4
 #'
 #' @param x A vector of values of at least length 1.
-#' @param theta Scale parameter, \eqn{\theta > 0.}
-#' @param alpha A parameter for the kernel, \eqn{0 < a \leq 2.}
-#' @param beta A parameter for the kernel, \eqn{b > 0.}
+#' @param name The name of the kernel. Options are: "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", and "cauchy".
+#' @param params A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels will have a scale parameter as the first value in the vector.
 #'
 #' @return A vector of values.
 #' @export
 #'
 #' @examples
-#' x <- 1
-#' kernel_cauchy(x, 2, 1, 1)
-#' x <- c(1, 2, 3)
-#' kernel_cauchy(x, 1, 2, 3)
-kernel_cauchy <- function(x, theta, alpha, beta) {
-  stopifnot(theta > 0, alpha > 0, alpha <= 2, beta >= 0, length(x) >= 1, all(x >= 0))
-  return((1 + (x / theta)^alpha)^(-(beta / alpha)))
+#' x <- c(0.2, 0.4, 0.6)
+#' theta <- 0.9
+#' kernel(x, "gaussian", c(theta))
+#' kernel(x, "exponential", c(theta))
+#' kernel(x, "wave", c(theta))
+#' kernel(x, "rational_quadratic", c(theta))
+#' kernel(x, "spherical", c(theta))
+#' kernel(x, "circular", c(theta))
+#' nu <- 1
+#' kernel(x, "matern", c(theta, nu))
+#' dim <- 1
+#' kernel(x, "bessel_j", c(theta, nu, dim))
+#' alpha <- 1
+#' beta <- 2
+#' kernel(x, "cauchy", c(theta, alpha, beta))
+kernel <- function(x, name, params=c(1)) {
+  stopifnot(length(x) >= 1, all(x >= 0), is.vector(params), length(params) > 0, is.numeric(params[1]), params[1] > 0)
+  stopifnot(name %in% c("gaussian", "exponential", "wave", "rational_quadratic",
+                        "spherical", "circular", "bessel_j", "matern", "cauchy"))
+
+  # Gaussian, Exponential, Wave, Rational Quadratic, Spherical, Circular
+  if(length(params) == 1) {
+    if(name == "gaussian") {
+      return(exp(-(x^2) / params[1]))
+    }
+    else if(name == "exponential") {
+      return(exp(-x / params[1]))
+    }
+    else if(name == "wave") {
+      return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (params[1] / t) * sin(t / params[1])))))
+    }
+    else if(name == "rational_quadratic") {
+      return(sapply(x, function(t) ifelse(t == Inf, 0, 1 - (t^2 / (t^2 + params[1])))))
+    }
+    else if(name == "spherical") {
+      return(sapply(x, function(t) ifelse(t < params[1], 1 - ((3/2) * (t / params[1])) + ((1/2) * (t / params[1])^3), 0)))
+    }
+    else if(name == "circular") {
+      return(sapply(x, function(t) ifelse(t < params[1], ((2 / pi) * acos(t / params[1])) - ((2 / pi) * (t / params[1]) * sqrt(1 - (t / params[1])^2)), 0)))
+    }
+    stop(paste0("Unknown kernel: ", name))
+  }
+  # Matern
+  else if(length(params) == 2) {
+    if(name == "matern") {
+      stopifnot(params[2] > 0)
+      return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (((sqrt(2 * params[2]) * t / params[1])^params[2]) / (2^(params[2] - 1) * gamma(params[2]))) * besselK(sqrt(2 * params[2]) * t / params[1], params[2])))))
+    }
+    stop(paste0("Unknown kernel: ", name))
+  }
+  else if(length(params) == 3) {
+    if(name == "bessel_j") {
+      stopifnot(params[3] >= 1, params[2] >= (params[3] / 2) - 1)
+      return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (2^params[2]) * gamma(params[2] + 1) * (besselJ(t / params[1], params[2]) / ((t / params[1])^params[2]))))))
+    }
+    else if(name == "cauchy") {
+      stopifnot(params[2] > 0, params[2] <= 2, params[3] >= 0)
+      return((1 + (x / params[1])^params[2])^(-(params[3] / params[2])))
+    }
+    stop(paste0("Unknown kernel: ", name))
+  }
+  stop(paste0("Unknown kernel: ", name))
 }

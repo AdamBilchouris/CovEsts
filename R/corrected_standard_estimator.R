@@ -10,7 +10,7 @@
 #'
 #' @param X A vector of observations representing a time series.
 #' @param upperTau The maximum upper lag to compute the autocovariance function. upperTau \eqn{< N-1.}
-#' @param kernel The choice of kernel. Possible values are:
+#' @param kernel_name The choice of kernel. Possible values are:
 #' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
 #' @param kernel_params If the kernel has any parameters, pass them as a vector.
 #' @param N_T The value the kernel function vanishes at. Recommended to be \eqn{0.1 N.}
@@ -47,32 +47,18 @@
 #' plot(Y)
 #' plot(corrected_standard_estimator(Y, length(Y)-1,
 #'      "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE))
-corrected_standard_estimator <- function(X, upperTau, kernel, kernel_params=c(), N_T=0.1*length(X), N=length(X), meanX=mean(X), pd=TRUE, type='covariance', customKernel = FALSE) {
+corrected_standard_estimator <- function(X, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(X), N=length(X), meanX=mean(X), pd=TRUE, type='covariance', customKernel = FALSE) {
   stopifnot(is.logical(customKernel), N >= 0, length(X) > 0, is.vector(X), N == length(X), is.logical(pd), upperTau >= 0, upperTau <= (N - 1),
             type %in% c('covariance', 'correlation'))
   retVec <- sapply(seq(0, upperTau, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
   if(!customKernel) {
-    stopifnot(kernel %in% c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"))
+    stopifnot(kernel_name %in% c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"))
 
-    # Check length of kernel parameters
-    # Length 0, e.g. Gaussian, exponential.
-    if(length(kernel_params) == 0) {
-      return(retVec * sapply(seq(0, upperTau, by=1), function(t) get(paste0("kernel_", kernel))(t, N_T)))
-    }
-
-    # Length 1, e.g. Matern
-    else if(length(kernel_params) == 1) {
-      return(retVec * sapply(seq(0, upperTau, by=1), function(t) get(paste0("kernel_", kernel))(t, N_T, kernel_params[1])))
-    }
-
-    # Length 2, e.g. Bessel J, Cauchy
-    else {
-      return(retVec * sapply(seq(0, upperTau, by=1), function(t) get(paste0("kernel_", kernel))(t, N_T, kernel_params[1], kernel_params[2])))
-    }
+    return(retVec * sapply(seq(0, upperTau, by=1), function(t) get("kernel")(t, kernel_name, c(N_T, kernel_params))))
   }
 
   if(customKernel) {
-    return(retVec * sapply(seq(0, upperTau, by=1), function(t) get(kernel)(t, N_T, kernel_params)))
+    return(retVec * sapply(seq(0, upperTau, by=1), function(t) get(kernel_name)(t, N_T, kernel_params)))
   }
 
   return("Something went wrong in `corrected_standard_estimator`.")

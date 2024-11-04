@@ -13,7 +13,7 @@ compute_truncated_point(
   h,
   Xij_mat,
   rho_T1,
-  kernel = "gaussian",
+  kernel_name = "gaussian",
   kernel_params = c(),
   custom_kernel = F
 )
@@ -35,7 +35,7 @@ compute_truncated_point(
 
 \item{rho_T1}{The value of the covariance function at T1.}
 
-\item{kernel}{The name of the kernel function to be used. Possible values are:
+\item{kernel_name}{The name of the kernel function to be used. Possible values are:
 "gaussian", "wave", "rational_quadratic", and "bessel_j".}
 
 \item{kernel_params}{Any parameters for the kernel function.}
