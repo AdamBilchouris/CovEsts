@@ -2,7 +2,7 @@
 % Please edit documentation in R/kernel_regression_estimator.R
 \name{compute_rho_T1}
 \alias{compute_rho_T1}
-\title{Compute \eqn{\rho(T1)} for the truncated kernel regression estimator.}
+\title{Compute \eqn{\rho(T_{1})} for the truncated kernel regression estimator.}
 \usage{
 compute_rho_T1(
   x,
@@ -34,7 +34,7 @@ compute_rho_T1(
 \item{custom_kernel}{A boolean determining whether or not a custom kernel is used.}
 }
 \value{
-The empirical covariance function a T1.
+The empirical covariance function at T1.
 }
 \description{
 This function computes the truncated kernel regression estimator at \eqn{\rho(T_{1}).}

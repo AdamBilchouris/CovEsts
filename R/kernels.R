@@ -13,7 +13,7 @@
 #' \strong{Gaussian Kernel}.
 #' This computes the isotropic Gaussian kernel, which is valid for \eqn{\mathbb{R}^{d}.}
 #' \deqn{a(\tau;\theta) = \exp(-\tau^{2} / \theta).}
-#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Isotropic Wave (Cardinal Sine) Kernel}.
 #' This computes the isotropic wave (cardinal sine) kernel, which is valid for \eqn{\mathbb{R}^{3}.}
@@ -22,12 +22,12 @@
 #' 1, & \tau = 0
 #' \end{cases} .
 #' }
-#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Isotropic Rational Quadratic Kernel}.
 #' This computes the isotropic rational quadratic kernel, which is valid for \eqn{\mathbb{R}^{d}.}
 #' \deqn{a(\tau;\theta) = 1 - \frac{\tau^{2}}{\tau^{2} + \theta}.}
-#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Isotropic Spherical Kernel}.
 #' This computes the isotropic spherical kernel, which is valid for \eqn{\mathbb{R}^{3}.}
@@ -37,7 +37,7 @@
 #' 0 & \text{otherwise}
 #' \end{cases} .
 #' }
-#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Isotropic Circular Kernel}.
 #' This computes the isotropic circular kernel, which is valid for \eqn{\mathbb{R}^{2}.}
@@ -47,24 +47,24 @@
 #' 0 & \text{otherwise}
 #' \end{cases} .
 #' }
-#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Isotropic Matérn Kernel}.
 #' This computes the isotropic Matérn kernel, which is valid for \eqn{\mathbb{R}^{d}} for \eqn{\nu > 0.}
 #' \deqn{a(\tau; \nu) = \left(\sqrt{2\nu} \frac{\tau}{\theta} \right)^{\nu} \left(2^{\nu - 1} \Gamma(\nu) \right)^{-1} K_{\nu}\left( \sqrt{2\nu} \frac{\tau}{\theta} \right) ,}
 #' where \eqn{K_{\nu}(\cdot)} is the modified Bessel function of the second kind.
-#' The \code{params} argument is of the form \code{c(\eqn{\theta, \nu})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu}\code{)}.
 #'
 #' \strong{Isotropic Bessel Kernel}.
 #' This computes the isotropic Bessel kernel, which is valid for \eqn{\mathbb{R}^{d}} for \eqn{\nu \geq \frac{d}{2} - 1.}
 #' \deqn{a(\tau; \nu) = 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau) \tau^{-\nu} ,}
 #' where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind.
-#' The \code{params} argument is of the form \code{c(\eqn{\theta, \nu, d})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d} \code{)}.
 #'
 #' \strong{Isotropic Cauchy Kernel}.
 #' This computes the isotropic Cauchy kernel, which is valid for \eqn{\mathbb{R}^{d}} for \eqn{0 < \alpha \leq 2} and \eqn{\beta \geq 0.}
 #' \deqn{a(\tau ; \theta, \alpha, \beta) = (1 + (\tau / \theta)^{\alpha})^{-(\beta / \alpha)} .}
-#' The \code{params} argument is of the form \code{c(\eqn{\theta, \alpha, \beta})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta, \alpha, \beta} \code{)}.
 #'
 #' @references
 #' Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.

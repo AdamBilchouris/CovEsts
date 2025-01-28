@@ -1,7 +1,7 @@
 #' Compute \eqn{X_{ij}} Matrix
 #'
 #' This computes the matrix of pairwise covariance values, \eqn{X_{ij},} for the kernel regression estimator,
-#' \deqn{X_{ij} = (X_{i} - \overbar{X}) (X_{j} - \overbar{X}) .}
+#' \deqn{X_{ij} = (X_{i} - \bar{X}) (X_{j} - \bar{X}) .}
 #'
 #' @references
 #' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
@@ -29,7 +29,7 @@ compute_Xij_mat <- function(X) {
   return(Xij)
 }
 
-#' Compute \eqn{\rho(T1)} for the truncated kernel regression estimator.
+#' Compute \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
 #'
 #' This function computes the truncated kernel regression estimator at \eqn{\rho(T_{1}).}
 #' This saves repeated computations in compute_truncated.
@@ -48,15 +48,15 @@ compute_Xij_mat <- function(X) {
 #' @param kernel_params Any parameters for the kernel function.
 #' @param custom_kernel A boolean determining whether or not a custom kernel is used.
 #'
-#' @return The empirical covariance function a T1.
+#' @return The empirical covariance function at \eqn{T_{1}}.
 #' @export
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' compute_rho_T1(1:4, mean(X), 1, 0.1, compute_Xij_mat(X), "gaussian", c(), FALSE)
 compute_rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
-  stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), is.numeric(meanX), !is.na(meanX),
-            is.numeric(T1), !is.nan(T1), T1 > 0, is.numeric(h), h > 0,
+  stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
+            length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(h) == 1, is.numeric(h), !is.na(h), h > 0,
             is.numeric(Xij_mat), is.matrix(Xij_mat), !any(is.na(Xij_mat)), is.logical(custom_kernel))
 
   numerators <- c()
@@ -126,10 +126,11 @@ compute_rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", ker
 #' compute_truncated_point(1:4, mean(X), 1, 0.1, 1, 0.1,
 #'                         compute_Xij_mat(X), rhoT1, "gaussian", c(), FALSE)
 compute_truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rho_T1, kernel_name="gaussian",  kernel_params=c(), custom_kernel = F) {
-  stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), is.numeric(meanX), !is.na(meanX),
-            is.numeric(t), !is.na(t), is.numeric(T1), !is.nan(T1), T1 > 0, is.numeric(T2), !is.nan(T2), T2 > T1,
-            is.numeric(h), h > 0, is.numeric(Xij_mat), is.matrix(Xij_mat), !any(is.na(Xij_mat)), is.numeric(rho_T1), !is.na(rho_T1),
-            is.logical(custom_kernel))
+  stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
+            length(t) == 1, is.numeric(t), !is.na(t), length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0,
+            length(T2) == 1, is.numeric(T2), !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0, !is.na(h),
+            is.numeric(Xij_mat), is.matrix(Xij_mat), !any(is.na(Xij_mat)), length(rho_T1) == 1, is.numeric(rho_T1),
+            !is.na(rho_T1), is.logical(custom_kernel))
   numerators <- c()
   denominators <- c()
 
@@ -210,7 +211,7 @@ compute_truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rho_T1, ker
 #' X <- c(1, 2, 3)
 #' compute_1d_dct(X)
 compute_1d_dct <- function(X) {
-  stopifnot(is.numeric(X),  !any(is.na(X)))
+  stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)))
   newX <- c(X, rev(X))
   zerosX <- rep(0, length(newX))
   newX <- c(rbind(zerosX, newX))
@@ -232,7 +233,7 @@ compute_1d_dct <- function(X) {
 #' X <- compute_1d_dct(c(1, 2, 3))
 #' compute_1d_idct(X)
 compute_1d_idct <- function(X) {
-  stopifnot(is.numeric(X),  !any(is.na(X)))
+  stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)))
   # Reconstruct original frequency (i.e. the full dct_seq from compute_1d_dct)
   dct_full <- c(X, 0, -rev(X), -X[-1], 0, rev(X[-1]))
 
@@ -288,10 +289,11 @@ compute_1d_idct <- function(X) {
 #' compute_truncated(X, 1:4, mean(X), 1:3, 1, 2, 0.1,
 #'                   "gaussian", c(), FALSE, TRUE)
 compute_truncated <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussian",  kernel_params=c(), custom_kernel = FALSE, pd = TRUE) {
-  stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)),  is.numeric(meanX), length(x) >= 1, !any(is.na(x)),
-            is.numeric(meanX), !is.na(meanX), is.numeric(t), length(t) >= 1,
-            is.numeric(T1), !is.nan(T1), T1 > 0, is.numeric(T2), !is.nan(T2), T2 > T1,
-            is.numeric(h), h > 0, is.logical(custom_kernel), is.logical(pd))
+  stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(x) >= 1, is.numeric(x), !any(is.na(x)),
+            length(meanX) == 1, is.numeric(meanX), !is.na(meanX), is.numeric(t), length(t) >= 1,
+            length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(T2) == 1, is.numeric(T2),
+            !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0,
+            is.logical(custom_kernel), is.logical(pd))
 
   Xij_mat <- compute_Xij_mat(X)
   rho_T1 <- compute_rho_T1(x, meanX, T1, h, Xij_mat, kernel_name, kernel_params, custom_kernel)
@@ -328,9 +330,9 @@ compute_truncated <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussian",
 #' Compute the Kernel Regression Estimator.
 #'
 #' \deqn{
-#' \hat{\rho}(t) = \left( \sum_{i} \sum_{j} \widecheck{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
+#' \hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
 #' }
-#' where \eqn{\widecheck{X}_{ij} = (X(t_{i}) - \overline{X}) (X(t_{j}) - \overline{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+#' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 #'
 #' When making the estimator positive-definite, the following is done:
 #' 1. Take the discrete cosine transform.
@@ -357,8 +359,8 @@ compute_truncated <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussian",
 #' compute_adjusted(X, 1:4, mean(X), 1:3, 0.1, "gaussian", c(), FALSE, TRUE)
 compute_adjusted <- function(X, x, meanX, t, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(x), length(x) >= 1, !any(is.na(x)),
-            is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t), length(t) >= 1,
-            is.numeric(h), h > 0, is.logical(custom_kernel), is.logical(pd))
+            length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
+            length(t) >= 1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel), is.logical(pd))
 
   Xij_mat <- compute_Xij_mat(X)
   cov_vals <- c()
@@ -381,6 +383,7 @@ compute_adjusted <- function(X, x, meanX, t, h, kernel_name="gaussian", kernel_p
     }
   }
   else {
+    stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
     for(ti in 1:length(t)) {
       numerators <- c()
       denominators <- c()

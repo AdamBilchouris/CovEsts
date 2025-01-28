@@ -48,7 +48,7 @@
 #' plot(corrected_standard_estimator(Y, length(Y)-1,
 #'      "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE))
 corrected_standard_estimator <- function(X, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(X), N=length(X), meanX=mean(X), pd=TRUE, type='covariance', customKernel = FALSE) {
-  stopifnot(is.logical(customKernel), N >= 0, length(X) > 0, is.vector(X), N == length(X), is.logical(pd), upperTau >= 0, upperTau <= (N - 1),
+  stopifnot(is.logical(customKernel), N > 0, length(X) > 0, is.vector(X), is.numeric(X), is.numeric(N_T), N_T > 0, N == length(X), is.numeric(meanX), is.logical(pd), upperTau >= 0, upperTau <= (N - 1),
             type %in% c('covariance', 'correlation'))
   retVec <- sapply(seq(0, upperTau, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
   if(!customKernel) {

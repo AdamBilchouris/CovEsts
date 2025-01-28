@@ -41,9 +41,9 @@ A vector whose values are the estimated kernel regression estimator.
 }
 \description{
 \deqn{
-\hat{\rho}(t) = \left( \sum_{i} \sum_{j} \widecheck{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
+\hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
 }
-where \eqn{\widecheck{X}_{ij} = (X(t_{i}) - \overline{X}) (X(t_{j}) - \overline{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 }
 \details{
 When making the estimator positive-definite, the following is done:

@@ -8,7 +8,7 @@
 #'
 #' \strong{Symmetric Gaussian Kernel}.
 #' \deqn{a(\tau;\theta) = \sqrt{\pi \theta} \exp(-\tau^{2} / \theta), \theta > 0}.
-#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Symmetric Wave Kernel}.
 #' \deqn{a(\tau;\theta) = \begin{cases}
@@ -16,16 +16,16 @@
 #' 1, & \tau = 0
 #' \end{cases} ,
 #' \theta > 0.}
-#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}
 #'
 #' \strong{Symmetric Rational Quadratic Kernel}.
 #' \deqn{a(\tau;\theta) = (\pi \sqrt{\theta})^{-1} (1 - \frac{\tau^{2}}{\tau^{2} + \theta}), \theta > 0.}
-#' The \code{params} argument is of the form \code{c(\eqn{\theta})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}
 #'
 #' \strong{Symmetric Besesel Kernel}.
 #' \deqn{a(\tau; \nu) = (\Gamma(\frac{1}{2} + \nu)/(2 \sqrt{\pi} \theta \Gamma(1 + \nu))) ( 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau) \tau^{-\nu}), \theta > 0, \nu \geq \frac{d}{2} - 1.}
 #' where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind and \eqn{d} is the dimension.
-#' The \code{params} argument is of the form \code{c(\eqn{\theta, \nu, d})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d}\code{)}.
 #'
 #' @param x A vector of values of at least length 1.
 #' @param name The name of the kernel. Options are: "gaussian", "wave", "rational_quadratic", "bessel_j".

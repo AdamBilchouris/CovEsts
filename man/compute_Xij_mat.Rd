@@ -14,7 +14,7 @@ A matrix of size \eqn{N \times N}, where \eqn{N} is the length of the vector X.
 }
 \description{
 This computes the matrix of pairwise covariance values, \eqn{X_{ij},} for the kernel regression estimator,
-\deqn{X_{ij} = (X_{i} - \overbar{X}) (X_{j} - \overbar{X}) .}
+\deqn{X_{ij} = (X_{i} - \bar{X}) (X_{j} - \bar{X}) .}
 }
 \examples{
 X <- c(1, 2, 3, 4)

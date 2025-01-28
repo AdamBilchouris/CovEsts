@@ -29,7 +29,7 @@
 #' }
 #' compute_taper_single(x, 0.5, "my_taper", custom_window = TRUE)
 compute_taper_single <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE) {
-  stopifnot(is.numeric(x), length(x) == 1, x >= 0, x <= 1, is.numeric(rho), rho > 0)
+  stopifnot(is.numeric(x), length(x) == 1, x >= 0, x <= 1, is.numeric(rho), rho > 0, length(rho) == 1, is.logical(custom_window))
 
   if(custom_window) {
     if(x >= 0 && x < ((1/2) * rho)) {
@@ -89,7 +89,7 @@ compute_taper_single <- function(x, rho, window_name, window_params=c(1), custom
 #' @examples
 #' compute_h2n(3, 0.6, "tukey")
 compute_h2n <- function(n, rho, window_name, window_params=c(1), custom_window = FALSE) {
-  stopifnot(is.numeric(n), n >= 1)
+  stopifnot(is.numeric(n), n >= 1, n %% 1 == 0, is.numeric(rho), rho > 0, length(rho) == 1, is.logical(custom_window))
   sSeq <- 1:n
   hSeq <- compute_taper(((sSeq - 1/2) / n), rho, window_name, window_params, custom_window)
   return(sum(hSeq))
@@ -143,7 +143,7 @@ compute_taper <- function(x, rho, window_name, window_params=c(1), custom_window
 #' compute_tapered_cov_single(X, mean(X), 9, 2.5, c(0.75, 1, 0.75), c(0.75, 1, 0.75))
 compute_tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(meanX), length(meanX) == 1,
-            is.numeric(h), length(h) == 1, is.numeric(h2n), length(h2n) == 1,
+            is.numeric(h), length(h) == 1, h %% 1 == 0, is.numeric(h2n), length(h2n) == 1,
             is.numeric(taperVals_t), length(taperVals_t) >= 1, all(abs(taperVals_t) <= 1), all(abs(taperVals_t) >= 0),
             is.numeric(taperVals_h), length(taperVals_h) >= 1, all(abs(taperVals_h) <= 1), all(abs(taperVals_h) >= 0))
 
@@ -178,7 +178,7 @@ compute_tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_
 #' X <- c(1, 2, 3)
 #' compute_tapered_cov(X, 2, 0.5, "tukey")
 compute_tapered_cov <- function(X, maxLag, rho, window_name, window_params = c(1), custom_window = FALSE) {
-  stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1, maxLag <= (length(X) - 1),
+  stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1, maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0,
             is.numeric(rho), length(rho) == 1, is.logical(custom_window))
 
   meanX <- mean(X)

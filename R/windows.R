@@ -21,15 +21,15 @@
 #'
 #' \strong{Power Sine Window}.
 #' \deqn{w(x) = \sin^{a}(\pi x / 2), x \in [0, 1], a > 0.}
-#' The \code{params} argument is of the form \code{c(\eqn{a})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
 #'
 #' \strong{Blackman Window}.
 #' \deqn{w(x) = ( (1 - \alpha) / 2) - (1/2) \cos(\pi x) + (\alpha / 2) \cos(2 \pi x), x \in [0, 1], \alpha \in \mathbb{R} .}
-#' The \code{params} argument is of the form \code{c(\eqn{\alpha})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
 #'
 #' \strong{Hann-Poisson Window}.
 #' \deqn{w(x) = (1/2) (1 - \cos(\pi x)) \exp( - (\alpha \left|1 - x \right|) ) , x \in [0, 1], \alpha \in \mathbb{R} .}
-#' The \code{params} argument is of the form \code{c(\eqn{\alpha})}.
+#' The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
 #'
 #' \strong{Welch Window}.
 #' \deqn{w(x) = 1 - (x - 1)^2 , x \in [0, 1] . }
