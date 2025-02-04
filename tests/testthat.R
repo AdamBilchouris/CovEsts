@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(CovEst)
+library(CovEsts)
 
-test_check("CovEst")
+test_check("CovEsts")

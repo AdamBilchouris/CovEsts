@@ -1,5 +1,5 @@
 
-# CovEst
+# CovEsts
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -20,7 +20,7 @@ devtools::install_github("AdamBilchouris/CovEsts")
 Below is a basic use case of the package.
 
 ``` r
-library(CovEst)
+library(CovEsts)
 ## basic example code
 X <- rnorm(100)
 standard_est(X, 20)

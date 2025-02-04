@@ -28,7 +28,7 @@ compute_adjusted(
 \item{h}{Bandwidth parameter.}
 
 \item{kernel_name}{The name of the kernel function to be used. Possible values are:
-"gaussian", "wave", "rational_quadratic", and "bessel_j".}
+"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{corrected_standard_estimator}'s example.}
 
 \item{kernel_params}{Any parameters for the kernel function.}
 
@@ -37,24 +37,40 @@ compute_adjusted(
 \item{pd}{Whether or not the estimator returned is positive-definite.}
 }
 \value{
-A vector whose values are the estimated kernel regression estimator.
+A vector whose values are the kernel regression estimator.
 }
 \description{
+The kernel regression estimator is defined as
 \deqn{
 \hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
 }
 where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 }
 \details{
-When making the estimator positive-definite, the following is done:
-\enumerate{
-\item Take the discrete cosine transform.
-\item Set all negative values to zero.
-\item Perform the inversion.
-This ensures the covariance estimate is positive-definite.
+The kernel regression estimator is defined as
+\deqn{
+\hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
 }
+where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+
+This estimator can be made positive definite through the following procedure
+\enumerate{
+\item Take the discrete cosine transform,
+\eqn{\mathcal{F}^{c}(\hat{\rho}(t))}.
+\item Set all negative values to zero,
+\eqn{\hat{\mathcal{F}}^{c}(\hat{\rho}(t)) = \mathcal{F}(\hat{\rho}(t))} if \eqn{\mathcal{F}(\hat{\rho}(t)) > 0} and \eqn{\hat{\mathcal{F}}^{c}(\hat{\rho}(t)) = 0} otherwise,
+for all sample frequencies.
+\item Perform the inversion to obtain a new estimator.
+}
+
+This ensures the covariance estimate is positive-definite.
 }
 \examples{
 X <- c(1, 2, 3, 4)
 compute_adjusted(X, 1:4, mean(X), 1:3, 0.1, "gaussian", c(), FALSE, TRUE)
+}
+\references{
+Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+
+Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 }

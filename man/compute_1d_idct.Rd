@@ -15,7 +15,22 @@ A vector whose values are the inverse transform.
 \description{
 This computes the inverse of the Type-II discrete cosine transform.
 }
+\details{
+The Type-II inverse discrete cosine transform is computed using \link[stats:fft]{stats::fft}.
+The original spectrum is obtained from the input X and then an inverse FFT is applied to obtain
+the estimate.
+
+The original spectrum, \code{dct_full}, from \code{X} is obtained as follows:
+\code{dct_full <- c(X, 0, -X[-1], 0, rev(X[-1]))}. After this, an inverse FFT is applied,
+\code{idct <- Re(stats::fft(dct_full, inverse = T)) * (2 / length(dct_full))}, and then the first half of inverse transform is taken, and the zeroes are dropped,
+which gives the untransformed X.
+}
 \examples{
 X <- compute_1d_dct(c(1, 2, 3))
 compute_1d_idct(X)
+}
+\references{
+J. Makhoul, "A fast cosine transform in one and two dimensions," in IEEE Transactions on Acoustics, Speech, and Signal Processing, vol. 28, no. 1, pp. 27-34, February 1980, doi: 10.1109/TASSP.1980.1163351.
+
+Wikipedia contributors. (2025, January 24). Discrete cosine transform. In Wikipedia, The Free Encyclopedia. https://en.wikipedia.org/w/index.php?title=Discrete_cosine_transform&oldid=1271621657
 }

@@ -5,6 +5,7 @@
 #'
 #' @references
 #' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
 #' @param X A vector of values
@@ -31,11 +32,20 @@ compute_Xij_mat <- function(X) {
 
 #' Compute \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
 #'
-#' This function computes the truncated kernel regression estimator at \eqn{\rho(T_{1}).}
-#' This saves repeated computations in compute_truncated.
+#' This function computes \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
+#' This saves repeated computations in [compute_truncated].
+#'
+#' @details
+#' This function computes the following value,
+#' \deqn{
+#' \hat{\rho}(T_{1}) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((T_{1} - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((T_{1} - t_{ij}) / h) \right)^{-1},
+#' }
+#' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+#' In [compute_truncated], when \eqn{T_{1} < t \le T_{2}}, this value is required, possibly several times, so calculating it once can save repeated computations.
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#' Hall, P., & Patil, P. (1994). Properties of Nonparametric Estimators of Autocovariance for Stationary Random Fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
 #' @param x A vector of indices.
@@ -44,11 +54,11 @@ compute_Xij_mat <- function(X) {
 #' @param h Bandwidth parameter.
 #' @param Xij_mat The matrix of pairwise covariance values.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j".
+#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [corrected_standard_estimator]'s example.
 #' @param kernel_params Any parameters for the kernel function.
 #' @param custom_kernel A boolean determining whether or not a custom kernel is used.
 #'
-#' @return The empirical covariance function at \eqn{T_{1}}.
+#' @return The estimated covariance function at \eqn{T_{1}}.
 #' @export
 #'
 #' @examples
@@ -97,10 +107,11 @@ compute_rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", ker
 
 #' Compute \eqn{\rho(t)} for the truncated kernel regression estimator.
 #'
-#' This function computes the truncated kernel regression estimator at \eqn{\rho(t).}
+#' This function computes \eqn{\rho(t)} for the truncated kernel regression estimator (see [compute_truncated]).
 #'
 #' @references
 #' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
 #' @param x A vector of indices.
@@ -112,11 +123,11 @@ compute_rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", ker
 #' @param Xij_mat The matrix of pairwise covariance values.
 #' @param rho_T1 The value of the covariance function at T1.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j".
+#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [corrected_standard_estimator]'s example.
 #' @param kernel_params Any parameters for the kernel function.
 #' @param custom_kernel A boolean determining whether or not a custom kernel is used.
 #'
-#' @return The covariance value at t.
+#' @return The estimated covariance value at t.
 #' @export
 #'
 #' @examples
@@ -202,6 +213,16 @@ compute_truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rho_T1, ker
 #'
 #' This computes the Type-II discrete cosine transform.
 #'
+#' The Type-II discrete cosine transform is obtained using [stats::fft]. It follows the method by Markhoul, which is summarised on the DCT Wikipedia page.
+#' A new input \eqn{y} is created from \eqn{X} where \eqn{y_{2n} = 0}, \eqn{y_{2n+1} = X_{n}} for \eqn{0 \le n < N}, \eqn{y_{2N} = 0} and \eqn{y_{4N - n} = y_{n}}
+#' for \eqn{0 < n < 2N}, where N is the length of \eqn{X}.
+#' After this, the is done (in code): \code{dct <- 0.5 * Re(stats::fft(Y))[1:(length(Y) / 4)]}, which gives the Type-II discrete cosine transform.
+#'
+#' @references
+#' J. Makhoul, "A fast cosine transform in one and two dimensions," in IEEE Transactions on Acoustics, Speech, and Signal Processing, vol. 28, no. 1, pp. 27-34, February 1980, doi: 10.1109/TASSP.1980.1163351.
+#'
+#' Wikipedia contributors. (2025, January 24). Discrete cosine transform. In Wikipedia, The Free Encyclopedia. https://en.wikipedia.org/w/index.php?title=Discrete_cosine_transform&oldid=1271621657
+#'
 #' @param X A vector of values for which the discrete cosine transform is being computed.
 #'
 #' @return A vector whose values are the transform.
@@ -223,6 +244,21 @@ compute_1d_dct <- function(X) {
 #' Compute 1D Inverse Discrete Cosine Transform
 #'
 #' This computes the inverse of the Type-II discrete cosine transform.
+#'
+#' @details
+#' The Type-II inverse discrete cosine transform is computed using [stats::fft].
+#' The original spectrum is obtained from the input X and then an inverse FFT is applied to obtain
+#' the estimate.
+#'
+#' The original spectrum, \code{dct_full}, from \code{X} is obtained as follows:
+#' \code{dct_full <- c(X, 0, -X[-1], 0, rev(X[-1]))}. After this, an inverse FFT is applied,
+#' \code{idct <- Re(stats::fft(dct_full, inverse = T)) * (2 / length(dct_full))}, and then the first half of inverse transform is taken, and the zeroes are dropped,
+#' which gives the untransformed X.
+#'
+#' @references
+#' J. Makhoul, "A fast cosine transform in one and two dimensions," in IEEE Transactions on Acoustics, Speech, and Signal Processing, vol. 28, no. 1, pp. 27-34, February 1980, doi: 10.1109/TASSP.1980.1163351.
+#'
+#' Wikipedia contributors. (2025, January 24). Discrete cosine transform. In Wikipedia, The Free Encyclopedia. https://en.wikipedia.org/w/index.php?title=Discrete_cosine_transform&oldid=1271621657
 #'
 #' @param X A vector of values for which the discrete cosine transform is being computed.
 #'
@@ -249,23 +285,39 @@ compute_1d_idct <- function(X) {
 
 #' Compute the Truncated Kernel Regression Estimator.
 #'
-#' \deqn{\hat{\rho}_{1}(t) = \begin{cases}
+#' This function computes the truncated kernel regression estimator,
+#' \deqn{\hat{\rho}_{1}(t)  = \left\{ \begin{array}{ll}
 #' \hat{\rho}(t) & 0 \leq t \leq T_{1} \\
 #' \hat{\rho}(T_{1}) (T_{2} - t)(T_{2} - T_{1})^{-1} & T_{1} < t \leq T_{2} \\
 #' 0 & t > T_{2}
-#'\end{cases}}
-#'where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator.
+#' \end{array} , \right. }
+#' where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator, see [compute_adjusted].
 #'
-#' When making the estimator positive-definite, the following is done:
-#' 1. Take the discrete cosine transform.
-#' 2. Find the smallest frequency where its associated value in the spectral domain is negative.
+#' @details
+#' This function computes the truncated kernel regression estimator,
+#' \deqn{\hat{\rho}_{1}(t) = \left\{ \begin{array}{ll}
+#' \hat{\rho}(t) & 0 \leq t \leq T_{1} \\
+#' \hat{\rho}(T_{1}) (T_{2} - t)(T_{2} - T_{1})^{-1} & T_{1} < t \leq T_{2} \\
+#' 0 & t > T_{2}
+#' \end{array} \right. }
+#' where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator, see [compute_adjusted].
+#'
+#' Compared to [compute_adjusted], this function brings down the estimate to zero linearly between \eqn{T_{1}} and \eqn{T_{2}}.
+#' In the case of short-range dependence, this may be beneficial as it can remove estimation artefacts.
+#'a
+#' To make this estimator positive-definite, the following procedure is done:
+#' 1. Take the discrete cosine transform
+#' \eqn{\mathcal{F}^{c}(\hat{\rho}_{1}(t))}.
+#' 2. Find the smallest frequency where its associated value in the spectral domain is negative
+#' \deqn{\hat{\theta} = \inf\{ \theta > 0 :  \mathcal{F}^{c}(\hat{\rho}_{1}(t)) < 0\}.}
 #' 3. Set all values starting at the frequency to zero.
 #' 4. Perform the inversion.
 #'
 #' This ensures the covariance function estimate is positive-definite.
 #'
-#'@references
+#' @references
 #' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
 #' @param X A vector of values representing a stochastic process.
@@ -276,12 +328,12 @@ compute_1d_idct <- function(X) {
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j".
+#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [corrected_standard_estimator]'s example.
 #' @param kernel_params Any parameters for the kernel function.
 #' @param custom_kernel A boolean determining whether or not a custom kernel is used.
 #' @param pd Whether or not the estimator returned is positive-definite.
 #'
-#' @return A vector whose values are the estimated truncated kernel regression estimator.
+#' @return A vector whose values are the truncated kernel regression estimator.
 #' @export
 #'
 #' @examples
@@ -329,16 +381,33 @@ compute_truncated <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussian",
 
 #' Compute the Kernel Regression Estimator.
 #'
+#' The kernel regression estimator is defined as
 #' \deqn{
 #' \hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
 #' }
 #' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 #'
-#' When making the estimator positive-definite, the following is done:
-#' 1. Take the discrete cosine transform.
-#' 2. Set all negative values to zero.
-#' 3. Perform the inversion.
+#' @details
+#' The kernel regression estimator is defined as
+#' \deqn{
+#' \hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
+#' }
+#' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+#'
+#' This estimator can be made positive definite through the following procedure
+#' 1. Take the discrete cosine transform,
+#' \eqn{\mathcal{F}^{c}(\hat{\rho}(t))}.
+#' 2. Set all negative values to zero,
+#' \eqn{\hat{\mathcal{F}}^{c}(\hat{\rho}(t)) = \mathcal{F}(\hat{\rho}(t))} if \eqn{\mathcal{F}(\hat{\rho}(t)) > 0} and \eqn{\hat{\mathcal{F}}^{c}(\hat{\rho}(t)) = 0} otherwise,
+#' for all sample frequencies.
+#' 3. Perform the inversion to obtain a new estimator.
+#'
 #' This ensures the covariance estimate is positive-definite.
+#'
+#' @references
+#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#'
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
 #' @param X A vector of values representing a stochastic process.
 #' @param x A vector of indices.
@@ -346,12 +415,12 @@ compute_truncated <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussian",
 #' @param t The values at which the covariance function is calculated at.
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j".
+#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [corrected_standard_estimator]'s example.
 #' @param kernel_params Any parameters for the kernel function.
 #' @param custom_kernel A boolean determining whether or not a custom kernel is used.
 #' @param pd Whether or not the estimator returned is positive-definite.
 #'
-#' @return A vector whose values are the estimated kernel regression estimator.
+#' @return A vector whose values are the kernel regression estimator.
 #' @export
 #'
 #' @examples

@@ -12,7 +12,7 @@ compute_h2n(n, rho, window_name, window_params = c(1), custom_window = FALSE)
 \item{rho}{A scale paramter, greater than 0.}
 
 \item{window_name}{The window function to use, one of
-"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch".}
+"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see \link{compute_taper_single}'s example.}
 
 \item{window_params}{Any parameters of the window function.}
 
@@ -22,7 +22,7 @@ compute_h2n(n, rho, window_name, window_params = c(1), custom_window = FALSE)
 A single value being \eqn{H_{2, n}(0)}.
 }
 \description{
-This is used in the computation of \link{compute_tapered_cov_single}.
+This function is used in the computation of \link{compute_tapered_cov_single}.
 \deqn{H_{2, n}(0) = \sum_{s=1}^{n} a((s - 1/2) / n)^2 , }
 where \eqn{a} is a window function.
 }

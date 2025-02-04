@@ -9,7 +9,7 @@ window(x, name, params = c(1))
 \arguments{
 \item{x}{A vector of values of at least length 1.}
 
-\item{name}{The name of the kernel. Options are: "tukey", "triangular", "sine", "power_sine", "blackman", "hann_poisson", "welch".}
+\item{name}{The name of the window. Options are: "tukey", "triangular", "sine", "power_sine", "blackman", "hann_poisson", "welch".}
 
 \item{params}{A vector of parameters for the windows. See the documentation below for the position of the parameters.}
 }
@@ -38,11 +38,11 @@ The \code{params} argument is empty, see the example.
 The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
 
 \strong{Blackman Window}.
-\deqn{w(x) = ( (1 - \alpha) / 2) - (1/2) \cos(\pi x) + (\alpha / 2) \cos(2 \pi x), x \in [0, 1], \alpha \in \mathbb{R} .}
+\deqn{w(x) = ( (1 - \alpha) / 2) - (1/2) \cos(\pi x) + (\alpha / 2) \cos(2 \pi x), x \in [0, 1], \alpha \in {R} .}
 The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
 
 \strong{Hann-Poisson Window}.
-\deqn{w(x) = (1/2) (1 - \cos(\pi x)) \exp( - (\alpha \left|1 - x \right|) ) , x \in [0, 1], \alpha \in \mathbb{R} .}
+\deqn{w(x) = (1/2) (1 - \cos(\pi x)) \exp( - (\alpha \left|1 - x \right|) ) , x \in [0, 1], \alpha \in {R} .}
 The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
 
 \strong{Welch Window}.

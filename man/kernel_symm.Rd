@@ -21,15 +21,15 @@ These have the properties of symmetric probability   distributions.
 }
 \details{
 \strong{Symmetric Gaussian Kernel}.
-\deqn{a(\tau;\theta) = \sqrt{\pi \theta} \exp(-\tau^{2} / \theta), \theta > 0}.
+\deqn{a(\tau;\theta) = \sqrt{\pi \theta} \exp(-\tau^{2} / \theta), \theta > 0.}
 The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 
 \strong{Symmetric Wave Kernel}.
-\deqn{a(\tau;\theta) = \begin{cases}
-(\sqrt{a^{-2}} / \pi) \frac{\theta}{\tau} \sin\left( \frac{\tau}{\theta} \right), & \tau \neq = 0 \\
+\deqn{a(\tau;\theta) = \left\{ \begin{array}{ll}
+(\sqrt{a^{-2}} / \pi) \frac{\theta}{\tau} \sin\left( \frac{\tau}{\theta} \right), & \tau \neq 0 \\
 1, & \tau = 0
-\end{cases} ,
-\theta > 0.}
+\end{array} ,
+\theta > 0 . \right.}
 The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}
 
 \strong{Symmetric Rational Quadratic Kernel}.

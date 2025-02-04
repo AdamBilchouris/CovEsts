@@ -18,7 +18,7 @@ standard_est_single(X, tau, N = length(X), meanX = mean(X), pd = TRUE)
 \item{pd}{Whether a positive definite estimate should be used.}
 }
 \value{
-The autocovariance at lag tau for the time series X.
+A value that is the estimated autocovariance for lag tau.
 }
 \description{
 This computes the following two variants of the autocovariance function depending on

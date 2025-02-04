@@ -27,7 +27,7 @@ standard_est(
 \item{type}{Whether the autocovariance or autocorrelation should be computed, options: 'covariance', 'correlation'.}
 }
 \value{
-The autocovariance up to lag upperTau for the time series X.
+A vector whose values are the estimated autocovariance up to lag upperTau.
 }
 \description{
 This computes the following two variants of the autocovariance function depending on
@@ -44,7 +44,7 @@ For \code{pd = FALSE}:
 \widehat{C}(\tau) = \frac{1}{N - \tau} \sum_{i=1}^{N-\tau} ( X(t_{i}) - \bar{X} ) ( X(t_{i} + \tau) - \bar{X} ) .
 }
 
-This function will generate autocovariance values for lags \eqn{\{0, \dots, \text{upperTau}\}.}
+This function will generate autocovariance values for lags \eqn{\{0, \dots, \mbox{upperTau}\}.}
 }
 \examples{
 X <- c(1, 2, 3)

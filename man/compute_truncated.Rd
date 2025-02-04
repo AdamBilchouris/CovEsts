@@ -34,7 +34,7 @@ compute_truncated(
 \item{h}{Bandwidth parameter.}
 
 \item{kernel_name}{The name of the kernel function to be used. Possible values are:
-"gaussian", "wave", "rational_quadratic", and "bessel_j".}
+"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{corrected_standard_estimator}'s example.}
 
 \item{kernel_params}{Any parameters for the kernel function.}
 
@@ -43,21 +43,35 @@ compute_truncated(
 \item{pd}{Whether or not the estimator returned is positive-definite.}
 }
 \value{
-A vector whose values are the estimated truncated kernel regression estimator.
+A vector whose values are the truncated kernel regression estimator.
 }
 \description{
-\deqn{\hat{\rho}_{1}(t) = \begin{cases}
+This function computes the truncated kernel regression estimator,
+\deqn{\hat{\rho}_{1}(t)  = \left\{ \begin{array}{ll}
 \hat{\rho}(t) & 0 \leq t \leq T_{1} \\
 \hat{\rho}(T_{1}) (T_{2} - t)(T_{2} - T_{1})^{-1} & T_{1} < t \leq T_{2} \\
 0 & t > T_{2}
-\end{cases}}
-where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator.
+\end{array} , \right. }
+where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator, see \link{compute_adjusted}.
 }
 \details{
-When making the estimator positive-definite, the following is done:
+This function computes the truncated kernel regression estimator,
+\deqn{\hat{\rho}_{1}(t) = \left\{ \begin{array}{ll}
+\hat{\rho}(t) & 0 \leq t \leq T_{1} \\
+\hat{\rho}(T_{1}) (T_{2} - t)(T_{2} - T_{1})^{-1} & T_{1} < t \leq T_{2} \\
+0 & t > T_{2}
+\end{array} \right. }
+where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator, see \link{compute_adjusted}.
+
+Compared to \link{compute_adjusted}, this function brings down the estimate to zero linearly between \eqn{T_{1}} and \eqn{T_{2}}.
+In the case of short-range dependence, this may be beneficial as it can remove estimation artefacts.
+a
+To make this estimator positive-definite, the following procedure is done:
 \enumerate{
-\item Take the discrete cosine transform.
-\item Find the smallest frequency where its associated value in the spectral domain is negative.
+\item Take the discrete cosine transform
+\eqn{\mathcal{F}^{c}(\hat{\rho}_{1}(t))}.
+\item Find the smallest frequency where its associated value in the spectral domain is negative
+\deqn{\hat{\theta} = \inf\{ \theta > 0 :  \mathcal{F}^{c}(\hat{\rho}_{1}(t)) < 0\}.}
 \item Set all values starting at the frequency to zero.
 \item Perform the inversion.
 }
@@ -71,5 +85,6 @@ compute_truncated(X, 1:4, mean(X), 1:3, 1, 2, 0.1,
 }
 \references{
 Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+
 Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 }

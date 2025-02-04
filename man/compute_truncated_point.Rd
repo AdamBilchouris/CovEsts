@@ -36,17 +36,17 @@ compute_truncated_point(
 \item{rho_T1}{The value of the covariance function at T1.}
 
 \item{kernel_name}{The name of the kernel function to be used. Possible values are:
-"gaussian", "wave", "rational_quadratic", and "bessel_j".}
+"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{corrected_standard_estimator}'s example.}
 
 \item{kernel_params}{Any parameters for the kernel function.}
 
 \item{custom_kernel}{A boolean determining whether or not a custom kernel is used.}
 }
 \value{
-The covariance value at t.
+The estimated covariance value at t.
 }
 \description{
-This function computes the truncated kernel regression estimator at \eqn{\rho(t).}
+This function computes \eqn{\rho(t)} for the truncated kernel regression estimator (see \link{compute_truncated}).
 }
 \examples{
 X <- c(1, 2, 3, 4)
@@ -57,5 +57,6 @@ compute_truncated_point(1:4, mean(X), 1, 0.1, 1, 0.1,
 }
 \references{
 Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+
 Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 }

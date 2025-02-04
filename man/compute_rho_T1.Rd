@@ -27,24 +27,33 @@ compute_rho_T1(
 \item{Xij_mat}{The matrix of pairwise covariance values.}
 
 \item{kernel_name}{The name of the kernel function to be used. Possible values are:
-"gaussian", "wave", "rational_quadratic", and "bessel_j".}
+"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{corrected_standard_estimator}'s example.}
 
 \item{kernel_params}{Any parameters for the kernel function.}
 
 \item{custom_kernel}{A boolean determining whether or not a custom kernel is used.}
 }
 \value{
-The empirical covariance function at T1.
+The estimated covariance function at \eqn{T_{1}}.
 }
 \description{
-This function computes the truncated kernel regression estimator at \eqn{\rho(T_{1}).}
-This saves repeated computations in compute_truncated.
+This function computes \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
+This saves repeated computations in \link{compute_truncated}.
+}
+\details{
+This function computes the following value,
+\deqn{
+\hat{\rho}(T_{1}) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((T_{1} - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((T_{1} - t_{ij}) / h) \right)^{-1},
+}
+where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+In \link{compute_truncated}, when \eqn{T_{1} < t \le T_{2}}, this value is required, possibly several times, so calculating it once can save repeated computations.
 }
 \examples{
 X <- c(1, 2, 3, 4)
 compute_rho_T1(1:4, mean(X), 1, 0.1, compute_Xij_mat(X), "gaussian", c(), FALSE)
 }
 \references{
-Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+Hall, P., & Patil, P. (1994). Properties of Nonparametric Estimators of Autocovariance for Stationary Random Fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+
 Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 }

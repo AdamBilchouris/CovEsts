@@ -18,7 +18,7 @@ compute_taper_single(
 \item{rho}{A scale paramter, greater than 0.}
 
 \item{window_name}{The window function to use, one of
-"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch".}
+"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.}
 
 \item{window_params}{Any parameters of the window function.}
 
@@ -29,15 +29,15 @@ A single value being the taper function value at x.
 }
 \description{
 This computes the taper function for a given window.
-\deqn{a(x; \rho) =
-\begin{cases}
-   w(xu/\rho)     & 0 \leq x < \frac{1}{2} \rho, \\
+\deqn{a(x; \rho) = \left\{
+\begin{array}{ll}
+   w(2x/\rho)     & 0 \leq x < \frac{1}{2} \rho, \\
    1              & \frac{1}{2}\rho \leq x \leq \frac{1}{2} \\
    a(1 - x; \rho) & \frac{1}{2} < x \leq 1
-\end{cases} ,
-}
+\end{array} ,
+\right. }
 where \eqn{w(\cdot)} is a continuous increasing function with \eqn{w(0)=0, w(1)=1,}
-\eqn{\rho > 0,} and \eqn{x \in [0, 1].}
+\eqn{\rho > 0,} and \eqn{x \in [0, 1].} The possible window choices are found in \link{window}.
 }
 \examples{
 x <- 0.4

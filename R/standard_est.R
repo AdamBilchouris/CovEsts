@@ -19,7 +19,7 @@
 #' @param meanX The average value of the observations.
 #' @param pd Whether a positive definite estimate should be used.
 #'
-#' @return The autocovariance at lag tau for the time series X.
+#' @return A value that is the estimated autocovariance for lag tau.
 #' @export
 #'
 #' @examples
@@ -56,7 +56,7 @@ standard_est_single <- function(X, tau, N=length(X), meanX=mean(X), pd=TRUE) {
 #' \widehat{C}(\tau) = \frac{1}{N - \tau} \sum_{i=1}^{N-\tau} ( X(t_{i}) - \bar{X} ) ( X(t_{i} + \tau) - \bar{X} ) .
 #' }
 #'
-#' This function will generate autocovariance values for lags \eqn{\{0, \dots, \text{upperTau}\}.}
+#' This function will generate autocovariance values for lags \eqn{\{0, \dots, \mbox{upperTau}\}.}
 #'
 #' @param X A vector of observations representing a time series.
 #' @param upperTau The maximum upper lag to compute the autocovariance function. upperTau \eqn{< N-1.}
@@ -65,7 +65,7 @@ standard_est_single <- function(X, tau, N=length(X), meanX=mean(X), pd=TRUE) {
 #' @param pd Whether a positive definite estimate should be used.
 #' @param type Whether the autocovariance or autocorrelation should be computed, options: 'covariance', 'correlation'.
 #'
-#' @return The autocovariance up to lag upperTau for the time series X.
+#' @return A vector whose values are the estimated autocovariance up to lag upperTau.
 #' @export
 #'
 #' @examples

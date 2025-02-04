@@ -12,7 +12,7 @@ compute_taper(x, rho, window_name, window_params = c(1), custom_window = FALSE)
 \item{rho}{A scale paramter, greater than 0.}
 
 \item{window_name}{The window function to use, one of
-"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch".}
+"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see \link{compute_taper_single}'s example.}
 
 \item{window_params}{Any parameters of the window function.}
 
@@ -22,7 +22,7 @@ compute_taper(x, rho, window_name, window_params = c(1), custom_window = FALSE)
 A vector of taper values.
 }
 \description{
-This function repeatedly calls \link{compute_taper_single}.
+This function repeatedly calls \link{compute_taper_single} (refer to its manual).
 }
 \examples{
 X <- c(0.1, 0.2, 0.3)

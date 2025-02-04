@@ -177,6 +177,17 @@ get_splines_df <- function(x, p, m, taus) {
 #' The parameters must be nonnegative, so a penalty of \eqn{10^{12}} is given if any parameters are negative.
 #' The weights are chosen as per Choi, Li & Wang (2013, p. 617).
 #'
+#' @details
+#' Let \eqn{\mathbf{\beta} = (\beta_{0}, \dots, \beta_{m + p})^{\prime}} be a vector of model coefficients, \eqn{\{f_{1}^{(p - 1)} , \dots , f_{m + p}^{(p - 1)} \}}
+#' are a set of completely monotone basis functions, and \eqn{\widehat{C}} is an estimated covariance function.
+#' As per Choi, Li & Wang (2013, p. 617), \eqn{\mathbf{\beta}} can be estimated via weighted-least squares,
+#' \deqn{
+#' \hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(\tau_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(\tau_{i}^{2})  \right)^{2}
+#' },
+#' where there is a set of lags \eqn{\{\tau_{1} , \dots , \tau_{L} \}} and a set of weights \eqn{\{w_{1}, \dots , w_{L} \}.}
+#' The set of weights are calculated in [splines_est], and are of form
+#' \eqn{w_{i} = (N - \tau_{i}) / ((1 - \widehat{C}(\tau_{i}))^{2}).}
+#'
 #' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
 #'
 #' @param par A vector of parameters to minimise.

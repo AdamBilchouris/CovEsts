@@ -15,7 +15,18 @@ A vector whose values are the transform.
 \description{
 This computes the Type-II discrete cosine transform.
 }
+\details{
+The Type-II discrete cosine transform is obtained using \link[stats:fft]{stats::fft}. It follows the method by Markhoul, which is summarised on the DCT Wikipedia page.
+A new input \eqn{y} is created from \eqn{X} where \eqn{y_{2n} = 0}, \eqn{y_{2n+1} = X_{n}} for \eqn{0 \le n < N}, \eqn{y_{2N} = 0} and \eqn{y_{4N - n} = y_{n}}
+for \eqn{0 < n < 2N}, where N is the length of \eqn{X}.
+After this, the is done (in code): \code{dct <- 0.5 * Re(stats::fft(Y))[1:(length(Y) / 4)]}, which gives the Type-II discrete cosine transform.
+}
 \examples{
 X <- c(1, 2, 3)
 compute_1d_dct(X)
+}
+\references{
+J. Makhoul, "A fast cosine transform in one and two dimensions," in IEEE Transactions on Acoustics, Speech, and Signal Processing, vol. 28, no. 1, pp. 27-34, February 1980, doi: 10.1109/TASSP.1980.1163351.
+
+Wikipedia contributors. (2025, January 24). Discrete cosine transform. In Wikipedia, The Free Encyclopedia. https://en.wikipedia.org/w/index.php?title=Discrete_cosine_transform&oldid=1271621657
 }

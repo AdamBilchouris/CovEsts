@@ -40,13 +40,18 @@ corrected_standard_estimator(
 \item{customKernel}{Whether or not you want to use a custom kernel function. This will allow you to define your own kernel function. See the examples for usage.}
 }
 \value{
-The autocovariance up to lag upperTau for the time series X.
+A vector whose values are the estimated autocovariance up to lag upperTau.
 }
 \description{
 This applies kernel correction to the standard estimators.
-It considers a kernel \eqn{a(\cdot)} which vanishes after a certain distancem, \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process.
+It considers a kernel \eqn{a(\cdot)} which vanishes after a certain distance, \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process.
 \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
 Also, \eqn{a(0) = 1.}
+}
+\details{
+The aim of this estimator is gradually bring an estimator to zero through the use of a kernel multiplier. This can be useful when estimating a
+covariance function that is short-range dependent as estimators can have small fluctuations as the lag increases.
+This estimator can be positive-definite depending on whether the choice of \eqn{\widehat{C}} and \eqn{a} are chosen to be positive-definite or not.
 }
 \examples{
 X <- c(1, 2, 3)

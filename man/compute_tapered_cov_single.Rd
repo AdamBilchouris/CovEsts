@@ -13,7 +13,7 @@ compute_tapered_cov_single(X, meanX, h, h2n, taperVals_t, taperVals_h)
 
 \item{h}{The lag at which the tapered covariance function is computed at.}
 
-\item{h2n}{The value of \eqn{H_{2, n}}, computed within \link{compute_tapered_cov}.}
+\item{h2n}{The value of \eqn{H_{2, n}(0)}, computed within \link{compute_tapered_cov}.}
 
 \item{taperVals_t}{The taper values for each index of the process, computed within \link{compute_tapered_cov}.}
 
