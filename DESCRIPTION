@@ -2,7 +2,7 @@ Package: CovEsts
 Title: Nonparametric Estimators for Covariance Functions
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Adam", "Bilchouris", email = "a.bilchouris@latrobe.edu.au", role = c("cre", "aut")),
+    person("Adam", "Bilchouris", email = "adam.bilchouris@gmail.com", role = c("cre", "aut")),
     person("Andriy", "Olenko", email = "a.olenko@latrobe.edu.au", role = "aut")
     )
 Description: Multiple nonparametric estimators for covariance functions.  
