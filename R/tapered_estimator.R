@@ -205,7 +205,7 @@ compute_tapered_cov <- function(X, maxLag, rho, window_name, window_params = c(1
   taperVals_t <- compute_taper(((1:n) - 1/2)/n, rho, window_name, window_params, custom_window)
 
   for(i in 0:maxLag) {
-    taperVals_h <- compute_taper((((1:(n-i)) - 1/2) +i) / n, rho, window_name, window_params, custom_window)
+    taperVals_h <- taperVals_t[(1 + i):length(taperVals_t)]
 
     covVals <- c(covVals, compute_tapered_cov_single(X, meanX, i, h2n, taperVals_t, taperVals_h))
   }
