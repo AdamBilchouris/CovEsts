@@ -44,6 +44,10 @@ test_that("standard_est_single() fails for N > length(X), tau=0, N = 4, not posi
   expect_error(standard_est_single(c(1, 2, 3), 0, N = 4, meanX = mean(c(1, 2, 3)), pd = FALSE))
 })
 
-test_that("standard_est_single() fails for pd is neither TRUE or FALSE, tau=0, N = 4, nonzero mean.", {
+test_that("standard_est_single() fails for pd is neither TRUE or FALSE, tau=0, N = 3,, nonzero mean.", {
   expect_error(standard_est_single(c(1, 2, 3), 0, N = length(c(1, 2 ,3)), meanX = mean(c(1, 2, 3)), pd = 'FALSE'))
+})
+
+test_that("standard_est_single() fails noninteger upperTau", {
+  expect_error(standard_est_single(c(1, 2, 3), 1.5))
 })

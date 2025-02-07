@@ -24,6 +24,13 @@ test_that("corrected_standard_estimator() fails for a nonnumeric X", {
   expect_error(corrected_standard_estimator(c(1i, 'a'), 2, "gaussian"))
 })
 
+# upperTau is numeric
+test_that("corrected_standard_estimator() fails for nonnumeric upperTau", {
+  expect_error(corrected_standard_estimator(c(1, 2, 3), 'a', "gaussian"))
+  expect_error(corrected_standard_estimator(c(1, 2, 3), 1i, "gaussian"))
+  expect_error(corrected_standard_estimator(c(1, 2, 3), NA, "gaussian"))
+})
+
 # upperTau must be at least 0
 test_that("corrected_standard_estimator() fails for a negative upperTau", {
   expect_error(corrected_standard_estimator(c(1, 2, 3), -1, "gaussian"))
@@ -65,6 +72,10 @@ test_that("corrected_standard_estimator() fails for meanX being nonnumeric", {
   expect_error(corrected_standard_estimator(c(1, 2, 3), 2, "gaussian", meanX=1i))
 })
 
+test_that("corrected_standard_estimator() fails for noninteger upperTau", {
+  expect_error(corrected_standard_estimator(c(1, 2, 3), 1.5, "gaussian"))
+})
+
 # Works for a custom kernel.
 # Figure out how to get this to work.
 # test_that("corrected_standard_estimator() works for a custom kernel", {
@@ -74,3 +85,54 @@ test_that("corrected_standard_estimator() fails for meanX being nonnumeric", {
 #   }
 #   expect_equal(corrected_standard_estimator(c(1, 2, 3), 2, "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE), c(0.66666667, 0, 0.01180484))
 # })
+
+# kernel_corrected_estimator
+test_that("kernel_corrected_estimator() works", {
+  expect_equal(kernel_corrected_estimator(c(1, 2, 3), 2, "gaussian"), c(1, 0.071347986694504816896, 0.000004858790376937838049672957), tolerance = sqrt(.Machine$double.eps))
+})
+
+test_that("kernel_corrected_estimator() fails for nonboolean custom_kernel", {
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), 2, "my_kernel", customKernel = 1))
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), 2, "my_kernel", customKernel = 'TRUE'))
+})
+
+test_that("kernel_corrected_estimator() fails for empty cov", {
+expect_error(kernel_corrected_estimator(c(), 2, "gaussian"))
+})
+
+test_that("kernel_corrected_estimator() fails for nonvector cov", {
+  expect_error(kernel_corrected_estimator(matrix(c(1, 2, 3, 4), 2), 2, "gaussian"))
+})
+
+test_that("kernel_corrected_estimator() fails for nonnumeric cov", {
+  expect_error(kernel_corrected_estimator(c(1, 'a', 3), 2, "gaussian"))
+  expect_error(kernel_corrected_estimator(c(1, 1i, 3), 2, "gaussian"))
+})
+
+test_that("kernel_corrected_estimator() fails for nonnumeric N_T", {
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), 2, "gaussian", N_T = 'a'))
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), 2, "gaussian", N_T = 1i))
+})
+
+test_that("kernel_corrected_estimator() fails for N_T <= 0", {
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), 2, "gaussian", N_T = 0))
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), 2, "gaussian", N_T = -0.1))
+})
+
+test_that("kernel_corrected_estimator() fails for nonnumeric upperTau", {
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), 'a', "gaussian"))
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), 1i, "gaussian"))
+})
+
+test_that("kernel_corrected_estimator() fails for upperTau < 0", {
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), -1, "gaussian"))
+})
+
+test_that("kernel_corrected_estimator() fails for upperTau > length(X) - 1", {
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), 3, "gaussian"))
+})
+
+test_that("kernel_corrected_estimator() fails for noninteger upperTau", {
+  expect_error(kernel_corrected_estimator(c(1, 2, 3), 1.5, "gaussian"))
+})
+

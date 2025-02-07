@@ -25,9 +25,10 @@ corrected_standard_estimator(
 \item{kernel_name}{The choice of kernel. Possible values are:
 "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".}
 
-\item{kernel_params}{If the kernel has any parameters, pass them as a vector.}
+\item{kernel_params}{If the kernel has any parameters, pass them as a vector. See \link{kernel} for parameters.
+In the case of "gaussian", "wave", "rational_quadratic", "sphericall" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.}
 
-\item{N_T}{The value the kernel function vanishes at. Recommended to be \eqn{0.1 N.}}
+\item{N_T}{The value the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.}
 
 \item{N}{The length of the vector X.}
 

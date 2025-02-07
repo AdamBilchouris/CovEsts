@@ -17,8 +17,9 @@
 #' @param upperTau The maximum upper lag to compute the autocovariance function. upperTau \eqn{< N-1.}
 #' @param kernel_name The choice of kernel. Possible values are:
 #' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
-#' @param kernel_params If the kernel has any parameters, pass them as a vector.
-#' @param N_T The value the kernel function vanishes at. Recommended to be \eqn{0.1 N.}
+#' @param kernel_params If the kernel has any parameters, pass them as a vector. See [kernel] for parameters.
+#' In the case of "gaussian", "wave", "rational_quadratic", "sphericall" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.
+#' @param N_T The value the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.
 #' @param N The length of the vector X.
 #' @param meanX The average value of the observations.
 #' @param pd Whether a positive definite estimate should be used.
@@ -53,8 +54,8 @@
 #' plot(corrected_standard_estimator(Y, length(Y)-1,
 #'      "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE))
 corrected_standard_estimator <- function(X, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(X), N=length(X), meanX=mean(X), pd=TRUE, type='covariance', customKernel = FALSE) {
-  stopifnot(is.logical(customKernel), N > 0, length(X) > 0, is.vector(X), is.numeric(X), is.numeric(N_T), N_T > 0, N == length(X), is.numeric(meanX), is.logical(pd), upperTau >= 0, upperTau <= (N - 1),
-            type %in% c('covariance', 'correlation'))
+  stopifnot(is.logical(customKernel), N > 0, length(X) > 0, is.vector(X), is.numeric(X), is.numeric(N_T), N_T > 0, N == length(X), is.numeric(meanX), is.logical(pd),
+            is.numeric(upperTau), upperTau >= 0, upperTau <= (N - 1), upperTau %% 1 == 0, type %in% c('covariance', 'correlation'))
   retVec <- sapply(seq(0, upperTau, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
   if(!customKernel) {
     stopifnot(kernel_name %in% c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"))
@@ -67,4 +68,43 @@ corrected_standard_estimator <- function(X, upperTau, kernel_name, kernel_params
   }
 
   return("Something went wrong in `corrected_standard_estimator`.")
+}
+
+#' Kernel correction for an estimated autocovariance function.
+#'
+#' @param cov A vector whose values are an estimate autocovariance function.
+#' @param upperTau The maximum upper lag to compute the autocovariance function. upperTau \eqn{< N-1,} where \eqn{N} is the length of \code{cov}.
+#' @param kernel_name The choice of kernel. Possible values are:
+#' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
+#' @param kernel_params If the kernel has any parameters, pass them as a vector. See [kernel] for parameters.
+#' In the case of "gaussian", "wave", "rational_quadratic", "sphericall" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.
+#' @param N_T The value the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.
+#' @param customKernel Whether or not you want to use a custom kernel function. This will allow you to define your own kernel function. See the examples of [corrected_standard_estimator] for usage.
+#'
+#' @return A vector whose values are the estimated autocovariance up to lag upperTau.
+#' @export
+#'
+#' @examples
+#' X <- rnorm(1000)
+#' Y <- c(X[1], X[2])
+#' for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
+#' cov_est <- standard_est(Y, length(Y) - 1)
+#' plot(kernel_corrected_estimator(Y, length(Y)-1,
+#'      "bessel_j", kernel_params=c(0, 1), N_T=0.2*length(Y)))
+kernel_corrected_estimator <- function(cov, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(cov), customKernel = FALSE) {
+  stopifnot(is.logical(customKernel), length(cov) > 0, is.vector(cov), is.numeric(cov), is.numeric(N_T), N_T > 0,
+            is.numeric(upperTau), upperTau >= 0, upperTau <= (length(cov) - 1), upperTau %% 1 == 0)
+
+  if(!customKernel) {
+    stopifnot(kernel_name %in% c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"))
+
+    return(cov[1:(upperTau+1)] * sapply(seq(0, upperTau, by=1), function(t) get("kernel")(t, kernel_name, c(N_T, kernel_params))))
+  }
+
+  if(customKernel) {
+    return(cov[1:(upperTau+1)] * sapply(seq(0, upperTau, by=1), function(t) get(kernel_name)(t, N_T, kernel_params)))
+  }
+
+  return("Something went wrong in `kernel_corrected_estimator`.")
+
 }

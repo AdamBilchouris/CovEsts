@@ -56,6 +56,11 @@ test_that("standard_est() fails for N > length(X), upperTau=2, N = 4, nonpositiv
   expect_error(standard_est(c(1, 2, 3), 2, N = 4, meanX = mean(c(1, 2, 3)), pd = FALSE, type='covariance'))
 })
 
-test_that("standard_est() fails for type is neither 'covariance' or 'correlation', upperTau=2, N = 4, nonzero mean.", {
+test_that("standard_est() fails for type is neither 'covariance' or 'correlation', upperTau=2, N = 3, nonzero mean.", {
   expect_error(standard_est(c(1, 2, 3), 2, N = length(c(1, 2 ,3)), meanX = mean(c(1, 2, 3)), pd = FALSE, type='cov'))
 })
+
+test_that("standard_est() fails noninteger tau", {
+  expect_error(standard_est(c(1, 2, 3), 1.5))
+})
+

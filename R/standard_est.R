@@ -26,7 +26,7 @@
 #' X <- c(1, 2, 3)
 #' standard_est_single(X, 1, length(X), mean(X), pd=FALSE)
 standard_est_single <- function(X, tau, N=length(X), meanX=mean(X), pd=TRUE) {
-  stopifnot(N >= 0, length(X) > 0, is.vector(X), is.numeric(X),  N == length(X), tau >= 0, tau < N, is.logical(pd))
+  stopifnot(N >= 0, length(X) > 0, is.vector(X), is.numeric(X),  N == length(X), tau >= 0, tau < N, tau %% 1 == 0, is.logical(pd))
   vals <- c()
   if((N - tau) < 0) {
     return(0)
@@ -72,7 +72,8 @@ standard_est_single <- function(X, tau, N=length(X), meanX=mean(X), pd=TRUE) {
 #' X <- c(1, 2, 3)
 #' standard_est(X, 2, length(X), mean(X), pd=FALSE)
 standard_est <- function(X, upperTau, N=length(X), meanX=mean(X), pd=TRUE, type='covariance') {
-  stopifnot(N >= 0, length(X) > 0, is.vector(X), is.numeric(X), N == length(X), is.logical(pd), upperTau >= 0, upperTau <= (N - 1), type %in% c('covariance', 'correlation'))
+  stopifnot(N >= 0, length(X) > 0, is.vector(X), is.numeric(X), N == length(X), is.logical(pd), upperTau >= 0, upperTau <= (N - 1),
+            upperTau %% 1 == 0, type %in% c('covariance', 'correlation'))
   retVec <- sapply(seq(0, upperTau, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
   if(type == 'correlation') {
     return(retVec / retVec[1])
