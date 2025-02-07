@@ -172,11 +172,11 @@ compute_tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_
 #'
 #' Internally, this function calls [compute_tapered_cov_single] for each lag \eqn{h}.
 #'
-#' The first set of taper values (\eqn{a((t_{i} - 1/2) / n; \rho)}) are precomputed in order to save time, as they do not vary,
-#' and the second set (\eqn{a((t_{i} + h - 1/2) / n; \rho)}) are computed once for each lag \eqn{h}.
+#' The set of taper values (\eqn{a((t_{i} - 1/2) / n; \rho)}) are precomputed in order to save time, as they do not vary.
+#' When varying with lag \eqn{h} (\eqn{a((t_{i} + h - 1/2) / n; \rho)}), the set of taper values is truncated to get the desired result.
 #'
 #' @references
-#' Dahlhaus R., Künsch, H. (1987). Edge Effects and Efficient Parameter Estimation feor Stationary Random Fields. In Biometrika (Vol. 74 Issue 4, pp. 877-882). 10.1093/biomet/74.4.877
+#' Dahlhaus R., Künsch, H. (1987). Edge Effects and Efficient Parameter Estimation for Stationary Random Fields. In Biometrika (Vol. 74 Issue 4, pp. 877-882). 10.1093/biomet/74.4.877
 #'
 #' @param X A numeric vector representing the process.
 #' @param maxLag The maximum lag at which the covariance function is to be computed. Must be less than the length of the process.

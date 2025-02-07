@@ -45,13 +45,13 @@ This estimator is positive-definite and asymptotically unbiased.
 
 Internally, this function calls \link{compute_tapered_cov_single} for each lag \eqn{h}.
 
-The first set of taper values (\eqn{a((t_{i} - 1/2) / n; \rho)}) are precomputed in order to save time, as they do not vary,
-and the second set (\eqn{a((t_{i} + h - 1/2) / n; \rho)}) are computed once for each lag \eqn{h}.
+The set of taper values (\eqn{a((t_{i} - 1/2) / n; \rho)}) are precomputed in order to save time, as they do not vary.
+When varying with lag \eqn{h} (\eqn{a((t_{i} + h - 1/2) / n; \rho)}), the set of taper values is truncated to get the desired result.
 }
 \examples{
 X <- c(1, 2, 3)
 compute_tapered_cov(X, 2, 0.5, "tukey")
 }
 \references{
-Dahlhaus R., Künsch, H. (1987). Edge Effects and Efficient Parameter Estimation feor Stationary Random Fields. In Biometrika (Vol. 74 Issue 4, pp. 877-882). 10.1093/biomet/74.4.877
+Dahlhaus R., Künsch, H. (1987). Edge Effects and Efficient Parameter Estimation for Stationary Random Fields. In Biometrika (Vol. 74 Issue 4, pp. 877-882). 10.1093/biomet/74.4.877
 }
