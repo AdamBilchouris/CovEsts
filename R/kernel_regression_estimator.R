@@ -52,7 +52,7 @@ Xij_mat <- function(X) {
 #' @param meanX The mean of the process \eqn{X.}
 #' @param T1 The first trunctation point.
 #' @param h Bandwidth parameter.
-#' @param Xij_mat The matrix of pairwise covariance values.
+#' @param xij_mat The matrix of pairwise covariance values.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_estimator]'s example.
 #' @param kernel_params Any parameters for the kernel function.
@@ -64,10 +64,10 @@ Xij_mat <- function(X) {
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X), "gaussian", c(), FALSE)
-rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
+rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(h) == 1, is.numeric(h), !is.na(h), h > 0,
-            is.numeric(Xij_mat), is.matrix(Xij_mat), !any(is.na(Xij_mat)), is.logical(custom_kernel))
+            is.numeric(xij_mat), is.matrix(xij_mat), !any(is.na(xij_mat)), is.logical(custom_kernel))
 
   numerators <- c()
   denominators <- c()
@@ -77,8 +77,8 @@ rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", kernel_para
     for(i in 1:length(x)) {
       tij <- x[i] - x
       t_tij <- T1 - tij
-      X_ij <- Xij_mat[i, ]
-      K_ij <- get(kernel)(t_tij, h, kernel_params)
+      X_ij <- xij_mat[i, ]
+      K_ij <- get(kernel_name)(t_tij, h, kernel_params)
       numerator <- K_ij * X_ij
       denominator <- K_ij
 
@@ -91,7 +91,7 @@ rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", kernel_para
     for(i in 1:length(x)) {
       tij <- x[i] - x
       t_tij <- T1 - tij
-      X_ij <- Xij_mat[i, ]
+      X_ij <- xij_mat[i, ]
       # K_ij <- get(paste0("kernel_symm_", kernel))(t_tij, h, kernel_params[1], kernel_params[2])
       K_ij <- get("kernel_symm")(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
       numerator <- K_ij * X_ij
@@ -120,7 +120,7 @@ rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", kernel_para
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param h Bandwidth parameter.
-#' @param Xij_mat The matrix of pairwise covariance values.
+#' @param xij_mat The matrix of pairwise covariance values.
 #' @param rhoT1 The value of the covariance function at T1.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_estimator]'s example.
@@ -136,11 +136,11 @@ rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", kernel_para
 #'                         "gaussian", c(), FALSE)
 #' truncated_point(1:4, mean(X), 1, 0.1, 1, 0.1,
 #'                         Xij_mat(X), rhoT1, "gaussian", c(), FALSE)
-truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rhoT1, kernel_name="gaussian",  kernel_params=c(), custom_kernel = F) {
+truncated_point <- function(x, meanX, t, T1, T2, h, xij_mat, rhoT1, kernel_name="gaussian",  kernel_params=c(), custom_kernel = F) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
             length(t) == 1, is.numeric(t), !is.na(t), length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0,
             length(T2) == 1, is.numeric(T2), !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0, !is.na(h),
-            is.numeric(Xij_mat), is.matrix(Xij_mat), !any(is.na(Xij_mat)), length(rhoT1) == 1, is.numeric(rhoT1),
+            is.numeric(xij_mat), is.matrix(xij_mat), !any(is.na(xij_mat)), length(rhoT1) == 1, is.numeric(rhoT1),
             !is.na(rhoT1), is.logical(custom_kernel))
   numerators <- c()
   denominators <- c()
@@ -153,8 +153,8 @@ truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rhoT1, kernel_name=
       for(i in 1:length(x)) {
         tij <- x[i] - x
         t_tij <- t - tij
-        X_ij <- Xij_mat[i, ]
-        K_ij <- get(kernel)(t_tij, h, kernel_params)
+        X_ij <- xij_mat[i, ]
+        K_ij <- get(kernel_name)(t_tij, h, kernel_params)
         numerator <- K_ij * X_ij
         denominator <- K_ij
 
@@ -184,7 +184,7 @@ truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rhoT1, kernel_name=
       for(i in 1:length(x)) {
         tij <- x[i] - x
         t_tij <- t - tij
-        X_ij <- Xij_mat[i, ]
+        X_ij <- xij_mat[i, ]
         # K_ij <- get(paste0("kernel_symm_", kernel))(t_tij, h, kernel_params[1], kernel_params[2])
         K_ij <- get("kernel_symm")(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
         numerator <- K_ij * X_ij
@@ -347,13 +347,13 @@ compute_truncated <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussian",
             !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0,
             is.logical(custom_kernel), is.logical(pd))
 
-  Xij_mat <- Xij_mat(X)
-  rhoT1 <- rho_T1(x, meanX, T1, h, Xij_mat, kernel_name, kernel_params, custom_kernel)
+  xij_mat <- Xij_mat(X)
+  rhoT1 <- rho_T1(x, meanX, T1, h, xij_mat, kernel_name, kernel_params, custom_kernel)
 
-  # vals_truncated_1 <- sapply(1:length(t), function(i) truncated_point(x, meanX, t[i], T1, T2, h, Xij_mat, rhoT1, kernel, kernel_params, custom_kernel))
+  # vals_truncated_1 <- sapply(1:length(t), function(i) truncated_point(x, meanX, t[i], T1, T2, h, xij_mat, rhoT1, kernel, kernel_params, custom_kernel))
   vals_truncated_1 <- c()
   for(i in 1:length(t)) {
-    vals_truncated_1 <- c(vals_truncated_1, truncated_point(x, meanX, t[i], T1, T2, h, Xij_mat, rhoT1, kernel_name, kernel_params, custom_kernel))
+    vals_truncated_1 <- c(vals_truncated_1, truncated_point(x, meanX, t[i], T1, T2, h, xij_mat, rhoT1, kernel_name, kernel_params, custom_kernel))
   }
 
   if(pd) {
@@ -431,7 +431,7 @@ compute_adjusted <- function(X, x, meanX, t, h, kernel_name="gaussian", kernel_p
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
             length(t) >= 1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel), is.logical(pd))
 
-  Xij_mat <- Xij_mat(X)
+  xij_mat <- Xij_mat(X)
   cov_vals <- c()
   if(custom_kernel) {
     for(ti in 1:length(t)) {
@@ -440,7 +440,7 @@ compute_adjusted <- function(X, x, meanX, t, h, kernel_name="gaussian", kernel_p
       for(i in 1:length(x)) {
         tij <- x[i] - x
         t_tij <- t[ti] - tij
-        X_ij <- Xij_mat[i, ]
+        X_ij <- xij_mat[i, ]
         K_ij <- get(kernel_name)(t_tij, h, kernel_params)
         numerator <- K_ij * X_ij
         denominator <- K_ij
@@ -459,7 +459,7 @@ compute_adjusted <- function(X, x, meanX, t, h, kernel_name="gaussian", kernel_p
       for(i in 1:length(x)) {
         tij <- x[i] - x
         t_tij <- t[ti] - tij
-        X_ij <- Xij_mat[i, ]
+        X_ij <- xij_mat[i, ]
         # K_ij <- get(paste0("kernel_symm_", kernel))(t_tij, h, kernel_params[1], kernel_params[2])
         K_ij <- get("kernel_symm")(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
         numerator <- K_ij * X_ij
