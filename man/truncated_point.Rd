@@ -11,7 +11,7 @@ truncated_point(
   T1,
   T2,
   h,
-  Xij_mat,
+  xij_mat,
   rhoT1,
   kernel_name = "gaussian",
   kernel_params = c(),
@@ -31,7 +31,7 @@ truncated_point(
 
 \item{h}{Bandwidth parameter.}
 
-\item{Xij_mat}{The matrix of pairwise covariance values.}
+\item{xij_mat}{The matrix of pairwise covariance values.}
 
 \item{rhoT1}{The value of the covariance function at T1.}
 

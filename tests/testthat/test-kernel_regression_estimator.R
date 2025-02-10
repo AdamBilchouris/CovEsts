@@ -54,72 +54,72 @@ test_that("idct_1d fails for at least one NA", {
 
 # rho_T1
 test_that("rho_T1 works", {
-  expect_equal(rho_T1(test_x, test_meanX, 2, 0.01, test_Xij), -1)
+  expect_equal(rho_T1(test_x, test_meanX, 2, 0.01, test_xij), -1)
 })
 
 test_that("rho_T1 faisl for nonnumeric x", {
-  expect_error(rho_T1(c('a'), test_meanX, 2, 0.01, test_Xij))
-  expect_error(rho_T1(c(1i), test_meanX, 2, 0.01, test_Xij))
+  expect_error(rho_T1(c('a'), test_meanX, 2, 0.01, test_xij))
+  expect_error(rho_T1(c(1i), test_meanX, 2, 0.01, test_xij))
 })
 
 test_that("rho_T1 fails for empty x", {
-  expect_error(rho_T1(c(), test_meanX, 2, 0.01, test_Xij))
+  expect_error(rho_T1(c(), test_meanX, 2, 0.01, test_xij))
 })
 
 test_that("rho_T1 fails for at least one NA in x", {
-  expect_error(rho_T1(c(1, NA, 2), test_meanX, 2, 0.01, test_Xij))
+  expect_error(rho_T1(c(1, NA, 2), test_meanX, 2, 0.01, test_xij))
 })
 
 test_that("rho_T1 fails for meanX of length not equal to 1", {
-  expect_error(rho_T1(test_x, c(1, 2), 2, 0.01, test_Xij))
-  expect_error(rho_T1(test_x, c(), 2, 0.01, test_Xij))
+  expect_error(rho_T1(test_x, c(1, 2), 2, 0.01, test_xij))
+  expect_error(rho_T1(test_x, c(), 2, 0.01, test_xij))
 })
 
 test_that("rho_T1 fails for nonnumeric meanX", {
-  expect_error(rho_T1(test_x, 'a', 2, 0.01, test_Xij))
-  expect_error(rho_T1(test_x, 1i, 2, 0.01, test_Xij))
+  expect_error(rho_T1(test_x, 'a', 2, 0.01, test_xij))
+  expect_error(rho_T1(test_x, 1i, 2, 0.01, test_xij))
 })
 
 test_that("rho_T1 fails for NA meanX", {
-  expect_error(rho_T1(test_x, NA, 2, 0.01, test_Xij))
+  expect_error(rho_T1(test_x, NA, 2, 0.01, test_xij))
 })
 
 test_that("rho_T1 fails for T1 of length not equal to 1", {
-  expect_error(rho_T1(test_x, test_meanX, c(1, 2), 0.01, test_Xij))
-  expect_error(rho_T1(test_x, test_meanX, c(), 0.01, test_Xij))
+  expect_error(rho_T1(test_x, test_meanX, c(1, 2), 0.01, test_xij))
+  expect_error(rho_T1(test_x, test_meanX, c(), 0.01, test_xij))
 })
 
 test_that("rho_T1 fails for nonnumeric T1", {
-  expect_error(rho_T1(test_x, test_meanX, 'a', 0.01, test_Xij))
-  expect_error(rho_T1(test_x, test_meanX, 1i, 0.01, test_Xij))
+  expect_error(rho_T1(test_x, test_meanX, 'a', 0.01, test_xij))
+  expect_error(rho_T1(test_x, test_meanX, 1i, 0.01, test_xij))
 })
 
 test_that("rho_T1 fails for NA T1", {
-  expect_error(rho_T1(test_x, test_meanX, NA, 0.01, test_Xij))
+  expect_error(rho_T1(test_x, test_meanX, NA, 0.01, test_xij))
 })
 
 test_that("rho_T1 fails for nonpositive T1", {
-  expect_error(rho_T1(test_x, test_meanX, 0, 0.01, test_Xij))
-  expect_error(rho_T1(test_x, test_meanX, -1, 0.01, test_Xij))
+  expect_error(rho_T1(test_x, test_meanX, 0, 0.01, test_xij))
+  expect_error(rho_T1(test_x, test_meanX, -1, 0.01, test_xij))
 })
 
 test_that("rho_T1 fails for h of length not equal to 1", {
-  expect_error(rho_T1(test_x, test_meanX, 2, c(1, 2), test_Xij))
-  expect_error(rho_T1(test_x, test_meanX, 2, c(), test_Xij))
+  expect_error(rho_T1(test_x, test_meanX, 2, c(1, 2), test_xij))
+  expect_error(rho_T1(test_x, test_meanX, 2, c(), test_xij))
 })
 
 test_that("rho_T1 fails for nonnumeric h", {
-  expect_error(rho_T1(test_x, test_meanX, 2, 'a', test_Xij))
-  expect_error(rho_T1(test_x, test_meanX, 2, 1i, test_Xij))
+  expect_error(rho_T1(test_x, test_meanX, 2, 'a', test_xij))
+  expect_error(rho_T1(test_x, test_meanX, 2, 1i, test_xij))
 })
 
 test_that("rho_T1 fails for NA h", {
-  expect_error(rho_T1(test_x, test_meanX, 2, NA, test_Xij))
+  expect_error(rho_T1(test_x, test_meanX, 2, NA, test_xij))
 })
 
 test_that("rho_T1 fails for nonpositive h", {
-  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_Xij))
-  expect_error(rho_T1(test_x, test_meanX, 2, -1, test_Xij))
+  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_xij))
+  expect_error(rho_T1(test_x, test_meanX, 2, -1, test_xij))
 })
 
 test_that("rho_T1 fails for nonnumeric Xij_mat", {
@@ -138,120 +138,120 @@ test_that("rho_T1 fails for any NA in Xij_mat", {
 })
 
 test_that("rho_T1 fails for any nonboolean custom_kernel", {
-  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_Xij, custom_kernel = 1))
-  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_Xij, custom_kernel = 'TRUE'))
+  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_xij, custom_kernel = 1))
+  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_xij, custom_kernel = 'TRUE'))
 })
 
 test_that("rho_T1 fails for any nonboolean custom_kernel", {
-  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_Xij, custom_kernel = 1))
-  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_Xij, custom_kernel = 'TRUE'))
+  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_xij, custom_kernel = 1))
+  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_xij, custom_kernel = 'TRUE'))
 })
 
 test_that("rho_T1 fails for kernel_name not in 'gaussian' 'wave', 'rational_quadratic', 'bessel_j'", {
-  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_Xij, kernel_name = "123", custom_kernel = TRUE))
+  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_xij, kernel_name = "123", custom_kernel = TRUE))
 })
 
 # truncated_point
 test_that("truncated_point works", {
-  expect_equal(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_Xij, test_rhoT1), -1, tolerance = 1e-6)
+  expect_equal(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_xij, test_rhoT1), -1, tolerance = 1e-6)
 })
 
 test_that("truncated_point fails for nonnumeric x", {
-  expect_error(truncated_point(c(1, 'a', 3), test_meanX, 2, 2, 3, 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(c(1, 1i, 3), test_meanX, 2, 2, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(c(1, 'a', 3), test_meanX, 2, 2, 3, 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(c(1, 1i, 3), test_meanX, 2, 2, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for empty x", {
-  expect_error(truncated_point(c(), test_meanX, 2, 2, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(c(), test_meanX, 2, 2, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for at least one NA in x", {
-  expect_error(truncated_point(c(1, NA, 3), test_meanX, 2, 2, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(c(1, NA, 3), test_meanX, 2, 2, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for meanX of length not equal to 1", {
-  expect_error(truncated_point(test_x, c(1, 2), 2, 2, 3, 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, c(), 2, 2, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, c(1, 2), 2, 2, 3, 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, c(), 2, 2, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for nonnumeric meanX", {
-  expect_error(truncated_point(test_x, 'a', 2, 2, 3, 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, 1i, 2, 2, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, 'a', 2, 2, 3, 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, 1i, 2, 2, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for NA meanX", {
-  expect_error(truncated_point(test_x, NA, 2, 2, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, NA, 2, 2, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for t of length not equal to 1", {
-  expect_error(truncated_point(test_x, test_meanX, c(1, 2), 2, 3, 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, c(), 2, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, c(1, 2), 2, 3, 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, c(), 2, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for nonnumeric t", {
-  expect_error(truncated_point(test_x, test_meanX, 'a', 2, 3, 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 1i, 2, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 'a', 2, 3, 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 1i, 2, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for NA t", {
-  expect_error(truncated_point(test_x, test_meanX, NA, 2, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, NA, 2, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for T1 of length not equal to 1", {
-  expect_error(truncated_point(test_x, test_meanX, 2, c(1, 2), , 3, 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 2, c(), 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, c(1, 2), , 3, 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, c(), 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for nonnumeric T1", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 'a', 3, 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 2, 1i, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 'a', 3, 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 1i, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for NA T1", {
-  expect_error(truncated_point(test_x, test_meanX, 2, NA, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, NA, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for nonpositive T1", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 0, 3, 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 2, -1, 3, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 0, 3, 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, -1, 3, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for T2 of length not equal to 1", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, c(1, 2), 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, c(), 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, c(1, 2), 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, c(), 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for nonnumeric T2", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 'a', 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 1i, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 'a', 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 1i, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for NA T2", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, NA, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, NA, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for T2 <= T1", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 1, 0.01, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 2, 0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 1, 0.01, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 2, 0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for h of length not equal to 1", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, c(1, 2), test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, c(), test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, c(1, 2), test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, c(), test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for nonnumeric h", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 'a', test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 1i, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 'a', test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 1i, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for nonpositive h", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, -0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, -0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for NA h", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, NA, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, NA, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for nonnumeric Xij_mat", {
@@ -266,8 +266,8 @@ test_that("truncated_point fails for nonmatrix Xij_mat", {
 })
 
 test_that("truncated_point fails for nonpositive h", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0, test_Xij, test_rhoT1))
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, -0.01, test_Xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0, test_xij, test_rhoT1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, -0.01, test_xij, test_rhoT1))
 })
 
 test_that("truncated_point fails for any NA element of Xij_mat", {
@@ -275,26 +275,26 @@ test_that("truncated_point fails for any NA element of Xij_mat", {
 })
 
 test_that("truncated_point fails for rhoT1 of length not equal to 1", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_Xij, c(1, 2)))
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_Xij, c()))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_xij, c(1, 2)))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_xij, c()))
 })
 
 test_that("truncated_point fails for nonnumeric rhoT1", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_Xij, 'a'))
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_Xij, 1i))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_xij, 'a'))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_xij, 1i))
 })
 
 test_that("truncated_point fails for NA rhoT1", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_Xij, NA))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_xij, NA))
 })
 
 test_that("truncated_point fails for nonboolean custom_kernel", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_Xij, test_rhoT1, 1))
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_Xij, test_rhoT1, 'TRUE'))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_xij, test_rhoT1, 1))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_xij, test_rhoT1, 'TRUE'))
 })
 
 test_that("truncated_point fails for kernel_name not in 'gaussian' 'wave', 'rational_quadratic', 'bessel_j'", {
-  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_Xij, test_rhoT1, kernel_name = "123"))
+  expect_error(truncated_point(test_x, test_meanX, 2, 2, 3, 0.01, test_xij, test_rhoT1, kernel_name = "123"))
 })
 
 # compute_truncated
