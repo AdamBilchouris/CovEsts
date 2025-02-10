@@ -29,7 +29,7 @@ As per Choi, Li & Wang (2013, p. 617), \eqn{\mathbf{\beta}} can be estimated via
 \hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(\tau_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(\tau_{i}^{2})  \right)^{2}
 },
 where there is a set of lags \eqn{\{\tau_{1} , \dots , \tau_{L} \}} and a set of weights \eqn{\{w_{1}, \dots , w_{L} \}.}
-The set of weights are calculated in \link{splines_est}, and are of form
+The set of weights are calculated in \link{compute_splines_est}, and are of form
 \eqn{w_{i} = (N - \tau_{i}) / ((1 - \widehat{C}(\tau_{i}))^{2}).}
 }
 \examples{

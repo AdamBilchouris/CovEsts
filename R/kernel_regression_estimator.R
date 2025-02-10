@@ -15,8 +15,8 @@
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
-#' compute_Xij_mat(X)
-compute_Xij_mat <- function(X) {
+#' Xij_mat(X)
+Xij_mat <- function(X) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)))
 
   meanX <- mean(X)
@@ -54,7 +54,7 @@ compute_Xij_mat <- function(X) {
 #' @param h Bandwidth parameter.
 #' @param Xij_mat The matrix of pairwise covariance values.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [corrected_standard_estimator]'s example.
+#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_estimator]'s example.
 #' @param kernel_params Any parameters for the kernel function.
 #' @param custom_kernel A boolean determining whether or not a custom kernel is used.
 #'
@@ -63,8 +63,8 @@ compute_Xij_mat <- function(X) {
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
-#' compute_rho_T1(1:4, mean(X), 1, 0.1, compute_Xij_mat(X), "gaussian", c(), FALSE)
-compute_rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
+#' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X), "gaussian", c(), FALSE)
+rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(h) == 1, is.numeric(h), !is.na(h), h > 0,
             is.numeric(Xij_mat), is.matrix(Xij_mat), !any(is.na(Xij_mat)), is.logical(custom_kernel))
@@ -121,9 +121,9 @@ compute_rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", ker
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param h Bandwidth parameter.
 #' @param Xij_mat The matrix of pairwise covariance values.
-#' @param rho_T1 The value of the covariance function at T1.
+#' @param rhoT1 The value of the covariance function at T1.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [corrected_standard_estimator]'s example.
+#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_estimator]'s example.
 #' @param kernel_params Any parameters for the kernel function.
 #' @param custom_kernel A boolean determining whether or not a custom kernel is used.
 #'
@@ -132,16 +132,16 @@ compute_rho_T1 <- function(x, meanX, T1, h, Xij_mat, kernel_name="gaussian", ker
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
-#' rhoT1 <- compute_rho_T1(1:4, mean(X), 1, 0.1, compute_Xij_mat(X),
+#' rhoT1 <- rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X),
 #'                         "gaussian", c(), FALSE)
-#' compute_truncated_point(1:4, mean(X), 1, 0.1, 1, 0.1,
-#'                         compute_Xij_mat(X), rhoT1, "gaussian", c(), FALSE)
-compute_truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rho_T1, kernel_name="gaussian",  kernel_params=c(), custom_kernel = F) {
+#' truncated_point(1:4, mean(X), 1, 0.1, 1, 0.1,
+#'                         Xij_mat(X), rhoT1, "gaussian", c(), FALSE)
+truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rhoT1, kernel_name="gaussian",  kernel_params=c(), custom_kernel = F) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
             length(t) == 1, is.numeric(t), !is.na(t), length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0,
             length(T2) == 1, is.numeric(T2), !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0, !is.na(h),
-            is.numeric(Xij_mat), is.matrix(Xij_mat), !any(is.na(Xij_mat)), length(rho_T1) == 1, is.numeric(rho_T1),
-            !is.na(rho_T1), is.logical(custom_kernel))
+            is.numeric(Xij_mat), is.matrix(Xij_mat), !any(is.na(Xij_mat)), length(rhoT1) == 1, is.numeric(rhoT1),
+            !is.na(rhoT1), is.logical(custom_kernel))
   numerators <- c()
   denominators <- c()
 
@@ -168,7 +168,7 @@ compute_truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rho_T1, ker
     # \hat{\rho}(T1) (T2 - t) / (T2 - T1)
     else if(T1 < t && t <= T2) {
       linear_part <- (T2 - t) * (T2 - T1)^(-1)
-      return( rho_T1 * linear_part )
+      return( rhoT1 * linear_part )
     }
 
     else {
@@ -200,7 +200,7 @@ compute_truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rho_T1, ker
     # \hat{\rho}(T1) (T2 - t) / (T2 - T1)
     else if(T1 < t && t <= T2) {
       linear_part <- (T2 - t) * (T2 - T1)^(-1)
-      return( rho_T1 * linear_part )
+      return( rhoT1 * linear_part )
     }
 
     else {
@@ -230,8 +230,8 @@ compute_truncated_point <- function(x, meanX, t, T1, T2, h, Xij_mat, rho_T1, ker
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' compute_1d_dct(X)
-compute_1d_dct <- function(X) {
+#' dct_1d(X)
+dct_1d <- function(X) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)))
   newX <- c(X, rev(X))
   zerosX <- rep(0, length(newX))
@@ -266,11 +266,11 @@ compute_1d_dct <- function(X) {
 #' @export
 #'
 #' @examples
-#' X <- compute_1d_dct(c(1, 2, 3))
-#' compute_1d_idct(X)
-compute_1d_idct <- function(X) {
+#' X <- dct_1d(c(1, 2, 3))
+#' idct_1d(X)
+idct_1d <- function(X) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)))
-  # Reconstruct original frequency (i.e. the full dct_seq from compute_1d_dct)
+  # Reconstruct original frequency (i.e. the full dct_seq from dct_1d)
   dct_full <- c(X, 0, -rev(X), -X[-1], 0, rev(X[-1]))
 
   # Perform the inversion
@@ -328,7 +328,7 @@ compute_1d_idct <- function(X) {
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [corrected_standard_estimator]'s example.
+#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_estimator]'s example.
 #' @param kernel_params Any parameters for the kernel function.
 #' @param custom_kernel A boolean determining whether or not a custom kernel is used.
 #' @param pd Whether or not the estimator returned is positive-definite.
@@ -347,18 +347,18 @@ compute_truncated <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussian",
             !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0,
             is.logical(custom_kernel), is.logical(pd))
 
-  Xij_mat <- compute_Xij_mat(X)
-  rho_T1 <- compute_rho_T1(x, meanX, T1, h, Xij_mat, kernel_name, kernel_params, custom_kernel)
+  Xij_mat <- Xij_mat(X)
+  rhoT1 <- rho_T1(x, meanX, T1, h, Xij_mat, kernel_name, kernel_params, custom_kernel)
 
-  # vals_truncated_1 <- sapply(1:length(t), function(i) compute_truncated_point(x, meanX, t[i], T1, T2, h, Xij_mat, rho_T1, kernel, kernel_params, custom_kernel))
+  # vals_truncated_1 <- sapply(1:length(t), function(i) truncated_point(x, meanX, t[i], T1, T2, h, Xij_mat, rhoT1, kernel, kernel_params, custom_kernel))
   vals_truncated_1 <- c()
   for(i in 1:length(t)) {
-    vals_truncated_1 <- c(vals_truncated_1, compute_truncated_point(x, meanX, t[i], T1, T2, h, Xij_mat, rho_T1, kernel_name, kernel_params, custom_kernel))
+    vals_truncated_1 <- c(vals_truncated_1, truncated_point(x, meanX, t[i], T1, T2, h, Xij_mat, rhoT1, kernel_name, kernel_params, custom_kernel))
   }
 
   if(pd) {
     # Perform DCT
-    vals_truncated_1_dct <- compute_1d_dct(vals_truncated_1)
+    vals_truncated_1_dct <- dct_1d(vals_truncated_1)
 
     # Find the first nonzero negative index.
     firstNeg <- which(vals_truncated_1_dct[-1] < 0)[1] + 1
@@ -371,7 +371,7 @@ compute_truncated <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussian",
     vals_truncated_1_dct[firstNeg:length(vals_truncated_1_dct)] <- 0
 
     # Inversion
-    vals_truncated_1_idct <- compute_1d_idct(vals_truncated_1_dct)
+    vals_truncated_1_idct <- idct_1d(vals_truncated_1_dct)
 
     return(vals_truncated_1_idct)
   }
@@ -415,7 +415,7 @@ compute_truncated <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussian",
 #' @param t The values at which the covariance function is calculated at.
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [corrected_standard_estimator]'s example.
+#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_estimator]'s example.
 #' @param kernel_params Any parameters for the kernel function.
 #' @param custom_kernel A boolean determining whether or not a custom kernel is used.
 #' @param pd Whether or not the estimator returned is positive-definite.
@@ -431,7 +431,7 @@ compute_adjusted <- function(X, x, meanX, t, h, kernel_name="gaussian", kernel_p
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
             length(t) >= 1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel), is.logical(pd))
 
-  Xij_mat <- compute_Xij_mat(X)
+  Xij_mat <- Xij_mat(X)
   cov_vals <- c()
   if(custom_kernel) {
     for(ti in 1:length(t)) {
@@ -474,11 +474,11 @@ compute_adjusted <- function(X, x, meanX, t, h, kernel_name="gaussian", kernel_p
 
   if(pd) {
     # Perform DCT and set frequencies whose associated value is <0 to 0.
-    cov_dct <- compute_1d_dct(cov_vals)
+    cov_dct <- dct_1d(cov_vals)
     cov_dct[which(cov_dct < 0)] <- 0
 
     # Invert and return.
-    cov_idct <- compute_1d_idct(cov_dct)
+    cov_idct <- idct_1d(cov_dct)
 
     return(cov_idct)
   }

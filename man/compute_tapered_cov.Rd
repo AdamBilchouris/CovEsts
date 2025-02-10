@@ -21,7 +21,7 @@ compute_tapered_cov(
 \item{rho}{A scale parameter greater than zero.}
 
 \item{window_name}{The window function to use, one of
-"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see \link{compute_taper_single}'s example.}
+"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see \link{taper_single}'s example.}
 
 \item{window_params}{Any parameters of the window function.}
 
@@ -34,7 +34,7 @@ A numeric vector representing values of the tapered covariance function.
 This computes the tapered covariance over a set of lags,
 \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 where \eqn{a} is a window function, \eqn{\rho} is a scale parameter.
-For each lag, the tapered covariance is computed in \link{compute_tapered_cov_single}.
+For each lag, the tapered covariance is computed in \link{tapered_cov_single}.
 }
 \details{
 This computes the tapered covariance over a set of lags,
@@ -43,7 +43,7 @@ where \eqn{a} is a window function, \eqn{\rho} is a scale parameter.
 This estimator considers the edge effect during estimation, assigning a lower weight to values closer to the edges and higher weights for observations closer to the middle.
 This estimator is positive-definite and asymptotically unbiased.
 
-Internally, this function calls \link{compute_tapered_cov_single} for each lag \eqn{h}.
+Internally, this function calls \link{tapered_cov_single} for each lag \eqn{h}.
 
 The set of taper values (\eqn{a((t_{i} - 1/2) / n; \rho)}) are precomputed in order to save time, as they do not vary.
 When varying with lag \eqn{h} (\eqn{a((t_{i} + h - 1/2) / n; \rho)}), the set of taper values is truncated to get the desired result.

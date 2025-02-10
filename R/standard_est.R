@@ -70,8 +70,8 @@ standard_est_single <- function(X, tau, N=length(X), meanX=mean(X), pd=TRUE) {
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' standard_est(X, 2, length(X), mean(X), pd=FALSE)
-standard_est <- function(X, upperTau, N=length(X), meanX=mean(X), pd=TRUE, type='covariance') {
+#' compute_standard_est(X, 2, length(X), mean(X), pd=FALSE)
+compute_standard_est <- function(X, upperTau, N=length(X), meanX=mean(X), pd=TRUE, type='covariance') {
   stopifnot(N >= 0, length(X) > 0, is.vector(X), is.numeric(X), N == length(X), is.logical(pd), upperTau >= 0, upperTau <= (N - 1),
             upperTau %% 1 == 0, type %in% c('covariance', 'correlation'))
   retVec <- sapply(seq(0, upperTau, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))

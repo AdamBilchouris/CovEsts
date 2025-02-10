@@ -185,7 +185,7 @@ get_splines_df <- function(x, p, m, taus) {
 #' \hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(\tau_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(\tau_{i}^{2})  \right)^{2}
 #' },
 #' where there is a set of lags \eqn{\{\tau_{1} , \dots , \tau_{L} \}} and a set of weights \eqn{\{w_{1}, \dots , w_{L} \}.}
-#' The set of weights are calculated in [splines_est], and are of form
+#' The set of weights are calculated in [compute_splines_est], and are of form
 #' \eqn{w_{i} = (N - \tau_{i}) / ((1 - \widehat{C}(\tau_{i}))^{2}).}
 #'
 #' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
@@ -251,10 +251,10 @@ solve_spline <- function(par, splines_df, weights) {
 #' X <- rnorm(100)
 #' x <- seq(0, 5, by = 0.25)
 #' maxLag <- 6
-#' estCov <- standard_est(X, maxLag - 1)
-#' estimated <- splines_est(X, x, maxLag, estCov, 3, 2)
+#' estCov <- compute_standard_est(X, maxLag - 1)
+#' estimated <- compute_splines_est(X, x, maxLag, estCov, 3, 2)
 #' estimated
-splines_est <- function(X, x, maxLag, estCov, p, m, inital_pars = c(), control=list('maxit' = 1000)) {
+compute_splines_est <- function(X, x, maxLag, estCov, p, m, inital_pars = c(), control=list('maxit' = 1000)) {
   stopifnot(is.numeric(X), is.vector(X), all(!is.na(X)), is.numeric(x), is.vector(x), all(!is.na(x)), is.numeric(maxLag), maxLag >= 0, maxLag < length(X),
             is.numeric(estCov), is.vector(estCov), all(!is.na(estCov)), length(estCov) == maxLag,
             is.numeric(p), p >= 0, p %% 1 == 0, is.numeric(m), m > 0, m %% 1 == 0)
@@ -398,7 +398,7 @@ splines_est <- function(X, x, maxLag, estCov, p, m, inital_pars = c(), control=l
 # }
 #
 # sT <- Sys.time()
-# splineVals <- splines_est(z, xNew, upperX, vals, 3, 2)
+# splineVals <- compute_splines_est(z, xNew, upperX, vals, 3, 2)
 # print(Sys.time() - sT)
 # plot(xNew[1:upperX], splineVals, ylim=c(-0.1, 1.1))
 # lines(xNew[1:upperX], exp(-xNew[1:upperX]^2), lty=2, lwd=2, col=2)

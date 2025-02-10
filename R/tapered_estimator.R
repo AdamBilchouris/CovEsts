@@ -23,12 +23,12 @@
 #'
 #' @examples
 #' x <- 0.4
-#' compute_taper_single(x, 0.5, "tukey")
+#' taper_single(x, 0.5, "tukey")
 #' my_taper <- function(x, ...) {
 #'   return(x)
 #' }
-#' compute_taper_single(x, 0.5, "my_taper", custom_window = TRUE)
-compute_taper_single <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE) {
+#' taper_single(x, 0.5, "my_taper", custom_window = TRUE)
+taper_single <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE) {
   stopifnot(is.numeric(x), length(x) == 1, x >= 0, x <= 1, is.numeric(rho), rho > 0, length(rho) == 1, is.logical(custom_window))
 
   if(custom_window) {
@@ -72,14 +72,14 @@ compute_taper_single <- function(x, rho, window_name, window_params=c(1), custom
 
 #' Compute \eqn{H_{2, n}}.
 #'
-#' This function is used in the computation of [compute_tapered_cov_single].
+#' This function is used in the computation of [tapered_cov_single].
 #' \deqn{H_{2, n}(0) = \sum_{s=1}^{n} a((s - 1/2) / n)^2 , }
 #' where \eqn{a} is a window function.
 #'
 #' @param n The number of samples.
 #' @param rho A scale paramter, greater than 0.
 #' @param window_name The window function to use, one of
-#' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see [compute_taper_single]'s example.
+#' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see [taper_single]'s example.
 #' @param window_params Any parameters of the window function.
 #' @param custom_window Whether or not a custom window is used (boolean). Put its parameters in window_params.
 #'
@@ -87,22 +87,22 @@ compute_taper_single <- function(x, rho, window_name, window_params=c(1), custom
 #' @export
 #'
 #' @examples
-#' compute_h2n(3, 0.6, "tukey")
-compute_h2n <- function(n, rho, window_name, window_params=c(1), custom_window = FALSE) {
+#' H2n(3, 0.6, "tukey")
+H2n <- function(n, rho, window_name, window_params=c(1), custom_window = FALSE) {
   stopifnot(is.numeric(n), n >= 1, n %% 1 == 0, is.numeric(rho), rho > 0, length(rho) == 1, is.logical(custom_window))
   sSeq <- 1:n
-  hSeq <- compute_taper(((sSeq - 1/2) / n), rho, window_name, window_params, custom_window)
+  hSeq <- taper(((sSeq - 1/2) / n), rho, window_name, window_params, custom_window)
   return(sum(hSeq))
 }
 
 #' Compute the function \eqn{a(x; \rho).}
 #'
-#' This function repeatedly calls [compute_taper_single] (refer to its manual).
+#' This function repeatedly calls [taper_single] (refer to its manual).
 #'
 #' @param x A vector of number between 0 and 1 (inclusive).
 #' @param rho A scale paramter, greater than 0.
 #' @param window_name The window function to use, one of
-#' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see [compute_taper_single]'s example.
+#' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see [taper_single]'s example.
 #' @param window_params Any parameters of the window function.
 #' @param custom_window Whether or not a custom window is used (boolean). Put its parameters in window_params.
 #'
@@ -111,13 +111,13 @@ compute_h2n <- function(n, rho, window_name, window_params=c(1), custom_window =
 #'
 #' @examples
 #' X <- c(0.1, 0.2, 0.3)
-#' compute_taper(X, 0.5, "tukey")
-compute_taper <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE) {
+#' taper(X, 0.5, "tukey")
+taper <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), is.numeric(rho),
             length(rho) == 1, is.logical(custom_window))
   retTaper <- c()
   for(i in 1:length(x)) {
-    retTaper <- c(retTaper, compute_taper_single(x[i], rho, window_name, window_params, custom_window))
+    retTaper <- c(retTaper, taper_single(x[i], rho, window_name, window_params, custom_window))
   }
   return(retTaper)
 }
@@ -140,8 +140,8 @@ compute_taper <- function(x, rho, window_name, window_params=c(1), custom_window
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' compute_tapered_cov_single(X, mean(X), 9, 2.5, c(0.75, 1, 0.75), c(0.75, 1, 0.75))
-compute_tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
+#' tapered_cov_single(X, mean(X), 9, 2.5, c(0.75, 1, 0.75), c(0.75, 1, 0.75))
+tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(meanX), length(meanX) == 1,
             is.numeric(h), length(h) == 1, h %% 1 == 0, is.numeric(h2n), length(h2n) == 1,
             is.numeric(taperVals_t), length(taperVals_t) >= 1, all(abs(taperVals_t) <= 1), all(abs(taperVals_t) >= 0),
@@ -161,7 +161,7 @@ compute_tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_
 #' This computes the tapered covariance over a set of lags,
 #' \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 #' where \eqn{a} is a window function, \eqn{\rho} is a scale parameter.
-#' For each lag, the tapered covariance is computed in [compute_tapered_cov_single].
+#' For each lag, the tapered covariance is computed in [tapered_cov_single].
 #'
 #' @details
 #' This computes the tapered covariance over a set of lags,
@@ -170,7 +170,7 @@ compute_tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_
 #' This estimator considers the edge effect during estimation, assigning a lower weight to values closer to the edges and higher weights for observations closer to the middle.
 #' This estimator is positive-definite and asymptotically unbiased.
 #'
-#' Internally, this function calls [compute_tapered_cov_single] for each lag \eqn{h}.
+#' Internally, this function calls [tapered_cov_single] for each lag \eqn{h}.
 #'
 #' The set of taper values (\eqn{a((t_{i} - 1/2) / n; \rho)}) are precomputed in order to save time, as they do not vary.
 #' When varying with lag \eqn{h} (\eqn{a((t_{i} + h - 1/2) / n; \rho)}), the set of taper values is truncated to get the desired result.
@@ -182,7 +182,7 @@ compute_tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_
 #' @param maxLag The maximum lag at which the covariance function is to be computed. Must be less than the length of the process.
 #' @param rho A scale parameter greater than zero.
 #' @param window_name The window function to use, one of
-#' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see [compute_taper_single]'s example.
+#' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see [taper_single]'s example.
 #' @param window_params Any parameters of the window function.
 #' @param custom_window Whether or not a custom window is used (boolean). Put its parameters in window_param
 #'
@@ -198,16 +198,16 @@ compute_tapered_cov <- function(X, maxLag, rho, window_name, window_params = c(1
 
   meanX <- mean(X)
 
-  h2n <- compute_h2n(length(X), rho, window_name, window_params, custom_window)
+  h2n <- H2n(length(X), rho, window_name, window_params, custom_window)
   covVals <- c()
 
   n <- length(X)
-  taperVals_t <- compute_taper(((1:n) - 1/2)/n, rho, window_name, window_params, custom_window)
+  taperVals_t <- taper(((1:n) - 1/2)/n, rho, window_name, window_params, custom_window)
 
   for(i in 0:maxLag) {
     taperVals_h <- taperVals_t[(1 + i):length(taperVals_t)]
 
-    covVals <- c(covVals, compute_tapered_cov_single(X, meanX, i, h2n, taperVals_t, taperVals_h))
+    covVals <- c(covVals, tapered_cov_single(X, meanX, i, h2n, taperVals_t, taperVals_h))
   }
 
   return(covVals)

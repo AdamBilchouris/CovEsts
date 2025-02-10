@@ -28,7 +28,7 @@ compute_adjusted(
 \item{h}{Bandwidth parameter.}
 
 \item{kernel_name}{The name of the kernel function to be used. Possible values are:
-"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{corrected_standard_estimator}'s example.}
+"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{compute_corrected_standard_estimator}'s example.}
 
 \item{kernel_params}{Any parameters for the kernel function.}
 

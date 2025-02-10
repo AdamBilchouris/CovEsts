@@ -5,7 +5,7 @@ test_taus <- get_all_tau(test_p, test_m)
 test_x <- c(1, 2, 3)
 test_X <- c(1, 2, 3)
 
-test_estCov <- standard_est(test_X, 1)
+test_estCov <- compute_standard_est(test_X, 1)
 
 # wrapper function that sets the seed just within this function.
 # https://stackoverflow.com/a/56192474
