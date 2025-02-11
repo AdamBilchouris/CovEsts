@@ -1,6 +1,7 @@
-^CovEst\.Rproj$
+^CovEsts\.Rproj$
 ^\.Rproj\.user$
 ^.*\.Rproj$
 ^LICENSE\.md$
 ^README\.md$
 ^NEWS\.md$
+^OLD_TESTS$

@@ -56,7 +56,8 @@
 compute_corrected_standard_estimator <- function(X, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(X), N=length(X), meanX=mean(X), pd=TRUE, type='covariance', customKernel = FALSE) {
   stopifnot(is.logical(customKernel), N > 0, length(X) > 0, is.vector(X), is.numeric(X), is.numeric(N_T), N_T > 0, N == length(X), is.numeric(meanX), is.logical(pd),
             is.numeric(upperTau), upperTau >= 0, upperTau <= (N - 1), upperTau %% 1 == 0, type %in% c('covariance', 'correlation'))
-  retVec <- sapply(seq(0, upperTau, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
+  # retVec <- sapply(seq(0, upperTau, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
+  retVec <- compute_standard_est(X, upperTau, N, meanX, pd, type)
   if(!customKernel) {
     stopifnot(kernel_name %in% c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"))
 
