@@ -12,7 +12,7 @@
 #'
 #' \strong{Symmetric Wave Kernel}.
 #' \deqn{a(\tau;\theta) = \left\{ \begin{array}{ll}
-#' (\sqrt{a^{-2}} / \pi) \frac{\theta}{\tau} \sin\left( \frac{\tau}{\theta} \right), & \tau \neq 0 \\
+#' (\sqrt{\theta^{-2}} / \pi) \frac{\theta}{\tau} \sin\left( \frac{\tau}{\theta} \right), & \tau \neq 0 \\
 #' 1, & \tau = 0
 #' \end{array} ,
 #' \theta > 0 . \right.}
@@ -23,7 +23,7 @@
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}
 #'
 #' \strong{Symmetric Besesel Kernel}.
-#' \deqn{a(\tau; \nu) = (\Gamma(\frac{1}{2} + \nu)/(2 \sqrt{\pi} \theta \Gamma(1 + \nu))) ( 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau) \tau^{-\nu}), \theta > 0, \nu \geq \frac{d}{2} - 1.}
+#' \deqn{a(\tau; \theta, \nu) = (\Gamma(\frac{1}{2} + \nu)/(2 \sqrt{\pi} \theta \Gamma(1 + \nu))) ( 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau) \tau^{-\nu}), \theta > 0, \nu \geq \frac{d}{2} - 1.}
 #' where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind and \eqn{d} is the dimension.
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d}\code{)}.
 #'

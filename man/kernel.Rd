@@ -25,6 +25,11 @@ This computes the isotropic Gaussian kernel, which is valid for \eqn{{R}^{d}.}
 \deqn{a(\tau;\theta) = \exp(-\tau^{2} / \theta).}
 The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 
+\strong{Exponential Kernel}.
+This computes the isotropic exponential kernel, which is valid for \eqn{{R}^{d}.}
+\deqn{a(\tau;\theta) = \exp(-\tau / \theta).}
+The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
+
 \strong{Isotropic Wave (Cardinal Sine) Kernel}.
 This computes the isotropic wave (cardinal sine) kernel, which is valid for \eqn{{R}^{3}.}
 \deqn{a(\tau;\theta) = \left\{ \begin{array}{ll}
@@ -61,13 +66,13 @@ The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 
 \strong{Isotropic Matérn Kernel}.
 This computes the isotropic Matérn kernel, which is valid for \eqn{{R}^{d}} for \eqn{\nu > 0.}
-\deqn{a(\tau; \nu) = \left(\sqrt{2\nu} \frac{\tau}{\theta} \right)^{\nu} \left(2^{\nu - 1} \Gamma(\nu) \right)^{-1} K_{\nu}\left( \sqrt{2\nu} \frac{\tau}{\theta} \right) ,}
+\deqn{a(\tau; \theta, \nu) = \left(\sqrt{2\nu} \frac{\tau}{\theta} \right)^{\nu} \left(2^{\nu - 1} \Gamma(\nu) \right)^{-1} K_{\nu}\left( \sqrt{2\nu} \frac{\tau}{\theta} \right) ,}
 where \eqn{K_{\nu}(\cdot)} is the modified Bessel function of the second kind.
 The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu}\code{)}.
 
 \strong{Isotropic Bessel Kernel}.
 This computes the isotropic Bessel kernel, which is valid for \eqn{{R}^{d}} for \eqn{\nu \geq \frac{d}{2} - 1.}
-\deqn{a(\tau; \nu) = 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau) \tau^{-\nu} ,}
+\deqn{a(\tau; \theta, \nu) = 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau) \tau^{-\nu} ,}
 where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind.
 The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d} \code{)}.
 
