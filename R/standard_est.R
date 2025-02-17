@@ -15,6 +15,9 @@
 #'
 #' This function will generate autocovariance values for lags \eqn{\{0, \dots, \mbox{upperTau}\}.}
 #'
+#' The positive-definite estimator must be used cautiously when estimating over all lags as the sum of the autocorrelation function converges to \eqn{-1/2}.
+#' This does not occur for the nonpositive-definite estimator.
+#'
 #' @param X A vector of observations representing a time series.
 #' @param upperTau The maximum upper lag to compute the autocovariance function. upperTau \eqn{< N-1.}
 #' @param N The length of the vector X.

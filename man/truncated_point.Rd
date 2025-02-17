@@ -36,7 +36,7 @@ truncated_point(
 \item{rhoT1}{The value of the covariance function at T1.}
 
 \item{kernel_name}{The name of the kernel function to be used. Possible values are:
-"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{compute_corrected_standard_estimator}'s example.}
+"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{compute_corrected_standard_est}'s example.}
 
 \item{kernel_params}{Any parameters for the kernel function.}
 
@@ -46,7 +46,7 @@ truncated_point(
 The estimated covariance value at t.
 }
 \description{
-This function computes \eqn{\rho(t)} for the truncated kernel regression estimator (see \link{compute_truncated}).
+This function computes \eqn{\rho(t)} for the truncated kernel regression estimator (see \link{compute_truncated_est}).
 }
 \examples{
 X <- c(1, 2, 3, 4)

@@ -31,13 +31,13 @@
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' compute_corrected_standard_estimator(X, 2, "gaussian")
+#' compute_corrected_standard_est(X, 2, "gaussian")
 #'
 #' X <- rnorm(1000)
 #' Y <- c(X[1], X[2])
 #' for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 #' plot(Y)
-#' plot(compute_corrected_standard_estimator(Y, length(Y)-1,
+#' plot(compute_corrected_standard_est(Y, length(Y)-1,
 #'      "bessel_j", kernel_params=c(0, 1), N_T=0.2*length(Y)))
 #'
 #' # Custom kernel
@@ -51,9 +51,9 @@
 #' Y <- c(X[1], X[2])
 #' for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 #' plot(Y)
-#' plot(compute_corrected_standard_estimator(Y, length(Y)-1,
+#' plot(compute_corrected_standard_est(Y, length(Y)-1,
 #'      "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE))
-compute_corrected_standard_estimator <- function(X, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(X), N=length(X), meanX=mean(X), pd=TRUE, type='covariance', customKernel = FALSE) {
+compute_corrected_standard_est <- function(X, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(X), N=length(X), meanX=mean(X), pd=TRUE, type='covariance', customKernel = FALSE) {
   stopifnot(is.logical(customKernel), N > 0, length(X) > 0, is.vector(X), is.numeric(X), is.numeric(N_T), N_T > 0, N == length(X), is.numeric(meanX), is.logical(pd),
             is.numeric(upperTau), upperTau >= 0, upperTau <= (N - 1), upperTau %% 1 == 0, type %in% c('covariance', 'correlation'))
   # retVec <- sapply(seq(0, upperTau, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
@@ -68,7 +68,7 @@ compute_corrected_standard_estimator <- function(X, upperTau, kernel_name, kerne
     return(retVec * sapply(seq(0, upperTau, by=1), function(t) get(kernel_name)(t, N_T, kernel_params)))
   }
 
-  return("Something went wrong in `compute_corrected_standard_estimator`.")
+  return("Something went wrong in `compute_corrected_standard_est`.")
 }
 
 #' Kernel correction for an estimated autocovariance function.
@@ -80,7 +80,7 @@ compute_corrected_standard_estimator <- function(X, upperTau, kernel_name, kerne
 #' @param kernel_params If the kernel has any parameters, pass them as a vector. See [kernel] for parameters.
 #' In the case of "gaussian", "wave", "rational_quadratic", "sphericall" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.
 #' @param N_T The value the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.
-#' @param customKernel Whether or not you want to use a custom kernel function. This will allow you to define your own kernel function. See the examples of [compute_corrected_standard_estimator] for usage.
+#' @param customKernel Whether or not you want to use a custom kernel function. This will allow you to define your own kernel function. See the examples of [compute_corrected_standard_est] for usage.
 #'
 #' @return A vector whose values are the estimated autocovariance up to lag upperTau.
 #' @export
@@ -90,9 +90,9 @@ compute_corrected_standard_estimator <- function(X, upperTau, kernel_name, kerne
 #' Y <- c(X[1], X[2])
 #' for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 #' cov_est <- compute_standard_est(Y, length(Y) - 1)
-#' plot(compute_kernel_corrected_estimator(Y, length(Y)-1,
+#' plot(compute_kernel_corrected_est(Y, length(Y)-1,
 #'      "bessel_j", kernel_params=c(0, 1), N_T=0.2*length(Y)))
-compute_kernel_corrected_estimator <- function(cov, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(cov), customKernel = FALSE) {
+compute_kernel_corrected_est <- function(cov, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(cov), customKernel = FALSE) {
   stopifnot(is.logical(customKernel), length(cov) > 0, is.vector(cov), is.numeric(cov), is.numeric(N_T), N_T > 0,
             is.numeric(upperTau), upperTau >= 0, upperTau <= (length(cov) - 1), upperTau %% 1 == 0)
 
@@ -106,6 +106,6 @@ compute_kernel_corrected_estimator <- function(cov, upperTau, kernel_name, kerne
     return(cov[1:(upperTau+1)] * sapply(seq(0, upperTau, by=1), function(t) get(kernel_name)(t, N_T, kernel_params)))
   }
 
-  return("Something went wrong in `compute_kernel_corrected_estimator`.")
+  return("Something went wrong in `compute_kernel_corrected_est`.")
 
 }

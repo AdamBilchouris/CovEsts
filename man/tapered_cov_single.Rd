@@ -13,11 +13,11 @@ tapered_cov_single(X, meanX, h, h2n, taperVals_t, taperVals_h)
 
 \item{h}{The lag at which the tapered covariance function is computed at.}
 
-\item{h2n}{The value of \eqn{H_{2, n}(0)}, computed within \link{compute_tapered_cov}.}
+\item{h2n}{The value of \eqn{H_{2, n}(0)}, computed within \link{compute_tapered_est}.}
 
-\item{taperVals_t}{The taper values for each index of the process, computed within \link{compute_tapered_cov}.}
+\item{taperVals_t}{The taper values for each index of the process, computed within \link{compute_tapered_est}.}
 
-\item{taperVals_h}{The taper values shifted by the lag, computed within \link{compute_tapered_cov}.}
+\item{taperVals_h}{The taper values shifted by the lag, computed within \link{compute_tapered_est}.}
 }
 \value{
 The tapered covariance function at that lag.
@@ -25,7 +25,7 @@ The tapered covariance function at that lag.
 \description{
 This computes the tapered covariance for a single \eqn{h},
 \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n})^{-1} \sum_{t=1}^{N-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
-where \eqn{a} is a window function, \eqn{\rho} is a scale parameter. The taper functions are precomputed in \link{compute_tapered_cov}.
+where \eqn{a} is a window function, \eqn{\rho} is a scale parameter. The taper functions are precomputed in \link{compute_tapered_est}.
 }
 \examples{
 X <- c(1, 2, 3)

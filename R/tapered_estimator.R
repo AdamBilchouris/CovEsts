@@ -126,14 +126,14 @@ taper <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE
 #'
 #' This computes the tapered covariance for a single \eqn{h},
 #' \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n})^{-1} \sum_{t=1}^{N-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
-#' where \eqn{a} is a window function, \eqn{\rho} is a scale parameter. The taper functions are precomputed in [compute_tapered_cov].
+#' where \eqn{a} is a window function, \eqn{\rho} is a scale parameter. The taper functions are precomputed in [compute_tapered_est].
 #'
 #' @param X A numeric vector representing the process.
 #' @param meanX The mean of the process.
 #' @param h The lag at which the tapered covariance function is computed at.
-#' @param h2n The value of \eqn{H_{2, n}(0)}, computed within [compute_tapered_cov].
-#' @param taperVals_t The taper values for each index of the process, computed within [compute_tapered_cov].
-#' @param taperVals_h The taper values shifted by the lag, computed within [compute_tapered_cov].
+#' @param h2n The value of \eqn{H_{2, n}(0)}, computed within [compute_tapered_est].
+#' @param taperVals_t The taper values for each index of the process, computed within [compute_tapered_est].
+#' @param taperVals_h The taper values shifted by the lag, computed within [compute_tapered_est].
 #'
 #' @return The tapered covariance function at that lag.
 #' @export
@@ -191,8 +191,8 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' compute_tapered_cov(X, 2, 0.5, "tukey")
-compute_tapered_cov <- function(X, maxLag, rho, window_name, window_params = c(1), custom_window = FALSE) {
+#' compute_tapered_est(X, 2, 0.5, "tukey")
+compute_tapered_est <- function(X, maxLag, rho, window_name, window_params = c(1), custom_window = FALSE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1, maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0,
             is.numeric(rho), length(rho) == 1, is.logical(custom_window))
 

@@ -27,7 +27,7 @@ rho_T1(
 \item{xij_mat}{The matrix of pairwise covariance values.}
 
 \item{kernel_name}{The name of the kernel function to be used. Possible values are:
-"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{compute_corrected_standard_estimator}'s example.}
+"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{compute_corrected_standard_est}'s example.}
 
 \item{kernel_params}{Any parameters for the kernel function.}
 
@@ -38,7 +38,7 @@ The estimated covariance function at \eqn{T_{1}}.
 }
 \description{
 This function computes \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
-This saves repeated computations in \link{compute_truncated}.
+This saves repeated computations in \link{compute_truncated_est}.
 }
 \details{
 This function computes the following value,
@@ -46,7 +46,7 @@ This function computes the following value,
 \hat{\rho}(T_{1}) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((T_{1} - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((T_{1} - t_{ij}) / h) \right)^{-1},
 }
 where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
-In \link{compute_truncated}, when \eqn{T_{1} < t \le T_{2}}, this value is required, possibly several times, so calculating it once can save repeated computations.
+In \link{compute_truncated_est}, when \eqn{T_{1} < t \le T_{2}}, this value is required, possibly several times, so calculating it once can save repeated computations.
 }
 \examples{
 X <- c(1, 2, 3, 4)

@@ -45,6 +45,9 @@ For \code{pd = FALSE}:
 }
 
 This function will generate autocovariance values for lags \eqn{\{0, \dots, \mbox{upperTau}\}.}
+
+The positive-definite estimator must be used cautiously when estimating over all lags as the sum of the autocorrelation function converges to \eqn{-1/2}.
+This does not occur for the nonpositive-definite estimator.
 }
 \examples{
 X <- c(1, 2, 3)
