@@ -121,11 +121,11 @@ max_distance <- function(est1, est2, plot = FALSE) {
 #' If \eqn{v = \{v_{0}, v_{1} , \dots , v_{N-1} , v_{N} \},} then the cyclic matrix will
 #' be of the form
 #' \deqn{\left[ {\begin{array}{ccccc}
-#' v_{0}     & v_{1}     & \cdots & v_{N - 1} & v_{N}      \\
-#' v_{1}     & v_{0}     & \cdots & v_{N - 2} & v_{N - 1}) \\
-#' \vdots    & \vdots    & \ddots & \vdots    & \vdots     \\
-#' v_{N - 1} & v_{N- 2}  & \cdots & v_{0}     & v_{1}      \\
-#' v_{N}     & v_{N - 1} & \cdots & v_{1}     & v_{0}      \\
+#' v_{0}     & v_{1}     & \cdots & v_{N - 1} & v_{N}     \\
+#' v_{1}     & v_{0}     & \cdots & v_{N - 2} & v_{N - 1} \\
+#' \vdots    & \vdots    & \ddots & \vdots    & \vdots    \\
+#' v_{N - 1} & v_{N- 2}  & \cdots & v_{0}     & v_{1}     \\
+#' v_{N}     & v_{N - 1} & \cdots & v_{1}     & v_{0}     \\
 #' \end{array}} \right] ,
 #' }
 #'
