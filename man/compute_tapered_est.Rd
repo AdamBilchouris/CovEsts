@@ -14,18 +14,18 @@ compute_tapered_est(
 )
 }
 \arguments{
-\item{X}{A numeric vector representing the process.}
+\item{X}{A vector representing the process.}
 
-\item{maxLag}{The maximum lag at which the covariance function is to be computed. Must be less than the length of the process.}
+\item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
 \item{rho}{A scale parameter greater than zero.}
 
-\item{window_name}{The window function to use, one of
-"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see \link{taper_single}'s example.}
+\item{window_name}{The name of the window function to be used. Possible values are:
+"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.}
 
-\item{window_params}{Any parameters of the window function.}
+\item{window_params}{A vector of parameters of the window function.}
 
-\item{custom_window}{Whether or not a custom window is used (boolean). Put its parameters in window_param}
+\item{custom_window}{If a custom window is to be used or not.}
 }
 \value{
 A numeric vector representing values of the tapered covariance function.

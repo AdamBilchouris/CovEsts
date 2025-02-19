@@ -16,11 +16,11 @@ compute_splines_est(
 )
 }
 \arguments{
-\item{X}{The process}
+\item{X}{A vector representing the process.}
 
 \item{x}{A vector of lags.}
 
-\item{maxLag}{The index \eqn{-1} of maximum lag to consider.}
+\item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
 \item{estCov}{An estimated covariance function to fit to (vector).}
 

@@ -8,7 +8,7 @@
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
-#' @param X A vector of values
+#' @param X A vector of values.
 #'
 #' @return A matrix of size \eqn{N \times N}, where \eqn{N} is the length of the vector X.
 #' @export
@@ -48,15 +48,15 @@ Xij_mat <- function(X) {
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
-#' @param x A vector of indices.
-#' @param meanX The mean of the process \eqn{X.}
+#' @param x A vector lags.
+#' @param meanX The average value of X.
 #' @param T1 The first trunctation point.
 #' @param h Bandwidth parameter.
 #' @param xij_mat The matrix of pairwise covariance values.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_est]'s example.
-#' @param kernel_params Any parameters for the kernel function.
-#' @param custom_kernel A boolean determining whether or not a custom kernel is used.
+#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
+#' @param custom_kernel If a custom kernel is to be used or not.
 #'
 #' @return The estimated covariance function at \eqn{T_{1}}.
 #' @export
@@ -115,7 +115,7 @@ rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_para
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
 #' @param x A vector of indices.
-#' @param meanX The mean of the process \eqn{X.}
+#' @param meanX The average value of X.
 #' @param t The value at which the covariance function is calculated at.
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
@@ -124,8 +124,8 @@ rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_para
 #' @param rhoT1 The value of the covariance function at T1.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_est]'s example.
-#' @param kernel_params Any parameters for the kernel function.
-#' @param custom_kernel A boolean determining whether or not a custom kernel is used.
+#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
+#' @param custom_kernel If a custom kernel is to be used or not.
 #'
 #' @return The estimated covariance value at t.
 #' @export
@@ -317,18 +317,18 @@ idct_1d <- function(X) {
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
-#' @param X A vector of values representing a stochastic process.
-#' @param x A vector of indices.
-#' @param meanX The mean of the process \eqn{X.}
+#' @param X A vector representing the process.
+#' @param x A vector lags.
+#' @param meanX The average value of X.
 #' @param t The values at which the covariance function is calculated at.
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_est]'s example.
-#' @param kernel_params Any parameters for the kernel function.
-#' @param custom_kernel A boolean determining whether or not a custom kernel is used.
-#' @param pd Whether or not the estimator returned is positive-definite.
+#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
+#' @param custom_kernel If a custom kernel is to be used or not.
+#' @param pd Whether a positive definite estimate should be used.
 #'
 #' @return A vector whose values are the truncated kernel regression estimator.
 #' @export
@@ -406,16 +406,16 @@ compute_truncated_est <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussi
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
-#' @param X A vector of values representing a stochastic process.
-#' @param x A vector of indices.
-#' @param meanX The mean of the process \eqn{X.}
+#' @param X A vector representing the process.
+#' @param x A vector lags.
+#' @param meanX The average value of X.
 #' @param t The values at which the covariance function is calculated at.
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_est]'s example.
-#' @param kernel_params Any parameters for the kernel function.
-#' @param custom_kernel A boolean determining whether or not a custom kernel is used.
-#' @param pd Whether or not the estimator returned is positive-definite.
+#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
+#' @param custom_kernel If a custom kernel is to be used or not.
+#' @param pd Whether a positive definite estimate should be used.
 #'
 #' @return A vector whose values are the kernel regression estimator.
 #' @export

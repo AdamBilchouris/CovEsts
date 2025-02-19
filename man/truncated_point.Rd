@@ -21,7 +21,7 @@ truncated_point(
 \arguments{
 \item{x}{A vector of indices.}
 
-\item{meanX}{The mean of the process \eqn{X.}}
+\item{meanX}{The average value of X.}
 
 \item{t}{The value at which the covariance function is calculated at.}
 
@@ -38,9 +38,9 @@ truncated_point(
 \item{kernel_name}{The name of the kernel function to be used. Possible values are:
 "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{compute_corrected_standard_est}'s example.}
 
-\item{kernel_params}{Any parameters for the kernel function.}
+\item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_symm} for parameters.}
 
-\item{custom_kernel}{A boolean determining whether or not a custom kernel is used.}
+\item{custom_kernel}{If a custom kernel is to be used or not.}
 }
 \value{
 The estimated covariance value at t.

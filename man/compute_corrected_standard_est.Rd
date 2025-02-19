@@ -6,7 +6,7 @@
 \usage{
 compute_corrected_standard_est(
   X,
-  upperTau,
+  maxLag,
   kernel_name,
   kernel_params = c(),
   N_T = 0.1 * length(X),
@@ -18,30 +18,30 @@ compute_corrected_standard_est(
 )
 }
 \arguments{
-\item{X}{A vector of observations representing a time series.}
+\item{X}{A vector representing the process.}
 
-\item{upperTau}{The maximum upper lag to compute the autocovariance function. upperTau \eqn{< N-1.}}
+\item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
-\item{kernel_name}{The choice of kernel. Possible values are:
+\item{kernel_name}{The name of the kernel function to be used. Possible values are:
 "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".}
 
-\item{kernel_params}{If the kernel has any parameters, pass them as a vector. See \link{kernel} for parameters.
-In the case of "gaussian", "wave", "rational_quadratic", "sphericall" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.}
+\item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel} for parameters.
+In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.}
 
 \item{N_T}{The value the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.}
 
-\item{N}{The length of the vector X.}
+\item{N}{The length of X.}
 
-\item{meanX}{The average value of the observations.}
+\item{meanX}{The average value of X.}
 
 \item{pd}{Whether a positive definite estimate should be used.}
 
-\item{type}{Whether the autocovariance or autocorrelation should be computed, options: 'covariance', 'correlation'.}
+\item{type}{Compute either the 'covariance' or 'correlation'.}
 
-\item{customKernel}{Whether or not you want to use a custom kernel function. This will allow you to define your own kernel function. See the examples for usage.}
+\item{customKernel}{If a custom kernel is to be used or not. See examples.}
 }
 \value{
-A vector whose values are the estimated autocovariance up to lag upperTau.
+A vector whose values are the estimated autocovariance up to lag maxLag.
 }
 \description{
 This applies kernel correction to the standard estimators.

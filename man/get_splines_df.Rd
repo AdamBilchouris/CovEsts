@@ -7,7 +7,7 @@
 get_splines_df(x, p, m, taus)
 }
 \arguments{
-\item{x}{A vector of x values - the lags.}
+\item{x}{A vector lags.}
 
 \item{p}{The order of splines.}
 

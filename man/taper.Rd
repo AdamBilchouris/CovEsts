@@ -11,12 +11,12 @@ taper(x, rho, window_name, window_params = c(1), custom_window = FALSE)
 
 \item{rho}{A scale paramter, greater than 0.}
 
-\item{window_name}{The window function to use, one of
-"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see \link{taper_single}'s example.}
+\item{window_name}{The name of the window function to be used. Possible values are:
+"tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.}
 
-\item{window_params}{Any parameters of the window function.}
+\item{window_params}{A vector of parameters of the window function.}
 
-\item{custom_window}{Whether or not a custom window is used (boolean). Put its parameters in window_params.}
+\item{custom_window}{If a custom window is to be used or not.}
 }
 \value{
 A vector of taper values.

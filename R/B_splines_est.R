@@ -141,7 +141,7 @@ f_j_l <- function(x, j, l, p, m, taus) {
 #' * One column for the x-values
 #' * m + p columns of squared basis functions evaluated at the correspond x.
 #'
-#' @param x A vector of x values - the lags.
+#' @param x A vector lags.
 #' @param p The order of splines.
 #' @param m The number of nonboundary knots.
 #' @param taus Vector of \eqn{\tau}s, see [get_tau].
@@ -232,9 +232,9 @@ solve_spline <- function(par, splines_df, weights) {
 #'
 #' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
 #'
-#' @param X The process
+#' @param X A vector representing the process.
 #' @param x A vector of lags.
-#' @param maxLag The index \eqn{-1} of maximum lag to consider.
+#' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param estCov An estimated covariance function to fit to (vector).
 #' @param p The order of splines.
 #' @param m The number of nonboundary knots.

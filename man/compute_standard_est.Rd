@@ -6,7 +6,7 @@
 \usage{
 compute_standard_est(
   X,
-  upperTau,
+  maxLag,
   N = length(X),
   meanX = mean(X),
   pd = TRUE,
@@ -14,20 +14,20 @@ compute_standard_est(
 )
 }
 \arguments{
-\item{X}{A vector of observations representing a time series.}
+\item{X}{A vector representing the process.}
 
-\item{upperTau}{The maximum upper lag to compute the autocovariance function. upperTau \eqn{< N-1.}}
+\item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
-\item{N}{The length of the vector X.}
+\item{N}{The length of X.}
 
-\item{meanX}{The average value of the observations.}
+\item{meanX}{The average value of X.}
 
 \item{pd}{Whether a positive definite estimate should be used.}
 
-\item{type}{Whether the autocovariance or autocorrelation should be computed, options: 'covariance', 'correlation'.}
+\item{type}{Compute either the 'covariance' or 'correlation'.}
 }
 \value{
-A vector whose values are the estimated autocovariance up to lag upperTau.
+A vector whose values are the estimated autocovariance up to lag maxLag.
 }
 \description{
 This computes the following two variants of the autocovariance function depending on
@@ -44,7 +44,7 @@ For \code{pd = FALSE}:
 \widehat{C}(\tau) = \frac{1}{N - \tau} \sum_{i=1}^{N-\tau} ( X(t_{i}) - \bar{X} ) ( X(t_{i} + \tau) - \bar{X} ) .
 }
 
-This function will generate autocovariance values for lags \eqn{\{0, \dots, \mbox{upperTau}\}.}
+This function will generate autocovariance values for lags \eqn{\{0, \dots, \mbox{maxLag}\}.}
 
 The positive-definite estimator must be used cautiously when estimating over all lags as the sum of the autocorrelation function converges to \eqn{-1/2}.
 This does not occur for the nonpositive-definite estimator.

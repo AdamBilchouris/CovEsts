@@ -17,11 +17,11 @@ compute_adjusted_est(
 )
 }
 \arguments{
-\item{X}{A vector of values representing a stochastic process.}
+\item{X}{A vector representing the process.}
 
-\item{x}{A vector of indices.}
+\item{x}{A vector lags.}
 
-\item{meanX}{The mean of the process \eqn{X.}}
+\item{meanX}{The average value of X.}
 
 \item{t}{The values at which the covariance function is calculated at.}
 
@@ -30,11 +30,11 @@ compute_adjusted_est(
 \item{kernel_name}{The name of the kernel function to be used. Possible values are:
 "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{compute_corrected_standard_est}'s example.}
 
-\item{kernel_params}{Any parameters for the kernel function.}
+\item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_symm} for parameters.}
 
-\item{custom_kernel}{A boolean determining whether or not a custom kernel is used.}
+\item{custom_kernel}{If a custom kernel is to be used or not.}
 
-\item{pd}{Whether or not the estimator returned is positive-definite.}
+\item{pd}{Whether a positive definite estimate should be used.}
 }
 \value{
 A vector whose values are the kernel regression estimator.

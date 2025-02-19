@@ -13,20 +13,20 @@
 #' @references
 #' Yaglom AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.
 #'
-#' @param X A vector of observations representing a time series.
-#' @param upperTau The maximum upper lag to compute the autocovariance function. upperTau \eqn{< N-1.}
-#' @param kernel_name The choice of kernel. Possible values are:
+#' @param X A vector representing the process.
+#' @param maxLag The maximum lag to compute the autocovariance function at.
+#' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
-#' @param kernel_params If the kernel has any parameters, pass them as a vector. See [kernel] for parameters.
-#' In the case of "gaussian", "wave", "rational_quadratic", "sphericall" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.
+#' @param kernel_params A vector of parameters of the kernel function. See [kernel] for parameters.
+#' In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.
 #' @param N_T The value the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.
-#' @param N The length of the vector X.
-#' @param meanX The average value of the observations.
+#' @param N The length of X.
+#' @param meanX The average value of X.
 #' @param pd Whether a positive definite estimate should be used.
-#' @param type Whether the autocovariance or autocorrelation should be computed, options: 'covariance', 'correlation'.
-#' @param customKernel Whether or not you want to use a custom kernel function. This will allow you to define your own kernel function. See the examples for usage.
+#' @param type Compute either the 'covariance' or 'correlation'.
+#' @param customKernel If a custom kernel is to be used or not. See examples.
 #'
-#' @return A vector whose values are the estimated autocovariance up to lag upperTau.
+#' @return A vector whose values are the estimated autocovariance up to lag maxLag.
 #' @export
 #'
 #' @examples
@@ -53,19 +53,19 @@
 #' plot(Y)
 #' plot(compute_corrected_standard_est(Y, length(Y)-1,
 #'      "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE))
-compute_corrected_standard_est <- function(X, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(X), N=length(X), meanX=mean(X), pd=TRUE, type='covariance', customKernel = FALSE) {
+compute_corrected_standard_est <- function(X, maxLag, kernel_name, kernel_params=c(), N_T=0.1*length(X), N=length(X), meanX=mean(X), pd=TRUE, type='covariance', customKernel = FALSE) {
   stopifnot(is.logical(customKernel), N > 0, length(X) > 0, is.vector(X), is.numeric(X), is.numeric(N_T), N_T > 0, N == length(X), is.numeric(meanX), is.logical(pd),
-            is.numeric(upperTau), upperTau >= 0, upperTau <= (N - 1), upperTau %% 1 == 0, type %in% c('covariance', 'correlation'))
-  # retVec <- sapply(seq(0, upperTau, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
-  retVec <- compute_standard_est(X, upperTau, N, meanX, pd, type)
+            is.numeric(maxLag), maxLag >= 0, maxLag <= (N - 1), maxLag %% 1 == 0, type %in% c('covariance', 'correlation'))
+  # retVec <- sapply(seq(0, maxLag, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
+  retVec <- compute_standard_est(X, maxLag, N, meanX, pd, type)
   if(!customKernel) {
     stopifnot(kernel_name %in% c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"))
 
-    return(retVec * sapply(seq(0, upperTau, by=1), function(t) get("kernel")(t, kernel_name, c(N_T, kernel_params))))
+    return(retVec * sapply(seq(0, maxLag, by=1), function(t) get("kernel")(t, kernel_name, c(N_T, kernel_params))))
   }
 
   if(customKernel) {
-    return(retVec * sapply(seq(0, upperTau, by=1), function(t) get(kernel_name)(t, N_T, kernel_params)))
+    return(retVec * sapply(seq(0, maxLag, by=1), function(t) get(kernel_name)(t, N_T, kernel_params)))
   }
 
   return("Something went wrong in `compute_corrected_standard_est`.")
@@ -74,15 +74,15 @@ compute_corrected_standard_est <- function(X, upperTau, kernel_name, kernel_para
 #' Kernel correction for an estimated autocovariance function.
 #'
 #' @param cov A vector whose values are an estimate autocovariance function.
-#' @param upperTau The maximum upper lag to compute the autocovariance function. upperTau \eqn{< N-1,} where \eqn{N} is the length of \code{cov}.
-#' @param kernel_name The choice of kernel. Possible values are:
+#' @param maxLag The maximum lag to compute the autocovariance function at.
+#' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
-#' @param kernel_params If the kernel has any parameters, pass them as a vector. See [kernel] for parameters.
-#' In the case of "gaussian", "wave", "rational_quadratic", "sphericall" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.
+#' @param kernel_params A vector of parameters of the kernel function. See [kernel] for parameters.
+#' In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.
 #' @param N_T The value the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.
-#' @param customKernel Whether or not you want to use a custom kernel function. This will allow you to define your own kernel function. See the examples of [compute_corrected_standard_est] for usage.
+#' @param customKernel If a custom kernel is to be used or not.  See the examples of [compute_corrected_standard_est] for usage.
 #'
-#' @return A vector whose values are the estimated autocovariance up to lag upperTau.
+#' @return A vector whose values are the estimated autocovariance up to lag maxLag.
 #' @export
 #'
 #' @examples
@@ -92,18 +92,18 @@ compute_corrected_standard_est <- function(X, upperTau, kernel_name, kernel_para
 #' cov_est <- compute_standard_est(Y, length(Y) - 1)
 #' plot(compute_kernel_corrected_est(Y, length(Y)-1,
 #'      "bessel_j", kernel_params=c(0, 1), N_T=0.2*length(Y)))
-compute_kernel_corrected_est <- function(cov, upperTau, kernel_name, kernel_params=c(), N_T=0.1*length(cov), customKernel = FALSE) {
+compute_kernel_corrected_est <- function(cov, maxLag, kernel_name, kernel_params=c(), N_T=0.1*length(cov), customKernel = FALSE) {
   stopifnot(is.logical(customKernel), length(cov) > 0, is.vector(cov), is.numeric(cov), is.numeric(N_T), N_T > 0,
-            is.numeric(upperTau), upperTau >= 0, upperTau <= (length(cov) - 1), upperTau %% 1 == 0)
+            is.numeric(maxLag), maxLag >= 0, maxLag <= (length(cov) - 1), maxLag %% 1 == 0)
 
   if(!customKernel) {
     stopifnot(kernel_name %in% c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"))
 
-    return(cov[1:(upperTau+1)] * sapply(seq(0, upperTau, by=1), function(t) get("kernel")(t, kernel_name, c(N_T, kernel_params))))
+    return(cov[1:(maxLag+1)] * sapply(seq(0, maxLag, by=1), function(t) get("kernel")(t, kernel_name, c(N_T, kernel_params))))
   }
 
   if(customKernel) {
-    return(cov[1:(upperTau+1)] * sapply(seq(0, upperTau, by=1), function(t) get(kernel_name)(t, N_T, kernel_params)))
+    return(cov[1:(maxLag+1)] * sapply(seq(0, maxLag, by=1), function(t) get(kernel_name)(t, N_T, kernel_params)))
   }
 
   return("Something went wrong in `compute_kernel_corrected_est`.")

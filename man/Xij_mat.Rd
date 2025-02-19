@@ -7,7 +7,7 @@
 Xij_mat(X)
 }
 \arguments{
-\item{X}{A vector of values}
+\item{X}{A vector of values.}
 }
 \value{
 A matrix of size \eqn{N \times N}, where \eqn{N} is the length of the vector X.
