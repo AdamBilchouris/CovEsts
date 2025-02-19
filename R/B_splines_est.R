@@ -250,13 +250,13 @@ solve_spline <- function(par, splines_df, weights) {
 #' @examples
 #' X <- rnorm(100)
 #' x <- seq(0, 5, by = 0.25)
-#' maxLag <- 6
-#' estCov <- compute_standard_est(X, maxLag - 1)
+#' maxLag <- 5
+#' estCov <- compute_standard_est(X, maxLag)
 #' estimated <- compute_splines_est(X, x, maxLag, estCov, 3, 2)
 #' estimated
 compute_splines_est <- function(X, x, maxLag, estCov, p, m, inital_pars = c(), control=list('maxit' = 1000)) {
-  stopifnot(is.numeric(X), is.vector(X), all(!is.na(X)), is.numeric(x), is.vector(x), all(!is.na(x)), is.numeric(maxLag), maxLag >= 0, maxLag < length(X),
-            is.numeric(estCov), is.vector(estCov), all(!is.na(estCov)), length(estCov) == maxLag,
+  stopifnot(is.numeric(X), is.vector(X), all(!is.na(X)), is.numeric(x), is.vector(x), all(!is.na(x)), is.numeric(maxLag), maxLag >= 0, maxLag <= (length(X) - 1),
+            is.numeric(estCov), is.vector(estCov), all(!is.na(estCov)), length(estCov) == (maxLag + 1),
             is.numeric(p), p >= 0, p %% 1 == 0, is.numeric(m), m > 0, m %% 1 == 0)
 
   if(is.vector(inital_pars)) {
@@ -264,15 +264,15 @@ compute_splines_est <- function(X, x, maxLag, estCov, p, m, inital_pars = c(), c
   }
   taus <- get_all_tau(p, m)
 
-  splines_df <- get_splines_df(x[1:maxLag], p, m, taus)
+  splines_df <- get_splines_df(x[1:(maxLag + 1)], p, m, taus)
   splines_df[, 'estCov'] <- estCov
 
   weights <- c()
-  for(i in 0:(maxLag - 1)) {
+  for(i in 0:maxLag) {
     weights <- c(weights, (length(X) - i) / ( (1 - estCov[i + 1])^2 ))
   }
 
-  pars <- rep(0.5, ncol(splines_df - 2))
+  pars <- rep(0.5, ncol(splines_df) - 2)
   if(length(inital_pars) != 0 && length(inital_pars) == ncol(splines_df - 2)) {
     pars <- inital_pars
   }
@@ -316,7 +316,7 @@ compute_splines_est <- function(X, x, maxLag, estCov, p, m, inital_pars = c(), c
   }
 
   optim_vals <- c()
-  for(i in 1:length(x[1:maxLag])) {
+  for(i in 1:length(x[1:(maxLag + 1)])) {
     tempSum <- 0
     for(j in 2:(ncol(splines_df) - 1)) {
       tempSum <- tempSum + (optim_splines_betas[j - 1] * splines_df[i, j])

@@ -44,8 +44,8 @@ For optimisation, the Nelder-Mead and L-BFGS-B methods are used, the one which s
 \examples{
 X <- rnorm(100)
 x <- seq(0, 5, by = 0.25)
-maxLag <- 6
-estCov <- compute_standard_est(X, maxLag - 1)
+maxLag <- 5
+estCov <- compute_standard_est(X, maxLag)
 estimated <- compute_splines_est(X, x, maxLag, estCov, 3, 2)
 estimated
 }
