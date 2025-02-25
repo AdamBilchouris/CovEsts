@@ -273,8 +273,11 @@ idct_1d <- function(X) {
   idct_vals <- Re(stats::fft(dct_full, inverse = T)) * (2 / length(dct_full))
 
   # Recover original signal, drop 0s
-  idct_vals_2 <- idct_vals[1:(2*length(X))]
-  idct_vals_2 <- idct_vals_2[idct_vals_2 != 0]
+  seqEven <- seq(2, 2*length(X), by=2)
+  # idct_vals_2 <- idct_vals[1:(2*length(X))]
+  # idct_vals_2 <- idct_vals_2[idct_vals_2 != 0]
+  # idct_vals_2 <- zapsmall(idct_vals_2)
+  idct_vals_2 <- idct_vals[seqEven]
 
   return(idct_vals_2)
 }
