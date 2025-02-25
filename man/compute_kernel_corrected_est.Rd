@@ -10,7 +10,7 @@ compute_kernel_corrected_est(
   kernel_name,
   kernel_params = c(),
   N_T = 0.1 * length(cov),
-  customKernel = FALSE
+  custom_kernel = FALSE
 )
 }
 \arguments{
@@ -24,12 +24,12 @@ compute_kernel_corrected_est(
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel} for parameters.
 In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.}
 
-\item{N_T}{The value the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.}
+\item{N_T}{The rate at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.}
 
-\item{customKernel}{If a custom kernel is to be used or not.  See the examples of \link{compute_corrected_standard_est} for usage.}
+\item{custom_kernel}{If a custom kernel is to be used or not.  See the examples of \link{compute_corrected_standard_est} for usage.}
 }
 \value{
-A vector whose values are the estimated autocovariance up to lag maxLag.
+A vector whose values are a kernel corrected autocovariance estimator.
 }
 \description{
 Kernel correction for an estimated autocovariance function.

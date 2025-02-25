@@ -12,7 +12,7 @@
 #'
 #' \strong{Symmetric Wave Kernel}.
 #' \deqn{a(\tau;\theta) = \left\{ \begin{array}{ll}
-#' (\sqrt{\theta^{-2}} / \pi) \frac{\theta}{\tau} \sin\left( \frac{\tau}{\theta} \right), & \tau \neq 0 \\
+#' (\sqrt{\theta^{2}} \pi)^{-1} \frac{\theta}{\tau} \sin\left( \frac{\tau}{\theta} \right), & \tau \neq 0 \\
 #' 1, & \tau = 0
 #' \end{array} ,
 #' \theta > 0 . \right.}
@@ -23,7 +23,7 @@
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}
 #'
 #' \strong{Symmetric Besesel Kernel}.
-#' \deqn{a(\tau; \theta, \nu) = (\Gamma(\frac{1}{2} + \nu)/(2 \sqrt{\pi} \theta \Gamma(1 + \nu))) ( 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau) \tau^{-\nu}), \theta > 0, \nu \geq \frac{d}{2} - 1.}
+#' \deqn{a(\tau; \theta, \nu) = (\Gamma(\frac{1}{2} + \nu)/(2 \sqrt{\pi} \theta \Gamma(1 + \nu))) ( 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau / \theta) (\tau / \theta)^{-\nu}), \theta > 0, \nu \geq \frac{d}{2} - 1.}
 #' where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind and \eqn{d} is the dimension.
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d}\code{)}.
 #'
@@ -50,20 +50,40 @@ kernel_symm <- function(x, name, params=c(1)) {
       return(sqrt(pi * params[1])^(-1) * returnVals)
     }
     else if(name == "wave") {
-      returnVals <- sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (params[1] / t) * sin(t / params[1]))))
-      return((sqrt(params[1]^(-2)) / pi) * returnVals)
+      returnVal <- x
+      returnVal_indices <- which(returnVal != 0 & returnVal != Inf)
+      returnVal[returnVal == 0] <- 1
+      returnVal[returnVal == Inf] <- 0
+      returnVal[returnVal_indices] <- (params[1] / returnVal[returnVal_indices]) * sin(returnVal[returnVal_indices] / params[1])
+      return((sqrt(params[1]^(2)) * pi)^(-1) * returnVal)
+
+      # returnVals <- sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (params[1] / t) * sin(t / params[1]))))
+      # return((sqrt(params[1]^(2)) * pi)^(-1) * returnVals)
     }
     else if(name == "rational_quadratic") {
-      returnVals <- sapply(x, function(t) ifelse(t == Inf, 0, 1 - (t^2 / (t^2 + params[1]))))
-      return(((pi * sqrt(params[1]))^(-1)) * returnVals)
+      returnVal <- x
+      returnVal_indices <- which(returnVal != Inf)
+      returnVal[returnVal == Inf] <- 0
+      returnVal[returnVal_indices] <- 1 - (returnVal[returnVal_indices]^2 / (returnVal[returnVal_indices]^2 + params[1]))
+      return(((pi * sqrt(params[1]))^(-1)) * returnVal)
+
+      # returnVals <- sapply(x, function(t) ifelse(t == Inf, 0, 1 - (t^2 / (t^2 + params[1]))))
+      # return(((pi * sqrt(params[1]))^(-1)) * returnVals)
     }
     stop(paste0("Unknown kernel: ", name))
   }
 
   else if(length(params) == 3) {
     if(name == "bessel_j") {
-      returnVal <- sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (2^params[2]) * gamma(params[2] + 1) * (besselJ(t / params[1], params[2]) / ((t / params[1])^params[2])))))
-      return((gamma((1/2) + params[2]) / (2*sqrt(pi) * params[1] * gamma(1 + params[2]))) * returnVal)
+      returnVal <- x
+      returnVal_indices <- which(returnVal != 0 & returnVal != Inf)
+      returnVal[returnVal == 0] <- 1
+      returnVal[returnVal == Inf] <- 0
+      returnVal[returnVal_indices] <- (besselJ(returnVal[returnVal_indices] / params[1], params[2]) / ((returnVal[returnVal_indices] / params[1])^params[2]))
+      return((gamma((1/2) + params[2]) / (2*sqrt(pi) * params[1] * gamma(1 + params[2]))) * (2^params[2]) * gamma(params[2] + 1) * returnVal)
+
+      # returnVal <- sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (2^params[2]) * gamma(params[2] + 1) * (besselJ(t / params[1], params[2]) / ((t / params[1])^params[2])))))
+      # return((gamma((1/2) + params[2]) / (2*sqrt(pi) * params[1] * gamma(1 + params[2]))) * returnVal)
     }
     stop(paste0("Unknown kernel: ", name))
   }

@@ -22,18 +22,18 @@ compute_splines_est(
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
-\item{estCov}{An estimated covariance function to fit to (vector).}
+\item{estCov}{An estimated covariance function to fit to (a vector).}
 
-\item{p}{The order of splines.}
+\item{p}{The order of the splines.}
 
 \item{m}{The number of nonboundary knots.}
 
-\item{inital_pars}{An optional vector of parameters - can be used to fine tune the fit. Set it a vector of 0.5 whose length is \eqn{m+p.}}
+\item{inital_pars}{An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}}
 
 \item{control}{An optional list of optimisation parameters used in the optimisation process, see \code{control} in \link[stats:optim]{stats::optim}.}
 }
 \value{
-A numeric vector representing the spline estimator.
+A vector whose values are the spline autocovariance estimator.
 }
 \description{
 Compute the estimated covariance function found in Choi, Li & Wang (2013, pp. 614-617).

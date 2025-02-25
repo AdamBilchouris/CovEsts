@@ -186,7 +186,7 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not.
 #'
-#' @return A numeric vector representing values of the tapered covariance function.
+#' @return  A vector whose values are the tapered autocovariance estimator.
 #' @export
 #'
 #' @examples

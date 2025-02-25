@@ -28,7 +28,7 @@ compute_tapered_est(
 \item{custom_window}{If a custom window is to be used or not.}
 }
 \value{
-A numeric vector representing values of the tapered covariance function.
+A vector whose values are the tapered autocovariance estimator.
 }
 \description{
 This computes the tapered covariance over a set of lags,

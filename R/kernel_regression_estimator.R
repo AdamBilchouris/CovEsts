@@ -48,7 +48,7 @@ Xij_mat <- function(X) {
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
-#' @param x A vector lags.
+#' @param x A vector of lags.
 #' @param meanX The average value of X.
 #' @param T1 The first trunctation point.
 #' @param h Bandwidth parameter.
@@ -300,7 +300,7 @@ idct_1d <- function(X) {
 #'
 #' Compared to [compute_adjusted_est], this function brings down the estimate to zero linearly between \eqn{T_{1}} and \eqn{T_{2}}.
 #' In the case of short-range dependence, this may be beneficial as it can remove estimation artefacts.
-#'a
+#'
 #' To make this estimator positive-definite, the following procedure is done:
 #' 1. Take the discrete cosine transform
 #' \eqn{\mathcal{F}^{c}(\hat{\rho}_{1}(t))}.
@@ -318,7 +318,7 @@ idct_1d <- function(X) {
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
 #' @param X A vector representing the process.
-#' @param x A vector lags.
+#' @param x A vector of lags.
 #' @param meanX The average value of X.
 #' @param t The values at which the covariance function is calculated at.
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
@@ -347,11 +347,32 @@ compute_truncated_est <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussi
   xij_mat <- Xij_mat(X)
   rhoT1 <- rho_T1(x, meanX, T1, h, xij_mat, kernel_name, kernel_params, custom_kernel)
 
-  # vals_truncated_1 <- sapply(1:length(t), function(i) truncated_point(x, meanX, t[i], T1, T2, h, xij_mat, rhoT1, kernel, kernel_params, custom_kernel))
+  # # vals_truncated_1 <- sapply(1:length(t), function(i) truncated_point(x, meanX, t[i], T1, T2, h, xij_mat, rhoT1, kernel, kernel_params, custom_kernel))
+  # vals_truncated_1 <- c()
+  # for(i in 1:length(t)) {
+  #   vals_truncated_1 <- c(vals_truncated_1, truncated_point(x, meanX, t[i], T1, T2, h, xij_mat, rhoT1, kernel_name, kernel_params, custom_kernel))
+  # }
+
+  outer_x_x <- outer(x, x, '-')
   vals_truncated_1 <- c()
-  for(i in 1:length(t)) {
-    vals_truncated_1 <- c(vals_truncated_1, truncated_point(x, meanX, t[i], T1, T2, h, xij_mat, rhoT1, kernel_name, kernel_params, custom_kernel))
+
+  t_vals <- t[t <= T1]
+  if(custom_kernel) {
+    for(tt in t_vals) {
+      K_ij <- get(kernel_name)(tt - outer_x_x, h, kernel_params)
+      vals_truncated_1 <- c(vals_truncated_1, sum(K_ij * xij_mat) / sum(K_ij))
+    }
   }
+  else {
+    stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
+    for(tt in t_vals) {
+      K_ij <- get("kernel_symm")(tt - outer_x_x, kernel_name, c(h, kernel_params[1], kernel_params[2]))
+      vals_truncated_1 <- c(vals_truncated_1, sum(K_ij * xij_mat) / sum(K_ij))
+    }
+  }
+
+  vals_truncated_1 <- c(vals_truncated_1, rhoT1 * (T2 - t[t > T1 & t <= T2]) * (T2 - T1)^(-1))
+  vals_truncated_1 <- c(vals_truncated_1, rep(0, length(t[t > T2])))
 
   if(pd) {
     # Perform DCT
@@ -407,7 +428,7 @@ compute_truncated_est <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussi
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
 #'
 #' @param X A vector representing the process.
-#' @param x A vector lags.
+#' @param x A vector of lags.
 #' @param meanX The average value of X.
 #' @param t The values at which the covariance function is calculated at.
 #' @param h Bandwidth parameter.
@@ -428,45 +449,55 @@ compute_adjusted_est <- function(X, x, meanX, t, h, kernel_name="gaussian", kern
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
             length(t) >= 1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel), is.logical(pd))
 
+  outer_x_x <- outer(x, x, '-')
   xij_mat <- Xij_mat(X)
   cov_vals <- c()
   if(custom_kernel) {
-    for(ti in 1:length(t)) {
-      numerators <- c()
-      denominators <- c()
-      for(i in 1:length(x)) {
-        tij <- x[i] - x
-        t_tij <- t[ti] - tij
-        X_ij <- xij_mat[i, ]
-        K_ij <- get(kernel_name)(t_tij, h, kernel_params)
-        numerator <- K_ij * X_ij
-        denominator <- K_ij
-
-        numerators <- c(numerators, sum(numerator))
-        denominators <- c(denominators, sum(denominator))
-      }
-      cov_vals <- c(cov_vals, sum(numerators) / sum(denominators))
+    for(tt in t) {
+      K_ij <- get(kernel_name)(tt - outer_x_x, h, kernel_params)
+      cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))
     }
+    # for(ti in 1:length(t)) {
+    #   numerators <- c()
+    #   denominators <- c()
+    #   for(i in 1:length(x)) {
+    #     tij <- x[i] - x
+    #     t_tij <- t[ti] - tij
+    #     X_ij <- xij_mat[i, ]
+    #     K_ij <- get(kernel_name)(t_tij, h, kernel_params)
+    #     numerator <- K_ij * X_ij
+    #     denominator <- K_ij
+    #
+    #     numerators <- c(numerators, sum(numerator))
+    #     denominators <- c(denominators, sum(denominator))
+    #   }
+    #   cov_vals <- c(cov_vals, sum(numerators) / sum(denominators))
+    # }
   }
   else {
     stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
-    for(ti in 1:length(t)) {
-      numerators <- c()
-      denominators <- c()
-      for(i in 1:length(x)) {
-        tij <- x[i] - x
-        t_tij <- t[ti] - tij
-        X_ij <- xij_mat[i, ]
-        # K_ij <- get(paste0("kernel_symm_", kernel))(t_tij, h, kernel_params[1], kernel_params[2])
-        K_ij <- get("kernel_symm")(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
-        numerator <- K_ij * X_ij
-        denominator <- K_ij
-
-        numerators <- c(numerators, sum(numerator))
-        denominators <- c(denominators, sum(denominator))
-      }
-      cov_vals <- c(cov_vals, sum(numerators) / sum(denominators))
+    for(tt in t) {
+      K_ij <- get("kernel_symm")(tt - outer_x_x, kernel_name, c(h, kernel_params[1], kernel_params[2]))
+      cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))
     }
+#
+#     for(ti in 1:length(t)) {
+#       numerators <- c()
+#       denominators <- c()
+#       for(i in 1:length(x)) {
+#         tij <- x[i] - x
+#         t_tij <- t[ti] - tij
+#         X_ij <- xij_mat[i, ]
+#         # K_ij <- get(paste0("kernel_symm_", kernel))(t_tij, h, kernel_params[1], kernel_params[2])
+#         K_ij <- get("kernel_symm")(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
+#         numerator <- K_ij * X_ij
+#         denominator <- K_ij
+#
+#         numerators <- c(numerators, sum(numerator))
+#         denominators <- c(denominators, sum(denominator))
+#       }
+#       cov_vals <- c(cov_vals, sum(numerators) / sum(denominators))
+#     }
   }
 
   if(pd) {

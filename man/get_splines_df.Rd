@@ -9,7 +9,7 @@ get_splines_df(x, p, m, taus)
 \arguments{
 \item{x}{A vector lags.}
 
-\item{p}{The order of splines.}
+\item{p}{The order of the splines.}
 
 \item{m}{The number of nonboundary knots.}
 

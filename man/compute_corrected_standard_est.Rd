@@ -14,7 +14,7 @@ compute_corrected_standard_est(
   meanX = mean(X),
   pd = TRUE,
   type = "covariance",
-  customKernel = FALSE
+  custom_kernel = FALSE
 )
 }
 \arguments{
@@ -28,7 +28,7 @@ compute_corrected_standard_est(
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel} for parameters.
 In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.}
 
-\item{N_T}{The value the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.}
+\item{N_T}{The rate at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.}
 
 \item{N}{The length of X.}
 
@@ -38,10 +38,10 @@ In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circul
 
 \item{type}{Compute either the 'covariance' or 'correlation'.}
 
-\item{customKernel}{If a custom kernel is to be used or not. See examples.}
+\item{custom_kernel}{If a custom kernel is to be used or not. See examples.}
 }
 \value{
-A vector whose values are the estimated autocovariance up to lag maxLag.
+A vector whose values are a kernel corrected autocovariance estimator.
 }
 \description{
 This applies kernel correction to the standard estimators.
@@ -77,7 +77,7 @@ Y <- c(X[1], X[2])
 for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 plot(Y)
 plot(compute_corrected_standard_est(Y, length(Y)-1,
-     "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE))
+     "my_kernel", kernel_params=c(2, 0.25), custom_kernel = TRUE))
 }
 \references{
 Yaglom AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.

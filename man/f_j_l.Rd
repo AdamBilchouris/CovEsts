@@ -13,7 +13,7 @@ f_j_l(x, j, l, p, m, taus)
 
 \item{l}{Order of function.}
 
-\item{p}{The order of splines.}
+\item{p}{The order of the splines.}
 
 \item{m}{The number of nonboundary knots.}
 

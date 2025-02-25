@@ -21,7 +21,7 @@ compute_truncated_est(
 \arguments{
 \item{X}{A vector representing the process.}
 
-\item{x}{A vector lags.}
+\item{x}{A vector of lags.}
 
 \item{meanX}{The average value of X.}
 
@@ -65,7 +65,7 @@ where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator, see \link{comp
 
 Compared to \link{compute_adjusted_est}, this function brings down the estimate to zero linearly between \eqn{T_{1}} and \eqn{T_{2}}.
 In the case of short-range dependence, this may be beneficial as it can remove estimation artefacts.
-a
+
 To make this estimator positive-definite, the following procedure is done:
 \enumerate{
 \item Take the discrete cosine transform

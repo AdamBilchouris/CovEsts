@@ -35,7 +35,7 @@ generate_knots <- function(m) {
 #' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
 #'
 #' @param i The knot number (\eqn{-p} through \eqn{m + p + 1}).
-#' @param p The order of splines.
+#' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #' @param kVec Knot vector - see [generate_knots].
 #'
@@ -65,7 +65,7 @@ get_tau <- function(i, p, m, kVec) {
 #'
 #' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
 #'
-#' @param p The order of splines.
+#' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #'
 #' @return A numerical vector representing all \eqn{\tau_{i}}s.
@@ -95,7 +95,7 @@ get_all_tau <- function(p, m) {
 #' @param x Numeric value for which the function is calculated at.
 #' @param j Index of basis function of order \eqn{l}.
 #' @param l Order of function.
-#' @param p The order of splines.
+#' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #' @param taus Vector of \eqn{\tau}s, see [get_tau].
 #'
@@ -142,7 +142,7 @@ f_j_l <- function(x, j, l, p, m, taus) {
 #' * m + p columns of squared basis functions evaluated at the correspond x.
 #'
 #' @param x A vector lags.
-#' @param p The order of splines.
+#' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #' @param taus Vector of \eqn{\tau}s, see [get_tau].
 #'
@@ -235,13 +235,13 @@ solve_spline <- function(par, splines_df, weights) {
 #' @param X A vector representing the process.
 #' @param x A vector of lags.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
-#' @param estCov An estimated covariance function to fit to (vector).
-#' @param p The order of splines.
+#' @param estCov An estimated covariance function to fit to (a vector).
+#' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
-#' @param inital_pars An optional vector of parameters - can be used to fine tune the fit. Set it a vector of 0.5 whose length is \eqn{m+p.}
+#' @param inital_pars An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}
 #' @param control An optional list of optimisation parameters used in the optimisation process, see \code{control} in [stats::optim].
 #'
-#' @return A numeric vector representing the spline estimator.
+#' @return A vector whose values are the spline autocovariance estimator.
 #' @export
 #'
 #' @importFrom stats optim

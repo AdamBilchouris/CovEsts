@@ -19,7 +19,7 @@ compute_adjusted_est(
 \arguments{
 \item{X}{A vector representing the process.}
 
-\item{x}{A vector lags.}
+\item{x}{A vector of lags.}
 
 \item{meanX}{The average value of X.}
 

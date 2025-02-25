@@ -9,7 +9,7 @@ get_tau(i, p, m, kVec)
 \arguments{
 \item{i}{The knot number (\eqn{-p} through \eqn{m + p + 1}).}
 
-\item{p}{The order of splines.}
+\item{p}{The order of the splines.}
 
 \item{m}{The number of nonboundary knots.}
 

@@ -22,10 +22,10 @@
 #' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param N The length of X.
 #' @param meanX The average value of X.
-#' @param pd Whether a positive definite estimate should be used.
+#' @param pd Whether a positive-definite estimate should be used.
 #' @param type Compute either the 'covariance' or 'correlation'.
 #'
-#' @return A vector whose values are the estimated autocovariance up to lag maxLag.
+#' @return A vector whose values are the estimated autocovariance.
 #' @export
 #'
 #' @importFrom stats acf

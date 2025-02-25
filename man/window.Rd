@@ -38,11 +38,11 @@ The \code{params} argument is empty, see the example.
 The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
 
 \strong{Blackman Window}.
-\deqn{w(x; \alpha) = ( (1 - \alpha) / 2) - (1/2) \cos(\pi x) + (\alpha / 2) \cos(2 \pi x), x \in [0, 1], \alpha \in {R} .}
+\deqn{w(x; \alpha) = ( (1 - \alpha) / 2) - \frac{1}{2} \cos(\pi x) + \frac{\alpha}{2} \cos(2 \pi x), x \in [0, 1], \alpha \in {R} .}
 The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
 
 \strong{Hann-Poisson Window}.
-\deqn{w(x; \alpha) = (1/2) (1 - \cos(\pi x)) \exp( - (\alpha \left|1 - x \right|) ) , x \in [0, 1], \alpha \in {R} .}
+\deqn{w(x; \alpha) = \frac{1}{2} (1 - \cos(\pi x)) \exp( - (\alpha \left|1 - x \right|) ) , x \in [0, 1], \alpha \in {R} .}
 The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
 
 \strong{Welch Window}.

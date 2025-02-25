@@ -22,12 +22,12 @@ compute_standard_est(
 
 \item{meanX}{The average value of X.}
 
-\item{pd}{Whether a positive definite estimate should be used.}
+\item{pd}{Whether a positive-definite estimate should be used.}
 
 \item{type}{Compute either the 'covariance' or 'correlation'.}
 }
 \value{
-A vector whose values are the estimated autocovariance up to lag maxLag.
+A vector whose values are the estimated autocovariance.
 }
 \description{
 This computes the following two variants of the autocovariance function depending on
