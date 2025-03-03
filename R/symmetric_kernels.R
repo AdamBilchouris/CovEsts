@@ -35,11 +35,14 @@
 #' @export
 #'
 #' @examples
-#' x <- c(-3, -2, -1, 0, 1, 2, 3)
-#' kernel_symm(x, "gaussian", c(0.2))
-#' kernel_symm(x, "wave", c(0.2))
-#' kernel_symm(x, "rational_quadratic", c(0.2))
-#' kernel_symm(x, "bessel_j", c(0.2, 2, 2))
+#' x <- c(-2, -1, 0, 1, 2)
+#' theta <- 1
+#' kernel_symm(x, "gaussian", c(theta))
+#' kernel_symm(x, "wave", c(theta))
+#' kernel_symm(x, "rational_quadratic", c(theta))
+#' dim <- 1
+#' nu <- 1
+#' kernel_symm(x, "bessel_j", c(theta, nu, dim))
 kernel_symm <- function(x, name, params=c(1)) {
   stopifnot(length(x) >= 1, !any(is.na(x)), is.vector(params), length(params) > 0, is.numeric(params[1]), params[1] > 0)
   stopifnot(name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
@@ -79,7 +82,7 @@ kernel_symm <- function(x, name, params=c(1)) {
       returnVal_indices <- which(returnVal != 0 & returnVal != Inf)
       returnVal[returnVal == 0] <- 1
       returnVal[returnVal == Inf] <- 0
-      returnVal[returnVal_indices] <- (besselJ(returnVal[returnVal_indices] / params[1], params[2]) / ((returnVal[returnVal_indices] / params[1])^params[2]))
+      returnVal[returnVal_indices] <- (besselJ(abs(returnVal)[returnVal_indices] / params[1], params[2]) / ((returnVal[returnVal_indices] / params[1])^params[2]))
       return((gamma((1/2) + params[2]) / (2*sqrt(pi) * params[1] * gamma(1 + params[2]))) * (2^params[2]) * gamma(params[2] + 1) * returnVal)
 
       # returnVal <- sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (2^params[2]) * gamma(params[2] + 1) * (besselJ(t / params[1], params[2]) / ((t / params[1])^params[2])))))

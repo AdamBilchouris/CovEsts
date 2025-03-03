@@ -90,7 +90,7 @@ compute_corrected_standard_est <- function(X, maxLag, kernel_name, kernel_params
 #' Y <- c(X[1], X[2])
 #' for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 #' cov_est <- compute_standard_est(Y, length(Y) - 1)
-#' plot(compute_kernel_corrected_est(Y, length(Y)-1,
+#' plot(compute_kernel_corrected_est(cov_est, length(Y)-1,
 #'      "bessel_j", kernel_params=c(0, 1), N_T=0.2*length(Y)))
 compute_kernel_corrected_est <- function(cov, maxLag, kernel_name, kernel_params=c(), N_T=0.1*length(cov), custom_kernel = FALSE) {
   stopifnot(is.logical(custom_kernel), length(cov) > 0, is.vector(cov), is.numeric(cov), is.numeric(N_T), N_T > 0,

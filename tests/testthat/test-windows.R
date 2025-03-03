@@ -73,7 +73,7 @@ test_that("window(, \"power_sine\", ) fails for a <= 0", {
 
 # Blackman window
 test_that("window(, \"blackman\", ) works", {
-  expect_equal(window(c(0, 1/3, 1/2, 2/3), "blackman", c(2)), c(0, -1.25, -1.5, -0.75))
+  expect_equal(window(c(0, 1/3, 1/2, 2/3), "blackman", c(0.16)), c(-1.387779e-17, 1.300000e-01, 3.400000e-01, 6.300000e-01))
 })
 
 test_that("window(, \"blackman\", ) fails for empty x", {

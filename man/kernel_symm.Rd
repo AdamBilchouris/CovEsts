@@ -42,9 +42,12 @@ where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind and \eqn{d} 
 The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d}\code{)}.
 }
 \examples{
-x <- c(-3, -2, -1, 0, 1, 2, 3)
-kernel_symm(x, "gaussian", c(0.2))
-kernel_symm(x, "wave", c(0.2))
-kernel_symm(x, "rational_quadratic", c(0.2))
-kernel_symm(x, "bessel_j", c(0.2, 2, 2))
+x <- c(-2, -1, 0, 1, 2)
+theta <- 1
+kernel_symm(x, "gaussian", c(theta))
+kernel_symm(x, "wave", c(theta))
+kernel_symm(x, "rational_quadratic", c(theta))
+dim <- 1
+nu <- 1
+kernel_symm(x, "bessel_j", c(theta, nu, dim))
 }

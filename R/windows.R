@@ -26,6 +26,7 @@
 #' \strong{Blackman Window}.
 #' \deqn{w(x; \alpha) = ( (1 - \alpha) / 2) - \frac{1}{2} \cos(\pi x) + \frac{\alpha}{2} \cos(2 \pi x), x \in [0, 1], \alpha \in {R} .}
 #' The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
+#' It is recommended that \eqn{\alpha = 0.16} to ensure that \eqn{w(0) = 0, w(1) = 1.}
 #'
 #' \strong{Hann-Poisson Window}.
 #' \deqn{w(x; \alpha) = \frac{1}{2} (1 - \cos(\pi x)) \exp( - (\alpha \left|1 - x \right|) ) , x \in [0, 1], \alpha \in {R} .}
@@ -48,8 +49,8 @@
 #' window(x, "triangular")
 #' window(x, "sine")
 #' window(x, "power_sine", c(0.7))
-#' window(x, "blackman", c(-0.7))
-#' window(x, "hann_poisson", c(-0.7))
+#' window(x, "blackman", c(0.16))
+#' window(x, "hann_poisson", c(0.7))
 #' window(x, "welch")
 window <- function(x, name, params=c(1)) {
   stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1), is.vector(params), length(params) > 0, is.numeric(params[1]))
@@ -75,6 +76,7 @@ window <- function(x, name, params=c(1)) {
       return(((1 - params[1]) / 2)  - (1 / 2) * cos(pi*x) + (params[1] / 2) * cos(2*pi*x))
     }
     else if(name == "hann_poisson") {
+      stopifnot(params[1] > 0)
       return((1 / 2) * (1 - cos(pi * x)) * exp(- (params[1] * abs(1 - x))))
     }
     else if(name == "welch") {
