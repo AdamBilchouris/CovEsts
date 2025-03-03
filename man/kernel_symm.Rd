@@ -7,7 +7,7 @@
 kernel_symm(x, name, params = c(1))
 }
 \arguments{
-\item{x}{A vector of values of at least length 1.}
+\item{x}{A vector or matrix of values of at least length 1}
 
 \item{name}{The name of the kernel. Options are: "gaussian", "wave", "rational_quadratic", "bessel_j".}
 

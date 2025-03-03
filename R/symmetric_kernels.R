@@ -27,7 +27,7 @@
 #' where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind and \eqn{d} is the dimension.
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d}\code{)}.
 #'
-#' @param x A vector of values of at least length 1.
+#' @param x A vector or matrix of values of at least length 1
 #' @param name The name of the kernel. Options are: "gaussian", "wave", "rational_quadratic", "bessel_j".
 #' @param params A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels will have a scale parameter as the first value in the vector.
 #'
@@ -44,7 +44,7 @@
 #' nu <- 1
 #' kernel_symm(x, "bessel_j", c(theta, nu, dim))
 kernel_symm <- function(x, name, params=c(1)) {
-  stopifnot(length(x) >= 1, !any(is.na(x)), is.vector(params), length(params) > 0, is.numeric(params[1]), params[1] > 0)
+  stopifnot(length(x) >= 1, !any(is.na(x)), length(params) > 0, is.numeric(params[1]), params[1] > 0)
   stopifnot(name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
 
   if(length(params) == 1) {

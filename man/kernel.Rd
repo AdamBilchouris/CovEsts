@@ -7,7 +7,7 @@
 kernel(x, name, params = c(1))
 }
 \arguments{
-\item{x}{A vector of values of at least length 1.}
+\item{x}{A vector or matrix of values of at least length 1}
 
 \item{name}{The name of the kernel. Options are: "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", and "cauchy".}
 

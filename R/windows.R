@@ -36,7 +36,7 @@
 #' \deqn{w(x) = 1 - (x - 1)^2 , x \in [0, 1] . }
 #' The \code{params} argument is empty, see the example.
 #'
-#' @param x A vector of values of at least length 1.
+#' @param x A vector or matrix of values of at least length 1.
 #' @param name The name of the window. Options are: "tukey", "triangular", "sine", "power_sine", "blackman", "hann_poisson", "welch".
 #' @param params A vector of parameters for the windows. See the documentation below for the position of the parameters.
 #'
@@ -53,7 +53,7 @@
 #' window(x, "hann_poisson", c(0.7))
 #' window(x, "welch")
 window <- function(x, name, params=c(1)) {
-  stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1), is.vector(params), length(params) > 0, is.numeric(params[1]))
+  stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1), length(params) > 0, is.numeric(params[1]))
   stopifnot(name %in% c("tukey", "triangular", "sine", "power_sine",
                         "blackman", "hann_poisson", "welch"))
 

@@ -39,6 +39,6 @@ X <- rnorm(1000)
 Y <- c(X[1], X[2])
 for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 cov_est <- compute_standard_est(Y, length(Y) - 1)
-plot(compute_kernel_corrected_est(Y, length(Y)-1,
+plot(compute_kernel_corrected_est(cov_est, length(Y)-1,
      "bessel_j", kernel_params=c(0, 1), N_T=0.2*length(Y)))
 }

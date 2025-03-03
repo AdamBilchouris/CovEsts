@@ -7,7 +7,7 @@
 window(x, name, params = c(1))
 }
 \arguments{
-\item{x}{A vector of values of at least length 1.}
+\item{x}{A vector or matrix of values of at least length 1.}
 
 \item{name}{The name of the window. Options are: "tukey", "triangular", "sine", "power_sine", "blackman", "hann_poisson", "welch".}
 

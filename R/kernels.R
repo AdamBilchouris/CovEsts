@@ -75,7 +75,7 @@
 #' Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
 #' Table 4.2 of Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. In Advances in Geographic Information Science. Springer Netherlands. https://doi.org/10.1007/978-94-024-1918-4
 #'
-#' @param x A vector of values of at least length 1.
+#' @param x A vector or matrix of values of at least length 1
 #' @param name The name of the kernel. Options are: "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", and "cauchy".
 #' @param params A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels will have a scale parameter as the first value in the vector.
 #'
@@ -99,7 +99,7 @@
 #' beta <- 2
 #' kernel(x, "cauchy", c(theta, alpha, beta))
 kernel <- function(x, name, params=c(1)) {
-  stopifnot(length(x) >= 1, all(x >= 0), is.vector(params), length(params) > 0, is.numeric(params[1]), params[1] > 0)
+  stopifnot(length(x) >= 1, all(x >= 0), length(params) > 0, is.numeric(params[1]), params[1] > 0)
   stopifnot(name %in% c("gaussian", "exponential", "wave", "rational_quadratic",
                         "spherical", "circular", "bessel_j", "matern", "cauchy"))
 
