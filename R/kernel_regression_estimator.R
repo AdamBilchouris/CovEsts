@@ -4,9 +4,9 @@
 #' \deqn{X_{ij} = (X_{i} - \bar{X}) (X_{j} - \bar{X}) .}
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
 #' @param X A vector of values.
 #'
@@ -44,9 +44,9 @@ Xij_mat <- function(X) {
 #' In [compute_truncated_est], when \eqn{T_{1} < t \le T_{2}}, this value is required, possibly several times, so calculating it once can save repeated computations.
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of Nonparametric Estimators of Autocovariance for Stationary Random Fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#' Hall, P., & Patil, P. (1994). Properties of Nonparametric Estimators of Autocovariance for Stationary Random Fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
 #' @param x A vector of lags.
 #' @param meanX The average value of X.
@@ -110,9 +110,9 @@ rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_para
 #' This function computes \eqn{\rho(t)} for the truncated kernel regression estimator (see [compute_truncated_est]).
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
 #' @param x A vector of indices.
 #' @param meanX The average value of X.
@@ -316,11 +316,11 @@ idct_1d <- function(X) {
 #' the entire spectrum, apart from an impulse at zero, is zero, resulting in an adjusted function that is a horizontal line.
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
-#' @param X A vector representing the process.
+#' @param X A vector representing the values of the process.
 #' @param x A vector of lags.
 #' @param meanX The average value of X.
 #' @param t The values at which the covariance function is calculated at.
@@ -409,13 +409,13 @@ compute_truncated_est <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussi
 #' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 #'
 #' @details
-#' The kernel regression estimator is defined as
+#' The kernel regression estimator of an autocovariance function is defined as
 #' \deqn{
 #' \hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
 #' }
 #' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 #'
-#' This estimator can be made positive definite through the following procedure
+#' If \code{pd} is \code{TRUE} estimator will be made positive-definite through the following procedure
 #' 1. Take the discrete cosine transform,
 #' \eqn{\mathcal{F}^{c}(\hat{\rho}(t))}.
 #' 2. Set all negative values to zero,
@@ -426,32 +426,32 @@ compute_truncated_est <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussi
 #' This ensures the covariance estimate is positive-definite.
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
-#' @param X A vector representing the process.
+#' @param X A vector representing the values of the process.
 #' @param x A vector of lags.
-#' @param meanX The average value of X.
+# #' @param meanX The average value of X.
 #' @param t The values at which the covariance function is calculated at.
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_est]'s example.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not.
-#' @param pd Whether a positive definite estimate should be used.
+#' @param pd Whether a positive-definite estimate should be used.
 #'
 #' @return A vector whose values are the kernel regression estimator.
 #' @export
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
-#' compute_adjusted_est(X, 1:4, mean(X), 1:3, 0.1, "gaussian", c(), FALSE, TRUE)
-compute_adjusted_est <- function(X, x, meanX, t, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE) {
+#' compute_adjusted_est(X, 1:4, 1:3, 0.1, "gaussian", c(), FALSE, TRUE)
+compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(x), length(x) >= 1, !any(is.na(x)),
-            length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
-            length(t) >= 1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel), is.logical(pd))
+            !any(is.na(t)), is.numeric(t), length(t) >= 1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel), is.logical(pd))
 
+  meanX <- mean(X)
   outer_x_x <- outer(x, x, '-')
   xij_mat <- Xij_mat(X)
   cov_vals <- c()
@@ -540,9 +540,9 @@ compute_adjusted_est <- function(X, x, meanX, t, h, kernel_name="gaussian", kern
 #' 4. Perform the inversion.
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
 #' @param x A vector of numeric values - for example, an estimated autocovariance function.
 #' @param method.1 Should method 1 be used (TRUE) or method 2 (FALSE).

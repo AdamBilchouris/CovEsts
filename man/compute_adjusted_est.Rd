@@ -7,7 +7,6 @@
 compute_adjusted_est(
   X,
   x,
-  meanX,
   t,
   h,
   kernel_name = "gaussian",
@@ -17,11 +16,9 @@ compute_adjusted_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the process.}
+\item{X}{A vector representing the values of the process.}
 
 \item{x}{A vector of lags.}
-
-\item{meanX}{The average value of X.}
 
 \item{t}{The values at which the covariance function is calculated at.}
 
@@ -34,7 +31,7 @@ compute_adjusted_est(
 
 \item{custom_kernel}{If a custom kernel is to be used or not.}
 
-\item{pd}{Whether a positive definite estimate should be used.}
+\item{pd}{Whether a positive-definite estimate should be used.}
 }
 \value{
 A vector whose values are the kernel regression estimator.
@@ -47,13 +44,13 @@ The kernel regression estimator is defined as
 where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 }
 \details{
-The kernel regression estimator is defined as
+The kernel regression estimator of an autocovariance function is defined as
 \deqn{
 \hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
 }
 where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 
-This estimator can be made positive definite through the following procedure
+If \code{pd} is \code{TRUE} estimator will be made positive-definite through the following procedure
 \enumerate{
 \item Take the discrete cosine transform,
 \eqn{\mathcal{F}^{c}(\hat{\rho}(t))}.
@@ -67,10 +64,10 @@ This ensures the covariance estimate is positive-definite.
 }
 \examples{
 X <- c(1, 2, 3, 4)
-compute_adjusted_est(X, 1:4, mean(X), 1:3, 0.1, "gaussian", c(), FALSE, TRUE)
+compute_adjusted_est(X, 1:4, 1:3, 0.1, "gaussian", c(), FALSE, TRUE)
 }
 \references{
-Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
 
-Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
+Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 }

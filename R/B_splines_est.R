@@ -6,7 +6,7 @@
 #' }
 #' The knots are equally spaced with boundary knots \eqn{\kappa_{0} = 0 , \kappa_{m + 1} = 1 .}
 #'
-#' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
 #' @param m The number of nonboundary knots.
 #'
@@ -32,7 +32,7 @@ generate_knots <- function(m) {
 #' See Choi, Li & Wang (2013) page 615 for details.
 #' This is a helper function of [get_all_tau].
 #'
-#' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
 #' @param i The knot number (\eqn{-p} through \eqn{m + p + 1}).
 #' @param p The order of the splines.
@@ -63,7 +63,7 @@ get_tau <- function(i, p, m, kVec) {
 #' Repeatedly call [get_tau] for all \eqn{\tau_{i}.}
 #' See Choi, Li & Wang (2013, p. 615) for details.
 #'
-#' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
@@ -90,7 +90,7 @@ get_all_tau <- function(p, m) {
 #' f_{j}^{[l]}(x) = \frac{m + 1}{l} \left( f_{j}^{[l - 1]}(x + 1) - \tau_{j - p} f_{j}^{[l - 1]}(x) + \tau_{j - p + l + 1} f_{j + 1}^{[l - 1]}(x) -  f_{j + 1}^{[l - 1]}(x + 1)  \right)
 #' }
 #'
-#' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
 #' @param x Numeric value for which the function is calculated at.
 #' @param j Index of basis function of order \eqn{l}.
@@ -188,7 +188,7 @@ get_splines_df <- function(x, p, m, taus) {
 #' The set of weights are calculated in [compute_splines_est], and are of form
 #' \eqn{w_{i} = (N - \tau_{i}) / ((1 - \widehat{C}(\tau_{i}))^{2}).}
 #'
-#' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
 #' @param par A vector of parameters to minimise.
 #' @param splines_df A dataframe whose structure is found in [get_splines_df].
@@ -225,14 +225,14 @@ solve_spline <- function(par, splines_df, weights) {
 
 #' Compute the Splines Estimator.
 #'
-#' Compute the estimated covariance function found in Choi, Li & Wang (2013, pp. 614-617).
+#' Compute the estimated covariance function from Choi, Li & Wang (2013, pp. 614-617).
 #' \deqn{C(\tau) = \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{[p]}(\tau^{2}),}
 #' where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the splines, \eqn{\tau} is the isotropic distance, \eqn{\beta_{j}} are nonnegative weights and \eqn{f_{j}^{[p]}} are basis functions of order \eqn{p.}
 #' For optimisation, the Nelder-Mead and L-BFGS-B methods are used, the one which selects parameters which minimises the objective function is chosen.
 #'
-#' @references Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
-#' @param X A vector representing the process.
+#' @param X A vector representing the values of the process.
 #' @param x A vector of lags.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param estCov An estimated covariance function to fit to (a vector).

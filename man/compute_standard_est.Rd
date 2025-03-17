@@ -14,7 +14,7 @@ compute_standard_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the process.}
+\item{X}{A vector representing the values of the process.}
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
@@ -30,7 +30,7 @@ compute_standard_est(
 A vector whose values are the estimated autocovariance.
 }
 \description{
-This computes the following two variants of the autocovariance function depending on
+This function computes the following two estimates of the autocovariance function depending on
 the parameter \code{pd}.
 }
 \details{
@@ -52,4 +52,7 @@ This does not occur for the nonpositive-definite estimator.
 \examples{
 X <- c(1, 2, 3)
 compute_standard_est(X, 2, length(X), mean(X), pd=FALSE)
+}
+\references{
+Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society (Vol. 54, Issue 1). 10.17713/ajs.v54i1.1975
 }

@@ -128,7 +128,7 @@ taper <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE
 #' \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n})^{-1} \sum_{t=1}^{N-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 #' where \eqn{a} is a window function, \eqn{\rho} is a scale parameter. The taper functions are precomputed in [compute_tapered_est].
 #'
-#' @param X A numeric vector representing the process.
+#' @param X A vector representing the values of the process.
 #' @param meanX The average value of the X
 #' @param h The lag at which the tapered covariance function is computed at.
 #' @param h2n The value of \eqn{H_{2, n}(0)}, computed within [compute_tapered_est].
@@ -158,7 +158,7 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 
 #' Compute the tapered covariance function over a set of lags.
 #'
-#' This computes the tapered covariance over a set of lags,
+#' This function computes the tapered covariance over a set of lags,
 #' \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 #' where \eqn{a} is a window function, \eqn{\rho} is a scale parameter.
 #' For each lag, the tapered covariance is computed in [tapered_cov_single].
@@ -178,7 +178,7 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #' @references
 #' Dahlhaus R., Künsch, H. (1987). Edge Effects and Efficient Parameter Estimation for Stationary Random Fields. In Biometrika (Vol. 74 Issue 4, pp. 877-882). 10.1093/biomet/74.4.877
 #'
-#' @param X A vector representing the process.
+#' @param X A vector representing the values of the process.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param rho A scale parameter greater than zero.
 #' @param window_name The name of the window function to be used. Possible values are:

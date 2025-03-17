@@ -14,7 +14,7 @@ compute_tapered_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the process.}
+\item{X}{A vector representing the values of the process.}
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
@@ -31,7 +31,7 @@ compute_tapered_est(
 A vector whose values are the tapered autocovariance estimator.
 }
 \description{
-This computes the tapered covariance over a set of lags,
+This function computes the tapered covariance over a set of lags,
 \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 where \eqn{a} is a window function, \eqn{\rho} is a scale parameter.
 For each lag, the tapered covariance is computed in \link{tapered_cov_single}.

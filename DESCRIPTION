@@ -5,7 +5,7 @@ Authors@R: c(
     person("Adam", "Bilchouris", email = "adam.bilchouris@gmail.com", role = c("cre", "aut")),
     person("Andriy", "Olenko", email = "a.olenko@latrobe.edu.au", role = "aut")
     )
-Description: Multiple nonparametric estimators for covariance functions.  
+Description: Several nonparametric estimators for covariance functions and related functions.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

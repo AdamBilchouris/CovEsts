@@ -1,6 +1,6 @@
 #' Computes the autocovariance function using the standard estimator.
 #'
-#' This computes the following two variants of the autocovariance function depending on
+#' This function computes the following two estimates of the autocovariance function depending on
 #' the parameter \code{pd}.
 #'
 #' For \code{pd = TRUE}:
@@ -18,7 +18,9 @@
 #' The positive-definite estimator must be used cautiously when estimating over all lags as the sum of the autocorrelation function converges to \eqn{-1/2}.
 #' This does not occur for the nonpositive-definite estimator.
 #'
-#' @param X A vector representing the process.
+#' @references Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society (Vol. 54, Issue 1). 10.17713/ajs.v54i1.1975
+#'
+#' @param X A vector representing the values of the process.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param N The length of X.
 #' @param meanX The average value of X.

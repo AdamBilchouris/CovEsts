@@ -29,5 +29,5 @@ kVec <- generate_knots(2)
 get_tau(1, 3, 2, kVec)
 }
 \references{
-Choi, I., Li, B. & Wang, X. Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611–630 (2013). https://doi.org/10.1007/s13253-013-0152-z
+Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 }

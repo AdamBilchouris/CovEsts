@@ -3,13 +3,13 @@
 #' This function computes the area between functions.
 #'
 #' @details
-#' This function computes the area between the two estimated functions over a set of lags, from 0 up to \eqn{tau_{0}.}
+#' This function computes the area between the two estimated functions over a set of lags, from 0 up to \eqn{\tau_{0}.}
 #' \deqn{
 #' \int_{0}^{\tau_{0}} \left| \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau) \right| d\tau ,
 #' }
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 #'
-#' If \code{lags} is empty then the returned area will be inflated.
+#' If \code{lags} is empty a difference of 1 will be used which results in a different area than if lags is specified.
 #'
 #' @param est1 A numeric vector representing the first estimated covariance function.
 #' @param est2 A numeric vector representing the second estimated covariance function.

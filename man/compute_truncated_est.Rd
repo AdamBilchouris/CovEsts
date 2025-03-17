@@ -19,7 +19,7 @@ compute_truncated_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the process.}
+\item{X}{A vector representing the values of the process.}
 
 \item{x}{A vector of lags.}
 
@@ -85,7 +85,7 @@ compute_truncated_est(X, 1:4, mean(X), 1:3, 1, 2, 0.1,
                   "gaussian", c(), FALSE, TRUE)
 }
 \references{
-Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. In Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
+Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
 
-Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the Nonparametric Estimation of Covariance Functions. In The Annals of Statistics (Vol. 22, Issue 4). Institute of Mathematical Statistics. 10.1214/aos/1176325774
+Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 }

@@ -1,24 +1,25 @@
 #' Kernel correction of the standard estimator.
 #'
-#' This applies kernel correction to the standard estimators.
-#' It considers a kernel \eqn{a(\cdot)} which vanishes after a certain distance, \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process.
+#' This function computes andthe standard estimator and applies kernel correction to it.
+#' It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
+#' The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
 #' \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
-#' Also, \eqn{a(0) = 1.}
 #'
 #' @details
 #' The aim of this estimator is gradually bring an estimator to zero through the use of a kernel multiplier. This can be useful when estimating a
-#' covariance function that is short-range dependent as estimators can have small fluctuations as the lag increases.
+#' covariance function that is short-range dependent as estimators can have large fluctuations as the lag increases.
 #' This estimator can be positive-definite depending on whether the choice of \eqn{\widehat{C}} and \eqn{a} are chosen to be positive-definite or not.
 #'
 #' @references
 #' Yaglom AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.
 #'
-#' @param X A vector representing the process.
+#' @param X A vector representing the values of the process.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel] for parameters.
-#' In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.
+#' In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", \code{N_T} takes the place of \eqn{\theta}.
+#' For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, only \eqn{\nu} is needed for this vector.
 #' @param N_T The rate at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.
 #' @param N The length of X.
 #' @param meanX The average value of X.
@@ -78,7 +79,8 @@ compute_corrected_standard_est <- function(X, maxLag, kernel_name, kernel_params
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel] for parameters.
-#' In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.
+#' In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", \code{N_T} takes the place of \eqn{\theta}.
+#' For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, only \eqn{\nu} is needed for this vector.
 #' @param N_T The rate at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.
 #' @param custom_kernel If a custom kernel is to be used or not.  See the examples of [compute_corrected_standard_est] for usage.
 #'

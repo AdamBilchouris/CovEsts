@@ -18,7 +18,7 @@ compute_corrected_standard_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the process.}
+\item{X}{A vector representing the values of the process.}
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
@@ -26,7 +26,8 @@ compute_corrected_standard_est(
 "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".}
 
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel} for parameters.
-In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", no parameter is passed as \eqn{\theta} is \code{N_T}.}
+In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", \code{N_T} takes the place of \eqn{\theta}.
+For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, only \eqn{\nu} is needed for this vector.}
 
 \item{N_T}{The rate at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.}
 
@@ -44,14 +45,14 @@ In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circul
 A vector whose values are a kernel corrected autocovariance estimator.
 }
 \description{
-This applies kernel correction to the standard estimators.
-It considers a kernel \eqn{a(\cdot)} which vanishes after a certain distance, \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process.
+This function computes andthe standard estimator and applies kernel correction to it.
+It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
+The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
 \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
-Also, \eqn{a(0) = 1.}
 }
 \details{
 The aim of this estimator is gradually bring an estimator to zero through the use of a kernel multiplier. This can be useful when estimating a
-covariance function that is short-range dependent as estimators can have small fluctuations as the lag increases.
+covariance function that is short-range dependent as estimators can have large fluctuations as the lag increases.
 This estimator can be positive-definite depending on whether the choice of \eqn{\widehat{C}} and \eqn{a} are chosen to be positive-definite or not.
 }
 \examples{
