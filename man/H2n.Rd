@@ -22,9 +22,9 @@ H2n(n, rho, window_name, window_params = c(1), custom_window = FALSE)
 A single value being \eqn{H_{2, n}(0)}.
 }
 \description{
-This function is used in the computation of \link{tapered_cov_single}.
+This helper function is used in the computation of the helper function \link{tapered_cov_single}.
 \deqn{H_{2, n}(0) = \sum_{s=1}^{n} a((s - 1/2) / n)^2 , }
-where \eqn{a} is a window function.
+where \eqn{a(\cdot)} is a window function.
 }
 \examples{
 H2n(3, 0.6, "tukey")

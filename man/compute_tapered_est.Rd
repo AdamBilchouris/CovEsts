@@ -33,20 +33,20 @@ A vector whose values are the tapered autocovariance estimator.
 \description{
 This function computes the tapered covariance over a set of lags,
 \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
-where \eqn{a} is a window function, \eqn{\rho} is a scale parameter.
-For each lag, the tapered covariance is computed in \link{tapered_cov_single}.
+where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter.
+For each lag, the tapered covariance is computed using the function \link{tapered_cov_single}.
 }
 \details{
-This computes the tapered covariance over a set of lags,
+This function computes the tapered covariance over a set of lags,
 \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
-where \eqn{a} is a window function, \eqn{\rho} is a scale parameter.
+where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter.
 This estimator considers the edge effect during estimation, assigning a lower weight to values closer to the edges and higher weights for observations closer to the middle.
 This estimator is positive-definite and asymptotically unbiased.
 
 Internally, this function calls \link{tapered_cov_single} for each lag \eqn{h}.
 
 The set of taper values (\eqn{a((t_{i} - 1/2) / n; \rho)}) are precomputed in order to save time, as they do not vary.
-When varying with lag \eqn{h} (\eqn{a((t_{i} + h - 1/2) / n; \rho)}), the set of taper values is truncated to get the desired result.
+As \eqn{a((t_{i} + h - 1/2) / n; \rho)} is varying with lag \eqn{h}, the set of taper values is truncated to get the desired result.
 }
 \examples{
 X <- c(1, 2, 3)

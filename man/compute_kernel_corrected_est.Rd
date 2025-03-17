@@ -33,7 +33,10 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 A vector whose values are a kernel corrected autocovariance estimator.
 }
 \description{
-Kernel correction for an estimated autocovariance function.
+This function computes applies kernel correction to an estimated autocovariance function.
+It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
+The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
+\deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
 }
 \examples{
 X <- rnorm(1000)

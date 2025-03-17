@@ -14,7 +14,7 @@ max_distance(est1, est2, plot = FALSE)
 \item{plot}{A boolean as to whether a plot should be created. By default, no plot is created.}
 }
 \value{
-A numeric value representing the area between the estimated function
+A numeric value representing the maximum vertical distance between the two estimated functions.
 }
 \description{
 This function computes the maximum vertical distance between functions.

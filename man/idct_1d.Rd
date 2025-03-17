@@ -10,10 +10,10 @@ idct_1d(X)
 \item{X}{A vector of values for which the discrete cosine transform is being computed.}
 }
 \value{
-A vector whose values are the inverse transform.
+A vector with the inverse transform values.
 }
 \description{
-This computes the inverse of the Type-II discrete cosine transform.
+This helper function computes the inverse of the Type-II discrete cosine transform.
 }
 \details{
 The Type-II inverse discrete cosine transform is computed using \link[stats:fft]{stats::fft}.

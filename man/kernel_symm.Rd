@@ -7,7 +7,7 @@
 kernel_symm(x, name, params = c(1))
 }
 \arguments{
-\item{x}{A vector or matrix of values of at least length 1}
+\item{x}{A vector or matrix of arguments of at least length 1 for which the kernel is computed at.}
 
 \item{name}{The name of the kernel. Options are: "gaussian", "wave", "rational_quadratic", "bessel_j".}
 
@@ -17,27 +17,31 @@ kernel_symm(x, name, params = c(1))
 A vector of values.
 }
 \description{
-These have the properties of symmetric probability   distributions.
+These functions computes values of kernels that have the properties of symmetric probability distributions.
 }
 \details{
 \strong{Symmetric Gaussian Kernel}.
-\deqn{a(\tau;\theta) = \sqrt{\pi \theta} \exp(-\tau^{2} / \theta), \theta > 0.}
+This function computes the symmetric Gaussian kernel.
+\deqn{a(x;\theta) = \sqrt{\pi \theta} \exp(-x^{2} / \theta), \theta > 0.}
 The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 
 \strong{Symmetric Wave Kernel}.
-\deqn{a(\tau;\theta) = \left\{ \begin{array}{ll}
-(\sqrt{\theta^{2}} \pi)^{-1} \frac{\theta}{\tau} \sin\left( \frac{\tau}{\theta} \right), & \tau \neq 0 \\
-1, & \tau = 0
+This function computes the wave (cardinal sine) kernel.
+\deqn{a(x;\theta) = \left\{ \begin{array}{ll}
+(\sqrt{\theta^{2}} \pi)^{-1} \frac{\theta}{x} \sin\left( \frac{x}{\theta} \right), & x \neq 0 \\
+1, & x = 0
 \end{array} ,
 \theta > 0 . \right.}
 The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}
 
 \strong{Symmetric Rational Quadratic Kernel}.
-\deqn{a(\tau;\theta) = (\pi \sqrt{\theta})^{-1} (1 - \frac{\tau^{2}}{\tau^{2} + \theta}), \theta > 0.}
+This function computes the symmetric rational quadratic kernel.
+\deqn{a(x;\theta) = (\pi \sqrt{\theta})^{-1} (1 - \frac{x^{2}}{x^{2} + \theta}), \theta > 0.}
 The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}
 
 \strong{Symmetric Besesel Kernel}.
-\deqn{a(\tau; \theta, \nu) = (\Gamma(\frac{1}{2} + \nu)/(2 \sqrt{\pi} \theta \Gamma(1 + \nu))) ( 2^{\nu} \Gamma(\nu + 1) J_{\nu}(\tau / \theta) (\tau / \theta)^{-\nu}), \theta > 0, \nu \geq \frac{d}{2} - 1.}
+This function computes the symmetric Bessel kernel, which is valid when \eqn{\nu \geq \frac{d}{2} - 1.}
+\deqn{a(x; \theta, \nu) = (\Gamma(\frac{1}{2} + \nu)/(2 \sqrt{\pi} \theta \Gamma(1 + \nu))) ( 2^{\nu} \Gamma(\nu + 1) J_{\nu}(x / \theta) (x / \theta)^{-\nu}), \theta > 0, \nu \geq \frac{d}{2} - 1.}
 where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind and \eqn{d} is the dimension.
 The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d}\code{)}.
 }

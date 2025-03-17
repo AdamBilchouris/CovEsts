@@ -1,6 +1,6 @@
 #' Kernel correction of the standard estimator.
 #'
-#' This function computes andthe standard estimator and applies kernel correction to it.
+#' This function computes and the standard estimator and applies kernel correction to it.
 #' It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
 #' The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
 #' \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
@@ -11,7 +11,7 @@
 #' This estimator can be positive-definite depending on whether the choice of \eqn{\widehat{C}} and \eqn{a} are chosen to be positive-definite or not.
 #'
 #' @references
-#' Yaglom AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.
+#' Yaglom, AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.
 #'
 #' @param X A vector representing the values of the process.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
@@ -73,6 +73,11 @@ compute_corrected_standard_est <- function(X, maxLag, kernel_name, kernel_params
 }
 
 #' Kernel correction for an estimated autocovariance function.
+#'
+#' This function computes applies kernel correction to an estimated autocovariance function.
+#' It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
+#' The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
+#' \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
 #'
 #' @param cov A vector whose values are an estimate autocovariance function.
 #' @param maxLag The maximum lag to compute the autocovariance function at.

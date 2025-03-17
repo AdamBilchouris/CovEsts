@@ -15,10 +15,10 @@ spectral_norm(est1, est2)
 The spectral norm of the differences between the two functions.
 }
 \description{
-This function computes the spectral norm between the two estimated autocovariance functions.
+This function computes the spectral norm of the difference of two estimated autocovariance functions.
 }
 \details{
-This function computes the spectral norm between the two estimated autocovariance functions.
+This function computes the spectral norm of the difference of two estimated autocovariance functions.
 Let \eqn{\hat{D}(\tau) = \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau),}
 where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 

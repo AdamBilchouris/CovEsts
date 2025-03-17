@@ -15,7 +15,7 @@ get_all_tau(p, m)
 A numerical vector representing all \eqn{\tau_{i}}s.
 }
 \description{
-Repeatedly call \link{get_tau} for all \eqn{\tau_{i}.}
+A helper function that repeatedly calls \link{get_tau} to obtain all \eqn{\tau_{i}.}
 See Choi, Li & Wang (2013, p. 615) for details.
 }
 \examples{

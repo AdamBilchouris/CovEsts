@@ -15,10 +15,10 @@ make_pd(x, method.1 = TRUE)
 A vector that is the adjusted function.
 }
 \description{
-This function can make any function positive-definite using methods porposed by Hall and colleagues.
+This helper function can make any function positive-definite using methods proposed by P. Hall and his coauthors.
 }
 \details{
-This function perform positive-definite adjustments proposed by Hall and colleagues.
+This function perform positive-definite adjustments proposed by P. Hall and his coauthors.
 
 Method 1 is as follows:
 \enumerate{

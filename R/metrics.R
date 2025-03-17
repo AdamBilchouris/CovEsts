@@ -75,7 +75,7 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
 #' @param est2 A numeric vector representing the second estimated covariance function.
 #' @param plot A boolean as to whether a plot should be created. By default, no plot is created.
 #'
-#' @return A numeric value representing the area between the estimated function
+#' @return A numeric value representing the maximum vertical distance between the two estimated functions.
 #' @export
 #'
 #' @examples
@@ -114,10 +114,10 @@ max_distance <- function(est1, est2, plot = FALSE) {
 
 #' Create a cyclic matrix for a given vector.
 #'
-#' This function creates a cyclic matrix for a given vector \code{v}.
+#' This helper function creates a cyclic matrix for a given vector \eqn{v}.
 #'
 #' @details
-#' This function creates a cylic matrix for a given vector \code{v}.
+#' This function creates a cylic matrix for a given vector \eqn{v}.
 #' If \eqn{v = \{v_{0}, v_{1} , \dots , v_{N-1} , v_{N} \},} then the cyclic matrix will
 #' be of the form
 #' \deqn{\left[ {\begin{array}{ccccc}
@@ -151,10 +151,10 @@ create_cyclic_matrix <- function(v) {
 
 #' Compute spectral norm between estimated functions.
 #'
-#' This function computes the spectral norm between the two estimated autocovariance functions.
+#' This function computes the spectral norm of the difference of two estimated autocovariance functions.
 #'
 #' @details
-#' This function computes the spectral norm between the two estimated autocovariance functions.
+#' This function computes the spectral norm of the difference of two estimated autocovariance functions.
 #' Let \eqn{\hat{D}(\tau) = \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau),}
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 #'

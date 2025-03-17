@@ -13,7 +13,7 @@ Xij_mat(X)
 A matrix of size \eqn{N \times N}, where \eqn{N} is the length of the vector X.
 }
 \description{
-This computes the matrix of pairwise covariance values, \eqn{X_{ij},} for the kernel regression estimator,
+This helper function computes the matrix of pairwise values, \eqn{X_{ij},} for the kernel regression estimator,
 \deqn{X_{ij} = (X_{i} - \bar{X}) (X_{j} - \bar{X}) .}
 }
 \examples{

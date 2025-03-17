@@ -10,10 +10,10 @@ dct_1d(X)
 \item{X}{A vector of values for which the discrete cosine transform is being computed.}
 }
 \value{
-A vector whose values are the transform.
+A vector of discrete cosine transform values.
 }
 \description{
-This computes the Type-II discrete cosine transform.
+This helper function computes the Type-II discrete cosine transform.
 }
 \details{
 The Type-II discrete cosine transform is obtained using \link[stats:fft]{stats::fft}. Note this method does not utilise Makhoul's method for computing the DCT.

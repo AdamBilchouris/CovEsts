@@ -16,10 +16,10 @@ get_tau(i, p, m, kVec)
 \item{kVec}{Knot vector - see \link{generate_knots}.}
 }
 \value{
-A numerical value representing \eqn{\tau_{i}.}
+The numerical value of \eqn{\tau_{i}.}
 }
 \description{
-Transforms the knots from \link{generate_knots} into the following form:
+A helper function that transforms the knots from \link{generate_knots} into the following form:
 For \eqn{i = -p , \dots , -1 , m + 2, \dots , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
 See Choi, Li & Wang (2013) page 615 for details.
 This is a helper function of \link{get_all_tau}.

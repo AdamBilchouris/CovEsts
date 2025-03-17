@@ -45,7 +45,7 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 A vector whose values are a kernel corrected autocovariance estimator.
 }
 \description{
-This function computes andthe standard estimator and applies kernel correction to it.
+This function computes and the standard estimator and applies kernel correction to it.
 It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
 The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
 \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
@@ -81,5 +81,5 @@ plot(compute_corrected_standard_est(Y, length(Y)-1,
      "my_kernel", kernel_params=c(2, 0.25), custom_kernel = TRUE))
 }
 \references{
-Yaglom AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.
+Yaglom, AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.
 }

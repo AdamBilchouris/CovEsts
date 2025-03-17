@@ -22,7 +22,7 @@ taper(x, rho, window_name, window_params = c(1), custom_window = FALSE)
 A vector of taper values.
 }
 \description{
-This function repeatedly calls \link{taper_single} (refer to its manual).
+This helper function repeatedly calls \link{taper_single} (refer to its manual).
 }
 \examples{
 X <- c(0.1, 0.2, 0.3)

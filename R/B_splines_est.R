@@ -1,6 +1,6 @@
 #' Generate Spline Knots.
 #'
-#' Generates \eqn{m + 2} spline knots of the form:
+#' A helper function that generates \eqn{m + 2} spline knots of the form:
 #' \deqn{
 #' \kappa_{0} = 0 , \kappa_{1} = 1 / (m + 1) , \dots , \kappa_{m} = m / (m + 1) , \kappa_{m + 1} = 1 .
 #' }
@@ -27,7 +27,7 @@ generate_knots <- function(m) {
 
 #' Get a specific \eqn{\tau_{i}}.
 #'
-#' Transforms the knots from [generate_knots] into the following form:
+#' A helper function that transforms the knots from [generate_knots] into the following form:
 #' For \eqn{i = -p , \dots , -1 , m + 2, \dots , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
 #' See Choi, Li & Wang (2013) page 615 for details.
 #' This is a helper function of [get_all_tau].
@@ -39,7 +39,7 @@ generate_knots <- function(m) {
 #' @param m The number of nonboundary knots.
 #' @param kVec Knot vector - see [generate_knots].
 #'
-#' @return A numerical value representing \eqn{\tau_{i}.}
+#' @return The numerical value of \eqn{\tau_{i}.}
 #' @export
 #'
 #' @examples
@@ -60,7 +60,7 @@ get_tau <- function(i, p, m, kVec) {
 }
 #' Get all \eqn{\tau}.
 #'
-#' Repeatedly call [get_tau] for all \eqn{\tau_{i}.}
+#' A helper function that repeatedly calls [get_tau] to obtain all \eqn{\tau_{i}.}
 #' See Choi, Li & Wang (2013, p. 615) for details.
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
@@ -85,7 +85,7 @@ get_all_tau <- function(p, m) {
 
 #' Compute \eqn{f_{j}^{[l]}(x)}.
 #'
-#' This is an implementation of the formula in Choi, Li & Wang (2013, p. 616).
+#' A helper function that is an implementation of the formula from Choi, Li & Wang (2013, p. 616).
 #' \deqn{
 #' f_{j}^{[l]}(x) = \frac{m + 1}{l} \left( f_{j}^{[l - 1]}(x + 1) - \tau_{j - p} f_{j}^{[l - 1]}(x) + \tau_{j - p + l + 1} f_{j + 1}^{[l - 1]}(x) -  f_{j + 1}^{[l - 1]}(x + 1)  \right)
 #' }
@@ -135,18 +135,18 @@ f_j_l <- function(x, j, l, p, m, taus) {
   }
 }
 
-#' Construct dataframe of basis functions.
+#' Construct data frame of basis functions.
 #'
-#' This function constructs a dataframe with the following structure:
+#' This helper function constructs a data frame with the following structure:
 #' * One column for the x-values
-#' * m + p columns of squared basis functions evaluated at the correspond x.
+#' * m + p columns values of squared basis functions evaluated at the correspond x.
 #'
 #' @param x A vector lags.
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #' @param taus Vector of \eqn{\tau}s, see [get_tau].
 #'
-#' @return A dataframe of the structure found above.
+#' @return A data frame of the structure found above.
 #' @export
 #'
 #' @examples
@@ -182,8 +182,8 @@ get_splines_df <- function(x, p, m, taus) {
 #' are a set of completely monotone basis functions, and \eqn{\widehat{C}} is an estimated covariance function.
 #' As per Choi, Li & Wang (2013, p. 617), \eqn{\mathbf{\beta}} can be estimated via weighted-least squares,
 #' \deqn{
-#' \hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(\tau_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(\tau_{i}^{2})  \right)^{2}
-#' },
+#' \hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(\tau_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(\tau_{i}^{2})  \right)^{2} ,
+#' }
 #' where there is a set of lags \eqn{\{\tau_{1} , \dots , \tau_{L} \}} and a set of weights \eqn{\{w_{1}, \dots , w_{L} \}.}
 #' The set of weights are calculated in [compute_splines_est], and are of form
 #' \eqn{w_{i} = (N - \tau_{i}) / ((1 - \widehat{C}(\tau_{i}))^{2}).}
@@ -191,7 +191,7 @@ get_splines_df <- function(x, p, m, taus) {
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
 #' @param par A vector of parameters to minimise.
-#' @param splines_df A dataframe whose structure is found in [get_splines_df].
+#' @param splines_df A data frame whose structure can be found in [get_splines_df].
 #' @param weights A vector of weights, see the description.
 #'
 #' @return The value of the objective function at those parameters.

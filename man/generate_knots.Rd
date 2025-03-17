@@ -13,7 +13,7 @@ generate_knots(m)
 A numeric vector representing the knots, including the boundary knots.
 }
 \description{
-Generates \eqn{m + 2} spline knots of the form:
+A helper function that generates \eqn{m + 2} spline knots of the form:
 \deqn{
 \kappa_{0} = 0 , \kappa_{1} = 1 / (m + 1) , \dots , \kappa_{m} = m / (m + 1) , \kappa_{m + 1} = 1 .
 }

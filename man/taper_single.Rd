@@ -22,7 +22,7 @@ taper_single(x, rho, window_name, window_params = c(1), custom_window = FALSE)
 A single value being the taper function value at x.
 }
 \description{
-This computes the taper function for a given window.
+This helper function computes the taper function for a given window.
 \deqn{a(x; \rho) = \left\{
 \begin{array}{ll}
    w(2x/\rho)     & 0 \leq x < \frac{1}{2} \rho, \\

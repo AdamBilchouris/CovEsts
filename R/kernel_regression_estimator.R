@@ -1,6 +1,6 @@
 #' Compute \eqn{X_{ij}} Matrix
 #'
-#' This computes the matrix of pairwise covariance values, \eqn{X_{ij},} for the kernel regression estimator,
+#' This helper function computes the matrix of pairwise values, \eqn{X_{ij},} for the kernel regression estimator,
 #' \deqn{X_{ij} = (X_{i} - \bar{X}) (X_{j} - \bar{X}) .}
 #'
 #' @references
@@ -32,8 +32,7 @@ Xij_mat <- function(X) {
 
 #' Compute \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
 #'
-#' This function computes \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
-#' This saves repeated computations in [compute_truncated_est].
+#' This helper function computes \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
 #'
 #' @details
 #' This function computes the following value,
@@ -41,7 +40,6 @@ Xij_mat <- function(X) {
 #' \hat{\rho}(T_{1}) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((T_{1} - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((T_{1} - t_{ij}) / h) \right)^{-1},
 #' }
 #' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
-#' In [compute_truncated_est], when \eqn{T_{1} < t \le T_{2}}, this value is required, possibly several times, so calculating it once can save repeated computations.
 #'
 #' @references
 #' Hall, P., & Patil, P. (1994). Properties of Nonparametric Estimators of Autocovariance for Stationary Random Fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
@@ -107,14 +105,14 @@ rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_para
 
 #' Compute \eqn{\rho(t)} for the truncated kernel regression estimator.
 #'
-#' This function computes \eqn{\rho(t)} for the truncated kernel regression estimator (see [compute_truncated_est]).
+#' This helper function computes \eqn{\rho(t)} for the truncated kernel regression estimator (see [compute_truncated_est]).
 #'
 #' @references
 #' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
-#' @param x A vector of indices.
+#' @param x A vector that are indices of the process X.
 #' @param meanX The average value of X.
 #' @param t The value at which the covariance function is calculated at.
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
@@ -211,7 +209,7 @@ truncated_point <- function(x, meanX, t, T1, T2, h, xij_mat, rhoT1, kernel_name=
 
 #' Compute 1D Discrete Cosine Transform
 #'
-#' This computes the Type-II discrete cosine transform.
+#' This helper function computes the Type-II discrete cosine transform.
 #'
 #' The Type-II discrete cosine transform is obtained using [stats::fft]. Note this method does not utilise Makhoul's method for computing the DCT.
 #' A new input \eqn{y} is created from \eqn{X} where \eqn{y_{2n} = 0}, \eqn{y_{2n+1} = X_{n}} for \eqn{0 \le n < N}, \eqn{y_{2N} = 0} and \eqn{y_{4N - n} = y_{n}}
@@ -223,7 +221,7 @@ truncated_point <- function(x, meanX, t, T1, T2, h, xij_mat, rhoT1, kernel_name=
 #'
 #' @param X A vector of values for which the discrete cosine transform is being computed.
 #'
-#' @return A vector whose values are the transform.
+#' @return A vector of discrete cosine transform values.
 #' @export
 #'
 #' @examples
@@ -241,7 +239,7 @@ dct_1d <- function(X) {
 
 #' Compute 1D Inverse Discrete Cosine Transform
 #'
-#' This computes the inverse of the Type-II discrete cosine transform.
+#' This helper function computes the inverse of the Type-II discrete cosine transform.
 #'
 #' @details
 #' The Type-II inverse discrete cosine transform is computed using [stats::fft].
@@ -258,7 +256,7 @@ dct_1d <- function(X) {
 #'
 #' @param X A vector of values for which the discrete cosine transform is being computed.
 #'
-#' @return A vector whose values are the inverse transform.
+#' @return A vector with the inverse transform values.
 #' @export
 #'
 #' @examples
@@ -302,9 +300,9 @@ idct_1d <- function(X) {
 #' where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator, see [compute_adjusted_est].
 #'
 #' Compared to [compute_adjusted_est], this function brings down the estimate to zero linearly between \eqn{T_{1}} and \eqn{T_{2}}.
-#' In the case of short-range dependence, this may be beneficial as it can remove estimation artefacts.
+#' In the case of short-range dependence, this may be beneficial as it can remove estimation artefacts at large lags.
 #'
-#' To make this estimator positive-definite, the following procedure is done:
+#' To make this estimator positive-definite, the following procedure is used:
 #' 1. Take the discrete cosine transform
 #' \eqn{\mathcal{F}^{c}(\hat{\rho}_{1}(t))}.
 #' 2. Find the smallest frequency where its associated value in the spectral domain is negative
@@ -313,7 +311,7 @@ idct_1d <- function(X) {
 #' 4. Perform the inversion.
 #'
 #' This ensures the covariance function estimate is positive-definite. If \eqn{\hat{\theta}} is the first nonzero sample frequency,
-#' the entire spectrum, apart from an impulse at zero, is zero, resulting in an adjusted function that is a horizontal line.
+#' the entire spectrum, apart from an impulse at zero, is zero, resulting in an adjusted function that is a horizontal line whose value is the area of the of the estimated function prior to the adjustment.
 #'
 #' @references
 #' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
@@ -349,12 +347,6 @@ compute_truncated_est <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussi
 
   xij_mat <- Xij_mat(X)
   rhoT1 <- rho_T1(x, meanX, T1, h, xij_mat, kernel_name, kernel_params, custom_kernel)
-
-  # # vals_truncated_1 <- sapply(1:length(t), function(i) truncated_point(x, meanX, t[i], T1, T2, h, xij_mat, rhoT1, kernel, kernel_params, custom_kernel))
-  # vals_truncated_1 <- c()
-  # for(i in 1:length(t)) {
-  #   vals_truncated_1 <- c(vals_truncated_1, truncated_point(x, meanX, t[i], T1, T2, h, xij_mat, rhoT1, kernel_name, kernel_params, custom_kernel))
-  # }
 
   outer_x_x <- outer(x, x, '-')
   vals_truncated_1 <- c()
@@ -460,22 +452,6 @@ compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_para
       K_ij <- get(kernel_name)(tt - outer_x_x, h, kernel_params)
       cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))
     }
-    # for(ti in 1:length(t)) {
-    #   numerators <- c()
-    #   denominators <- c()
-    #   for(i in 1:length(x)) {
-    #     tij <- x[i] - x
-    #     t_tij <- t[ti] - tij
-    #     X_ij <- xij_mat[i, ]
-    #     K_ij <- get(kernel_name)(t_tij, h, kernel_params)
-    #     numerator <- K_ij * X_ij
-    #     denominator <- K_ij
-    #
-    #     numerators <- c(numerators, sum(numerator))
-    #     denominators <- c(denominators, sum(denominator))
-    #   }
-    #   cov_vals <- c(cov_vals, sum(numerators) / sum(denominators))
-    # }
   }
   else {
     stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
@@ -483,24 +459,6 @@ compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_para
       K_ij <- get("kernel_symm")(tt - outer_x_x, kernel_name, c(h, kernel_params[1], kernel_params[2]))
       cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))
     }
-#
-#     for(ti in 1:length(t)) {
-#       numerators <- c()
-#       denominators <- c()
-#       for(i in 1:length(x)) {
-#         tij <- x[i] - x
-#         t_tij <- t[ti] - tij
-#         X_ij <- xij_mat[i, ]
-#         # K_ij <- get(paste0("kernel_symm_", kernel))(t_tij, h, kernel_params[1], kernel_params[2])
-#         K_ij <- get("kernel_symm")(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
-#         numerator <- K_ij * X_ij
-#         denominator <- K_ij
-#
-#         numerators <- c(numerators, sum(numerator))
-#         denominators <- c(denominators, sum(denominator))
-#       }
-#       cov_vals <- c(cov_vals, sum(numerators) / sum(denominators))
-#     }
   }
 
   if(pd) {
@@ -518,10 +476,10 @@ compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_para
 
 #' Make any function positive-definite
 #'
-#' This function can make any function positive-definite using methods porposed by Hall and colleagues.
+#' This helper function can make any function positive-definite using methods proposed by P. Hall and his coauthors.
 #'
 #' @details
-#' This function perform positive-definite adjustments proposed by Hall and colleagues.
+#' This function perform positive-definite adjustments proposed by P. Hall and his coauthors.
 #'
 #' Method 1 is as follows:
 #' 1. Take the discrete cosine transform,

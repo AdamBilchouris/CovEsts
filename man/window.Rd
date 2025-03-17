@@ -2,7 +2,7 @@
 % Please edit documentation in R/windows.R
 \name{window}
 \alias{window}
-\title{1D window functions.}
+\title{1D half-window functions.}
 \usage{
 window(x, name, params = c(1))
 }
@@ -17,36 +17,43 @@ window(x, name, params = c(1))
 A vector of values.
 }
 \description{
-A window function in this context is a continuous nondecreasing function such that at 0 it is 0, and at 1, it is 1.
-This computes one of the window functions listed below.
+A half-window function in this context is a continuous nondecreasing function such that at 0 it is 0, and at 1, it is 1.
+This computes one of the half-window functions listed below.
 }
 \details{
-\strong{Tukey Window}.
+\strong{Tukey Half-Window}.
+This function computes the Tukey half-window.
 \deqn{w(x) = \frac{1}{2} - \frac{1}{2} \cos(\pi x) , x \in [0, 1].}
 The \code{params} argument is empty, see the example.
 
-\strong{Triangular Window}.
+\strong{Triangular Half-Window}.
+This function computes the triangular half-window.
 \deqn{w(x) = x, x \in [0, 1].}
 The \code{params} argument is empty, see the example.
 
-\strong{Sine Window}.
+\strong{Sine Half-Window}.
+This function computes the sine half-window.
 \deqn{w(x) = \sin\left(\pi x / 2 \right), x \in [0, 1].}
 The \code{params} argument is empty, see the example.
 
-\strong{Power Sine Window}.
+\strong{Power Sine Half-Window}.
+This function computes the power sine half-window.
 \deqn{w(x; a) = \sin^{a}(\pi x / 2), x \in [0, 1], a > 0.}
 The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
 
-\strong{Blackman Window}.
+\strong{Blackman Half-Window}.
+This function computes the Blackman half-window.
 \deqn{w(x; \alpha) = ( (1 - \alpha) / 2) - \frac{1}{2} \cos(\pi x) + \frac{\alpha}{2} \cos(2 \pi x), x \in [0, 1], \alpha \in {R} .}
 The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
 It is recommended that \eqn{\alpha = 0.16} to ensure that \eqn{w(0) = 0, w(1) = 1.}
 
-\strong{Hann-Poisson Window}.
+\strong{Hann-Poisson Half-Window}.
+This function computes the Hann-Poisson half-window.
 \deqn{w(x; \alpha) = \frac{1}{2} (1 - \cos(\pi x)) \exp( - (\alpha \left|1 - x \right|) ) , x \in [0, 1], \alpha \in {R} .}
 The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
 
-\strong{Welch Window}.
+\strong{Welch Half-Window}.
+This function computes the Welch half-window.
 \deqn{w(x) = 1 - (x - 1)^2 , x \in [0, 1] . }
 The \code{params} argument is empty, see the example.
 }

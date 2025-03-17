@@ -2,7 +2,7 @@
 % Please edit documentation in R/B_splines_est.R
 \name{get_splines_df}
 \alias{get_splines_df}
-\title{Construct dataframe of basis functions.}
+\title{Construct data frame of basis functions.}
 \usage{
 get_splines_df(x, p, m, taus)
 }
@@ -16,13 +16,13 @@ get_splines_df(x, p, m, taus)
 \item{taus}{Vector of \eqn{\tau}s, see \link{get_tau}.}
 }
 \value{
-A dataframe of the structure found above.
+A data frame of the structure found above.
 }
 \description{
-This function constructs a dataframe with the following structure:
+This helper function constructs a data frame with the following structure:
 \itemize{
 \item One column for the x-values
-\item m + p columns of squared basis functions evaluated at the correspond x.
+\item m + p columns values of squared basis functions evaluated at the correspond x.
 }
 }
 \examples{

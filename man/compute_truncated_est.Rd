@@ -64,9 +64,9 @@ This function computes the truncated kernel regression estimator,
 where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator, see \link{compute_adjusted_est}.
 
 Compared to \link{compute_adjusted_est}, this function brings down the estimate to zero linearly between \eqn{T_{1}} and \eqn{T_{2}}.
-In the case of short-range dependence, this may be beneficial as it can remove estimation artefacts.
+In the case of short-range dependence, this may be beneficial as it can remove estimation artefacts at large lags.
 
-To make this estimator positive-definite, the following procedure is done:
+To make this estimator positive-definite, the following procedure is used:
 \enumerate{
 \item Take the discrete cosine transform
 \eqn{\mathcal{F}^{c}(\hat{\rho}_{1}(t))}.
@@ -77,7 +77,7 @@ To make this estimator positive-definite, the following procedure is done:
 }
 
 This ensures the covariance function estimate is positive-definite. If \eqn{\hat{\theta}} is the first nonzero sample frequency,
-the entire spectrum, apart from an impulse at zero, is zero, resulting in an adjusted function that is a horizontal line.
+the entire spectrum, apart from an impulse at zero, is zero, resulting in an adjusted function that is a horizontal line whose value is the area of the of the estimated function prior to the adjustment.
 }
 \examples{
 X <- c(1, 2, 3, 4)

@@ -13,10 +13,10 @@ create_cyclic_matrix(v)
 A cyclic matrix.
 }
 \description{
-This function creates a cyclic matrix for a given vector \code{v}.
+This helper function creates a cyclic matrix for a given vector \eqn{v}.
 }
 \details{
-This function creates a cylic matrix for a given vector \code{v}.
+This function creates a cylic matrix for a given vector \eqn{v}.
 If \eqn{v = \{v_{0}, v_{1} , \dots , v_{N-1} , v_{N} \},} then the cyclic matrix will
 be of the form
 \deqn{\left[ {\begin{array}{ccccc}

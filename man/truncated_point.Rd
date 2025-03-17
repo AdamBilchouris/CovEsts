@@ -19,7 +19,7 @@ truncated_point(
 )
 }
 \arguments{
-\item{x}{A vector of indices.}
+\item{x}{A vector that are indices of the process X.}
 
 \item{meanX}{The average value of X.}
 
@@ -46,7 +46,7 @@ truncated_point(
 The estimated covariance value at t.
 }
 \description{
-This function computes \eqn{\rho(t)} for the truncated kernel regression estimator (see \link{compute_truncated_est}).
+This helper function computes \eqn{\rho(t)} for the truncated kernel regression estimator (see \link{compute_truncated_est}).
 }
 \examples{
 X <- c(1, 2, 3, 4)

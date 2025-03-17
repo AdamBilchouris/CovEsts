@@ -37,8 +37,7 @@ rho_T1(
 The estimated covariance function at \eqn{T_{1}}.
 }
 \description{
-This function computes \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
-This saves repeated computations in \link{compute_truncated_est}.
+This helper function computes \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
 }
 \details{
 This function computes the following value,
@@ -46,7 +45,6 @@ This function computes the following value,
 \hat{\rho}(T_{1}) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((T_{1} - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((T_{1} - t_{ij}) / h) \right)^{-1},
 }
 where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
-In \link{compute_truncated_est}, when \eqn{T_{1} < t \le T_{2}}, this value is required, possibly several times, so calculating it once can save repeated computations.
 }
 \examples{
 X <- c(1, 2, 3, 4)
