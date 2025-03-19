@@ -7,7 +7,6 @@
 compute_truncated_est(
   X,
   x,
-  meanX,
   t,
   T1,
   T2,
@@ -15,15 +14,15 @@ compute_truncated_est(
   kernel_name = "gaussian",
   kernel_params = c(),
   custom_kernel = FALSE,
-  pd = TRUE
+  pd = TRUE,
+  type = "covariance",
+  meanX = mean(X)
 )
 }
 \arguments{
 \item{X}{A vector representing the values of the process.}
 
 \item{x}{A vector of lags.}
-
-\item{meanX}{The average value of X.}
 
 \item{t}{The values at which the covariance function is calculated at.}
 
@@ -40,7 +39,11 @@ compute_truncated_est(
 
 \item{custom_kernel}{If a custom kernel is to be used or not.}
 
-\item{pd}{Whether a positive definite estimate should be used.}
+\item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
+
+\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
+
+\item{meanX}{The average value of X. Defaults to \code{mean(X)}.}
 }
 \value{
 A vector whose values are the truncated kernel regression estimator.
@@ -81,8 +84,8 @@ the entire spectrum, apart from an impulse at zero, is zero, resulting in an adj
 }
 \examples{
 X <- c(1, 2, 3, 4)
-compute_truncated_est(X, 1:4, mean(X), 1:3, 1, 2, 0.1,
-                  "gaussian", c(), FALSE, TRUE)
+compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
+                  "gaussian", c(), FALSE, TRUE, meanX = mean(X))
 }
 \references{
 Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899

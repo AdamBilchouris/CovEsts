@@ -299,33 +299,33 @@ test_that("truncated_point fails for kernel_name not in 'gaussian' 'wave', 'rati
 
 # compute_truncated_est
 test_that("compute_truncated_est works", {
-  expect_equal(compute_truncated_est(test_X, test_x, test_meanX, c(1, 2, 3), 2, 3, 0.01, "gaussian"), c(0, -1, 0))
+  expect_equal(compute_truncated_est(test_X, test_x, c(1, 2, 3), 2, 3, 0.01, "gaussian", meanX = test_meanX), c(0, -1, 0))
 })
 
 test_that("compute_truncated_est fails for nonnumeric X", {
-  expect_error(compute_truncated_est(c(1, 'a', 3), test_x, test_meanX, 2, 2, 3, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(c(1, 1i, 3), test_x, test_meanX, 2, 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(c(1, 'a', 3), test_x, 2, 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(c(1, 1i, 3), test_x, 2, 2, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for empty X", {
-  expect_error(compute_truncated_est(c(), test_x, test_meanX, 2, 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(c(), test_x, 2, 2, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for at least one NA in X", {
-  expect_error(compute_truncated_est(c(1, NA, 3), test_x, test_meanX, 2, 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(c(1, NA, 3), test_x, 2, 2, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for empty x", {
-  expect_error(compute_truncated_est(test_X, c(), test_meanX, 2, 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, c(), 2, 2, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for nonnumeric x", {
-  expect_error(compute_truncated_est(test_X, c(1, 'a', 3), test_meanX, 2, 2, 3, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, c(1, 1i, 3), test_meanX, 2, 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, c(1, 'a', 3), 2, 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, c(1, 1i, 3), 2, 2, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for at least one NA in x", {
-  expect_error(compute_truncated_est(test_X, c(1, NA, 3), test_meanX, 2, 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, c(1, NA, 3), 2, 2, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for meanX of length not equal to 1", {
@@ -343,107 +343,107 @@ test_that("compute_truncated_est fails for NA meanX", {
 })
 
 test_that("compute_truncated_est fails for empty t", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, c(), 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, c(), 2, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for nonnumeric t", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 'a', 2, 3, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 1i, 2, 3, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, c(1, 'a', 3), 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 'a', 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 1i, 2, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, c(1, 'a', 3), 2, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for T1 of length not equal to 1", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, c(1, 2), 3, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, c(), 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, c(1, 2), 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, c(), 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for nonnumeric T1", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 'a', 3, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 1i, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 'a', 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 1i, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for NA T1", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, NA, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, NA, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for T1 <= 0", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 0, 3, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, -0.5, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 0, 3, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, -0.5, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for T2 of length not equal to 1", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, c(1, 2), 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, c(), 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, c(1, 2), 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, c(), 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for nonnumeric T2", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 'a', 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 1i, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 'a', 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 1i, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for NA T2", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, NA, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, NA, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for T2 <= T1", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 1, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 2, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 1, 0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 2, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for h of length not equal to 1", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 3, c(1, 2), "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 3, c(), "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, c(1, 2), "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, c(), "gaussian"))
 })
 
 test_that("compute_truncated_est fails for nonnumeric h", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 3, 'a', "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 3, 1i, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 'a', "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 1i, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for nonpositive h", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 3, 0, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 3, -0.01, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0, "gaussian"))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, -0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for nonboolean custom_kernel", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 3, 0.01, "gaussian", custom_kernel = 1))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 3, 0.01, "gaussian", custom_kernel = 'TRUE'))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", custom_kernel = 1))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", custom_kernel = 'TRUE'))
 })
 
 test_that("compute_truncated_est fails for nonboolean pd", {
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 3, 0.01, "gaussian", pd = 1))
-  expect_error(compute_truncated_est(test_X, test_x, test_meanX, 2, 2, 3, 0.01, "gaussian", pd = 'TRUE'))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", pd = 1))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", pd = 'TRUE'))
 })
 
 # compute_adjusted_est_est
 test_that("compute_adjusted_est works", {
-  expect_equal(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), 0.01, "gaussian"), c(2/3, -1/3, -1/3))
+  expect_equal(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", meanX = test_meanX), c(2/3, -1/3, -1/3))
 })
 
 test_that("compute_adjusted_est fails for nonnumeric X", {
-  expect_error(compute_adjusted_est(c(1, 'a', 3), test_x, test_meanX, c(1, 2, 3), 0.01, "gaussian"))
-  expect_error(compute_adjusted_est(c(1, 1i, 3), test_x, test_meanX, c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(c(1, 'a', 3), test_x, c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(c(1, 1i, 3), test_x, c(1, 2, 3), 0.01, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for empty X", {
-  expect_error(compute_adjusted_est(c(), test_x, test_meanX, c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(c(), test_x, c(1, 2, 3), 0.01, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for at least one NA in X", {
-  expect_error(compute_adjusted_est(c(1, NA, 3), test_x, test_meanX, c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(c(1, NA, 3), test_x, c(1, 2, 3), 0.01, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for nonnumeric x", {
-  expect_error(compute_adjusted_est(test_X, c(1, 'a', 3), test_meanX, c(1, 2, 3), 0.01, "gaussian"))
-  expect_error(compute_adjusted_est(test_X, c(1, 1i, 3), test_meanX, c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, c(1, 'a', 3), c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, c(1, 1i, 3), c(1, 2, 3), 0.01, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for empty x", {
-  expect_error(compute_adjusted_est(test_X, c(), test_meanX, c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, c(), c(1, 2, 3), 0.01, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for at least one NA in x", {
-  expect_error(compute_adjusted_est(test_X, c(1, NA, 3), test_meanX, c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, c(1, NA, 3), c(1, 2, 3), 0.01, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for meanX of length not equal to 1", {
@@ -461,45 +461,45 @@ test_that("compute_adjusted_est fails for NA meanX", {
 })
 
 test_that("compute_adjusted_est fails for at least one NA in t", {
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, NA, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, NA, 3), 0.01, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for nonnumeric t", {
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 'a', 3), 0.01, "gaussian"))
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 1i, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 'a', 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 1i, 3), 0.01, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for empty t", {
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(), 0.01, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for h of length not equal to 1", {
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), c(1, 2), "gaussian"))
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), c(), "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), c(1, 2), "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), c(), "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for nonnumeric h", {
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), 'a', "gaussian"))
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), 1i, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 'a', "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 1i, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for h <= 0", {
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), 0, "gaussian"))
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), -0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), -0.01, "gaussian"))
 })
 
 test_that("compute_adjusted_est fails for nonboolean custom_kernel", {
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), 0.01, "gaussian", custom_kernel = 1))
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), 0.01, "gaussian", custom_kernel = 'TRUE'))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", custom_kernel = 1))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", custom_kernel = 'TRUE'))
 })
 
 test_that("compute_adjusted_est fails for nonboolean pd", {
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), 0.01, "gaussian", pd = 1))
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), 0.01, "gaussian", pd = 'TRUE'))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", pd = 1))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", pd = 'TRUE'))
 })
 
 test_that("compute_adjusted_est fails for kernel_name not in 'gaussian' 'wave', 'rational_quadratic', 'bessel_j'", {
-  expect_error(compute_adjusted_est(test_X, test_x, test_meanX, c(1, 2, 3), 0.01, kernel_name = "123"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, kernel_name = "123"))
 })
 
 # make_pd

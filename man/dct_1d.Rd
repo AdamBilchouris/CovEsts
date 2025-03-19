@@ -26,5 +26,5 @@ X <- c(1, 2, 3)
 dct_1d(X)
 }
 \references{
-Wikipedia contributors. (2025, January 24). Discrete cosine transform. In Wikipedia, The Free Encyclopedia. https://en.wikipedia.org/w/index.php?title=Discrete_cosine_transform&oldid=1271621657
+Ochoa-Dominguez, H., & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
 }

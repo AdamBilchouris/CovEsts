@@ -30,5 +30,7 @@ X <- dct_1d(c(1, 2, 3))
 idct_1d(X)
 }
 \references{
-Wikipedia contributors. (2025, January 24). Discrete cosine transform. In Wikipedia, The Free Encyclopedia. https://en.wikipedia.org/w/index.php?title=Discrete_cosine_transform&oldid=1271621657
+Ochoa-Dominguez, H., & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
+
+endolith (2013, September 4). Fast Cosine Transform via FFT. https://dsp.stackexchange.com/a/10606 (archive: https://web.archive.org/web/20240423074416/https://dsp.stackexchange.com/questions/2807/fast-cosine-transform-via-fft).
 }

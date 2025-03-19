@@ -12,7 +12,8 @@ compute_splines_est(
   p,
   m,
   inital_pars = c(),
-  control = list(maxit = 1000)
+  control = list(maxit = 1000),
+  type = "covariance"
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ compute_splines_est(
 \item{inital_pars}{An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}}
 
 \item{control}{An optional list of optimisation parameters used in the optimisation process, see \code{control} in \link[stats:optim]{stats::optim}.}
+
+\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 }
 \value{
 A vector whose values are the spline autocovariance estimator.

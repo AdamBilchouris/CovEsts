@@ -10,7 +10,9 @@ compute_tapered_est(
   rho,
   window_name,
   window_params = c(1),
-  custom_window = FALSE
+  custom_window = FALSE,
+  type = "covariance",
+  meanX = mean(X)
 )
 }
 \arguments{
@@ -26,6 +28,10 @@ compute_tapered_est(
 \item{window_params}{A vector of parameters of the window function.}
 
 \item{custom_window}{If a custom window is to be used or not.}
+
+\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
+
+\item{meanX}{The average value of X. Defaults to \code{mean(X)}.}
 }
 \value{
 A vector whose values are the tapered autocovariance estimator.

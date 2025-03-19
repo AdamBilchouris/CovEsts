@@ -20,11 +20,11 @@ compute_standard_est(
 
 \item{N}{The length of X.}
 
-\item{meanX}{The average value of X.}
+\item{meanX}{The average value of X. Defaults to \code{mean(X)}.}
 
-\item{pd}{Whether a positive-definite estimate should be used.}
+\item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
-\item{type}{Compute either the 'covariance' or 'correlation'.}
+\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 }
 \value{
 A vector whose values are the estimated autocovariance.

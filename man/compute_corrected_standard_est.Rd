@@ -13,8 +13,8 @@ compute_corrected_standard_est(
   N = length(X),
   meanX = mean(X),
   pd = TRUE,
-  type = "covariance",
-  custom_kernel = FALSE
+  custom_kernel = FALSE,
+  type = "covariance"
 )
 }
 \arguments{
@@ -33,13 +33,13 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 
 \item{N}{The length of X.}
 
-\item{meanX}{The average value of X.}
+\item{meanX}{The average value of X. Defaults to \code{meanX}.}
 
-\item{pd}{Whether a positive definite estimate should be used.}
-
-\item{type}{Compute either the 'covariance' or 'correlation'.}
+\item{pd}{Whether a positive definite estimate should be used. Defaults to \code{TRUE}.}
 
 \item{custom_kernel}{If a custom kernel is to be used or not. See examples.}
+
+\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 }
 \value{
 A vector whose values are a kernel corrected autocovariance estimator.

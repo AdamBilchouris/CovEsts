@@ -217,7 +217,7 @@ truncated_point <- function(x, meanX, t, T1, T2, h, xij_mat, rhoT1, kernel_name=
 #' After this, the is done (in code): \code{dct <- 0.5 * Re(stats::fft(Y))[1:(length(Y) / 4)]}, which gives the Type-II discrete cosine transform.
 #'
 #' @references
-#' Wikipedia contributors. (2025, January 24). Discrete cosine transform. In Wikipedia, The Free Encyclopedia. https://en.wikipedia.org/w/index.php?title=Discrete_cosine_transform&oldid=1271621657
+#' Ochoa-Dominguez, H., & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
 #'
 #' @param X A vector of values for which the discrete cosine transform is being computed.
 #'
@@ -252,7 +252,9 @@ dct_1d <- function(X) {
 #' which gives the untransformed X.
 #'
 #' @references
-#' Wikipedia contributors. (2025, January 24). Discrete cosine transform. In Wikipedia, The Free Encyclopedia. https://en.wikipedia.org/w/index.php?title=Discrete_cosine_transform&oldid=1271621657
+#' Ochoa-Dominguez, H., & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
+#'
+#' endolith (2013, September 4). Fast Cosine Transform via FFT. https://dsp.stackexchange.com/a/10606 (archive: https://web.archive.org/web/20240423074416/https://dsp.stackexchange.com/questions/2807/fast-cosine-transform-via-fft).
 #'
 #' @param X A vector of values for which the discrete cosine transform is being computed.
 #'
@@ -272,9 +274,6 @@ idct_1d <- function(X) {
 
   # Recover original signal, drop 0s
   seqEven <- seq(2, 2*length(X), by=2)
-  # idct_vals_2 <- idct_vals[1:(2*length(X))]
-  # idct_vals_2 <- idct_vals_2[idct_vals_2 != 0]
-  # idct_vals_2 <- zapsmall(idct_vals_2)
   idct_vals_2 <- idct_vals[seqEven]
 
   return(idct_vals_2)
@@ -320,7 +319,6 @@ idct_1d <- function(X) {
 #'
 #' @param X A vector representing the values of the process.
 #' @param x A vector of lags.
-#' @param meanX The average value of X.
 #' @param t The values at which the covariance function is calculated at.
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
@@ -329,21 +327,23 @@ idct_1d <- function(X) {
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_est]'s example.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not.
-#' @param pd Whether a positive definite estimate should be used.
+#' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
+#' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
+#' @param meanX The average value of X. Defaults to \code{mean(X)}.
 #'
 #' @return A vector whose values are the truncated kernel regression estimator.
 #' @export
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
-#' compute_truncated_est(X, 1:4, mean(X), 1:3, 1, 2, 0.1,
-#'                   "gaussian", c(), FALSE, TRUE)
-compute_truncated_est <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussian",  kernel_params=c(), custom_kernel = FALSE, pd = TRUE) {
+#' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
+#'                   "gaussian", c(), FALSE, TRUE, meanX = mean(X))
+compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian",  kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(x) >= 1, is.numeric(x), !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), is.numeric(t), length(t) >= 1,
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(T2) == 1, is.numeric(T2),
-            !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0,
-            is.logical(custom_kernel), is.logical(pd))
+            !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel),
+            type %in% c('covariance', 'correlation'), is.logical(pd))
 
   xij_mat <- Xij_mat(X)
   rhoT1 <- rho_T1(x, meanX, T1, h, xij_mat, kernel_name, kernel_params, custom_kernel)
@@ -386,7 +386,15 @@ compute_truncated_est <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussi
     # Inversion
     vals_truncated_1_idct <- idct_1d(vals_truncated_1_dct)
 
+    if(type == 'correlation') {
+      vals_truncated_1_idct <- vals_truncated_1_idct / vals_truncated_1_idct[1]
+    }
+
     return(vals_truncated_1_idct)
+  }
+
+  if(type == 'correlation') {
+    vals_truncated_1 <- vals_truncated_1 / vals_truncated_1[1]
   }
 
   return(vals_truncated_1)
@@ -431,7 +439,9 @@ compute_truncated_est <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussi
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_est]'s example.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not.
-#' @param pd Whether a positive-definite estimate should be used.
+#' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
+#' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
+#' @param meanX The average value of X. Defaults to \code{mean(X)}.
 #'
 #' @return A vector whose values are the kernel regression estimator.
 #' @export
@@ -439,11 +449,12 @@ compute_truncated_est <- function(X, x, meanX, t, T1, T2, h, kernel_name="gaussi
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' compute_adjusted_est(X, 1:4, 1:3, 0.1, "gaussian", c(), FALSE, TRUE)
-compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE) {
+compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(x), length(x) >= 1, !any(is.na(x)),
-            !any(is.na(t)), is.numeric(t), length(t) >= 1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel), is.logical(pd))
+            length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
+            length(t) >= 1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel),
+            type %in% c('covariance', 'correlation'), is.logical(pd))
 
-  meanX <- mean(X)
   outer_x_x <- outer(x, x, '-')
   xij_mat <- Xij_mat(X)
   cov_vals <- c()
@@ -469,7 +480,15 @@ compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_para
     # Invert and return.
     cov_idct <- idct_1d(cov_dct)
 
+    if(type == 'correlation') {
+      cov_idct <- cov_idct / cov_idct[1]
+    }
+
     return(cov_idct)
+  }
+
+  if(type == 'correlation') {
+    cov_vals <- cov_vals / cov_vals[1]
   }
   return(cov_vals)
 }

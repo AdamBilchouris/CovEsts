@@ -23,9 +23,9 @@
 #' @param X A vector representing the values of the process.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param N The length of X.
-#' @param meanX The average value of X.
-#' @param pd Whether a positive-definite estimate should be used.
-#' @param type Compute either the 'covariance' or 'correlation'.
+#' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
+#' @param meanX The average value of X. Defaults to \code{mean(X)}.
+#' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #'
 #' @return A vector whose values are the estimated autocovariance.
 #' @export
@@ -37,7 +37,7 @@
 #' compute_standard_est(X, 2, length(X), mean(X), pd=FALSE)
 compute_standard_est <- function(X, maxLag, N=length(X), meanX=mean(X), pd=TRUE, type='covariance') {
   stopifnot(N >= 0, length(X) > 0, is.vector(X), is.numeric(X), N == length(X), is.logical(pd), maxLag >= 0, maxLag <= (N - 1),
-            maxLag %% 1 == 0, type %in% c('covariance', 'correlation'))
+            maxLag %% 1 == 0, length(meanX) == 1, is.numeric(meanX), !is.na(meanX), type %in% c('covariance', 'correlation'))
   # retVec <- sapply(seq(0, maxLag, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
   retVec <- as.vector(stats::acf(X, lag.max = maxLag, type = "covariance", plot = FALSE)$acf)
   if(!pd) {

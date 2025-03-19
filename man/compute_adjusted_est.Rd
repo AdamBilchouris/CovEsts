@@ -12,7 +12,9 @@ compute_adjusted_est(
   kernel_name = "gaussian",
   kernel_params = c(),
   custom_kernel = FALSE,
-  pd = TRUE
+  pd = TRUE,
+  type = "covariance",
+  meanX = mean(X)
 )
 }
 \arguments{
@@ -31,7 +33,11 @@ compute_adjusted_est(
 
 \item{custom_kernel}{If a custom kernel is to be used or not.}
 
-\item{pd}{Whether a positive-definite estimate should be used.}
+\item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
+
+\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
+
+\item{meanX}{The average value of X. Defaults to \code{mean(X)}.}
 }
 \value{
 A vector whose values are the kernel regression estimator.

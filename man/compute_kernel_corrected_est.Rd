@@ -10,6 +10,7 @@ compute_kernel_corrected_est(
   kernel_name,
   kernel_params = c(),
   N_T = 0.1 * length(cov),
+  type = "covariance",
   custom_kernel = FALSE
 )
 }
@@ -26,6 +27,8 @@ In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circul
 For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, only \eqn{\nu} is needed for this vector.}
 
 \item{N_T}{The rate at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.}
+
+\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 
 \item{custom_kernel}{If a custom kernel is to be used or not.  See the examples of \link{compute_corrected_standard_est} for usage.}
 }
