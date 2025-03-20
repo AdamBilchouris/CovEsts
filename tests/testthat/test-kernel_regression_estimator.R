@@ -1,19 +1,32 @@
 # Xij_mat
 test_that("Xij_mat works", {
-  expect_equal(Xij_mat(c(1, 2)), matrix(c(0.25, -0.25, -0.25, 0.25), ncol=2, byrow=T))
+  expect_equal(Xij_mat(c(1, 2), mean(c(1, 2))), matrix(c(0.25, -0.25, -0.25, 0.25), ncol=2, byrow=T))
 })
 
 test_that("Xij_mat fails for an empty process", {
-  expect_error(Xij_mat(c()))
+  expect_error(Xij_mat(c(), mean(c(1, 2))))
 })
 
 test_that("Xij_mat fails for nonnumeric process", {
-  expect_error(Xij_mat(c('a')))
-  expect_error(Xij_mat(c(1i)))
+  expect_error(Xij_mat(c('a'), mean(c(1, 2))))
+  expect_error(Xij_mat(c(1i), mean(c(1, 2))))
 })
 
 test_that("Xij_mat fails for a process with at least one NA", {
-  expect_error(Xij_mat(c(1, NA, 2)))
+  expect_error(Xij_mat(c(1, NA, 2), mean(c(1, 2))))
+})
+
+test_that("Xij_mat fails for meanX not of length 1", {
+  expect_error(Xij_mat(c(1, 2), c(1, 2)))
+})
+
+test_that("Xij_mat fails for nonnumeric meanX", {
+  expect_error(Xij_mat(c(1, 2), 'a'))
+  expect_error(Xij_mat(c(1, 2), 1i))
+})
+
+test_that("Xij_mat fails for NA meanX", {
+  expect_error(Xij_mat(c(1, 2), NA))
 })
 
 # dct_1d

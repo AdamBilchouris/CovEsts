@@ -9,17 +9,17 @@
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
 #' @param X A vector of values.
+#' @param meanX The average value of X. Defaults to \code{mean(X)}.
 #'
 #' @return A matrix of size \eqn{N \times N}, where \eqn{N} is the length of the vector X.
 #' @export
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
-#' Xij_mat(X)
-Xij_mat <- function(X) {
-  stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)))
+#' Xij_mat(X, mean(X))
+Xij_mat <- function(X, meanX = mean(X)) {
+  stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX))
 
-  meanX <- mean(X)
   Xij <- matrix(nrow=length(X), ncol=length(X))
   for(i in 1:length(X)) {
     for(j in 1:length(X)) {
@@ -61,7 +61,7 @@ Xij_mat <- function(X) {
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
-#' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X), "gaussian", c(), FALSE)
+#' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "gaussian", c(), FALSE)
 rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(h) == 1, is.numeric(h), !is.na(h), h > 0,
@@ -240,7 +240,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian",  k
             !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel),
             type %in% c('covariance', 'correlation'), is.logical(pd))
 
-  xij_mat <- Xij_mat(X)
+  xij_mat <- Xij_mat(X, mean(X))
   rhoT1 <- rho_T1(x, meanX, T1, h, xij_mat, kernel_name, kernel_params, custom_kernel)
 
   outer_x_x <- outer(x, x, '-')
@@ -351,7 +351,7 @@ compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_para
             type %in% c('covariance', 'correlation'), is.logical(pd))
 
   outer_x_x <- outer(x, x, '-')
-  xij_mat <- Xij_mat(X)
+  xij_mat <- Xij_mat(X, meanX)
   cov_vals <- c()
   if(custom_kernel) {
     for(tt in t) {

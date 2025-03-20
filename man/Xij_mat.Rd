@@ -4,10 +4,12 @@
 \alias{Xij_mat}
 \title{Compute \eqn{X_{ij}} Matrix}
 \usage{
-Xij_mat(X)
+Xij_mat(X, meanX = mean(X))
 }
 \arguments{
 \item{X}{A vector of values.}
+
+\item{meanX}{The average value of X. Defaults to \code{mean(X)}.}
 }
 \value{
 A matrix of size \eqn{N \times N}, where \eqn{N} is the length of the vector X.
@@ -18,7 +20,7 @@ This helper function computes the matrix of pairwise values, \eqn{X_{ij},} for t
 }
 \examples{
 X <- c(1, 2, 3, 4)
-Xij_mat(X)
+Xij_mat(X, mean(X))
 }
 \references{
 Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899

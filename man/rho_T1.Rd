@@ -48,7 +48,7 @@ where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn
 }
 \examples{
 X <- c(1, 2, 3, 4)
-rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X), "gaussian", c(), FALSE)
+rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "gaussian", c(), FALSE)
 }
 \references{
 Hall, P., & Patil, P. (1994). Properties of Nonparametric Estimators of Autocovariance for Stationary Random Fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
