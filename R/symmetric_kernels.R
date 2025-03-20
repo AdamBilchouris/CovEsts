@@ -63,9 +63,6 @@ kernel_symm <- function(x, name, params=c(1)) {
       returnVal[returnVal == Inf] <- 0
       returnVal[returnVal_indices] <- (params[1] / returnVal[returnVal_indices]) * sin(returnVal[returnVal_indices] / params[1])
       return((sqrt(params[1]^(2)) * pi)^(-1) * returnVal)
-
-      # returnVals <- sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (params[1] / t) * sin(t / params[1]))))
-      # return((sqrt(params[1]^(2)) * pi)^(-1) * returnVals)
     }
     else if(name == "rational_quadratic") {
       returnVal <- x
@@ -73,9 +70,6 @@ kernel_symm <- function(x, name, params=c(1)) {
       returnVal[returnVal == Inf] <- 0
       returnVal[returnVal_indices] <- 1 - (returnVal[returnVal_indices]^2 / (returnVal[returnVal_indices]^2 + params[1]))
       return(((pi * sqrt(params[1]))^(-1)) * returnVal)
-
-      # returnVals <- sapply(x, function(t) ifelse(t == Inf, 0, 1 - (t^2 / (t^2 + params[1]))))
-      # return(((pi * sqrt(params[1]))^(-1)) * returnVals)
     }
     stop(paste0("Unknown kernel: ", name))
   }
@@ -88,9 +82,6 @@ kernel_symm <- function(x, name, params=c(1)) {
       returnVal[returnVal == Inf] <- 0
       returnVal[returnVal_indices] <- (besselJ(abs(returnVal)[returnVal_indices] / params[1], params[2]) / ((returnVal[returnVal_indices] / params[1])^params[2]))
       return((gamma((1/2) + params[2]) / (2*sqrt(pi) * params[1] * gamma(1 + params[2]))) * (2^params[2]) * gamma(params[2] + 1) * returnVal)
-
-      # returnVal <- sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (2^params[2]) * gamma(params[2] + 1) * (besselJ(t / params[1], params[2]) / ((t / params[1])^params[2])))))
-      # return((gamma((1/2) + params[2]) / (2*sqrt(pi) * params[1] * gamma(1 + params[2]))) * returnVal)
     }
     stop(paste0("Unknown kernel: ", name))
   }

@@ -118,8 +118,6 @@ kernel <- function(x, name, params=c(1)) {
       returnVal[returnVal == Inf] <- 0
       returnVal[returnVal_indices] <- (params[1] / returnVal[returnVal_indices]) * sin(returnVal[returnVal_indices] / params[1])
       return(returnVal)
-
-      # return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (params[1] / t) * sin(t / params[1])))))
     }
     else if(name == "rational_quadratic") {
       returnVal <- x
@@ -127,8 +125,6 @@ kernel <- function(x, name, params=c(1)) {
       returnVal[returnVal == Inf] <- 0
       returnVal[returnVal_indices] <- 1 - (returnVal[returnVal_indices]^2 / (returnVal[returnVal_indices]^2 + params[1]))
       return(returnVal)
-
-      # return(sapply(x, function(t) ifelse(t == Inf, 0, 1 - (t^2 / (t^2 + params[1])))))
     }
     else if(name == "spherical") {
       returnVal <- x
@@ -136,8 +132,6 @@ kernel <- function(x, name, params=c(1)) {
       returnVal[returnVal_indices] <- 1 - ((3/2) * (returnVal[returnVal_indices] / params[1])) + ((1/2) * (returnVal[returnVal_indices] / params[1])^3)
       returnVal[-returnVal_indices] <- 0
       return(returnVal)
-
-      # return(sapply(x, function(t) ifelse(t < params[1], 1 - ((3/2) * (t / params[1])) + ((1/2) * (t / params[1])^3), 0)))
     }
     else if(name == "circular") {
       returnVal <- x
@@ -145,8 +139,6 @@ kernel <- function(x, name, params=c(1)) {
       returnVal[returnVal_indices] <- ((2 / pi) * acos(returnVal[returnVal_indices]  / params[1])) - ((2 / pi) * (returnVal[returnVal_indices]  / params[1]) * sqrt(1 - (returnVal[returnVal_indices]  / params[1])^2))
       returnVal[-returnVal_indices] <- 0
       return(returnVal)
-
-      # return(sapply(x, function(t) ifelse(t < params[1], ((2 / pi) * acos(t / params[1])) - ((2 / pi) * (t / params[1]) * sqrt(1 - (t / params[1])^2)), 0)))
     }
     stop(paste0("Unknown kernel: ", name))
   }
@@ -160,8 +152,6 @@ kernel <- function(x, name, params=c(1)) {
       returnVal[returnVal == Inf] <- 0
       returnVal[returnVal_indices] <- (((sqrt(2 * params[2]) * returnVal[returnVal_indices] / params[1])^params[2]) / (2^(params[2] - 1) * gamma(params[2]))) * besselK(sqrt(2 * params[2]) * returnVal[returnVal_indices] / params[1], params[2])
       return(returnVal)
-
-      # return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (((sqrt(2 * params[2]) * t / params[1])^params[2]) / (2^(params[2] - 1) * gamma(params[2]))) * besselK(sqrt(2 * params[2]) * t / params[1], params[2])))))
     }
     stop(paste0("Unknown kernel: ", name))
   }
@@ -174,8 +164,6 @@ kernel <- function(x, name, params=c(1)) {
       returnVal[returnVal == Inf] <- 0
       returnVal[returnVal_indices] <- (2^params[2]) * gamma(params[2] + 1) * (besselJ(returnVal[returnVal_indices] / params[1], params[2]) / ((returnVal[returnVal_indices] / params[1])^params[2]))
       return(returnVal)
-
-      # return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0, (2^params[2]) * gamma(params[2] + 1) * (besselJ(t / params[1], params[2]) / ((t / params[1])^params[2]))))))
     }
     else if(name == "cauchy") {
       stopifnot(params[2] > 0, params[2] <= 2, params[3] >= 0)

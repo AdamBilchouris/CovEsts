@@ -90,7 +90,6 @@ rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_para
       tij <- x[i] - x
       t_tij <- T1 - tij
       X_ij <- xij_mat[i, ]
-      # K_ij <- get(paste0("kernel_symm_", kernel))(t_tij, h, kernel_params[1], kernel_params[2])
       K_ij <- get("kernel_symm")(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
       numerator <- K_ij * X_ij
       denominator <- K_ij
@@ -101,110 +100,6 @@ rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_para
   }
 
   return( ( sum(numerators) / sum(denominators) ) )
-}
-
-#' Compute \eqn{\rho(t)} for the truncated kernel regression estimator.
-#'
-#' This helper function computes \eqn{\rho(t)} for the truncated kernel regression estimator (see [compute_truncated_est]).
-#'
-#' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
-#'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
-#'
-#' @param x A vector that are indices of the process X.
-#' @param meanX The average value of X.
-#' @param t The value at which the covariance function is calculated at.
-#' @param T1 The first truncation point, \eqn{T_{1} > 0.}
-#' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
-#' @param h Bandwidth parameter.
-#' @param xij_mat The matrix of pairwise covariance values.
-#' @param rhoT1 The value of the covariance function at T1.
-#' @param kernel_name The name of the kernel function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_est]'s example.
-#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
-#' @param custom_kernel If a custom kernel is to be used or not.
-#'
-#' @return The estimated covariance value at t.
-#' @export
-#'
-#' @examples
-#' X <- c(1, 2, 3, 4)
-#' rhoT1 <- rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X),
-#'                         "gaussian", c(), FALSE)
-#' truncated_point(1:4, mean(X), 1, 0.1, 1, 0.1,
-#'                         Xij_mat(X), rhoT1, "gaussian", c(), FALSE)
-truncated_point <- function(x, meanX, t, T1, T2, h, xij_mat, rhoT1, kernel_name="gaussian",  kernel_params=c(), custom_kernel = F) {
-  stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
-            length(t) == 1, is.numeric(t), !is.na(t), length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0,
-            length(T2) == 1, is.numeric(T2), !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0, !is.na(h),
-            is.numeric(xij_mat), is.matrix(xij_mat), !any(is.na(xij_mat)), length(rhoT1) == 1, is.numeric(rhoT1),
-            !is.na(rhoT1), is.logical(custom_kernel))
-  numerators <- c()
-  denominators <- c()
-
-
-  if(custom_kernel) {
-    # Case 1: 0 <= t <= T1
-    # \hat{\rho}(t)
-    if(t >= 0 && t <= T1) {
-      for(i in 1:length(x)) {
-        tij <- x[i] - x
-        t_tij <- t - tij
-        X_ij <- xij_mat[i, ]
-        K_ij <- get(kernel_name)(t_tij, h, kernel_params)
-        numerator <- K_ij * X_ij
-        denominator <- K_ij
-
-        numerators <- c(numerators, sum(numerator))
-        denominators <- c(denominators, sum(denominator))
-      }
-      return( sum(numerators) / sum(denominators) )
-    }
-
-    # Case 2: T1 < t <= T2
-    # \hat{\rho}(T1) (T2 - t) / (T2 - T1)
-    else if(T1 < t && t <= T2) {
-      linear_part <- (T2 - t) * (T2 - T1)^(-1)
-      return( rhoT1 * linear_part )
-    }
-
-    else {
-      return(0)
-    }
-  }
-
-  else {
-    stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
-    # Case 1: 0 <= t <= T1
-    # \hat{\rho}(t)
-    if(t >= 0 && t <= T1) {
-      for(i in 1:length(x)) {
-        tij <- x[i] - x
-        t_tij <- t - tij
-        X_ij <- xij_mat[i, ]
-        # K_ij <- get(paste0("kernel_symm_", kernel))(t_tij, h, kernel_params[1], kernel_params[2])
-        K_ij <- get("kernel_symm")(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
-        numerator <- K_ij * X_ij
-        denominator <- K_ij
-
-        numerators <- c(numerators, sum(numerator))
-        denominators <- c(denominators, sum(denominator))
-      }
-      return( sum(numerators) / sum(denominators) )
-    }
-
-    # Case 2: T1 < t <= T2
-    # \hat{\rho}(T1) (T2 - t) / (T2 - T1)
-    else if(T1 < t && t <= T2) {
-      linear_part <- (T2 - t) * (T2 - T1)^(-1)
-      return( rhoT1 * linear_part )
-    }
-
-    else {
-      return(0)
-    }
-  }
 }
 
 #' Compute 1D Discrete Cosine Transform
@@ -361,7 +256,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian",  k
   else {
     stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
     for(tt in t_vals) {
-      K_ij <- get("kernel_symm")(tt - outer_x_x, kernel_name, c(h, kernel_params[1], kernel_params[2]))
+      K_ij <- kernel_symm(tt - outer_x_x, kernel_name, c(h, kernel_params[1], kernel_params[2]))
       vals_truncated_1 <- c(vals_truncated_1, sum(K_ij * xij_mat) / sum(K_ij))
     }
   }
@@ -467,7 +362,7 @@ compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_para
   else {
     stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
     for(tt in t) {
-      K_ij <- get("kernel_symm")(tt - outer_x_x, kernel_name, c(h, kernel_params[1], kernel_params[2]))
+      K_ij <- kernel_symm(tt - outer_x_x, kernel_name, c(h, kernel_params[1], kernel_params[2]))
       cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))
     }
   }

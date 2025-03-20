@@ -38,7 +38,6 @@
 compute_standard_est <- function(X, maxLag, N=length(X), meanX=mean(X), pd=TRUE, type='covariance') {
   stopifnot(N >= 0, length(X) > 0, is.vector(X), is.numeric(X), N == length(X), is.logical(pd), maxLag >= 0, maxLag <= (N - 1),
             maxLag %% 1 == 0, length(meanX) == 1, is.numeric(meanX), !is.na(meanX), type %in% c('covariance', 'correlation'))
-  # retVec <- sapply(seq(0, maxLag, by=1), function(tau) standard_est_single(X, tau, N, meanX, pd))
   retVec <- as.vector(stats::acf(X, lag.max = maxLag, type = "covariance", plot = FALSE)$acf)
   if(!pd) {
     retVec <- retVec * (length(X) / (length(X) - 0:maxLag))
