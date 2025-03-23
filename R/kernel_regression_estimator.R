@@ -9,7 +9,7 @@
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
 #' @param X A vector of values.
-#' @param meanX The average value of X. Defaults to \code{mean(X)}.
+#' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #'
 #' @return A matrix of size \eqn{N \times N}, where \eqn{N} is the length of the vector X.
 #' @export
@@ -47,7 +47,7 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
 #' @param x A vector of lags.
-#' @param meanX The average value of X.
+#' @param meanX The average value of \code{X}.
 #' @param T1 The first trunctation point.
 #' @param h Bandwidth parameter.
 #' @param xij_mat The matrix of pairwise covariance values.
@@ -224,7 +224,7 @@ idct_1d <- function(X) {
 #' @param custom_kernel If a custom kernel is to be used or not.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
-#' @param meanX The average value of X. Defaults to \code{mean(X)}.
+#' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #'
 #' @return A vector whose values are the truncated kernel regression estimator.
 #' @export
@@ -233,7 +233,7 @@ idct_1d <- function(X) {
 #' X <- c(1, 2, 3, 4)
 #' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
 #'                   "gaussian", c(), FALSE, TRUE, meanX = mean(X))
-compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian",  kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
+compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(x) >= 1, is.numeric(x), !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), is.numeric(t), length(t) >= 1,
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(T2) == 1, is.numeric(T2),
@@ -327,7 +327,6 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian",  k
 #'
 #' @param X A vector representing the values of the process.
 #' @param x A vector of lags.
-# #' @param meanX The average value of X.
 #' @param t The values at which the covariance function is calculated at.
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
@@ -336,7 +335,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian",  k
 #' @param custom_kernel If a custom kernel is to be used or not.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
-#' @param meanX The average value of X. Defaults to \code{mean(X)}.
+#' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #'
 #' @return A vector whose values are the kernel regression estimator.
 #' @export

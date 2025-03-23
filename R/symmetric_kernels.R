@@ -80,8 +80,8 @@ kernel_symm <- function(x, name, params=c(1)) {
       returnVal_indices <- which(returnVal != 0 & returnVal != Inf)
       returnVal[returnVal == 0] <- 1
       returnVal[returnVal == Inf] <- 0
-      returnVal[returnVal_indices] <- (besselJ(abs(returnVal)[returnVal_indices] / params[1], params[2]) / ((returnVal[returnVal_indices] / params[1])^params[2]))
-      return((gamma((1/2) + params[2]) / (2*sqrt(pi) * params[1] * gamma(1 + params[2]))) * (2^params[2]) * gamma(params[2] + 1) * returnVal)
+      returnVal[returnVal_indices] <- (besselJ(abs(returnVal)[returnVal_indices] / params[1], params[2]) / ((abs(returnVal[returnVal_indices]) / params[1])^params[2]))
+      return((gamma((1/2 + params[2])) / (2*sqrt(pi) * params[1] * gamma(1 + params[2]))) * (2^params[2]) * gamma(params[2] + 1) * returnVal)
     }
     stop(paste0("Unknown kernel: ", name))
   }

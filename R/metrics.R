@@ -89,7 +89,6 @@ max_distance <- function(est1, est2, plot = FALSE) {
             length(est1) == length(est2), is.logical(plot))
   maxDist <- -Inf
 
-  # Compute the distances, I doubt it takes up much memory, it is being computed anyway
   distVec <- c()
 
   for(i in 1:length(est1)) {

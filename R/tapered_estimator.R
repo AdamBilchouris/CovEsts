@@ -129,7 +129,7 @@ taper <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE
 #' where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter. The taper functions are precomputed in [compute_tapered_est].
 #'
 #' @param X A vector representing the values of the process.
-#' @param meanX The average value of the X
+#' @param meanX The average value of the \code{X}.
 #' @param h The lag at which the tapered covariance function is computed at.
 #' @param h2n The value of \eqn{H_{2, n}(0)}, computed within [compute_tapered_est].
 #' @param taperVals_t The taper values for each index of the process, computed within [compute_tapered_est].
@@ -186,7 +186,7 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not.
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
-#' @param meanX The average value of X. Defaults to \code{mean(X)}.
+#' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #'
 #' @return  A vector whose values are the tapered autocovariance estimator.
 #' @export

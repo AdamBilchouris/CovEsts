@@ -9,7 +9,7 @@ Xij_mat(X, meanX = mean(X))
 \arguments{
 \item{X}{A vector of values.}
 
-\item{meanX}{The average value of X. Defaults to \code{mean(X)}.}
+\item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 }
 \value{
 A matrix of size \eqn{N \times N}, where \eqn{N} is the length of the vector X.

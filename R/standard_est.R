@@ -22,9 +22,9 @@
 #'
 #' @param X A vector representing the values of the process.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
-#' @param N The length of X.
+#' @param N The length of \code{X}. Defaults to \code{length(X)}.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
-#' @param meanX The average value of X. Defaults to \code{mean(X)}.
+#' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #'
 #' @return A vector whose values are the estimated autocovariance.
