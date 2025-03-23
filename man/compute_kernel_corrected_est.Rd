@@ -24,7 +24,7 @@ compute_kernel_corrected_est(
 
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel} for parameters.
 In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", \code{N_T} takes the place of \eqn{\theta}.
-For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, only \eqn{\nu} is needed for this vector.}
+For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, those parameters are passed.}
 
 \item{N_T}{The rate at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.}
 

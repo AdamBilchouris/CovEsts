@@ -9,7 +9,7 @@ tapered_cov_single(X, meanX, h, h2n, taperVals_t, taperVals_h)
 \arguments{
 \item{X}{A vector representing the values of the process.}
 
-\item{meanX}{The average value of the X}
+\item{meanX}{The average value of the \code{X}.}
 
 \item{h}{The lag at which the tapered covariance function is computed at.}
 

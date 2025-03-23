@@ -31,7 +31,7 @@ compute_tapered_est(
 
 \item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 
-\item{meanX}{The average value of X. Defaults to \code{mean(X)}.}
+\item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 }
 \value{
 A vector whose values are the tapered autocovariance estimator.

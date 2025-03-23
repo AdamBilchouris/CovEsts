@@ -18,7 +18,7 @@ rho_T1(
 \arguments{
 \item{x}{A vector of lags.}
 
-\item{meanX}{The average value of X.}
+\item{meanX}{The average value of \code{X}.}
 
 \item{T1}{The first trunctation point.}
 

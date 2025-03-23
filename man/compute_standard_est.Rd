@@ -18,9 +18,9 @@ compute_standard_est(
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
-\item{N}{The length of X.}
+\item{N}{The length of \code{X}. Defaults to \code{length(X)}.}
 
-\item{meanX}{The average value of X. Defaults to \code{mean(X)}.}
+\item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 
 \item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
