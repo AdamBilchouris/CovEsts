@@ -33,7 +33,7 @@ compute_truncated_est(
 \item{h}{Bandwidth parameter.}
 
 \item{kernel_name}{The name of the kernel function to be used. Possible values are:
-"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see \link{compute_corrected_standard_est}'s example.}
+"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.}
 
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_symm} for parameters.}
 
@@ -86,6 +86,12 @@ the entire spectrum, apart from an impulse at zero, is zero, resulting in an adj
 X <- c(1, 2, 3, 4)
 compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
                   "gaussian", c(), FALSE, TRUE, meanX = mean(X))
+
+my_kernel <- function(x, theta, params) {
+  stopifnot(theta > 0, length(x) >= 1)
+  return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
+}
+compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "my_kernel", c(0.25), TRUE, TRUE)
 }
 \references{
 Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899

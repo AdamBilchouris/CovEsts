@@ -219,7 +219,7 @@ idct_1d <- function(X) {
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see [compute_corrected_standard_est]'s example.
+#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
@@ -233,7 +233,13 @@ idct_1d <- function(X) {
 #' X <- c(1, 2, 3, 4)
 #' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
 #'                   "gaussian", c(), FALSE, TRUE, meanX = mean(X))
-compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
+#'
+#' my_kernel <- function(x, theta, params) {
+#'   stopifnot(theta > 0, length(x) >= 1)
+#'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
+#' }
+#' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "my_kernel", c(0.25), TRUE, TRUE)
+  compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(x) >= 1, is.numeric(x), !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), is.numeric(t), length(t) >= 1,
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(T2) == 1, is.numeric(T2),
@@ -343,6 +349,11 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' compute_adjusted_est(X, 1:4, 1:3, 0.1, "gaussian", c(), FALSE, TRUE)
+#' my_kernel <- function(x, theta, params) {
+#'   stopifnot(theta > 0, length(x) >= 1)
+#'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
+#' }
+#' compute_adjusted_est(X, 1:4, 1:3, 0.1, "my_kernel", c(0.25), TRUE, TRUE)
 compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(x), length(x) >= 1, !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),

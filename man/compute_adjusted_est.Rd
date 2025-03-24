@@ -71,6 +71,11 @@ This ensures the covariance estimate is positive-definite.
 \examples{
 X <- c(1, 2, 3, 4)
 compute_adjusted_est(X, 1:4, 1:3, 0.1, "gaussian", c(), FALSE, TRUE)
+my_kernel <- function(x, theta, params) {
+  stopifnot(theta > 0, length(x) >= 1)
+  return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
+}
+compute_adjusted_est(X, 1:4, 1:3, 0.1, "my_kernel", c(0.25), TRUE, TRUE)
 }
 \references{
 Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
