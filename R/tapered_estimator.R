@@ -97,7 +97,7 @@ H2n <- function(n, rho, window_name, window_params=c(1), custom_window = FALSE) 
 
 #' Compute the function \eqn{a(x; \rho).}
 #'
-#' This helper function repeatedly calls [taper_single] (refer to its manual).
+#' This function repeatedly calls [taper_single] (refer to its manual).
 #'
 #' @param x A vector of number between 0 and 1 (inclusive).
 #' @param rho A scale paramter, greater than 0.

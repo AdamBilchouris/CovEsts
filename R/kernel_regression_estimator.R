@@ -110,7 +110,7 @@ rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_para
 
 #' Compute 1D Discrete Cosine Transform
 #'
-#' This helper function computes the Type-II discrete cosine transform.
+#' This function computes the Type-II discrete cosine transform.
 #'
 #' The Type-II discrete cosine transform is obtained using [stats::fft]. Note this method does not utilise Makhoul's method for computing the DCT.
 #' A new input \eqn{y} is created from \eqn{X} where \eqn{y_{2n} = 0}, \eqn{y_{2n+1} = X_{n}} for \eqn{0 \le n < N}, \eqn{y_{2N} = 0} and \eqn{y_{4N - n} = y_{n}}
@@ -140,7 +140,7 @@ dct_1d <- function(X) {
 
 #' Compute 1D Inverse Discrete Cosine Transform
 #'
-#' This helper function computes the inverse of the Type-II discrete cosine transform.
+#' This function computes the inverse of the Type-II discrete cosine transform.
 #'
 #' @details
 #' The Type-II inverse discrete cosine transform is computed using [stats::fft].
@@ -406,7 +406,7 @@ compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_para
 
 #' Make any function positive-definite
 #'
-#' This helper function can make any function positive-definite using methods proposed by P. Hall and his coauthors.
+#' This function can make any function positive-definite using methods proposed by P. Hall and his coauthors.
 #'
 #' @details
 #' This function perform positive-definite adjustments proposed by P. Hall and his coauthors.

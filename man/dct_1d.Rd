@@ -13,7 +13,7 @@ dct_1d(X)
 A vector of discrete cosine transform values.
 }
 \description{
-This helper function computes the Type-II discrete cosine transform.
+This function computes the Type-II discrete cosine transform.
 }
 \details{
 The Type-II discrete cosine transform is obtained using \link[stats:fft]{stats::fft}. Note this method does not utilise Makhoul's method for computing the DCT.

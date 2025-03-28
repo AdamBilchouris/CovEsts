@@ -43,7 +43,7 @@
 #' \deqn{w(x) = 1 - (x - 1)^2 , x \in [0, 1] . }
 #' The \code{params} argument is empty, see the example.
 #'
-#' @param x A vector or matrix of values of at least length 1.
+#' @param x A vector or matrix of values of at least length 1. Each value must be between 0 and 1, inclusive.
 #' @param name The name of the window. Options are: "tukey", "triangular", "sine", "power_sine", "blackman", "hann_poisson", "welch".
 #' @param params A vector of parameters for the windows. See the documentation below for the position of the parameters.
 #'

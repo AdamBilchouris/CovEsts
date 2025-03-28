@@ -31,7 +31,7 @@
 #' where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind and \eqn{d} is the dimension.
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d}\code{)}.
 #'
-#' @param x A vector or matrix of arguments of at least length 1 for which the kernel is computed at.
+#' @param x A vector or matrix of arguments of at least length 1 for which the kernel is computed at. Each value can be negative as well as positive.
 #' @param name The name of the kernel. Options are: "gaussian", "wave", "rational_quadratic", "bessel_j".
 #' @param params A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels will have a scale parameter as the first value in the vector.
 #'

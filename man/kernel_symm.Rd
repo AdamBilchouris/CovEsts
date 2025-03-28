@@ -7,7 +7,7 @@
 kernel_symm(x, name, params = c(1))
 }
 \arguments{
-\item{x}{A vector or matrix of arguments of at least length 1 for which the kernel is computed at.}
+\item{x}{A vector or matrix of arguments of at least length 1 for which the kernel is computed at. Each value can be negative as well as positive.}
 
 \item{name}{The name of the kernel. Options are: "gaussian", "wave", "rational_quadratic", "bessel_j".}
 

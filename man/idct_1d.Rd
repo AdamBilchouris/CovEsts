@@ -13,7 +13,7 @@ idct_1d(X)
 A vector with the inverse transform values.
 }
 \description{
-This helper function computes the inverse of the Type-II discrete cosine transform.
+This function computes the inverse of the Type-II discrete cosine transform.
 }
 \details{
 The Type-II inverse discrete cosine transform is computed using \link[stats:fft]{stats::fft}.
