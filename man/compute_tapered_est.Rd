@@ -27,7 +27,7 @@ compute_tapered_est(
 
 \item{window_params}{A vector of parameters of the window function.}
 
-\item{custom_window}{If a custom window is to be used or not.}
+\item{custom_window}{If a custom window is to be used or not. Defaults to \code{FALSE}.}
 
 \item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 

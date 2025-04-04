@@ -16,7 +16,7 @@ H2n(n, rho, window_name, window_params = c(1), custom_window = FALSE)
 
 \item{window_params}{A vector of parameters of the window function.}
 
-\item{custom_window}{If a custom window is to be used or not.}
+\item{custom_window}{If a custom window is to be used or not. Defaults to \code{FALSE}.}
 }
 \value{
 A single value being \eqn{H_{2, n}(0)}.

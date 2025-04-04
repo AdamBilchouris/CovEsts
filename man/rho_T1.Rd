@@ -31,7 +31,7 @@ rho_T1(
 
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_symm} for parameters.}
 
-\item{custom_kernel}{If a custom kernel is to be used or not.}
+\item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}.}
 }
 \value{
 The estimated covariance function at \eqn{T_{1}}.

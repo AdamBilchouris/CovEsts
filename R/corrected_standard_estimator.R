@@ -24,7 +24,7 @@
 #' @param N The length of \code{X}. Defaults to \code{length(X)}.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #' @param pd Whether a positive definite estimate should be used. Defaults to \code{TRUE}.
-#' @param custom_kernel If a custom kernel is to be used or not. See examples.
+#' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}. See examples.
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #'
 #' @return A vector whose values are a kernel corrected autocovariance estimator.
@@ -101,7 +101,7 @@ compute_corrected_standard_est <- function(X, maxLag, kernel_name, kernel_params
 #' For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, those parameters are passed.
 #' @param N_T The rate at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
-#' @param custom_kernel If a custom kernel is to be used or not.  See the examples of [compute_corrected_standard_est] for usage.
+#' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}. See the examples of [compute_corrected_standard_est] for usage.
 #'
 #' @return A vector whose values are a kernel corrected autocovariance estimator.
 #' @export

@@ -54,7 +54,7 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
-#' @param custom_kernel If a custom kernel is to be used or not.
+#' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
 #'
 #' @return The estimated covariance function at \eqn{T_{1}}.
 #' @export
@@ -227,7 +227,7 @@ idct_1d <- function(X) {
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
-#' @param custom_kernel If a custom kernel is to be used or not.
+#' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
@@ -344,7 +344,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
-#' @param custom_kernel If a custom kernel is to be used or not.
+#' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.

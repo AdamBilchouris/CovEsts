@@ -37,7 +37,7 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 
 \item{pd}{Whether a positive definite estimate should be used. Defaults to \code{TRUE}.}
 
-\item{custom_kernel}{If a custom kernel is to be used or not. See examples.}
+\item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}. See examples.}
 
 \item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 }

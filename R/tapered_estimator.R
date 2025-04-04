@@ -16,7 +16,7 @@
 #' @param window_name The name of the window function to be used. Possible values are:
 #' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
-#' @param custom_window If a custom window is to be used or not.
+#' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
 #'
 #' @return A single value being the taper function value at x.
 #' @export
@@ -81,7 +81,7 @@ taper_single <- function(x, rho, window_name, window_params=c(1), custom_window 
 #' @param window_name The name of the window function to be used. Possible values are:
 #' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
-#' @param custom_window If a custom window is to be used or not.
+#' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
 #'
 #' @return A single value being \eqn{H_{2, n}(0)}.
 #' @export
@@ -104,7 +104,7 @@ H2n <- function(n, rho, window_name, window_params=c(1), custom_window = FALSE) 
 #' @param window_name The name of the window function to be used. Possible values are:
 #' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
-#' @param custom_window If a custom window is to be used or not.
+#' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
 #'
 #' @return A vector of taper values.
 #' @export
@@ -184,7 +184,7 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #' @param window_name The name of the window function to be used. Possible values are:
 #' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
-#' @param custom_window If a custom window is to be used or not.
+#' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #'

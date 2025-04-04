@@ -30,7 +30,7 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 
 \item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 
-\item{custom_kernel}{If a custom kernel is to be used or not.  See the examples of \link{compute_corrected_standard_est} for usage.}
+\item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}. See the examples of \link{compute_corrected_standard_est} for usage.}
 }
 \value{
 A vector whose values are a kernel corrected autocovariance estimator.

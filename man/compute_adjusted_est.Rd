@@ -31,7 +31,7 @@ compute_adjusted_est(
 
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_symm} for parameters.}
 
-\item{custom_kernel}{If a custom kernel is to be used or not.}
+\item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}.}
 
 \item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
