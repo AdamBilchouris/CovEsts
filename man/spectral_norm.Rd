@@ -7,9 +7,9 @@
 spectral_norm(est1, est2)
 }
 \arguments{
-\item{est1}{A numeric vector representing the first estimated covariance function.}
+\item{est1}{A numeric vector representing the first estimated autocovariance function.}
 
-\item{est2}{A numeric vector representing the second estimated covariance function.}
+\item{est2}{A numeric vector representing the second estimated autocovariance function.}
 }
 \value{
 The spectral norm of the differences between the two functions.

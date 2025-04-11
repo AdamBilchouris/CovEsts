@@ -7,9 +7,9 @@
 max_distance(est1, est2, plot = FALSE)
 }
 \arguments{
-\item{est1}{A numeric vector representing the first estimated covariance function.}
+\item{est1}{A numeric vector representing the first estimated autocovariance function.}
 
-\item{est2}{A numeric vector representing the second estimated covariance function.}
+\item{est2}{A numeric vector representing the second estimated autocovariance function.}
 
 \item{plot}{A boolean as to whether a plot should be created. By default, no plot is created.}
 }

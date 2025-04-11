@@ -22,7 +22,7 @@ compute_adjusted_est(
 
 \item{x}{A vector of lags.}
 
-\item{t}{The values at which the covariance function is calculated at.}
+\item{t}{The values at which the autocovariance function is calculated at.}
 
 \item{h}{Bandwidth parameter.}
 
@@ -66,7 +66,7 @@ for all sample frequencies.
 \item Perform the inversion to obtain a new estimator.
 }
 
-This ensures the covariance estimate is positive-definite.
+This ensures the autocovariance estimate is positive-definite.
 }
 \examples{
 X <- c(1, 2, 3, 4)

@@ -235,7 +235,7 @@ solve_spline <- function(par, splines_df, weights) {
 #' @param X A vector representing the values of the process.
 #' @param x A vector of lags.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
-#' @param estCov An estimated covariance function to fit to (a vector).
+#' @param estCov An estimated autocovariance function to fit to (a vector).
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #' @param inital_pars An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}

@@ -23,7 +23,7 @@ compute_splines_est(
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
-\item{estCov}{An estimated covariance function to fit to (a vector).}
+\item{estCov}{An estimated autocovariance function to fit to (a vector).}
 
 \item{p}{The order of the splines.}
 

@@ -11,8 +11,8 @@
 #'
 #' If \code{lags} is empty a difference of 1 will be used which results in a different area than if lags is specified.
 #'
-#' @param est1 A numeric vector representing the first estimated covariance function.
-#' @param est2 A numeric vector representing the second estimated covariance function.
+#' @param est1 A numeric vector representing the first estimated autocovariance function.
+#' @param est2 A numeric vector representing the second estimated autocovariance function.
 #' @param lags An optional vector of lags starting from 0 up until some other lag. If empty, a vector of lags is created starting from 0 until \code{len(est1) - 1}, by 1.
 #' @param plot A boolean as to whether a plot should be created. By default, no plot is created.
 #'
@@ -71,8 +71,8 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 #' It assumes that the estimated functions are estimated over the same set of lags.
 #'
-#' @param est1 A numeric vector representing the first estimated covariance function.
-#' @param est2 A numeric vector representing the second estimated covariance function.
+#' @param est1 A numeric vector representing the first estimated autocovariance function.
+#' @param est2 A numeric vector representing the second estimated autocovariance function.
 #' @param plot A boolean as to whether a plot should be created. By default, no plot is created.
 #'
 #' @return A numeric value representing the maximum vertical distance between the two estimated functions.
@@ -171,8 +171,8 @@ create_cyclic_matrix <- function(v) {
 #'
 #' The spectral norm is simply the largest singular value of \eqn{D.}
 #'
-#' @param est1 A numeric vector representing the first estimated covariance function.
-#' @param est2 A numeric vector representing the second estimated covariance function.
+#' @param est1 A numeric vector representing the first estimated autocovariance function.
+#' @param est2 A numeric vector representing the second estimated autocovariance function.
 #'
 #' @return The spectral norm of the differences between the two functions.
 #' @export

@@ -7,9 +7,9 @@
 area_between(est1, est2, lags = c(), plot = FALSE)
 }
 \arguments{
-\item{est1}{A numeric vector representing the first estimated covariance function.}
+\item{est1}{A numeric vector representing the first estimated autocovariance function.}
 
-\item{est2}{A numeric vector representing the second estimated covariance function.}
+\item{est2}{A numeric vector representing the second estimated autocovariance function.}
 
 \item{lags}{An optional vector of lags starting from 0 up until some other lag. If empty, a vector of lags is created starting from 0 until \code{len(est1) - 1}, by 1.}
 

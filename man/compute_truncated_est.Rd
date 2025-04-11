@@ -24,7 +24,7 @@ compute_truncated_est(
 
 \item{x}{A vector of lags.}
 
-\item{t}{The values at which the covariance function is calculated at.}
+\item{t}{The values at which the autocovariance function is calculated at.}
 
 \item{T1}{The first truncation point, \eqn{T_{1} > 0.}}
 
@@ -79,7 +79,7 @@ To make this estimator positive-definite, the following procedure is used:
 \item Perform the inversion.
 }
 
-This ensures the covariance function estimate is positive-definite. If \eqn{\hat{\theta}} is the first nonzero sample frequency,
+This ensures the autocovariance function estimate is positive-definite. If \eqn{\hat{\theta}} is the first nonzero sample frequency,
 the entire spectrum, apart from an impulse at zero, is zero, resulting in an adjusted function that is a horizontal line whose value is the area of the of the estimated function prior to the adjustment.
 }
 \examples{

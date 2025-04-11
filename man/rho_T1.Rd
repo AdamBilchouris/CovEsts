@@ -34,7 +34,7 @@ rho_T1(
 \item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}.}
 }
 \value{
-The estimated covariance function at \eqn{T_{1}}.
+The estimated autocovariance function at \eqn{T_{1}}.
 }
 \description{
 This helper function computes \eqn{\rho(T_{1})} for the truncated kernel regression estimator.

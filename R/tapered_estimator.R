@@ -122,20 +122,20 @@ taper <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE
   return(retTaper)
 }
 
-#' Computes the tapered covariance for a single lag.
+#' Computes the tapered autocovariance for a single lag.
 #'
-#' This helper function computes the tapered covariance for a single lag \eqn{h},
+#' This helper function computes the tapered autocovariance for a single lag \eqn{h},
 #' \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n})^{-1} \sum_{t=1}^{N-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 #' where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter. The taper functions are precomputed in [compute_tapered_est].
 #'
 #' @param X A vector representing the values of the process.
 #' @param meanX The average value of the \code{X}.
-#' @param h The lag at which the tapered covariance function is computed at.
+#' @param h The lag at which the tapered autocovariance function is computed at.
 #' @param h2n The value of \eqn{H_{2, n}(0)}, computed within [compute_tapered_est].
 #' @param taperVals_t The taper values for each index of the process, computed within [compute_tapered_est].
 #' @param taperVals_h The taper values shifted by the lag, computed within [compute_tapered_est].
 #'
-#' @return The tapered covariance function at the specified lag.
+#' @return The tapered autocovariance function at the specified lag.
 #' @export
 #'
 #' @examples
@@ -156,15 +156,15 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
   return(sum(covVals) / h2n)
 }
 
-#' Compute the tapered covariance function over a set of lags.
+#' Compute the tapered autocovariance function over a set of lags.
 #'
-#' This function computes the tapered covariance over a set of lags,
+#' This function computes the tapered autocovariance over a set of lags,
 #' \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 #' where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter.
-#' For each lag, the tapered covariance is computed using the function [tapered_cov_single].
+#' For each lag, the tapered autocovariance is computed using the function [tapered_cov_single].
 #'
 #' @details
-#' This function computes the tapered covariance over a set of lags,
+#' This function computes the tapered autocovariance over a set of lags,
 #' \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 #' where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter.
 #' This estimator considers the edge effect during estimation, assigning a lower weight to values closer to the edges and higher weights for observations closer to the middle.

@@ -56,7 +56,7 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
 #'
-#' @return The estimated covariance function at \eqn{T_{1}}.
+#' @return The estimated autocovariance function at \eqn{T_{1}}.
 #' @export
 #'
 #' @examples
@@ -210,7 +210,7 @@ idct_1d <- function(X) {
 #' 3. Set all values starting at the frequency to zero.
 #' 4. Perform the inversion.
 #'
-#' This ensures the covariance function estimate is positive-definite. If \eqn{\hat{\theta}} is the first nonzero sample frequency,
+#' This ensures the autocovariance function estimate is positive-definite. If \eqn{\hat{\theta}} is the first nonzero sample frequency,
 #' the entire spectrum, apart from an impulse at zero, is zero, resulting in an adjusted function that is a horizontal line whose value is the area of the of the estimated function prior to the adjustment.
 #'
 #' @references
@@ -220,7 +220,7 @@ idct_1d <- function(X) {
 #'
 #' @param X A vector representing the values of the process.
 #' @param x A vector of lags.
-#' @param t The values at which the covariance function is calculated at.
+#' @param t The values at which the autocovariance function is calculated at.
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param h Bandwidth parameter.
@@ -330,7 +330,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
 #' for all sample frequencies.
 #' 3. Perform the inversion to obtain a new estimator.
 #'
-#' This ensures the covariance estimate is positive-definite.
+#' This ensures the autocovariance estimate is positive-definite.
 #'
 #' @references
 #' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399–424). 10.1007/bf01199899
@@ -339,7 +339,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
 #'
 #' @param X A vector representing the values of the process.
 #' @param x A vector of lags.
-#' @param t The values at which the covariance function is calculated at.
+#' @param t The values at which the autocovariance function is calculated at.
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.

@@ -51,8 +51,8 @@ The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommen
 \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
 }
 \details{
-The aim of this estimator is gradually bring an estimator to zero through the use of a kernel multiplier. This can be useful when estimating a
-covariance function that is short-range dependent as estimators can have large fluctuations as the lag increases.
+The aim of this estimator is gradually bring an estimator to zero through the use of a kernel multiplier. This can be useful when estimating an
+autocovariance function that is short-range dependent as estimators can have large fluctuations as the lag increases.
 This estimator can be positive-definite depending on whether the choice of \eqn{\widehat{C}} and \eqn{a} are chosen to be positive-definite or not.
 }
 \examples{

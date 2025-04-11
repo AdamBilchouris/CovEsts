@@ -2,7 +2,7 @@
 % Please edit documentation in R/tapered_estimator.R
 \name{compute_tapered_est}
 \alias{compute_tapered_est}
-\title{Compute the tapered covariance function over a set of lags.}
+\title{Compute the tapered autocovariance function over a set of lags.}
 \usage{
 compute_tapered_est(
   X,
@@ -37,13 +37,13 @@ compute_tapered_est(
 A vector whose values are the tapered autocovariance estimator.
 }
 \description{
-This function computes the tapered covariance over a set of lags,
+This function computes the tapered autocovariance over a set of lags,
 \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter.
-For each lag, the tapered covariance is computed using the function \link{tapered_cov_single}.
+For each lag, the tapered autocovariance is computed using the function \link{tapered_cov_single}.
 }
 \details{
-This function computes the tapered covariance over a set of lags,
+This function computes the tapered autocovariance over a set of lags,
 \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter.
 This estimator considers the edge effect during estimation, assigning a lower weight to values closer to the edges and higher weights for observations closer to the middle.
