@@ -35,7 +35,7 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 
-\item{pd}{Whether a positive definite estimate should be used. Defaults to \code{TRUE}.}
+\item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
 \item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}. See examples.}
 
