@@ -42,8 +42,11 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
   }
 
   yDiff <- abs(est1 - est2)
-  # (b-a) / n
-  weight <- (lags[length(lags)] - lags[1]) / length(lags)
+  integral_val <- 0
+  for(i in 2:length(yDiff)) {
+    integral_val_temp <-  ((yDiff[i - 1] + yDiff[i]) / 2) * (lags[i] - lags[i - 1])
+    integral_val <- integral_val + integral_val_temp
+  }
 
   if(plot) {
       y_min <- ifelse(min(est1) < min(est2), min(est1), min(est2))
@@ -57,7 +60,7 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
   }
 
   # \sigma_{i=1}^{n} f(x_{i}) \delta x
-  return(sum(yDiff * weight))
+  return(integral_val)
 }
 
 #' The maximum vertical distance between estimated functions.
@@ -65,7 +68,7 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
 #' This function computes the maximum vertical distance between functions.
 #'
 #' @details
-#' This function computes the maximum vertical distance between functions. The two functions must be of the same length.
+#' This function computes the maximum vertical distance between functions. The vector of function values must be of the same length.
 #' \deqn{D(\hat{C}_{1}(\tau), \hat{C}_{2}(\tau)) = \max_{\tau} \left| \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau) \right| ,
 #' }
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
@@ -73,6 +76,7 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
 #'
 #' @param est1 A numeric vector representing the first estimated autocovariance function.
 #' @param est2 A numeric vector representing the second estimated autocovariance function.
+#' @param lags An optional vector of lags starting from 0 up until some other lag. If empty, a vector of lags is created starting from 0 until \code{len(est1) - 1}, by 1.
 #' @param plot A boolean as to whether a plot should be created. By default, no plot is created.
 #'
 #' @return A numeric value representing the maximum vertical distance between the two estimated functions.
@@ -84,9 +88,18 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
 #' estCov2 <- exp(-x^2.1) + rnorm(length(x), sd=0.1)
 #' max_distance(estCov1, estCov2)
 #' max_distance(estCov1, estCov2, plot = TRUE)
-max_distance <- function(est1, est2, plot = FALSE) {
+max_distance <- function(est1, est2, lags=c(), plot = FALSE) {
   stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
             length(est1) == length(est2), is.logical(plot))
+
+  if(length(lags) != 0) {
+    stopifnot(is.vector(lags), length(est1) == length(lags), length(est2) == length(lags))
+  }
+  # Generate a vector of lags, {0, ..., length(est1) - 1}
+  else {
+    lags <- seq(0, length(est1) - 1)
+  }
+
   maxDist <- -Inf
 
   distVec <- c()
@@ -105,7 +118,7 @@ max_distance <- function(est1, est2, plot = FALSE) {
   }
 
   if(plot) {
-    plot(distVec, type='o')
+    plot(lags, distVec, type='o')
   }
 
   return(maxDist)

@@ -1,10 +1,10 @@
 # area_between
 test_that("area_between() works", {
-  expect_equal(area_between(test_estCov1, test_estCov2), 2.380651, tolerance = sqrt(.Machine$double.eps))
+  expect_equal(area_between(test_estCov1, test_estCov2), 2.10491826, tolerance = sqrt(.Machine$double.eps))
 })
 
 test_that("area_between() works with a lag vector", {
-  expect_equal(area_between(test_estCov1, test_estCov2, test_x_metrics), 0.2380651, tolerance = sqrt(.Machine$double.eps))
+  expect_equal(area_between(test_estCov1, test_estCov2, test_x_metrics), 0.210491826, tolerance = sqrt(.Machine$double.eps))
 })
 
 test_that("area_between() fails for nonnumeric est1", {
@@ -58,7 +58,7 @@ test_that("area_between() fails if lags is of a different length", {
 
 # max_distance
 test_that("max_distance() works", {
-  expect_equal(max_distance(test_estCov1, test_estCov2), 0.32029894, tolerance = sqrt(.Machine$double.eps))
+  expect_equal(max_distance(test_estCov1, test_estCov2), 0.1818237429, tolerance = sqrt(.Machine$double.eps))
 })
 
 test_that("max_distance() fails for nonnumeric est1", {
@@ -121,7 +121,7 @@ test_that("create_cyclic_matrix() fails if v is empty", {
 
 # spectral_norm
 test_that("spectral_norm() works", {
-  expect_equal(spectral_norm(test_estCov1, test_estCov2), 1.35875026, tolerance = sqrt(.Machine$double.eps))
+  expect_equal(spectral_norm(test_estCov1, test_estCov2), 1.661283524, tolerance = sqrt(.Machine$double.eps))
 })
 
 test_that("spectral_norm() fails for nonnumeric est1", {

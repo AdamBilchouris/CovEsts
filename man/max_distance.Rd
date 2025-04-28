@@ -4,12 +4,14 @@
 \alias{max_distance}
 \title{The maximum vertical distance between estimated functions.}
 \usage{
-max_distance(est1, est2, plot = FALSE)
+max_distance(est1, est2, lags = c(), plot = FALSE)
 }
 \arguments{
 \item{est1}{A numeric vector representing the first estimated autocovariance function.}
 
 \item{est2}{A numeric vector representing the second estimated autocovariance function.}
+
+\item{lags}{An optional vector of lags starting from 0 up until some other lag. If empty, a vector of lags is created starting from 0 until \code{len(est1) - 1}, by 1.}
 
 \item{plot}{A boolean as to whether a plot should be created. By default, no plot is created.}
 }
@@ -20,7 +22,7 @@ A numeric value representing the maximum vertical distance between the two estim
 This function computes the maximum vertical distance between functions.
 }
 \details{
-This function computes the maximum vertical distance between functions. The two functions must be of the same length.
+This function computes the maximum vertical distance between functions. The vector of function values must be of the same length.
 \deqn{D(\hat{C}_{1}(\tau), \hat{C}_{2}(\tau)) = \max_{\tau} \left| \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau) \right| ,
 }
 where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
