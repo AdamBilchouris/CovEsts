@@ -218,9 +218,9 @@ idct_1d <- function(X) {
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
-#' @param X A vector representing the values of the process.
+#' @param X A vector representing the observed values of the process.
 #' @param x A vector of lags.
-#' @param t The values at which the autocovariance function is calculated at.
+#' @param t The arguments at which the autocovariance function is calculated at.
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param h Bandwidth parameter.
@@ -232,7 +232,7 @@ idct_1d <- function(X) {
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #'
-#' @return A vector whose values are the truncated kernel regression estimator.
+#' @return A vector whose values are the truncated kernel regression estimates.
 #' @export
 #'
 #' @examples
@@ -337,9 +337,9 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115–2134). 10.1214/aos/1176325774
 #'
-#' @param X A vector representing the values of the process.
+#' @param X A vector representing the observed values of the process.
 #' @param x A vector of lags.
-#' @param t The values at which the autocovariance function is calculated at.
+#' @param t The arguments at which the autocovariance function is calculated at.
 #' @param h Bandwidth parameter.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
@@ -349,7 +349,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #'
-#' @return A vector whose values are the kernel regression estimator.
+#' @return A vector whose values are the kernel regression estimates.
 #' @export
 #'
 #' @examples

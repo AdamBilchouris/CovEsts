@@ -232,7 +232,7 @@ solve_spline <- function(par, splines_df, weights) {
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
-#' @param X A vector representing the values of the process.
+#' @param X A vector representing the observed values of the process.
 #' @param x A vector of lags.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param estCov An estimated autocovariance function to fit to (a vector).
@@ -242,7 +242,7 @@ solve_spline <- function(par, splines_df, weights) {
 #' @param control An optional list of optimisation parameters used in the optimisation process, see \code{control} in [stats::optim].
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #'
-#' @return A vector whose values are the spline autocovariance estimator.
+#' @return A vector whose values are the spline autocovariance estimates.
 #' @export
 #'
 #' @importFrom stats optim

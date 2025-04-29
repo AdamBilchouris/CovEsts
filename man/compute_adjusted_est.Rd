@@ -18,11 +18,11 @@ compute_adjusted_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the values of the process.}
+\item{X}{A vector representing the observed values of the process.}
 
 \item{x}{A vector of lags.}
 
-\item{t}{The values at which the autocovariance function is calculated at.}
+\item{t}{The arguments at which the autocovariance function is calculated at.}
 
 \item{h}{Bandwidth parameter.}
 
@@ -40,7 +40,7 @@ compute_adjusted_est(
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 }
 \value{
-A vector whose values are the kernel regression estimator.
+A vector whose values are the kernel regression estimates.
 }
 \description{
 The kernel regression estimator is defined as

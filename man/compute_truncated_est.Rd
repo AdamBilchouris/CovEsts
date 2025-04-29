@@ -20,11 +20,11 @@ compute_truncated_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the values of the process.}
+\item{X}{A vector representing the observed values of the process.}
 
 \item{x}{A vector of lags.}
 
-\item{t}{The values at which the autocovariance function is calculated at.}
+\item{t}{The arguments at which the autocovariance function is calculated at.}
 
 \item{T1}{The first truncation point, \eqn{T_{1} > 0.}}
 
@@ -46,7 +46,7 @@ compute_truncated_est(
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 }
 \value{
-A vector whose values are the truncated kernel regression estimator.
+A vector whose values are the truncated kernel regression estimates.
 }
 \description{
 This function computes the truncated kernel regression estimator,

@@ -18,7 +18,7 @@ compute_corrected_standard_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the values of the process.}
+\item{X}{A vector representing the observed values of the process.}
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
@@ -42,7 +42,7 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 \item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 }
 \value{
-A vector whose values are a kernel corrected autocovariance estimator.
+A vector whose values are the kernel corrected autocovariance estimates.
 }
 \description{
 This function computes and the standard estimator and applies kernel correction to it.

@@ -17,7 +17,7 @@ compute_splines_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the values of the process.}
+\item{X}{A vector representing the observed values of the process.}
 
 \item{x}{A vector of lags.}
 
@@ -36,7 +36,7 @@ compute_splines_est(
 \item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 }
 \value{
-A vector whose values are the spline autocovariance estimator.
+A vector whose values are the spline autocovariance estimates.
 }
 \description{
 Compute the estimated covariance function from Choi, Li & Wang (2013, pp. 614-617).

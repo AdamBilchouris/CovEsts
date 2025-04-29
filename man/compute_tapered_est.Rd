@@ -16,7 +16,7 @@ compute_tapered_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the values of the process.}
+\item{X}{A vector representing the observed values of the process.}
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
@@ -34,7 +34,7 @@ compute_tapered_est(
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 }
 \value{
-A vector whose values are the tapered autocovariance estimator.
+A vector whose values are the tapered autocovariance estimates.
 }
 \description{
 This function computes the tapered autocovariance over a set of lags,

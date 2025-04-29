@@ -13,7 +13,7 @@
 #' @references
 #' Yaglom, AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.
 #'
-#' @param X A vector representing the values of the process.
+#' @param X A vector representing the observed values of the process.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param kernel_name The name of the kernel function to be used. Possible values are:
 #' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
@@ -27,7 +27,7 @@
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}. See examples.
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #'
-#' @return A vector whose values are a kernel corrected autocovariance estimator.
+#' @return A vector whose values are the kernel corrected autocovariance estimates.
 #' @export
 #'
 #' @examples
@@ -103,7 +103,7 @@ compute_corrected_standard_est <- function(X, maxLag, kernel_name, kernel_params
 #' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}. See the examples of [compute_corrected_standard_est] for usage.
 #'
-#' @return A vector whose values are a kernel corrected autocovariance estimator.
+#' @return A vector whose values are the kernel corrected autocovariance estimates.
 #' @export
 #'
 #' @examples

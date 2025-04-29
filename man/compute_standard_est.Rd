@@ -14,7 +14,7 @@ compute_standard_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the values of the process.}
+\item{X}{A vector representing the observed values of the process.}
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
@@ -27,7 +27,7 @@ compute_standard_est(
 \item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
 }
 \value{
-A vector whose values are the estimated autocovariance.
+A vector whose values are the estimated autocovariance estimates.
 }
 \description{
 This function computes the following two estimates of the autocovariance function depending on
