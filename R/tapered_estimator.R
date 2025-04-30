@@ -9,11 +9,11 @@
 #' \end{array} ,
 #' \right. }
 #' where \eqn{w(\cdot)} is a continuous increasing function with \eqn{w(0)=0, w(1)=1,}
-#' \eqn{\rho > 0,} and \eqn{x \in [0, 1].} The possible window choices are found in [window].
+#' \eqn{\rho \in (0, 1],} and \eqn{x \in [0, 1].} The possible window choices are found in [window].
 #'
 #' @param x A number between 0 and 1 (inclusive).
-#' @param rho A scale paramter, greater than 0.
-#' @param window_name The name of the window function to be used. Possible values are:
+#' @param rho A scale parameter in \eqn{(0, 1].}
+#' @param window_name The name of the [window] function to be used. Possible values are:
 #' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
@@ -29,7 +29,7 @@
 #' }
 #' taper_single(x, 0.5, "my_taper", custom_window = TRUE)
 taper_single <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE) {
-  stopifnot(is.numeric(x), length(x) == 1, x >= 0, x <= 1, is.numeric(rho), rho > 0, length(rho) == 1, is.logical(custom_window))
+  stopifnot(is.numeric(x), length(x) == 1, x >= 0, x <= 1, is.numeric(rho), rho > 0, rho <= 1, length(rho) == 1, is.logical(custom_window))
 
   if(custom_window) {
     if(x >= 0 && x < ((1/2) * rho)) {
@@ -73,12 +73,12 @@ taper_single <- function(x, rho, window_name, window_params=c(1), custom_window 
 #' Compute \eqn{H_{2, n}}.
 #'
 #' This helper function is used in the computation of the helper function [tapered_cov_single].
-#' \deqn{H_{2, n}(0) = \sum_{s=1}^{n} a((s - 1/2) / n)^2 , }
-#' where \eqn{a(\cdot)} is a window function.
+#' \deqn{H_{2, n}(0) = \sum_{s=1}^{n} a((s - 1/2) / n)^2 ; \rho, }
+#' where \eqn{a(\cdot; \cdot)} is a window function.
 #'
 #' @param n The number of samples.
-#' @param rho A scale paramter, greater than 0.
-#' @param window_name The name of the window function to be used. Possible values are:
+#' @param rho A scale parameter in \eqn{(0, 1].}
+#' @param window_name The name of the [window] function to be used. Possible values are:
 #' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
@@ -89,7 +89,7 @@ taper_single <- function(x, rho, window_name, window_params=c(1), custom_window 
 #' @examples
 #' H2n(3, 0.6, "tukey")
 H2n <- function(n, rho, window_name, window_params=c(1), custom_window = FALSE) {
-  stopifnot(is.numeric(n), n >= 1, n %% 1 == 0, is.numeric(rho), rho > 0, length(rho) == 1, is.logical(custom_window))
+  stopifnot(is.numeric(n), n >= 1, n %% 1 == 0, is.numeric(rho), rho > 0, rho <= 1, length(rho) == 1, is.logical(custom_window))
   sSeq <- 1:n
   hSeq <- taper(((sSeq - 1/2) / n), rho, window_name, window_params, custom_window)
   return(sum(hSeq))
@@ -100,8 +100,8 @@ H2n <- function(n, rho, window_name, window_params=c(1), custom_window = FALSE) 
 #' This function repeatedly calls [taper_single] (refer to its manual).
 #'
 #' @param x A vector of number between 0 and 1 (inclusive).
-#' @param rho A scale paramter, greater than 0.
-#' @param window_name The name of the window function to be used. Possible values are:
+#' @param rho A scale parameter in \eqn{(0, 1].}
+#' @param window_name The name of the [window] function to be used. Possible values are:
 #' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
@@ -112,9 +112,11 @@ H2n <- function(n, rho, window_name, window_params=c(1), custom_window = FALSE) 
 #' @examples
 #' X <- c(0.1, 0.2, 0.3)
 #' taper(X, 0.5, "tukey")
+#' curve(taper(x, 1, "tukey"), from = 0, to = 1)
+#' curve(taper(x, 1, "power_sine", c(4)), from = 0, to = 1)
 taper <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), is.numeric(rho),
-            length(rho) == 1, is.logical(custom_window))
+            length(rho) == 1, rho > 0, rho <= 1, is.logical(custom_window))
   retTaper <- c()
   for(i in 1:length(x)) {
     retTaper <- c(retTaper, taper_single(x[i], rho, window_name, window_params, custom_window))
@@ -160,13 +162,13 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #'
 #' This function computes the tapered autocovariance over a set of lags,
 #' \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
-#' where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter.
+#' where \eqn{a(\cdot)} is a window function, \eqn{\rho \in (0, 1]} is a scale parameter.
 #' For each lag, the tapered autocovariance is computed using the function [tapered_cov_single].
 #'
 #' @details
 #' This function computes the tapered autocovariance over a set of lags,
 #' \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
-#' where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter.
+#' where \eqn{a(\cdot)} is a window function, \eqn{\rho \in (0, 1]}  is a scale parameter.
 #' This estimator considers the edge effect during estimation, assigning a lower weight to values closer to the edges and higher weights for observations closer to the middle.
 #' This estimator is positive-definite and asymptotically unbiased.
 #'
@@ -180,8 +182,8 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #'
 #' @param X A vector representing the observed values of the process.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
-#' @param rho A scale parameter greater than zero.
-#' @param window_name The name of the window function to be used. Possible values are:
+#' @param rho A scale parameter in \eqn{(0, 1].}
+#' @param window_name The name of the [window] function to be used. Possible values are:
 #' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
@@ -196,7 +198,7 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #' compute_tapered_est(X, 2, 0.5, "tukey")
 compute_tapered_est <- function(X, maxLag, rho, window_name, window_params = c(1), custom_window = FALSE, type = 'covariance',  meanX = mean(X)) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1,
-            maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(rho), length(rho) == 1,
+            maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(rho), length(rho) == 1, rho > 0, rho <= 1,
             is.logical(custom_window),  length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
             type %in% c('covariance', 'correlation'))
 

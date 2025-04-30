@@ -9,9 +9,9 @@ taper_single(x, rho, window_name, window_params = c(1), custom_window = FALSE)
 \arguments{
 \item{x}{A number between 0 and 1 (inclusive).}
 
-\item{rho}{A scale paramter, greater than 0.}
+\item{rho}{A scale parameter in \eqn{(0, 1].}}
 
-\item{window_name}{The name of the window function to be used. Possible values are:
+\item{window_name}{The name of the \link{window} function to be used. Possible values are:
 "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.}
 
 \item{window_params}{A vector of parameters of the window function.}
@@ -31,7 +31,7 @@ This helper function computes the taper function for a given window.
 \end{array} ,
 \right. }
 where \eqn{w(\cdot)} is a continuous increasing function with \eqn{w(0)=0, w(1)=1,}
-\eqn{\rho > 0,} and \eqn{x \in [0, 1].} The possible window choices are found in \link{window}.
+\eqn{\rho \in (0, 1],} and \eqn{x \in [0, 1].} The possible window choices are found in \link{window}.
 }
 \examples{
 x <- 0.4

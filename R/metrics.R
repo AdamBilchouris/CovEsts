@@ -9,6 +9,8 @@
 #' }
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 #'
+#' To approximate this integral, the Trapezoidal rule is used.
+#'
 #' If \code{lags} is empty a difference of 1 will be used which results in a different area than if lags is specified.
 #'
 #' @param est1 A numeric vector representing the first estimated autocovariance function.
@@ -164,6 +166,7 @@ create_cyclic_matrix <- function(v) {
 #' Compute spectral norm between estimated functions.
 #'
 #' This function computes the spectral norm of the difference of two estimated autocovariance functions.
+#' This function is intended for estimates over lags with a constant difference.
 #'
 #' @details
 #' This function computes the spectral norm of the difference of two estimated autocovariance functions.

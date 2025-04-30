@@ -5,6 +5,8 @@
 #' 1D isotropic symmetric kernels.
 #'
 #' These functions computes values of kernels that have the properties of symmetric probability distributions.
+#' For a kernel \eqn{a(x)}, the standardised version is \eqn{a(x) / \int_{-\infty}^{\infty} a(x) dx}, so that the integral is 1.
+#' The symmetric kernels are different to [kernel] and are used in the functions [compute_adjusted_est] and [compute_truncated_est].
 #'
 #' \strong{Symmetric Gaussian Kernel}.
 #' This function computes the symmetric Gaussian kernel.
@@ -35,7 +37,7 @@
 #' @param name The name of the kernel. Options are: "gaussian", "wave", "rational_quadratic", "bessel_j".
 #' @param params A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels will have a scale parameter as the first value in the vector.
 #'
-#' @return A vector of values.
+#' @return A vector or matrix of values.
 #' @export
 #'
 #' @examples
@@ -47,6 +49,10 @@
 #' dim <- 1
 #' nu <- 1
 #' kernel_symm(x, "bessel_j", c(theta, nu, dim))
+#' curve(kernel_symm(x, "gaussian", c(theta)), from = -5, to = 5)
+#' curve(kernel_symm(x, "wave", c(theta)), from = -5, to = 5)
+#' curve(kernel_symm(x, "rational_quadratic", c(theta)), from = -5, to = 5)
+#' curve(kernel_symm(x, "bessel_j", c(theta, nu, dim)), from = -5, to = 5)
 kernel_symm <- function(x, name, params=c(1)) {
   stopifnot(length(x) >= 1, !any(is.na(x)), length(params) > 0, is.numeric(params[1]), params[1] > 0)
   stopifnot(name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))

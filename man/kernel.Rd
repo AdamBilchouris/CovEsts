@@ -14,10 +14,12 @@ kernel(x, name, params = c(1))
 \item{params}{A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels will have a scale parameter as the first value in the vector.}
 }
 \value{
-A vector of values.
+A vector or matrix of values.
 }
 \description{
 This computes one of the isotropic kernels listed below.
+Unlike \link{kernel_symm}, these kernels are only for \eqn{x \geq 0.}
+These kernels are used as kernel multipliers in estimators \link{compute_corrected_standard_est} and \link{compute_kernel_corrected_est}.
 }
 \details{
 \strong{Gaussian Kernel}.
@@ -97,6 +99,15 @@ kernel(x, "bessel_j", c(theta, nu, dim))
 alpha <- 1
 beta <- 2
 kernel(x, "cauchy", c(theta, alpha, beta))
+curve(kernel(x, "gaussian", c(theta)), from = 0, to = 5)
+curve(kernel(x, "exponential", c(theta)), from = 0, to = 5)
+curve(kernel(x, "wave", c(theta)), from = 0, to = 5)
+curve(kernel(x, "rational_quadratic", c(theta)), from = 0, to = 5)
+curve(kernel(x, "spherical", c(theta)), from = 0, to = 5)
+curve(kernel(x, "circular", c(theta)), from = 0, to = 5)
+curve(kernel(x, "matern", c(theta, nu)), from = 0, to = 5)
+curve(kernel(x, "bessel_j", c(theta, nu, dim)), from = 0, to = 5)
+curve(kernel(x, "cauchy", c(theta, alpha, beta)), from = 0, to = 5)
 }
 \references{
 Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.

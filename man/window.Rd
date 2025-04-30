@@ -14,7 +14,7 @@ window(x, name, params = c(1))
 \item{params}{A vector of parameters for the windows. See the documentation below for the position of the parameters.}
 }
 \value{
-A vector of values.
+A vector or matrix of values.
 }
 \description{
 A half-window function in this context is a continuous nondecreasing function such that at 0 it is 0, and at 1, it is 1.
@@ -66,4 +66,11 @@ window(x, "power_sine", c(0.7))
 window(x, "blackman", c(0.16))
 window(x, "hann_poisson", c(0.7))
 window(x, "welch")
+curve(window(x, "tukey"), from = 0, to = 1)
+curve(window(x, "triangular"), from = 0, to = 1)
+curve(window(x, "sine"), from = 0, to = 1)
+curve(window(x, "power_sine", c(0.7)), from = 0, to = 1)
+curve(window(x, "blackman", c(0.16)), from = 0, to = 1)
+curve(window(x, "hann_poisson", c(0.7)), from = 0, to = 1)
+curve(window(x, "welch"), from = 0, to = 1)
 }

@@ -16,6 +16,7 @@ The spectral norm of the differences between the two functions.
 }
 \description{
 This function computes the spectral norm of the difference of two estimated autocovariance functions.
+This function is intended for estimates over lags with a constant difference.
 }
 \details{
 This function computes the spectral norm of the difference of two estimated autocovariance functions.

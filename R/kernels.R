@@ -9,6 +9,8 @@
 #' Isotropic 1D kernels.
 #'
 #' This computes one of the isotropic kernels listed below.
+#' Unlike [kernel_symm], these kernels are only for \eqn{x \geq 0.}
+#' These kernels are used as kernel multipliers in estimators [compute_corrected_standard_est] and [compute_kernel_corrected_est].
 #'
 #' \strong{Gaussian Kernel}.
 #' This function computes the isotropic Gaussian kernel, which is valid for \eqn{{R}^{d}, d \in N.}
@@ -79,7 +81,7 @@
 #' @param name The name of the kernel. Options are: "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", and "cauchy".
 #' @param params A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels will have a scale parameter as the first value in the vector.
 #'
-#' @return A vector of values.
+#' @return A vector or matrix of values.
 #' @export
 #'
 #' @examples
@@ -98,6 +100,15 @@
 #' alpha <- 1
 #' beta <- 2
 #' kernel(x, "cauchy", c(theta, alpha, beta))
+#' curve(kernel(x, "gaussian", c(theta)), from = 0, to = 5)
+#' curve(kernel(x, "exponential", c(theta)), from = 0, to = 5)
+#' curve(kernel(x, "wave", c(theta)), from = 0, to = 5)
+#' curve(kernel(x, "rational_quadratic", c(theta)), from = 0, to = 5)
+#' curve(kernel(x, "spherical", c(theta)), from = 0, to = 5)
+#' curve(kernel(x, "circular", c(theta)), from = 0, to = 5)
+#' curve(kernel(x, "matern", c(theta, nu)), from = 0, to = 5)
+#' curve(kernel(x, "bessel_j", c(theta, nu, dim)), from = 0, to = 5)
+#' curve(kernel(x, "cauchy", c(theta, alpha, beta)), from = 0, to = 5)
 kernel <- function(x, name, params=c(1)) {
   stopifnot(length(x) >= 1, all(x >= 0), length(params) > 0, is.numeric(params[1]), params[1] > 0)
   stopifnot(name %in% c("gaussian", "exponential", "wave", "rational_quadratic",

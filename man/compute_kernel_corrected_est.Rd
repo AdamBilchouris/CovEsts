@@ -19,7 +19,7 @@ compute_kernel_corrected_est(
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
-\item{kernel_name}{The name of the kernel function to be used. Possible values are:
+\item{kernel_name}{The name of the \link{kernel} function to be used. Possible values are:
 "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".}
 
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel} for parameters.

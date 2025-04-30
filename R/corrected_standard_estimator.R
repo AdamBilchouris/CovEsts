@@ -15,7 +15,7 @@
 #'
 #' @param X A vector representing the observed values of the process.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
-#' @param kernel_name The name of the kernel function to be used. Possible values are:
+#' @param kernel_name The name of the [kernel] function to be used. Possible values are:
 #' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel] for parameters.
 #' In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", \code{N_T} takes the place of \eqn{\theta}.
@@ -94,7 +94,7 @@ compute_corrected_standard_est <- function(X, maxLag, kernel_name, kernel_params
 #'
 #' @param cov A vector whose values are an estimate autocovariance function.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
-#' @param kernel_name The name of the kernel function to be used. Possible values are:
+#' @param kernel_name The name of the [kernel] function to be used. Possible values are:
 #' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel] for parameters.
 #' In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", \code{N_T} takes the place of \eqn{\theta}.

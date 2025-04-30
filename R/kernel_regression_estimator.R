@@ -51,7 +51,7 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' @param T1 The first trunctation point.
 #' @param h Bandwidth parameter.
 #' @param xij_mat The matrix of pairwise covariance values.
-#' @param kernel_name The name of the kernel function to be used. Possible values are:
+#' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
@@ -96,7 +96,7 @@ rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_para
       tij <- x[i] - x
       t_tij <- T1 - tij
       X_ij <- xij_mat[i, ]
-      K_ij <- get("kernel_symm")(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
+      K_ij <- kernel_symm(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
       numerator <- K_ij * X_ij
       denominator <- K_ij
 
@@ -224,7 +224,7 @@ idct_1d <- function(X) {
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param h Bandwidth parameter.
-#' @param kernel_name The name of the kernel function to be used. Possible values are:
+#' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
@@ -341,7 +341,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
 #' @param x A vector of lags.
 #' @param t The arguments at which the autocovariance function is calculated at.
 #' @param h Bandwidth parameter.
-#' @param kernel_name The name of the kernel function to be used. Possible values are:
+#' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.

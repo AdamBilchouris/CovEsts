@@ -47,7 +47,7 @@
 #' @param name The name of the window. Options are: "tukey", "triangular", "sine", "power_sine", "blackman", "hann_poisson", "welch".
 #' @param params A vector of parameters for the windows. See the documentation below for the position of the parameters.
 #'
-#' @return A vector of values.
+#' @return A vector or matrix of values.
 #' @export
 #'
 #' @examples
@@ -59,6 +59,13 @@
 #' window(x, "blackman", c(0.16))
 #' window(x, "hann_poisson", c(0.7))
 #' window(x, "welch")
+#' curve(window(x, "tukey"), from = 0, to = 1)
+#' curve(window(x, "triangular"), from = 0, to = 1)
+#' curve(window(x, "sine"), from = 0, to = 1)
+#' curve(window(x, "power_sine", c(0.7)), from = 0, to = 1)
+#' curve(window(x, "blackman", c(0.16)), from = 0, to = 1)
+#' curve(window(x, "hann_poisson", c(0.7)), from = 0, to = 1)
+#' curve(window(x, "welch"), from = 0, to = 1)
 window <- function(x, name, params=c(1)) {
   stopifnot(length(x) >= 1, all(x >= 0), all(x <= 1), length(params) > 0, is.numeric(params[1]))
   stopifnot(name %in% c("tukey", "triangular", "sine", "power_sine",

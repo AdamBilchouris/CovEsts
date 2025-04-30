@@ -9,9 +9,9 @@ taper(x, rho, window_name, window_params = c(1), custom_window = FALSE)
 \arguments{
 \item{x}{A vector of number between 0 and 1 (inclusive).}
 
-\item{rho}{A scale paramter, greater than 0.}
+\item{rho}{A scale parameter in \eqn{(0, 1].}}
 
-\item{window_name}{The name of the window function to be used. Possible values are:
+\item{window_name}{The name of the \link{window} function to be used. Possible values are:
 "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.}
 
 \item{window_params}{A vector of parameters of the window function.}
@@ -27,4 +27,6 @@ This function repeatedly calls \link{taper_single} (refer to its manual).
 \examples{
 X <- c(0.1, 0.2, 0.3)
 taper(X, 0.5, "tukey")
+curve(taper(x, 1, "tukey"), from = 0, to = 1)
+curve(taper(x, 1, "power_sine", c(4)), from = 0, to = 1)
 }

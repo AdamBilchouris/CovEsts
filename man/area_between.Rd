@@ -28,6 +28,8 @@ This function computes the area between the two estimated functions over a set o
 }
 where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 
+To approximate this integral, the Trapezoidal rule is used.
+
 If \code{lags} is empty a difference of 1 will be used which results in a different area than if lags is specified.
 }
 \examples{

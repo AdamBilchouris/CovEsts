@@ -14,10 +14,12 @@ kernel_symm(x, name, params = c(1))
 \item{params}{A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels will have a scale parameter as the first value in the vector.}
 }
 \value{
-A vector of values.
+A vector or matrix of values.
 }
 \description{
 These functions computes values of kernels that have the properties of symmetric probability distributions.
+For a kernel \eqn{a(x)}, the standardised version is \eqn{a(x) / \int_{-\infty}^{\infty} a(x) dx}, so that the integral is 1.
+The symmetric kernels are different to \link{kernel} and are used in the functions \link{compute_adjusted_est} and \link{compute_truncated_est}.
 }
 \details{
 \strong{Symmetric Gaussian Kernel}.
@@ -54,4 +56,8 @@ kernel_symm(x, "rational_quadratic", c(theta))
 dim <- 1
 nu <- 1
 kernel_symm(x, "bessel_j", c(theta, nu, dim))
+curve(kernel_symm(x, "gaussian", c(theta)), from = -5, to = 5)
+curve(kernel_symm(x, "wave", c(theta)), from = -5, to = 5)
+curve(kernel_symm(x, "rational_quadratic", c(theta)), from = -5, to = 5)
+curve(kernel_symm(x, "bessel_j", c(theta, nu, dim)), from = -5, to = 5)
 }
