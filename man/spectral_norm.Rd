@@ -20,10 +20,10 @@ This function is intended for estimates over lags with a constant difference.
 }
 \details{
 This function computes the spectral norm of the difference of two estimated autocovariance functions.
-Let \eqn{\hat{D}(\tau) = \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau),}
+Let \eqn{D(\tau) = \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau),}
 where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 
-A matrix \eqn{D} is created from \eqn{\hat{D}(\cdot)},
+A matrix \eqn{D} is created from \eqn{D(\cdot)},
 \deqn{\left[ {\begin{array}{ccccc}
 D(0)            & D(\tau_{1})     & \cdots & D(\tau_{N - 1}) & D(\tau_{N})     \\
 D(\tau_{1})     & D(0)            & \cdots & D(\tau_{N - 2}) & D(\tau_{N - 1}) \\
@@ -35,7 +35,7 @@ D(\tau_{N})     & D(\tau_{N - 1}) & \cdots & D(\tau_{1})     & D(0)         \\
 over a set of lags \eqn{\{0, \tau_{1}, \dots , \tau_{N} \}.}
 This matrix is created in \link{create_cyclic_matrix}.
 
-The spectral norm is simply the largest singular value of \eqn{D.}
+The spectral norm is simply the largest eigenvalue of \eqn{D.}
 }
 \examples{
 x <- seq(0, 5, by=0.1)

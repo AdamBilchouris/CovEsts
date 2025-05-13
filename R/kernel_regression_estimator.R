@@ -37,7 +37,7 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' @details
 #' This function computes the following value,
 #' \deqn{
-#' \hat{\rho}(T_{1}) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((T_{1} - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((T_{1} - t_{ij}) / h) \right)^{-1},
+#' \hat{\rho}(T_{1}) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((T_{1} - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((T_{1} - t_{ij}) / b) \right)^{-1},
 #' }
 #' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 #'
@@ -49,7 +49,7 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' @param x A vector of lags.
 #' @param meanX The average value of \code{X}.
 #' @param T1 The first trunctation point.
-#' @param h Bandwidth parameter.
+#' @param b Bandwidth parameter, greater than 0.
 #' @param xij_mat The matrix of pairwise covariance values.
 #' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
@@ -68,9 +68,9 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
 #' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "my_kernel", c(0.25), TRUE)
-rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
+rho_T1 <- function(x, meanX, T1, b, xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
-            length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(h) == 1, is.numeric(h), !is.na(h), h > 0,
+            length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(b) == 1, is.numeric(b), !is.na(b), b > 0,
             is.numeric(xij_mat), is.matrix(xij_mat), !any(is.na(xij_mat)), is.logical(custom_kernel))
 
   numerators <- c()
@@ -82,7 +82,7 @@ rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_para
       tij <- x[i] - x
       t_tij <- T1 - tij
       X_ij <- xij_mat[i, ]
-      K_ij <- get(kernel_name)(t_tij, h, kernel_params)
+      K_ij <- get(kernel_name)(t_tij, b, kernel_params)
       numerator <- K_ij * X_ij
       denominator <- K_ij
 
@@ -96,7 +96,7 @@ rho_T1 <- function(x, meanX, T1, h, xij_mat, kernel_name="gaussian", kernel_para
       tij <- x[i] - x
       t_tij <- T1 - tij
       X_ij <- xij_mat[i, ]
-      K_ij <- kernel_symm(t_tij, kernel_name, c(h, kernel_params[1], kernel_params[2]))
+      K_ij <- kernel_symm(t_tij, kernel_name, c(b, kernel_params[1], kernel_params[2]))
       numerator <- K_ij * X_ij
       denominator <- K_ij
 
@@ -223,7 +223,7 @@ idct_1d <- function(X) {
 #' @param t The arguments at which the autocovariance function is calculated at.
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
-#' @param h Bandwidth parameter.
+#' @param b Bandwidth parameter, greater than 0.
 #' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
@@ -245,15 +245,15 @@ idct_1d <- function(X) {
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
 #' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "my_kernel", c(0.25), TRUE, TRUE)
-compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
+compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(x) >= 1, is.numeric(x), !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), is.numeric(t), length(t) >= 1,
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(T2) == 1, is.numeric(T2),
-            !is.na(T2), T2 > T1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel),
+            !is.na(T2), T2 > T1, length(b) == 1, is.numeric(b), b > 0, is.logical(custom_kernel),
             type %in% c('covariance', 'correlation'), is.logical(pd))
 
   xij_mat <- Xij_mat(X, mean(X))
-  rhoT1 <- rho_T1(x, meanX, T1, h, xij_mat, kernel_name, kernel_params, custom_kernel)
+  rhoT1 <- rho_T1(x, meanX, T1, b, xij_mat, kernel_name, kernel_params, custom_kernel)
 
   outer_x_x <- outer(x, x, '-')
   vals_truncated_1 <- c()
@@ -261,14 +261,14 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
   t_vals <- t[t <= T1]
   if(custom_kernel) {
     for(tt in t_vals) {
-      K_ij <- get(kernel_name)(tt - outer_x_x, h, kernel_params)
+      K_ij <- get(kernel_name)(tt - outer_x_x, b, kernel_params)
       vals_truncated_1 <- c(vals_truncated_1, sum(K_ij * xij_mat) / sum(K_ij))
     }
   }
   else {
     stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
     for(tt in t_vals) {
-      K_ij <- kernel_symm(tt - outer_x_x, kernel_name, c(h, kernel_params[1], kernel_params[2]))
+      K_ij <- kernel_symm(tt - outer_x_x, kernel_name, c(b, kernel_params[1], kernel_params[2]))
       vals_truncated_1 <- c(vals_truncated_1, sum(K_ij * xij_mat) / sum(K_ij))
     }
   }
@@ -311,14 +311,14 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
 #'
 #' The kernel regression estimator is defined as
 #' \deqn{
-#' \hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
+#' \hat{\rho}(t) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((t - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((t - t_{ij}) / b) \right)^{-1},
 #' }
 #' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 #'
 #' @details
 #' The kernel regression estimator of an autocovariance function is defined as
 #' \deqn{
-#' \hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
+#' \hat{\rho}(t) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((t - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((t - t_{ij}) / b) \right)^{-1},
 #' }
 #' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 #'
@@ -340,7 +340,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
 #' @param X A vector representing the observed values of the process.
 #' @param x A vector of lags.
 #' @param t The arguments at which the autocovariance function is calculated at.
-#' @param h Bandwidth parameter.
+#' @param b Bandwidth parameter, greater than 0.
 #' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
 #' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
@@ -360,10 +360,10 @@ compute_truncated_est <- function(X, x, t, T1, T2, h, kernel_name="gaussian", ke
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
 #' compute_adjusted_est(X, 1:4, 1:3, 0.1, "my_kernel", c(0.25), TRUE, TRUE)
-compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
+compute_adjusted_est <- function(X, x, t, b, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='covariance', meanX = mean(X)) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(x), length(x) >= 1, !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
-            length(t) >= 1, length(h) == 1, is.numeric(h), h > 0, is.logical(custom_kernel),
+            length(t) >= 1, length(b) == 1, is.numeric(b), b > 0, is.logical(custom_kernel),
             type %in% c('covariance', 'correlation'), is.logical(pd))
 
   outer_x_x <- outer(x, x, '-')
@@ -371,14 +371,14 @@ compute_adjusted_est <- function(X, x, t, h, kernel_name="gaussian", kernel_para
   cov_vals <- c()
   if(custom_kernel) {
     for(tt in t) {
-      K_ij <- get(kernel_name)(tt - outer_x_x, h, kernel_params)
+      K_ij <- get(kernel_name)(tt - outer_x_x, b, kernel_params)
       cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))
     }
   }
   else {
     stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
     for(tt in t) {
-      K_ij <- kernel_symm(tt - outer_x_x, kernel_name, c(h, kernel_params[1], kernel_params[2]))
+      K_ij <- kernel_symm(tt - outer_x_x, kernel_name, c(b, kernel_params[1], kernel_params[2]))
       cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))
     }
   }

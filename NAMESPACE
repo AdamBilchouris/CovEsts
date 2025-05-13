@@ -3,6 +3,7 @@
 export(H2n)
 export(Xij_mat)
 export(area_between)
+export(check_pd)
 export(compute_adjusted_est)
 export(compute_corrected_standard_est)
 export(compute_kernel_corrected_est)

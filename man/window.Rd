@@ -43,14 +43,14 @@ The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
 
 \strong{Blackman Half-Window}.
 This function computes the Blackman half-window.
-\deqn{w(x; \alpha) = ( (1 - \alpha) / 2) - \frac{1}{2} \cos(\pi x) + \frac{\alpha}{2} \cos(2 \pi x), x \in [0, 1], \alpha \in {R} .}
-The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
-It is recommended that \eqn{\alpha = 0.16} to ensure that \eqn{w(0) = 0, w(1) = 1.}
+\deqn{w(x; a) = ( (1 - a) / 2) - \frac{1}{2} \cos(\pi x) + \frac{a}{2} \cos(2 \pi x), x \in [0, 1], a \in {R} .}
+The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
+It is recommended that \eqn{a \in [-0.25, 0.25]} to ensure that the window is nondecreasing on \eqn{[0, 1].}
 
 \strong{Hann-Poisson Half-Window}.
 This function computes the Hann-Poisson half-window.
-\deqn{w(x; \alpha) = \frac{1}{2} (1 - \cos(\pi x)) \exp( - (\alpha \left|1 - x \right|) ) , x \in [0, 1], \alpha \in {R} .}
-The \code{params} argument is of the form \code{c(}\eqn{\alpha}\code{)}
+\deqn{w(x; a) = \frac{1}{2} (1 - \cos(\pi x)) \exp( - (a \left|1 - x \right|) ) , x \in [0, 1], a \in {R} .}
+The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
 
 \strong{Welch Half-Window}.
 This function computes the Welch half-window.

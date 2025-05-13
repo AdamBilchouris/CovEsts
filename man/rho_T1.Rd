@@ -8,7 +8,7 @@ rho_T1(
   x,
   meanX,
   T1,
-  h,
+  b,
   xij_mat,
   kernel_name = "gaussian",
   kernel_params = c(),
@@ -22,7 +22,7 @@ rho_T1(
 
 \item{T1}{The first trunctation point.}
 
-\item{h}{Bandwidth parameter.}
+\item{b}{Bandwidth parameter, greater than 0.}
 
 \item{xij_mat}{The matrix of pairwise covariance values.}
 
@@ -42,7 +42,7 @@ This helper function computes \eqn{\rho(T_{1})} for the truncated kernel regress
 \details{
 This function computes the following value,
 \deqn{
-\hat{\rho}(T_{1}) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((T_{1} - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((T_{1} - t_{ij}) / h) \right)^{-1},
+\hat{\rho}(T_{1}) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((T_{1} - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((T_{1} - t_{ij}) / b) \right)^{-1},
 }
 where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 }

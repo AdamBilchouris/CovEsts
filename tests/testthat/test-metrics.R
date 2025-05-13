@@ -157,3 +157,26 @@ test_that("spectral_norm() fails if est1 is of a different length", {
 test_that("spectral_norm() fails if est2 is of a different length", {
   expect_error(spectral_norm(test_estCov1, test_estCov2[-1]))
 })
+
+# check_pd
+test_that("check_pd() works", {
+  expect_equal(check_pd(test_estCov1), TRUE)
+})
+
+#
+test_that("check_pd() works", {
+  expect_equal(check_pd(test_estCov1), TRUE)
+})
+
+test_that("check_pd() fails for nonnumeric est", {
+  expect_error(check_pd(c(1, 'a', 3)))
+  expect_error(check_pd(c(1, 1i, 3)))
+})
+
+test_that("check_pd() fails for empty est", {
+  expect_error(check_pd(c()))
+})
+
+test_that("check_pd() fails for at least on NA in est", {
+  expect_error(check_pd(c(1, NA, 3)))
+})

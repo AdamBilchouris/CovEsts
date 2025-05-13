@@ -10,7 +10,7 @@ compute_truncated_est(
   t,
   T1,
   T2,
-  h,
+  b,
   kernel_name = "gaussian",
   kernel_params = c(),
   custom_kernel = FALSE,
@@ -30,7 +30,7 @@ compute_truncated_est(
 
 \item{T2}{The second truncation point, \eqn{T_{2} > T_{1} > 0.}}
 
-\item{h}{Bandwidth parameter.}
+\item{b}{Bandwidth parameter, greater than 0.}
 
 \item{kernel_name}{The name of the symmetric kernel (see \link{kernel_symm}) function to be used. Possible values are:
 "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.}

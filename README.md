@@ -1,10 +1,13 @@
 
-# CovEsts
+# CovEsts: Nonparametric Autocovariance Estimation and Estimator Adjustment
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 This package provides estimates of the autocovariance function for one-dimensional processes.
+
+# Publication
+Bilchouris, A., & Olenko, A. (2025). On Nonparametric Estimation of Covariogram. Austrian Journal of Statistics, 54(1), 112–137. https://doi.org/10.17713/ajs.v54i1.1975
 
 ## Installation
 

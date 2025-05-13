@@ -8,7 +8,7 @@ compute_adjusted_est(
   X,
   x,
   t,
-  h,
+  b,
   kernel_name = "gaussian",
   kernel_params = c(),
   custom_kernel = FALSE,
@@ -24,7 +24,7 @@ compute_adjusted_est(
 
 \item{t}{The arguments at which the autocovariance function is calculated at.}
 
-\item{h}{Bandwidth parameter.}
+\item{b}{Bandwidth parameter, greater than 0.}
 
 \item{kernel_name}{The name of the symmetric kernel (see \link{kernel_symm}) function to be used. Possible values are:
 "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.}
@@ -45,14 +45,14 @@ A vector whose values are the kernel regression estimates.
 \description{
 The kernel regression estimator is defined as
 \deqn{
-\hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
+\hat{\rho}(t) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((t - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((t - t_{ij}) / b) \right)^{-1},
 }
 where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 }
 \details{
 The kernel regression estimator of an autocovariance function is defined as
 \deqn{
-\hat{\rho}(t) = \left( \sum_{i} \sum_{j} \check{X}_{ij} K((t - t_{ij}) / h) \right) \left( \sum_{i} \sum_{j} K((t - t_{ij}) / h) \right)^{-1},
+\hat{\rho}(t) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((t - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((t - t_{ij}) / b) \right)^{-1},
 }
 where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 

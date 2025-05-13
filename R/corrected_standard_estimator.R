@@ -2,7 +2,7 @@
 #'
 #' This function computes and the standard estimator and applies kernel correction to it.
 #' It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
-#' The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
+#' The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
 #' \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
 #'
 #' @details
@@ -89,7 +89,7 @@ compute_corrected_standard_est <- function(X, maxLag, kernel_name, kernel_params
 #'
 #' This function computes applies kernel correction to an estimated autocovariance function.
 #' It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
-#' The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
+#' The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
 #' \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
 #'
 #' @param cov A vector whose values are an estimate autocovariance function.
@@ -121,7 +121,7 @@ compute_kernel_corrected_est <- function(cov, maxLag, kernel_name, kernel_params
   if(!custom_kernel) {
     stopifnot(kernel_name %in% c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"))
 
-    cov <- cov[1:(maxLag+1)] * sapply(seq(0, maxLag, by=1), function(t) get("kernel")(t, kernel_name, c(N_T, kernel_params)))
+    cov <- cov[1:(maxLag+1)] * sapply(seq(0, maxLag, by=1), function(t) kernel(t, kernel_name, c(N_T, kernel_params)))
 
     if(type == 'correlation') {
       cov <- cov / cov[1]
