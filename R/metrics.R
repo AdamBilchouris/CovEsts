@@ -9,7 +9,7 @@
 #' }
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 #'
-#' To approximate this integral, the Trapezoidal rule is used.
+#' To approximate this integral the trapezoidal rule is used.
 #'
 #' If \code{lags} is empty a difference of 1 will be used which results in a different area than if lags is specified.
 #'
@@ -170,10 +170,10 @@ create_cyclic_matrix <- function(v) {
 #'
 #' @details
 #' This function computes the spectral norm of the difference of two estimated autocovariance functions.
-#' Let \eqn{\hat{D}(\tau) = \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau),}
+#' Let \eqn{D(\tau) = \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau),}
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 #'
-#' A matrix \eqn{D} is created from \eqn{\hat{D}(\cdot)},
+#' A matrix \eqn{D} is created from \eqn{D(\cdot)},
 #' \deqn{\left[ {\begin{array}{ccccc}
 #' D(0)            & D(\tau_{1})     & \cdots & D(\tau_{N - 1}) & D(\tau_{N})     \\
 #' D(\tau_{1})     & D(0)            & \cdots & D(\tau_{N - 2}) & D(\tau_{N - 1}) \\
@@ -185,7 +185,7 @@ create_cyclic_matrix <- function(v) {
 #' over a set of lags \eqn{\{0, \tau_{1}, \dots , \tau_{N} \}.}
 #' This matrix is created in [create_cyclic_matrix].
 #'
-#' The spectral norm is simply the largest singular value of \eqn{D.}
+#' The spectral norm is simply the largest eigenvalue of \eqn{D.}
 #'
 #' @param est1 A numeric vector representing the first estimated autocovariance function.
 #' @param est2 A numeric vector representing the second estimated autocovariance function.
@@ -206,4 +206,38 @@ spectral_norm <- function(est1, est2) {
     return(det1)
   }
   return(NA)
+}
+
+#' Check if an autocovariance function estimate is positive-definite or not.
+#'
+#' This function checks if an autocovariance function estimate is positive-definite or not by determining if the eigenvalues of a matrix (see the Details section) are all positive.
+#'
+#' @details
+#' For an autocovariance function estimate \eqn{\hat{C}(\cdot)} over a set of lags separated by a constant difference \eqn{\{0, h_{1} , h_{2} , \dots , h_{n} \},}
+#' construct the symmetric matrix
+#' \deqn{\left[ {\begin{array}{ccccc}
+#' \hat{C}(0)         & \hat{C}(h_{1})     & \cdots & \hat{C}(h_{N - 1}) & \hat{C}(h_{N})     \\
+#' \hat{C}(h_{1})     & \hat{C}(0)         & \cdots & \hat{C}(h_{N - 2}) & \hat{C}(h_{N - 1}) \\
+#' \vdots             & \vdots             & \ddots & \vdots             & \vdots             \\
+#' \hat{C}(h_{N - 1}) & \hat{C}(h_{N - 2}) & \cdots & \hat{C}(0)         & \hat{C}(h_{1})     \\
+#' \hat{C}(h_{N})     & \hat{C}(h_{N - 1}) & \cdots & \hat{C}(h_{1})     & \hat{C}(0)         \\
+#' \end{array}} \right] .
+#' }
+#'
+#' The eigendecomposition of this matrix is computed to determine if all eigenvalues are positive, if so, the estimated autocovariance function is positive-definite.
+#'
+#' @param est A numeric vector representing an estimated autocovariance function.
+#'
+#' @return A boolean where \code{TRUE} denotes a positive-definite autocovariance function estimate and \code{FALSE} for an estimate that is not positive-definite.
+#' @export
+#'
+#' @examples
+#' x <- seq(0, 5, by=0.1)
+#' estCov <- exp(-x^2)
+#' check_pd(estCov)
+check_pd <- function(est) {
+  stopifnot(is.numeric(est), length(est) >= 1, !any(is.na(est)))
+  cyclic_mat <- create_cyclic_matrix(est)
+  eigens <- zapsmall(eigen(cyclic_mat)$values)
+  return(!any(eigens < 0))
 }
