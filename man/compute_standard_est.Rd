@@ -10,7 +10,7 @@ compute_standard_est(
   N = length(X),
   meanX = mean(X),
   pd = TRUE,
-  type = "covariance"
+  type = "autocovariance"
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ compute_standard_est(
 
 \item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
-\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
+\item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 }
 \value{
 A vector whose values are the estimated autocovariance estimates.

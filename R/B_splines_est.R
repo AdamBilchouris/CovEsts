@@ -240,7 +240,7 @@ solve_spline <- function(par, splines_df, weights) {
 #' @param m The number of nonboundary knots.
 #' @param inital_pars An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}
 #' @param control An optional list of optimisation parameters used in the optimisation process, see \code{control} in [stats::optim].
-#' @param type Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.
+#' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
 #'
 #' @return A vector whose values are the spline autocovariance estimates.
 #' @export
@@ -255,12 +255,12 @@ solve_spline <- function(par, splines_df, weights) {
 #' estCov <- compute_standard_est(X, maxLag)
 #' estimated <- compute_splines_est(X, x, maxLag, estCov, 3, 2)
 #' estimated
-compute_splines_est <- function(X, x, maxLag, estCov, p, m, inital_pars = c(), control=list('maxit' = 1000), type='covariance') {
+compute_splines_est <- function(X, x, maxLag, estCov, p, m, inital_pars = c(), control=list('maxit' = 1000), type='autocovariance') {
   stopifnot(is.numeric(X), is.vector(X), all(!is.na(X)), is.numeric(x), is.vector(x), all(!is.na(x)),
             is.numeric(maxLag), maxLag >= 0, maxLag <= (length(X) - 1), is.numeric(estCov),
             is.vector(estCov), all(!is.na(estCov)), length(estCov) == (maxLag + 1),
             is.numeric(p), p >= 0, p %% 1 == 0, is.numeric(m), m > 0, m %% 1 == 0,
-            type %in% c('covariance', 'correlation'))
+            type %in% c('autocovariance', 'autocorrelation'))
 
   if(is.vector(inital_pars)) {
     stopifnot(length(inital_pars) == p + m)
@@ -331,7 +331,7 @@ compute_splines_est <- function(X, x, maxLag, estCov, p, m, inital_pars = c(), c
     stop("Length of output differs from input")
   }
 
-  if(type == 'correlation') {
+  if(type == 'autocorrelation') {
     optim_vals <- optim_vals / optim_vals[1]
   }
   return(optim_vals)

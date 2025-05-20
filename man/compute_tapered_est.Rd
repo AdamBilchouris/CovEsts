@@ -11,7 +11,7 @@ compute_tapered_est(
   window_name,
   window_params = c(1),
   custom_window = FALSE,
-  type = "covariance",
+  type = "autocovariance",
   meanX = mean(X)
 )
 }
@@ -29,7 +29,7 @@ compute_tapered_est(
 
 \item{custom_window}{If a custom window is to be used or not. Defaults to \code{FALSE}.}
 
-\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
+\item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 }

@@ -15,7 +15,7 @@ compute_truncated_est(
   kernel_params = c(),
   custom_kernel = FALSE,
   pd = TRUE,
-  type = "covariance",
+  type = "autocovariance",
   meanX = mean(X)
 )
 }
@@ -41,7 +41,7 @@ compute_truncated_est(
 
 \item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
-\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
+\item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 }

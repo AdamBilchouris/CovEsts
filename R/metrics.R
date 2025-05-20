@@ -53,7 +53,7 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
   if(plot) {
       y_min <- ifelse(min(est1) < min(est2), min(est1), min(est2))
       y_max <- ifelse(max(est1) > max(est2), max(est1), max(est2))
-      plot(lags, est1, lwd=2, lty=1, col=2, type='l', ylim=c(y_min, y_max))
+      plot(lags, est1, lwd=2, lty=1, col=2, type='l', ylim=c(y_min, y_max), xlab='Lag (h)', ylab='Estimated Autocovariance')
       graphics::lines(lags, est2, lwd=2, lty=1, col=3)
       # Create a region between the two curves.
       graphics::polygon(c(lags, rev(lags)), c(est2, rev(est1)), col="#AAAAAAAA", border=2, lty=0)
@@ -120,7 +120,7 @@ max_distance <- function(est1, est2, lags=c(), plot = FALSE) {
   }
 
   if(plot) {
-    plot(lags, distVec, type='o')
+    plot(lags, distVec, type='o', xlab='Lag (h)', ylab='Distance')
   }
 
   return(maxDist)

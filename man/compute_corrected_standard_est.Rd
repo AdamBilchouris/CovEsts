@@ -14,7 +14,7 @@ compute_corrected_standard_est(
   meanX = mean(X),
   pd = TRUE,
   custom_kernel = FALSE,
-  type = "covariance"
+  type = "autocovariance"
 )
 }
 \arguments{
@@ -39,7 +39,7 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 
 \item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}. See examples.}
 
-\item{type}{Compute either the 'covariance' or 'correlation'. Defaults to 'covariance'.}
+\item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 }
 \value{
 A vector whose values are the kernel corrected autocovariance estimates.
@@ -47,7 +47,7 @@ A vector whose values are the kernel corrected autocovariance estimates.
 \description{
 This function computes and the standard estimator and applies kernel correction to it.
 It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
-The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
+The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
 \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
 }
 \details{
