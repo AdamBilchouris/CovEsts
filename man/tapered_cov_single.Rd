@@ -7,7 +7,7 @@
 tapered_cov_single(X, meanX, h, h2n, taperVals_t, taperVals_h)
 }
 \arguments{
-\item{X}{A vector representing the observed values of the process.}
+\item{X}{A vector representing observed values of the process.}
 
 \item{meanX}{The average value of the \code{X}.}
 

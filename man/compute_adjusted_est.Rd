@@ -18,7 +18,7 @@ compute_adjusted_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the observed values of the process.}
+\item{X}{A vector representing observed values of the process.}
 
 \item{x}{A vector of lags.}
 

@@ -20,7 +20,7 @@
 #'
 #' @references Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society (Vol. 54, Issue 1). 10.17713/ajs.v54i1.1975
 #'
-#' @param X A vector representing the observed values of the process.
+#' @param X A vector representing observed values of the process.
 #' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param N The length of \code{X}. Defaults to \code{length(X)}.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.

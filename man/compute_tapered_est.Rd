@@ -16,7 +16,7 @@ compute_tapered_est(
 )
 }
 \arguments{
-\item{X}{A vector representing the observed values of the process.}
+\item{X}{A vector representing observed values of the process.}
 
 \item{maxLag}{The maximum lag to compute the autocovariance function at.}
 
