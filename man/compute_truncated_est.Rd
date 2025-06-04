@@ -20,7 +20,7 @@ compute_truncated_est(
 )
 }
 \arguments{
-\item{X}{A vector representing observed values of the process.}
+\item{X}{A vector with observed values.}
 
 \item{x}{A vector of lags.}
 
@@ -49,13 +49,7 @@ compute_truncated_est(
 A vector whose values are the truncated kernel regression estimates.
 }
 \description{
-This function computes the truncated kernel regression estimator,
-\deqn{\hat{\rho}_{1}(t)  = \left\{ \begin{array}{ll}
-\hat{\rho}(t) & 0 \leq t \leq T_{1} \\
-\hat{\rho}(T_{1}) (T_{2} - t)(T_{2} - T_{1})^{-1} & T_{1} < t \leq T_{2} \\
-0 & t > T_{2}
-\end{array} , \right. }
-where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator, see \link{compute_adjusted_est}.
+This function computes the truncated kernel regression estimator, based on the kernel regression estimator \eqn{\hat{\rho}(\cdot)}, see \link{compute_adjusted_est}.
 }
 \details{
 This function computes the truncated kernel regression estimator,
@@ -72,15 +66,16 @@ In the case of short-range dependence, this may be beneficial as it can remove e
 To make this estimator positive-definite, the following procedure is used:
 \enumerate{
 \item Take the discrete cosine transform
-\eqn{\mathcal{F}^{c}(\hat{\rho}_{1}(t))}.
+\eqn{\mathcal{F}^{c}(\theta)}.
 \item Find the smallest frequency where its associated value in the spectral domain is negative
-\deqn{\hat{\theta} = \inf\{ \theta > 0 :  \mathcal{F}^{c}(\hat{\rho}_{1}(t)) < 0\}.}
+\deqn{\hat{\theta} = \inf\{ \theta > 0 :  \mathcal{F}^{c}(\theta)) < 0\}.}
 \item Set all values starting at the frequency to zero.
 \item Perform the inversion.
 }
 
-This ensures the autocovariance function estimate is positive-definite. If \eqn{\hat{\theta}} is the first nonzero sample frequency,
-the entire spectrum, apart from an impulse at zero, is zero, resulting in an adjusted function that is a horizontal line whose value is the area of the of the estimated function prior to the adjustment.
+This ensures the autocovariance function estimate is positive-definite.
+
+If \eqn{\hat{\theta}} is a small frequency, most of the spectrum equals zero, resulting in an inaccurate estimate of the autocovariance function.
 }
 \examples{
 X <- c(1, 2, 3, 4)

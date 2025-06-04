@@ -2,7 +2,7 @@
 % Please edit documentation in R/tapered_estimator.R
 \name{compute_tapered_est}
 \alias{compute_tapered_est}
-\title{Compute the tapered autocovariance function over a set of lags.}
+\title{Compute the Estimated Tapered Autocovariance Function over a Set of Lags.}
 \usage{
 compute_tapered_est(
   X,
@@ -16,9 +16,9 @@ compute_tapered_est(
 )
 }
 \arguments{
-\item{X}{A vector representing observed values of the process.}
+\item{X}{A vector with observed values.}
 
-\item{maxLag}{The maximum lag to compute the autocovariance function at.}
+\item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
 \item{rho}{A scale parameter in \eqn{(0, 1].}}
 
@@ -34,7 +34,7 @@ compute_tapered_est(
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 }
 \value{
-A vector whose values are the tapered autocovariance estimates.
+A vector whose values are the estimated tapered autocovariances.
 }
 \description{
 This function computes the tapered autocovariance over a set of lags,
@@ -43,16 +43,13 @@ where \eqn{a(\cdot)} is a window function, \eqn{\rho \in (0, 1]} is a scale para
 For each lag, the tapered autocovariance is computed using the function \link{tapered_cov_single}.
 }
 \details{
-This function computes the tapered autocovariance over a set of lags,
+This function computes the estimated tapered autocovariance over a set of lags,
 \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
 where \eqn{a(\cdot)} is a window function, \eqn{\rho \in (0, 1]}  is a scale parameter.
-This estimator considers the edge effect during estimation, assigning a lower weight to values closer to the edges and higher weights for observations closer to the middle.
+This estimator considers the edge effect during estimation, assigning a lower weight to values closer to the boundaries and higher weights for observations closer to the middle.
 This estimator is positive-definite and asymptotically unbiased.
 
 Internally, this function calls \link{tapered_cov_single} for each lag \eqn{h}.
-
-The set of taper values (\eqn{a((t_{i} - 1/2) / n; \rho)}) are precomputed in order to save time, as they do not vary.
-As \eqn{a((t_{i} + h - 1/2) / n; \rho)} is varying with lag \eqn{h}, the set of taper values is truncated to get the desired result.
 }
 \examples{
 X <- c(1, 2, 3)

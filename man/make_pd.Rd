@@ -2,7 +2,7 @@
 % Please edit documentation in R/kernel_regression_estimator.R
 \name{make_pd}
 \alias{make_pd}
-\title{Make any function positive-definite}
+\title{Make any Function Positive-Definite}
 \usage{
 make_pd(x, method.1 = TRUE)
 }

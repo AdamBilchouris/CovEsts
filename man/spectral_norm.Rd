@@ -2,7 +2,7 @@
 % Please edit documentation in R/metrics.R
 \name{spectral_norm}
 \alias{spectral_norm}
-\title{Compute spectral norm between estimated functions.}
+\title{Compute the Spectral Norm Between Estimated Functions.}
 \usage{
 spectral_norm(est1, est2)
 }

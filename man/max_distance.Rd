@@ -2,7 +2,7 @@
 % Please edit documentation in R/metrics.R
 \name{max_distance}
 \alias{max_distance}
-\title{The maximum vertical distance between estimated functions.}
+\title{The Maximum Vertical Distance Between Estimated Functions.}
 \usage{
 max_distance(est1, est2, lags = c(), plot = FALSE)
 }

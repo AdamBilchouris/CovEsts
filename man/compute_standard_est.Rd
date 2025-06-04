@@ -2,32 +2,29 @@
 % Please edit documentation in R/standard_est.R
 \name{compute_standard_est}
 \alias{compute_standard_est}
-\title{Computes the autocovariance function using the standard estimator.}
+\title{Computes the Standard Estimator of the Autocovariance Function.}
 \usage{
 compute_standard_est(
   X,
-  maxLag,
-  N = length(X),
   meanX = mean(X),
+  maxLag = length(X) - 1,
   pd = TRUE,
   type = "autocovariance"
 )
 }
 \arguments{
-\item{X}{A vector representing observed values of the process.}
-
-\item{maxLag}{The maximum lag to compute the autocovariance function at.}
-
-\item{N}{The length of \code{X}. Defaults to \code{length(X)}.}
+\item{X}{A vector with observed values.}
 
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
+
+\item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
 \item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 }
 \value{
-A vector whose values are the estimated autocovariance estimates.
+A vector whose values are the autocovariance estimates.
 }
 \description{
 This function computes the following two estimates of the autocovariance function depending on
@@ -36,22 +33,22 @@ the parameter \code{pd}.
 \details{
 For \code{pd = TRUE}:
 \deqn{
-\widehat{C}(\tau) = \frac{1}{N} \sum_{i=1}^{N-\tau} ( X(t_{i}) - \bar{X} ) ( X(t_{i} + \tau) - \bar{X} ) .
+\widehat{C}(h) = \frac{1}{N} \sum_{j=1}^{N-h} ( X(j) - \bar{X} ) ( X(j + h) - \bar{X} ) .
 }
 
 For \code{pd = FALSE}:
 \deqn{
-\widehat{C}(\tau) = \frac{1}{N - \tau} \sum_{i=1}^{N-\tau} ( X(t_{i}) - \bar{X} ) ( X(t_{i} + \tau) - \bar{X} ) .
+\widehat{C}(h) = \frac{1}{N - h} \sum_{j=1}^{N-h} ( X(j) - \bar{X} ) ( X(j + h) - \bar{X} ) .
 }
 
-This function will generate autocovariance values for lags \eqn{\{0, \dots, \mbox{maxLag}\}.}
+This function will generate autocovariance values for lags \eqn{h} from the set \eqn{\{0, \dots, \mbox{maxLag}\}.}
 
 The positive-definite estimator must be used cautiously when estimating over all lags as the sum of the autocorrelation function converges to \eqn{-1/2}.
 This does not occur for the nonpositive-definite estimator.
 }
 \examples{
 X <- c(1, 2, 3)
-compute_standard_est(X, 2, length(X), mean(X), pd=FALSE)
+compute_standard_est(X, meanX=mean(X), maxLag=2, pd=FALSE)
 }
 \references{
 Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society (Vol. 54, Issue 1). 10.17713/ajs.v54i1.1975

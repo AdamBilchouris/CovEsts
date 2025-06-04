@@ -4,7 +4,7 @@
 #' \deqn{
 #' \kappa_{0} = 0 , \kappa_{1} = 1 / (m + 1) , \dots , \kappa_{m} = m / (m + 1) , \kappa_{m + 1} = 1 .
 #' }
-#' The knots are equally spaced with boundary knots \eqn{\kappa_{0} = 0 , \kappa_{m + 1} = 1 .}
+#' The knots are equally spaced with boundary knots \eqn{\kappa_{0} = 0} and \eqn{\kappa_{m + 1} = 1 .}
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
@@ -25,16 +25,16 @@ generate_knots <- function(m) {
   return(knotVec)
 }
 
-#' Get a specific \eqn{\tau_{i}}.
+#' Get a Specific \eqn{\tau_{i}}.
 #'
 #' A helper function that transforms the knots from [generate_knots] into the following form:
-#' For \eqn{i = -p , \dots , -1 , m + 2, \dots , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
+#' For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
 #' See Choi, Li & Wang (2013) page 615 for details.
 #' This is a helper function of [get_all_tau].
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
-#' @param i The knot number (\eqn{-p} through \eqn{m + p + 1}).
+#' @param i The knot index (\eqn{-p} through \eqn{m + p + 1}).
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #' @param kVec Knot vector - see [generate_knots].
@@ -60,7 +60,8 @@ get_tau <- function(i, p, m, kVec) {
 }
 #' Get all \eqn{\tau}.
 #'
-#' A helper function that repeatedly calls [get_tau] to obtain all \eqn{\tau_{i}.}
+#' A helper function that repeatedly calls [get_tau] to obtain all \eqn{\tau_{i},} where each \eqn{\tau_{i}} is as follows.
+#' For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
 #' See Choi, Li & Wang (2013, p. 615) for details.
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
@@ -68,7 +69,7 @@ get_tau <- function(i, p, m, kVec) {
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #'
-#' @return A numerical vector representing all \eqn{\tau_{i}}s.
+#' @return A numeric vector of all \eqn{\tau_{i}}.
 #' @export
 #'
 #' @examples
@@ -83,23 +84,24 @@ get_all_tau <- function(p, m) {
   return(tauVec)
 }
 
-#' Compute \eqn{f_{j}^{[l]}(x)}.
+#' Compute Adjusted Splines.
 #'
 #' A helper function that is an implementation of the formula from Choi, Li & Wang (2013, p. 616).
 #' \deqn{
-#' f_{j}^{[l]}(x) = \frac{m + 1}{l} \left( f_{j}^{[l - 1]}(x + 1) - \tau_{j - p} f_{j}^{[l - 1]}(x) + \tau_{j - p + l + 1} f_{j + 1}^{[l - 1]}(x) -  f_{j + 1}^{[l - 1]}(x + 1)  \right)
+#' f_{j}^{[l]}(x) = \frac{m + 1}{l} \left( f_{j}^{[l - 1]}(x + 1) - \tau_{j - p} f_{j}^{[l - 1]}(x) + \tau_{j - p + l + 1} f_{j + 1}^{[l - 1]}(x) -  f_{j + 1}^{[l - 1]}(x + 1)  \right) ,
 #' }
+#' where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the spline, \eqn{l} is the order of the adjusted spline (the function \eqn{f(\cdot)}) and \eqn{j = 1, 2, \dots , m + p.}
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
-#' @param x Numeric value for which the function is calculated at.
+#' @param x Argument of the function.
 #' @param j Index of basis function of order \eqn{l}.
 #' @param l Order of function.
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #' @param taus Vector of \eqn{\tau}s, see [get_tau].
 #'
-#' @return A numeric value of \eqn{f_{j}^{[l]}(x).}
+#' @return A numeric value of the adjusted spline \eqn{f_{j}^{[l]}(x).}
 #' @export
 #'
 #' @examples
@@ -135,18 +137,18 @@ f_j_l <- function(x, j, l, p, m, taus) {
   }
 }
 
-#' Construct data frame of basis functions.
+#' Construct Data Frame of Basis Functions.
 #'
 #' This helper function constructs a data frame with the following structure:
 #' * One column for the x-values
-#' * m + p columns values of squared basis functions evaluated at the correspond x.
+#' * m + p columns values of squared basis functions evaluated at the corresponding x.
 #'
-#' @param x A vector lags.
+#' @param x A vector of lags.
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #' @param taus Vector of \eqn{\tau}s, see [get_tau].
 #'
-#' @return A data frame of the structure found above.
+#' @return A data frame of the above structure.
 #' @export
 #'
 #' @examples
@@ -225,19 +227,19 @@ solve_spline <- function(par, splines_df, weights) {
 
 #' Compute the Splines Estimator.
 #'
-#' Compute the estimated covariance function from Choi, Li & Wang (2013, pp. 614-617).
+#' Compute the estimated covariance function by using the method from Choi, Li & Wang (2013, pp. 614-617).
 #' \deqn{C(\tau) = \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{[p]}(\tau^{2}),}
 #' where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the splines, \eqn{\tau} is the isotropic distance, \eqn{\beta_{j}} are nonnegative weights and \eqn{f_{j}^{[p]}} are basis functions of order \eqn{p.}
 #' For optimisation, the Nelder-Mead and L-BFGS-B methods are used, the one which selects parameters which minimises the objective function is chosen.
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
 #'
-#' @param X A vector representing observed values of the process.
+#' @param X A vector with observed values.
 #' @param x A vector of lags.
-#' @param maxLag The maximum lag to compute the autocovariance function at.
 #' @param estCov An estimated autocovariance function to fit to (a vector).
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
+#' @param maxLag An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.
 #' @param inital_pars An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}
 #' @param control An optional list of optimisation parameters used in the optimisation process, see \code{control} in [stats::optim].
 #' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
@@ -252,15 +254,14 @@ solve_spline <- function(par, splines_df, weights) {
 #' X <- rnorm(100)
 #' x <- seq(0, 5, by = 0.25)
 #' maxLag <- 5
-#' estCov <- compute_standard_est(X, maxLag)
-#' estimated <- compute_splines_est(X, x, maxLag, estCov, 3, 2)
+#' estCov <- compute_standard_est(X, maxLag=maxLag)
+#' estimated <- compute_splines_est(X, x, estCov, 3, 2, maxLag = maxLag)
 #' estimated
-compute_splines_est <- function(X, x, maxLag, estCov, p, m, inital_pars = c(), control=list('maxit' = 1000), type='autocovariance') {
+compute_splines_est <- function(X, x, estCov, p, m, maxLag=length(X) - 1, inital_pars = c(), control=list('maxit' = 1000), type='autocovariance') {
   stopifnot(is.numeric(X), is.vector(X), all(!is.na(X)), is.numeric(x), is.vector(x), all(!is.na(x)),
-            is.numeric(maxLag), maxLag >= 0, maxLag <= (length(X) - 1), is.numeric(estCov),
-            is.vector(estCov), all(!is.na(estCov)), length(estCov) == (maxLag + 1),
-            is.numeric(p), p >= 0, p %% 1 == 0, is.numeric(m), m > 0, m %% 1 == 0,
-            type %in% c('autocovariance', 'autocorrelation'))
+            is.numeric(maxLag), maxLag >= 0, maxLag <= (length(estCov) - 1), is.numeric(estCov),
+            is.vector(estCov), all(!is.na(estCov)), is.numeric(p), p >= 0, p %% 1 == 0,
+            is.numeric(m), m > 0, m %% 1 == 0, type %in% c('autocovariance', 'autocorrelation'))
 
   if(is.vector(inital_pars)) {
     stopifnot(length(inital_pars) == p + m)

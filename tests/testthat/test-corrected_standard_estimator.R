@@ -1,138 +1,122 @@
 # Most basic call works.
-test_that("compute_corrected_standard_est() works for upperTau=2, N=3, positive-definite, nonzero mean.", {
-  expect_equal(compute_corrected_standard_est(c(1, 2, 3), 2, "gaussian"), c(2/3, 0, -5.398656*10^(-7)))
+test_that("compute_corrected_standard_est() works", {
+  expect_equal(compute_corrected_standard_est(c(1, 2, 3), "gaussian"), c(2/3, 0, -5.398656*10^(-7)))
 })
 
-# Fails for X not being a vector.
+test_that("compute_corrected_standard_est() fails for empty X", {
+  expect_error(compute_corrected_standard_est(c(), "gaussian"))
+})
+
 test_that("compute_corrected_standard_est() fails if X is not a vector", {
-  expect_error(compute_corrected_standard_est(1, 2, "gaussian"))
-  expect_error(compute_corrected_standard_est(matrix(rnorm(4), 2, 2), 2, "gaussian"))
+  expect_error(compute_corrected_standard_est(matrix(c(1, 2, 3, 4), 2, 2), "gaussian"))
 })
 
-# An unknown kernel should error.
-test_that("compute_corrected_standard_est() fails for an unknown kernel", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 2, "test_kernel"))
+test_that("compute_corrected_standard_est() fails for nonnumeric X", {
+  expect_error(compute_corrected_standard_est(c(1, 'a', 3), "gaussian"))
+  expect_error(compute_corrected_standard_est(c(1, 1i, 3), "gaussian"))
 })
 
-# Length should be greater than zero.
-test_that("compute_corrected_standard_est() fails for an empty process", {
-  expect_error(compute_corrected_standard_est(c(), 2, "gaussian"))
+test_that("compute_corrected_standard_est() fails if X is not a vector", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", N_T = 'a'))
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", N_T = 1i))
 })
 
-# X should be a numeric vector,
-test_that("compute_corrected_standard_est() fails for a nonnumeric X", {
-  expect_error(compute_corrected_standard_est(c(1i, 'a'), 2, "gaussian"))
+test_that("compute_corrected_standard_est() fails if N_T <= 0", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", N_T = 0))
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", N_T = -0.1))
 })
 
-# upperTau is numeric
-test_that("compute_corrected_standard_est() fails for nonnumeric upperTau", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 'a', "gaussian"))
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 1i, "gaussian"))
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), NA, "gaussian"))
+test_that("compute_corrected_standard_est() fails for nonnumeric meanX", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", meanX = 'a'))
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", meanX = 1i))
 })
 
-# upperTau must be at least 0
-test_that("compute_corrected_standard_est() fails for a negative upperTau", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), -1, "gaussian"))
+test_that("compute_corrected_standard_est() fails if pd is nonboolean", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", pd = 'TRUE'))
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", pd = 1))
 })
 
-# upperTau must be less than the length of the process.
-test_that("compute_corrected_standard_est() fails for an upperTau greater than the length of the process", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 3, "gaussian"))
+test_that("compute_corrected_standard_est() fails if maxLag is nonnumeric", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", maxLag = 'a'))
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", maxLag = 1i))
 })
 
-# pd (positive-definite) must be a boolean.
-test_that("compute_corrected_standard_est() fails for a nonboolean pd", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 2, "gaussian", pd=1))
+test_that("compute_corrected_standard_est() fails if maxLag < 0", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", maxLag = -1))
 })
 
-# type can only be covariance or correlation.
-test_that("compute_corrected_standard_est() fails for type being neither covariance nor correlation", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 2, "gaussian", type="neither"))
+test_that("compute_corrected_standard_est() fails if maxLag >= length(X)", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", maxLag = 3))
 })
 
-# customKernel must be a boolean.
-test_that("compute_corrected_standard_est() fails for custom kernel being a nonboolean", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 2, "gaussian", customKernel=1))
+test_that("compute_corrected_standard_est() fails for noninteger maxLag", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", maxLag = 1.5))
 })
 
-# N is different from the length of the process.
-test_that("compute_corrected_standard_est() fails N being different from the length of the process", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 2, "gaussian", N=1))
+test_that("compute_corrected_standard_est() fails if meanX's length is not 1", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", meanX = c(1, 2)))
 })
 
-# N_T fails for a nonnumeric case and being not being greater than zero.
-test_that("compute_corrected_standard_est() fails for N_T being nonnumeric and not being greater than zero", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 2, "gaussian", N_T='a'))
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 2, "gaussian", N=0))
+test_that("compute_corrected_standard_est() fails for nonnumeric meanX", {
+    expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", meanX = 'a'))
+    expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", meanX = 1i))
 })
 
-# Fails for nonnumeric meanX
-test_that("compute_corrected_standard_est() fails for meanX being nonnumeric", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 2, "gaussian", meanX=1i))
+test_that("compute_corrected_standard_est() fails if meanX is NA", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", maxLag = NA))
 })
 
-test_that("compute_corrected_standard_est() fails for noninteger upperTau", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), 1.5, "gaussian"))
+test_that("compute_corrected_standard_est() fails if type is neither 'autocovariance' or 'autocorrelation'", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", type = 'covariance'))
 })
-
-# Works for a custom kernel.
-# Figure out how to get this to work.
-# test_that("compute_corrected_standard_est() works for a custom kernel", {
-#   my_kernel <- function(x, theta, params) {
-#     stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
-#     return(sapply(x, function(t) ifelse(t == 0, 1, ifelse(t == Inf, 0,(sin((t^params[1]) / theta) / ((t^params[1]) / theta)) * cos((t^params[2]) / theta)))))
-#   }
-#   expect_equal(compute_corrected_standard_est(c(1, 2, 3), 2, "my_kernel", kernel_params=c(2, 0.25), customKernel = TRUE), c(0.66666667, 0, 0.01180484))
-# })
 
 # compute_kernel_corrected_est
 test_that("compute_kernel_corrected_est() works", {
-  expect_equal(compute_kernel_corrected_est(c(1, 2, 3), 2, "gaussian"), c(1, 0.071347986694504816896, 0.000004858790376937838049672957), tolerance = sqrt(.Machine$double.eps))
+  expect_equal(compute_kernel_corrected_est(c(1, 2, 3), "gaussian"), c(1, 0.071347986694504816896, 0.000004858790376937838049672957), tolerance = sqrt(.Machine$double.eps))
 })
 
 test_that("compute_kernel_corrected_est() fails for nonboolean custom_kernel", {
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), 2, "my_kernel", customKernel = 1))
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), 2, "my_kernel", customKernel = 'TRUE'))
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "my_kernel", customKernel = 1))
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "my_kernel", customKernel = 'TRUE'))
 })
 
 test_that("compute_kernel_corrected_est() fails for empty cov", {
-expect_error(compute_kernel_corrected_est(c(), 2, "gaussian"))
+expect_error(compute_kernel_corrected_est(c(), "gaussian"))
 })
 
 test_that("compute_kernel_corrected_est() fails for nonvector cov", {
-  expect_error(compute_kernel_corrected_est(matrix(c(1, 2, 3, 4), 2), 2, "gaussian"))
+  expect_error(compute_kernel_corrected_est(matrix(c(1, 2, 3, 4), 2), "gaussian"))
 })
 
 test_that("compute_kernel_corrected_est() fails for nonnumeric cov", {
-  expect_error(compute_kernel_corrected_est(c(1, 'a', 3), 2, "gaussian"))
-  expect_error(compute_kernel_corrected_est(c(1, 1i, 3), 2, "gaussian"))
+  expect_error(compute_kernel_corrected_est(c(1, 'a', 3), "gaussian"))
+  expect_error(compute_kernel_corrected_est(c(1, 1i, 3), "gaussian"))
 })
 
 test_that("compute_kernel_corrected_est() fails for nonnumeric N_T", {
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), 2, "gaussian", N_T = 'a'))
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), 2, "gaussian", N_T = 1i))
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "gaussian", N_T = 'a'))
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "gaussian", N_T = 1i))
 })
 
 test_that("compute_kernel_corrected_est() fails for N_T <= 0", {
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), 2, "gaussian", N_T = 0))
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), 2, "gaussian", N_T = -0.1))
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "gaussian", N_T = 0))
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "gaussian", N_T = -0.1))
 })
 
-test_that("compute_kernel_corrected_est() fails for nonnumeric upperTau", {
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), 'a', "gaussian"))
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), 1i, "gaussian"))
+test_that("compute_kernel_corrected_est() fails for nonnumeric maxLag", {
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "gaussian", maxLag='a'))
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "gaussian", maxLag=1i))
 })
 
-test_that("compute_kernel_corrected_est() fails for upperTau < 0", {
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), -1, "gaussian"))
+test_that("compute_kernel_corrected_est() fails for maxLag < 0", {
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "gaussian", maxLag=-1))
 })
 
-test_that("compute_kernel_corrected_est() fails for upperTau > length(X) - 1", {
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), 3, "gaussian"))
+test_that("compute_kernel_corrected_est() fails for maxLag > length(X) - 1", {
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "gaussian", maxLag=3))
 })
 
-test_that("compute_kernel_corrected_est() fails for noninteger upperTau", {
-  expect_error(compute_kernel_corrected_est(c(1, 2, 3), 1.5, "gaussian"))
+test_that("compute_kernel_corrected_est() fails for noninteger maxLag", {
+  expect_error(compute_kernel_corrected_est(c(1, 2, 3), "gaussian", maxLag=1.5))
 })
 

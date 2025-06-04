@@ -2,7 +2,7 @@
 % Please edit documentation in R/tapered_estimator.R
 \name{taper}
 \alias{taper}
-\title{Compute the function \eqn{a(x; \rho).}}
+\title{Compute the Function \eqn{a(x; \rho).}}
 \usage{
 taper(x, rho, window_name, window_params = c(1), custom_window = FALSE)
 }

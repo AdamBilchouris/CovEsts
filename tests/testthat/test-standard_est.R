@@ -1,66 +1,68 @@
-# Positive-definite
-test_that("compute_standard_est() works for upperTau = N - 1, N = 3, positive-definite, nonzero mean, autocovariance.", {
-  expect_equal(compute_standard_est(c(1, 2, 3), length(c(1, 2, 3)) - 1, N = length(c(1, 2, 3)), meanX = mean(c(1, 2, 3)), pd = TRUE, type='autocovariance'), c(2/3, 0, -1/3))
+# compute_standard_est works
+test_that("compute_standard_est() works", {
+  expect_equal(compute_standard_est(c(1, 2, 3)), c(2/3, 0, -1/3))
 })
 
-test_that("compute_standard_est() works for upperTau = N - 1, N = 3, positive-definite, nonzero mean, autocorrelation", {
-  expect_equal(compute_standard_est(c(1, 2, 3), length(c(1, 2, 3)) - 1, N = length(c(1, 2, 3)), meanX = mean(c(1, 2, 3)), pd = TRUE, type='autocorrelation'), c(1, 0, -1/2))
+# compute_standard_est fails for empty X
+test_that("compute_standard_est() fails for empty X", {
+  expect_error(compute_standard_est(c()))
 })
 
-test_that("compute_standard_est() fails for empty X, upperTau=2, N = 3, positive-definite, nonzero mean, autocovariance", {
-  expect_error(compute_standard_est(c(), 2, N = length(c(1, 2, 3)), meanX = mean(c(1, 2, 3)), pd = TRUE, type='autocovariance'))
+# compute_standard_est fails for nonvector X
+test_that("compute_standard_est() fails for empty X", {
+  expect_error(compute_standard_est(matrix(c(1,2,3,4), 2)))
 })
 
-test_that("compute_standard_est() fails for upperTau = -1, N = 3, positive-definite, nonzero mean, autocovariance", {
-  expect_error(compute_standard_est(c(1, 2, 3), -1, N = length(c(1, 2, 3)), meanX = mean(c(1, 2, 3)), pd = TRUE, type='autocovariance'))
+# compute_standard_est fails for nonnumeric X
+test_that("compute_standard_est() fails for empty X", {
+  expect_error(compute_standard_est(c(1, 'a', 3)))
+  expect_error(compute_standard_est(c(1, 1i, 3)))
 })
 
-test_that("compute_standard_est() fails for upperTau >= N, N = 3, positive-definite, nonzero mean, autocovariance", {
-  expect_error(compute_standard_est(c(1, 2, 3), 3, N = length(c(1, 2, 3)), meanX = mean(c(1, 2, 3)), pd = TRUE, type='autocovariance'))
+# compute_standard_est fails for nonboolean pd
+test_that("compute_standard_est() for nonboolean pd", {
+  expect_error(compute_standard_est(c(1, 2, 3), pd='TRUE'))
+  expect_error(compute_standard_est(c(1, 2, 3), pd=1))
 })
 
-test_that("compute_standard_est() fails for N > length(X), upperTau=2, N = 4, positive-definite, nonzero mean, autocovariance", {
-  expect_error(compute_standard_est(c(1, 2, 3), 2, N = 4, meanX = mean(c(1, 2, 3)), pd = TRUE, type='autocovariance'))
+# compute_standard_est fails for nonboolean pd
+test_that("compute_standard_est() for nonboolean pd", {
+  expect_error(compute_standard_est(c(1, 2, 3), pd='TRUE'))
+  expect_error(compute_standard_est(c(1, 2, 3), pd=1))
 })
 
-test_that("compute_standard_est() fails for pd is neither TRUE or FALSE, tau=0, N = 4, nonzero mean, autocovariance", {
-  expect_error(compute_standard_est(c(1, 2, 3), 0, N = length(c(1, 2 ,3)), meanX = mean(c(1, 2, 3)), pd = 'TRUE', type='autocovariance'))
+# compute_standard_est fails for maxLag < 0
+test_that("compute_standard_est() for maxLag < 0", {
+  expect_error(compute_standard_est(c(1, 2, 3), maxLag = -1))
 })
 
-test_that("compute_standard_est() fails for type is neither 'covariance' or 'correlation', upperTau=2, N = 4, nonzero mean.", {
-  expect_error(compute_standard_est(c(1, 2, 3), 2, N = length(c(1, 2 ,3)), meanX = mean(c(1, 2, 3)), pd = TRUE, type='cov'))
+# compute_standard_est fails for maxLag > length(X) - 1
+test_that("compute_standard_est() for maxLag > length(X) - 1", {
+  expect_error(compute_standard_est(c(1, 2, 3), maxLag = 3))
 })
 
-# Nonpositive-definite
-test_that("compute_standard_est() works for upperTau = N - 1, N = 3, nonpositive-definite, nonzero mean, autocovariance", {
-  expect_equal(compute_standard_est(c(1, 2, 3), length(c(1, 2, 3)) - 1, N = length(c(1, 2, 3)), meanX = mean(c(1, 2, 3)), pd = FALSE, type='autocovariance'), c(2/3, 0, -1))
+# compute_standard_est fails for noninteger maxLag
+test_that("compute_standard_est() for noninteger maxLag", {
+  expect_error(compute_standard_est(c(1, 2, 3), maxLag = 1.5))
 })
 
-test_that("compute_standard_est() works for upperTau = N - 1, N = 3, nonpositive-definite, nonzero mean, autocorrelation", {
-  expect_equal(compute_standard_est(c(1, 2, 3), length(c(1, 2, 3)) - 1, N = length(c(1, 2, 3)), meanX = mean(c(1, 2, 3)), pd = FALSE, type='autocorrelation'), c(1, 0, -3/2))
+# compute_standard_est fails for meanX not of length 1
+test_that("compute_standard_est() for meanX not of length 1", {
+  expect_error(compute_standard_est(c(1, 2, 3), meanX = c(1, 2)))
 })
 
-test_that("compute_standard_est() fails for empty X, upperTau=2, N = 3, nonpositive-definite, nonzero mean, autocovariance", {
-  expect_error(compute_standard_est(c(), 2, N = length(c(1, 2, 3)), meanX = mean(c(1, 2, 3)), pd = FALSE, type='autocovariance'))
+# compute_standard_est fails for nonnumeric meanX
+test_that("compute_standard_est() for nonnumeric meanX", {
+  expect_error(compute_standard_est(c(1, 2, 3), meanX = 'a'))
+  expect_error(compute_standard_est(c(1, 2, 3), meanX = 1i))
 })
 
-test_that("compute_standard_est() fails for upperTau = -1, N = 3, nonpositive-definite, nonzero mean, autocovariance", {
-  expect_error(compute_standard_est(c(1, 2, 3), -1, N = length(c(1, 2, 3)), meanX = mean(c(1, 2, 3)), pd = FALSE, type='autocovariance'))
+# compute_standard_est fails for NA meanX
+test_that("compute_standard_est() for NA meanX", {
+  expect_error(compute_standard_est(c(1, 2, 3), meanX = NA))
 })
 
-test_that("compute_standard_est() fails for upperTau >= N, N = 3, nonpositive-definite, nonzero mean, autocovariance", {
-  expect_error(compute_standard_est(c(1, 2, 3), 3, N = length(c(1, 2, 3)), meanX = mean(c(1, 2, 3)), pd = FALSE, type='autocovariance'))
+# compute_standard_est fails if type is neither autocovariance or autocorrelation
+test_that("compute_standard_est() for NA meanX", {
+  expect_error(compute_standard_est(c(1, 2, 3), type = 'covariance'))
 })
-
-test_that("compute_standard_est() fails for N > length(X), upperTau=2, N = 4, nonpositive-definite, nonzero mean, autocovariance", {
-  expect_error(compute_standard_est(c(1, 2, 3), 2, N = 4, meanX = mean(c(1, 2, 3)), pd = FALSE, type='autocovariance'))
-})
-
-test_that("compute_standard_est() fails for type is neither 'covariance' or 'correlation', upperTau=2, N = 3, nonzero mean.", {
-  expect_error(compute_standard_est(c(1, 2, 3), 2, N = length(c(1, 2 ,3)), meanX = mean(c(1, 2, 3)), pd = FALSE, type='cov'))
-})
-
-test_that("compute_standard_est() fails noninteger tau", {
-  expect_error(compute_standard_est(c(1, 2, 3), 1.5))
-})
-

@@ -2,25 +2,22 @@
 % Please edit documentation in R/corrected_standard_estimator.R
 \name{compute_corrected_standard_est}
 \alias{compute_corrected_standard_est}
-\title{Kernel correction of the standard estimator.}
+\title{Kernel Correction of the Standard Estimator.}
 \usage{
 compute_corrected_standard_est(
   X,
-  maxLag,
   kernel_name,
   kernel_params = c(),
   N_T = 0.1 * length(X),
-  N = length(X),
   meanX = mean(X),
+  maxLag = length(X) - 1,
   pd = TRUE,
   custom_kernel = FALSE,
   type = "autocovariance"
 )
 }
 \arguments{
-\item{X}{A vector representing observed values of the process.}
-
-\item{maxLag}{The maximum lag to compute the autocovariance function at.}
+\item{X}{A vector with observed values.}
 
 \item{kernel_name}{The name of the \link{kernel} function to be used. Possible values are:
 "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".}
@@ -29,11 +26,11 @@ compute_corrected_standard_est(
 In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", \code{N_T} takes the place of \eqn{\theta}.
 For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, those parameters are passed.}
 
-\item{N_T}{The rate at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a small range of estimation lags.}
-
-\item{N}{The length of \code{X}. Defaults to \code{length(X)}.}
+\item{N_T}{The range at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a lag small estimation lag.}
 
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
+
+\item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
 \item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
@@ -45,26 +42,26 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 A vector whose values are the kernel corrected autocovariance estimates.
 }
 \description{
-This function computes and the standard estimator and applies kernel correction to it.
+This function computes the standard autocovariance estimator and applies kernel correction to it.
 It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
-The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the process, however, one may need to play with this value.
+The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the observation window, however, one may need to play with this value.
 \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
 }
 \details{
-The aim of this estimator is gradually bring an estimator to zero through the use of a kernel multiplier. This can be useful when estimating an
-autocovariance function that is short-range dependent as estimators can have large fluctuations as the lag increases.
-This estimator can be positive-definite depending on whether the choice of \eqn{\widehat{C}} and \eqn{a} are chosen to be positive-definite or not.
+The aim of this estimator is gradually bring the estimated values to zero through the use of a kernel multiplier. This can be useful when estimating an
+autocovariance function that is short-range dependent as estimators can have large fluctuations as the lag increases, or to deal with the wave artefacts for large lags.
+This estimator can be positive-definite depending on whether the choice of \eqn{\widehat{C}(\cdot)} and \eqn{a} are chosen to be positive-definite or not.
 }
 \examples{
 X <- c(1, 2, 3)
-compute_corrected_standard_est(X, 2, "gaussian")
+compute_corrected_standard_est(X, "gaussian")
 
 X <- rnorm(1000)
 Y <- c(X[1], X[2])
 for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 plot(Y)
-plot(compute_corrected_standard_est(Y, length(Y)-1,
-     "bessel_j", kernel_params=c(0, 1), N_T=0.2*length(Y)))
+plot(compute_corrected_standard_est(Y, "bessel_j",
+     kernel_params=c(0, 1), N_T=0.2*length(Y)))
 
 # Custom kernel
 my_kernel <- function(x, theta, params) {
@@ -73,11 +70,7 @@ my_kernel <- function(x, theta, params) {
          ifelse(t == Inf, 0,
          (sin((t^params[1]) / theta) / ((t^params[1]) / theta)) * cos((t^params[2]) / theta)))))
 }
-X <- rnorm(1000)
-Y <- c(X[1], X[2])
-for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
-plot(Y)
-plot(compute_corrected_standard_est(Y, length(Y)-1,
+plot(compute_corrected_standard_est(Y,
      "my_kernel", kernel_params=c(2, 0.25), custom_kernel = TRUE))
 }
 \references{

@@ -17,7 +17,7 @@ A helper function that generates \eqn{m + 2} spline knots of the form:
 \deqn{
 \kappa_{0} = 0 , \kappa_{1} = 1 / (m + 1) , \dots , \kappa_{m} = m / (m + 1) , \kappa_{m + 1} = 1 .
 }
-The knots are equally spaced with boundary knots \eqn{\kappa_{0} = 0 , \kappa_{m + 1} = 1 .}
+The knots are equally spaced with boundary knots \eqn{\kappa_{0} = 0} and \eqn{\kappa_{m + 1} = 1 .}
 }
 \examples{
 generate_knots(3)

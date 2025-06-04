@@ -2,12 +2,12 @@
 % Please edit documentation in R/B_splines_est.R
 \name{f_j_l}
 \alias{f_j_l}
-\title{Compute \eqn{f_{j}^{[l]}(x)}.}
+\title{Compute Adjusted Splines.}
 \usage{
 f_j_l(x, j, l, p, m, taus)
 }
 \arguments{
-\item{x}{Numeric value for which the function is calculated at.}
+\item{x}{Argument of the function.}
 
 \item{j}{Index of basis function of order \eqn{l}.}
 
@@ -20,13 +20,14 @@ f_j_l(x, j, l, p, m, taus)
 \item{taus}{Vector of \eqn{\tau}s, see \link{get_tau}.}
 }
 \value{
-A numeric value of \eqn{f_{j}^{[l]}(x).}
+A numeric value of the adjusted spline \eqn{f_{j}^{[l]}(x).}
 }
 \description{
 A helper function that is an implementation of the formula from Choi, Li & Wang (2013, p. 616).
 \deqn{
-f_{j}^{[l]}(x) = \frac{m + 1}{l} \left( f_{j}^{[l - 1]}(x + 1) - \tau_{j - p} f_{j}^{[l - 1]}(x) + \tau_{j - p + l + 1} f_{j + 1}^{[l - 1]}(x) -  f_{j + 1}^{[l - 1]}(x + 1)  \right)
+f_{j}^{[l]}(x) = \frac{m + 1}{l} \left( f_{j}^{[l - 1]}(x + 1) - \tau_{j - p} f_{j}^{[l - 1]}(x) + \tau_{j - p + l + 1} f_{j + 1}^{[l - 1]}(x) -  f_{j + 1}^{[l - 1]}(x + 1)  \right) ,
 }
+where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the spline, \eqn{l} is the order of the adjusted spline (the function \eqn{f(\cdot)}) and \eqn{j = 1, 2, \dots , m + p.}
 }
 \examples{
 taus <- get_all_tau(3, 2)

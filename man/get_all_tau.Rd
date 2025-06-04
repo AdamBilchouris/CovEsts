@@ -12,10 +12,11 @@ get_all_tau(p, m)
 \item{m}{The number of nonboundary knots.}
 }
 \value{
-A numerical vector representing all \eqn{\tau_{i}}s.
+A numeric vector of all \eqn{\tau_{i}}.
 }
 \description{
-A helper function that repeatedly calls \link{get_tau} to obtain all \eqn{\tau_{i}.}
+A helper function that repeatedly calls \link{get_tau} to obtain all \eqn{\tau_{i},} where each \eqn{\tau_{i}} is as follows.
+For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
 See Choi, Li & Wang (2013, p. 615) for details.
 }
 \examples{

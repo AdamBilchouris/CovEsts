@@ -2,44 +2,44 @@
 # Despite being called windows, they are 'half' of the window.
 # At 0, the window has a value of 0, at 1 it has a value of 1.
 
-#' 1D half-window functions.
+#' 1D Window Functions.
 #'
-#' A half-window function in this context is a continuous nondecreasing function such that at 0 it is 0, and at 1, it is 1.
-#' This computes one of the half-window functions listed below.
+#' A window function in this context is a continuous nondecreasing function such that at 0 it is 0, and at 1, it is 1.
+#' This computes one of the window functions listed below.
 #'
-#' \strong{Tukey Half-Window}.
-#' This function computes the Tukey half-window.
+#' \strong{Tukey Window}.
+#' The Tukey window is defined as
 #' \deqn{w(x) = \frac{1}{2} - \frac{1}{2} \cos(\pi x) , x \in [0, 1].}
 #' The \code{params} argument is empty, see the example.
 #'
-#' \strong{Triangular Half-Window}.
-#' This function computes the triangular half-window.
+#' \strong{Triangular Window}.
+#' The triangular window is given by
 #' \deqn{w(x) = x, x \in [0, 1].}
 #' The \code{params} argument is empty, see the example.
 #'
-#' \strong{Sine Half-Window}.
-#' This function computes the sine half-window.
+#' \strong{Sine Window}.
+#' The sine window is given by
 #' \deqn{w(x) = \sin\left(\pi x / 2 \right), x \in [0, 1].}
 #' The \code{params} argument is empty, see the example.
 #'
-#' \strong{Power Sine Half-Window}.
-#' This function computes the power sine half-window.
+#' \strong{Power Sine Window}.
+#' The power sine window is given by
 #' \deqn{w(x; a) = \sin^{a}(\pi x / 2), x \in [0, 1], a > 0.}
 #' The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
 #'
-#' \strong{Blackman Half-Window}.
-#' This function computes the Blackman half-window.
+#' \strong{Blackman Window}.
+#' The Blackman window is defined as
 #' \deqn{w(x; a) = ( (1 - a) / 2) - \frac{1}{2} \cos(\pi x) + \frac{a}{2} \cos(2 \pi x), x \in [0, 1], a \in {R} .}
 #' The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
 #' It is recommended that \eqn{a \in [-0.25, 0.25]} to ensure that the window is nondecreasing on \eqn{[0, 1].}
 #'
-#' \strong{Hann-Poisson Half-Window}.
-#' This function computes the Hann-Poisson half-window.
+#' \strong{Hann-Poisson Window}.
+#' The Hann-Poisson window is defined as
 #' \deqn{w(x; a) = \frac{1}{2} (1 - \cos(\pi x)) \exp( - (a \left|1 - x \right|) ) , x \in [0, 1], a \in {R} .}
 #' The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
 #'
-#' \strong{Welch Half-Window}.
-#' This function computes the Welch half-window.
+#' \strong{Welch Window}.
+#' The Welch window is given by
 #' \deqn{w(x) = 1 - (x - 1)^2 , x \in [0, 1] . }
 #' The \code{params} argument is empty, see the example.
 #'

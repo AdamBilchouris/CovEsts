@@ -2,12 +2,12 @@
 % Please edit documentation in R/tapered_estimator.R
 \name{H2n}
 \alias{H2n}
-\title{Compute \eqn{H_{2, n}}.}
+\title{Compute \eqn{H{2, n}}.}
 \usage{
 H2n(n, rho, window_name, window_params = c(1), custom_window = FALSE)
 }
 \arguments{
-\item{n}{The number of samples.}
+\item{n}{The sample size.}
 
 \item{rho}{A scale parameter in \eqn{(0, 1].}}
 
@@ -22,8 +22,8 @@ H2n(n, rho, window_name, window_params = c(1), custom_window = FALSE)
 A single value being \eqn{H_{2, n}(0)}.
 }
 \description{
-This helper function is used in the computation of the helper function \link{tapered_cov_single}.
-\deqn{H_{2, n}(0) = \sum_{s=1}^{n} a((s - 1/2) / n)^2 ; \rho, }
+This helper function is used in the computation of the function \link{tapered_cov_single}.
+\deqn{H_{2, n}(0) = \sum_{s=1}^{n} a((s - 1/2) / n; \rho)^{2}, }
 where \eqn{a(\cdot; \cdot)} is a window function.
 }
 \examples{

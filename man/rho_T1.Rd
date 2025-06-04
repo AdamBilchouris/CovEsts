@@ -2,7 +2,7 @@
 % Please edit documentation in R/kernel_regression_estimator.R
 \name{rho_T1}
 \alias{rho_T1}
-\title{Compute \eqn{\rho(T_{1})} for the truncated kernel regression estimator.}
+\title{Compute \eqn{\rho(T_{1})} for the Truncated Kernel Regression Estimator.}
 \usage{
 rho_T1(
   x,

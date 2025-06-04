@@ -6,24 +6,24 @@
 # Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers.
 # In Advances in Geographic Information Science. Springer Netherlands. https://doi.org/10.1007/978-94-024-1918-4
 
-#' Isotropic 1D kernels.
+#' 1D Isotropic Kernels.
 #'
-#' This computes one of the isotropic kernels listed below.
-#' Unlike [kernel_symm], these kernels are only for \eqn{x \geq 0.}
-#' These kernels are used as kernel multipliers in estimators [compute_corrected_standard_est] and [compute_kernel_corrected_est].
+#' This function computes one of the isotropic kernels listed below.
+#' Unlike [kernel_symm], these kernels are only used for (where \eqn{x \geq 0})
+#' kernel multipliers in estimators [compute_corrected_standard_est] and [compute_kernel_corrected_est].
 #'
 #' \strong{Gaussian Kernel}.
-#' This function computes the isotropic Gaussian kernel, which is valid for \eqn{{R}^{d}, d \in N.}
+#' The isotropic Gaussian kernel, which is positive-definite for \eqn{{R}^{d}, d \in N,} is defined as
 #' \deqn{a(x;\theta) = \exp(-x^{2} / \theta).}
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Exponential Kernel}.
-#' This function computes the isotropic exponential kernel, which is valid for \eqn{{R}^{d}, d \in N.}
+#' The isotropic exponential kernel, which is positive-definite for \eqn{{R}^{d}, d \in N,} is defined as
 #' \deqn{a(x;\theta) = \exp(-x / \theta).}
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Isotropic Wave (Cardinal Sine) Kernel}.
-#' This function computes the isotropic wave (cardinal sine) kernel, which is valid for \eqn{{R}^{3}.}
+#' The isotropic wave (cardinal sine) kernel, which is positive-definite for \eqn{{R}^{d}, d \leq 3,} is given by
 #' \deqn{a(x;\theta) = \left\{ \begin{array}{ll}
 #' \frac{\theta}{x} \sin\left( \frac{x}{\theta} \right), & x \neq 0 \\
 #' 1, & x = 0
@@ -32,12 +32,12 @@
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Isotropic Rational Quadratic Kernel}.
-#' This function computes the isotropic rational quadratic kernel, which is valid for \eqn{{R}^{d}, d \in N.}
+#' The isotropic rational quadratic kernel, which is positive-definite for \eqn{{R}^{d}, d \in N,} is defined as
 #' \deqn{a(x;\theta) = 1 - \frac{x^{2}}{x^{2} + \theta}.}
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Isotropic Spherical Kernel}.
-#' This function computes the isotropic spherical kernel, which is valid for \eqn{{R}^{3}.}
+#' The isotropic spherical kernel, which is positive-definite for \eqn{{R}^{3}, d \leq 3,} is given by
 #' \deqn{a(x;\theta) = \left\{
 #' \begin{array}{ll}
 #' 1 - \frac{3}{2}\frac{x}{\theta} + \frac{1}{2}\left( \frac{x}{\theta} \right)^{3}, & x < \theta \\
@@ -47,7 +47,7 @@
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Isotropic Circular Kernel}.
-#' This function computes the isotropic circular kernel, which is valid for \eqn{{R}^{2}.}
+#' The isotropic circular kernel, which is positive-definite for \eqn{{R}^{d}, d \leq 2,} is given by
 #' \deqn{a(x;\theta) = \left\{
 #' \begin{array}{ll}
 #' \frac{2}{\pi}\arccos\left( \frac{x}{\theta} \right) - \frac{2}{\pi}\frac{x}{\theta} \sqrt{ 1 - \left( \frac{x}{\theta} \right)^{2} }, & x < \theta \\
@@ -57,31 +57,32 @@
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Isotropic Matérn Kernel}.
-#' This function computes the isotropic Matérn kernel, which is valid for \eqn{{R}^{d}, d \in N}  and when \eqn{\nu > 0.}
+#' The isotropic Matérn kernel, which is positive-definite for \eqn{{R}^{d}, d \in N}  and when \eqn{\nu > 0,} is defined as
 #' \deqn{a(x; \theta, \nu) = \left(\sqrt{2\nu} \frac{x}{\theta} \right)^{\nu} \left(2^{\nu - 1} \Gamma(\nu) \right)^{-1} K_{\nu}\left( \sqrt{2\nu} \frac{x}{\theta} \right) ,}
 #' where \eqn{K_{\nu}(\cdot)} is the modified Bessel function of the second kind.
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu}\code{)}.
 #'
 #' \strong{Isotropic Bessel Kernel}.
-#' This function computes the isotropic Bessel kernel, which is valid for \eqn{{R}^{d}, d \in N} and when \eqn{\nu \geq \frac{d}{2} - 1.}
+#' The isotropic Bessel kernel, which is positive-definite for \eqn{{R}^{d}, d \in N} and when \eqn{\nu \geq \frac{d}{2} - 1,} is given by
 #' \deqn{a(x; \theta, \nu) = 2^{\nu} \Gamma(\nu + 1) J_{\nu}(x / \theta) (x / \theta)^{-\nu} ,}
 #' where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind.
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d} \code{)}.
 #'
 #' \strong{Isotropic Cauchy Kernel}.
-#' This function computes the isotropic Cauchy kernel, which is valid for \eqn{{R}^{d}, d \in N} and when \eqn{0 < \alpha \leq 2} and \eqn{\beta \geq 0.}
+#' The isotropic Cauchy kernel, which is positive-definite for \eqn{{R}^{d}, d \in N} and when \eqn{0 < \alpha \leq 2} and \eqn{\beta \geq 0.}
 #' \deqn{a(x ; \theta, \alpha, \beta) = (1 + (x / \theta)^{\alpha})^{-(\beta / \alpha)} .}
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta, \alpha, \beta} \code{)}.
 #'
 #' @references
 #' Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
+
 #' Table 4.2 of Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. In Advances in Geographic Information Science. Springer Netherlands. https://doi.org/10.1007/978-94-024-1918-4
 #'
 #' @param x A vector or matrix of arguments of at least length 1 for which the kernel is computed at.
 #' @param name The name of the kernel. Options are: "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", and "cauchy".
-#' @param params A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels will have a scale parameter as the first value in the vector.
+#' @param params A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels have a scale parameter as the first value in the vector.
 #'
-#' @return A vector or matrix of values.
+#' @return A vector or matrix of kernel values.
 #' @export
 #'
 #' @examples

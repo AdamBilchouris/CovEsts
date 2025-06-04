@@ -17,9 +17,9 @@ This function computes the Type-II discrete cosine transform.
 }
 \details{
 The Type-II discrete cosine transform is obtained using \link[stats:fft]{stats::fft}. Note this method does not utilise Makhoul's method for computing the DCT.
-A new input \eqn{y} is created from \eqn{X} where \eqn{y_{2n} = 0}, \eqn{y_{2n+1} = X_{n}} for \eqn{0 \le n < N}, \eqn{y_{2N} = 0} and \eqn{y_{4N - n} = y_{n}}
-for \eqn{0 < n < 2N}, where N is the length of \eqn{X}.
-After this, the is done (in code): \code{dct <- 0.5 * Re(stats::fft(Y))[1:(length(Y) / 4)]}, which gives the Type-II discrete cosine transform.
+If \eqn{X} is of length N, construct a new signal \eqn{y} of length \eqn{4N}, with values \eqn{y_{2n} = 0, y_{2n + 1} = x_{n}} for \eqn{0 \le n < N},
+and \eqn{y_{4N - n} = y_{n}, y_{2N} = 0} for \eqn{0 < n < 2N.}
+After this, the following is done (in code): \code{dct <- 0.5 * Re(stats::fft(Y))[1:(length(Y) / 4)]}, which gives the Type-II discrete cosine transform.
 }
 \examples{
 X <- c(1, 2, 3)
@@ -27,4 +27,8 @@ dct_1d(X)
 }
 \references{
 Ochoa-Dominguez, H., & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
+
+Makhoul, J. (1980). A Fast Cosine Transform in One and Two Dimensions. IEEE Transactions on Acoustics, Speech, and Signal Processing (Vol. 28, Issue 1, pp. 27-34). 10.1109/TASSP.1980.1163351
+
+Stasiński, R. (2002). DCT Computation Using Real-Valued DFT Algorithms. Proceedings of the 11th European Signal Processing Conference.
 }

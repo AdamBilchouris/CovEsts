@@ -26,6 +26,6 @@ it can be used to obtain a function that is close to a semivariogram.
 }
 \examples{
 X <- c(1, 2, 3)
-estCov <- compute_standard_est(X, 2, length(X), mean(X), pd=FALSE)
+estCov <- compute_standard_est(X, meanX=mean(X), maxLag = 2, pd=FALSE)
 to_vario(estCov)
 }

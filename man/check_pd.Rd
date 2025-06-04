@@ -2,7 +2,7 @@
 % Please edit documentation in R/metrics.R
 \name{check_pd}
 \alias{check_pd}
-\title{Check if an autocovariance function estimate is positive-definite or not.}
+\title{Check if an Autocovariance Function Estimate is Positive-Definite or Not.}
 \usage{
 check_pd(est)
 }
@@ -13,7 +13,7 @@ check_pd(est)
 A boolean where \code{TRUE} denotes a positive-definite autocovariance function estimate and \code{FALSE} for an estimate that is not positive-definite.
 }
 \description{
-This function checks if an autocovariance function estimate is positive-definite or not by determining if the eigenvalues of a matrix (see the Details section) are all positive.
+This function checks if an autocovariance function estimate is positive-definite or not by determining if the eigenvalues of the corresponding matrix (see the Details section) are all positive.
 }
 \details{
 For an autocovariance function estimate \eqn{\hat{C}(\cdot)} over a set of lags separated by a constant difference \eqn{\{0, h_{1} , h_{2} , \dots , h_{n} \},}
@@ -27,7 +27,7 @@ construct the symmetric matrix
 \end{array}} \right] .
 }
 
-The eigendecomposition of this matrix is computed to determine if all eigenvalues are positive, if so, the estimated autocovariance function is positive-definite.
+The eigendecomposition of this matrix is computed to determine if all eigenvalues are positive, if so, the estimated autocovariance function is assumed to be positive-definite.
 }
 \examples{
 x <- seq(0, 5, by=0.1)

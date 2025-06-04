@@ -2,12 +2,12 @@
 % Please edit documentation in R/tapered_estimator.R
 \name{tapered_cov_single}
 \alias{tapered_cov_single}
-\title{Computes the tapered autocovariance for a single lag.}
+\title{Computes the Tapered Autocovariance for a Single Lag.}
 \usage{
 tapered_cov_single(X, meanX, h, h2n, taperVals_t, taperVals_h)
 }
 \arguments{
-\item{X}{A vector representing observed values of the process.}
+\item{X}{A vector with observed values.}
 
 \item{meanX}{The average value of the \code{X}.}
 

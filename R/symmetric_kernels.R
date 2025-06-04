@@ -2,19 +2,19 @@
 # These are to be used with Hall's estimator.
 # Unlike the isotropic case, these are symmetric probability distributions.
 
-#' 1D isotropic symmetric kernels.
+#' 1D Isotropic Symmetric Kernels.
 #'
 #' These functions computes values of kernels that have the properties of symmetric probability distributions.
 #' For a kernel \eqn{a(x)}, the standardised version is \eqn{a(x) / \int_{-\infty}^{\infty} a(x) dx}, so that the integral is 1.
 #' The symmetric kernels are different to [kernel] and are used in the functions [compute_adjusted_est] and [compute_truncated_est].
 #'
 #' \strong{Symmetric Gaussian Kernel}.
-#' This function computes the symmetric Gaussian kernel.
+#' The symmetric Gaussian kernel is defined as
 #' \deqn{a(x;\theta) = \sqrt{\pi \theta} \exp(-x^{2} / \theta), \theta > 0.}
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 #'
 #' \strong{Symmetric Wave Kernel}.
-#' This function computes the wave (cardinal sine) kernel.
+#' The wave (cardinal sine) kernel is given by
 #' \deqn{a(x;\theta) = \left\{ \begin{array}{ll}
 #' (\sqrt{\theta^{2}} \pi)^{-1} \frac{\theta}{x} \sin\left( \frac{x}{\theta} \right), & x \neq 0 \\
 #' 1, & x = 0
@@ -23,12 +23,12 @@
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}
 #'
 #' \strong{Symmetric Rational Quadratic Kernel}.
-#' This function computes the symmetric rational quadratic kernel.
+#' The symmetric rational quadratic kernel is given by
 #' \deqn{a(x;\theta) = (\pi \sqrt{\theta})^{-1} (1 - \frac{x^{2}}{x^{2} + \theta}), \theta > 0.}
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}
 #'
 #' \strong{Symmetric Besesel Kernel}.
-#' This function computes the symmetric Bessel kernel, which is valid when \eqn{\nu \geq \frac{d}{2} - 1.}
+#' The symmetric Bessel kernel, which is valid when \eqn{\nu \geq \frac{d}{2} - 1,} is given by
 #' \deqn{a(x; \theta, \nu) = (\Gamma(\frac{1}{2} + \nu)/(2 \sqrt{\pi} \theta \Gamma(1 + \nu))) ( 2^{\nu} \Gamma(\nu + 1) J_{\nu}(x / \theta) (x / \theta)^{-\nu}), \theta > 0, \nu \geq \frac{d}{2} - 1.}
 #' where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind and \eqn{d} is the dimension.
 #' The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d}\code{)}.

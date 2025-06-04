@@ -2,30 +2,29 @@
 % Please edit documentation in R/metrics.R
 \name{create_cyclic_matrix}
 \alias{create_cyclic_matrix}
-\title{Create a cyclic matrix for a given vector.}
+\title{Create a Cyclic Matrix for a Given Vector.}
 \usage{
 create_cyclic_matrix(v)
 }
 \arguments{
-\item{v}{A vector of values.}
+\item{v}{A numeric vector.}
 }
 \value{
 A cyclic matrix.
 }
 \description{
-This helper function creates a cyclic matrix for a given vector \eqn{v}.
+This helper function creates a cyclic matrix from a given vector \eqn{v}.
 }
 \details{
 This function creates a cylic matrix for a given vector \eqn{v}.
-If \eqn{v = \{v_{0}, v_{1} , \dots , v_{N-1} , v_{N} \},} then the cyclic matrix will
-be of the form
+If \eqn{v = \{v_{0}, v_{1} , \dots , v_{N-1} , v_{N} \},} then the cyclic matrix will has the form
 \deqn{\left[ {\begin{array}{ccccc}
 v_{0}     & v_{1}     & \cdots & v_{N - 1} & v_{N}     \\
 v_{1}     & v_{0}     & \cdots & v_{N - 2} & v_{N - 1} \\
 \vdots    & \vdots    & \ddots & \vdots    & \vdots    \\
 v_{N - 1} & v_{N- 2}  & \cdots & v_{0}     & v_{1}     \\
 v_{N}     & v_{N - 1} & \cdots & v_{1}     & v_{0}     \\
-\end{array}} \right] ,
+\end{array}} \right]
 }
 }
 \examples{

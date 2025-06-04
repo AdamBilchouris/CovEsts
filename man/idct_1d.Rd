@@ -17,8 +17,7 @@ This function computes the inverse of the Type-II discrete cosine transform.
 }
 \details{
 The Type-II inverse discrete cosine transform is computed using \link[stats:fft]{stats::fft}.
-The original spectrum is obtained from the input X and then an inverse FFT is applied to obtain
-the estimate.
+For autocovariance function estimation, the spectrum is given in the input \code{X} and then an inverse FFT is applied.
 
 The original spectrum, \code{dct_full}, from \code{X} is obtained as follows:
 \code{dct_full <- c(X, 0, -X[-1], 0, rev(X[-1]))}. After this, an inverse FFT is applied,

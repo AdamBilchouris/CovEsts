@@ -2,12 +2,12 @@
 % Please edit documentation in R/B_splines_est.R
 \name{get_splines_df}
 \alias{get_splines_df}
-\title{Construct data frame of basis functions.}
+\title{Construct Data Frame of Basis Functions.}
 \usage{
 get_splines_df(x, p, m, taus)
 }
 \arguments{
-\item{x}{A vector lags.}
+\item{x}{A vector of lags.}
 
 \item{p}{The order of the splines.}
 
@@ -16,13 +16,13 @@ get_splines_df(x, p, m, taus)
 \item{taus}{Vector of \eqn{\tau}s, see \link{get_tau}.}
 }
 \value{
-A data frame of the structure found above.
+A data frame of the above structure.
 }
 \description{
 This helper function constructs a data frame with the following structure:
 \itemize{
 \item One column for the x-values
-\item m + p columns values of squared basis functions evaluated at the correspond x.
+\item m + p columns values of squared basis functions evaluated at the corresponding x.
 }
 }
 \examples{

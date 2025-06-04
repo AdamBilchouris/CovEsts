@@ -18,7 +18,7 @@ compute_adjusted_est(
 )
 }
 \arguments{
-\item{X}{A vector representing observed values of the process.}
+\item{X}{A vector with observed values.}
 
 \item{x}{A vector of lags.}
 
@@ -43,11 +43,7 @@ compute_adjusted_est(
 A vector whose values are the kernel regression estimates.
 }
 \description{
-The kernel regression estimator is defined as
-\deqn{
-\hat{\rho}(t) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((t - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((t - t_{ij}) / b) \right)^{-1},
-}
-where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+This function computes the kernel regression estimator of the autocovariance function.
 }
 \details{
 The kernel regression estimator of an autocovariance function is defined as
@@ -56,12 +52,12 @@ The kernel regression estimator of an autocovariance function is defined as
 }
 where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
 
-If \code{pd} is \code{TRUE} estimator will be made positive-definite through the following procedure
+If \code{pd} is \code{TRUE}, the estimator will be made positive-definite through the following procedure
 \enumerate{
 \item Take the discrete cosine transform,
-\eqn{\mathcal{F}^{c}(\hat{\rho}(t))}.
-\item Set all negative values to zero,
-\eqn{\hat{\mathcal{F}}^{c}(\hat{\rho}(t)) = \mathcal{F}(\hat{\rho}(t))} if \eqn{\mathcal{F}(\hat{\rho}(t)) > 0} and \eqn{\hat{\mathcal{F}}^{c}(\hat{\rho}(t)) = 0} otherwise,
+\eqn{\mathcal{F}^{c}(\theta)}, of the estimated autocovariance function
+\item Set all its negative values to zero,
+\eqn{\hat{\mathcal{F}}^{c}(\theta) = \mathcal{F}(\theta)} if \eqn{\mathcal{F}(\theta) > 0} and \eqn{\hat{\mathcal{F}}^{c}(\theta) = 0} otherwise,
 for all sample frequencies.
 \item Perform the inversion to obtain a new estimator.
 }

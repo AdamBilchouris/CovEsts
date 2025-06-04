@@ -2,12 +2,12 @@
 % Please edit documentation in R/B_splines_est.R
 \name{get_tau}
 \alias{get_tau}
-\title{Get a specific \eqn{\tau_{i}}.}
+\title{Get a Specific \eqn{\tau_{i}}.}
 \usage{
 get_tau(i, p, m, kVec)
 }
 \arguments{
-\item{i}{The knot number (\eqn{-p} through \eqn{m + p + 1}).}
+\item{i}{The knot index (\eqn{-p} through \eqn{m + p + 1}).}
 
 \item{p}{The order of the splines.}
 
@@ -20,7 +20,7 @@ The numerical value of \eqn{\tau_{i}.}
 }
 \description{
 A helper function that transforms the knots from \link{generate_knots} into the following form:
-For \eqn{i = -p , \dots , -1 , m + 2, \dots , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
+For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
 See Choi, Li & Wang (2013) page 615 for details.
 This is a helper function of \link{get_all_tau}.
 }

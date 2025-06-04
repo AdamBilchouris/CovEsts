@@ -2,7 +2,7 @@
 % Please edit documentation in R/metrics.R
 \name{area_between}
 \alias{area_between}
-\title{Area between estimated functions.}
+\title{Area Between Estimated Autocovariance Functions.}
 \usage{
 area_between(est1, est2, lags = c(), plot = FALSE)
 }
@@ -13,16 +13,16 @@ area_between(est1, est2, lags = c(), plot = FALSE)
 
 \item{lags}{An optional vector of lags starting from 0 up until some other lag. If empty, a vector of lags is created starting from 0 until \code{len(est1) - 1}, by 1.}
 
-\item{plot}{A boolean as to whether a plot should be created. By default, no plot is created.}
+\item{plot}{A boolean determining whether a plot should be created. By default, no plot is created.}
 }
 \value{
-A numeric value representing the area between the estimated functions.
+A numeric value representing the estimated area between two estimated autocovariance functions.
 }
 \description{
-This function computes the area between functions.
+This function estimates the area between two estimated autocovariance functions.
 }
 \details{
-This function computes the area between the two estimated functions over a set of lags, from 0 up to \eqn{\tau_{0}.}
+This function estimates the area between two estimated autocovariance functions over a set of lags, from 0 up to \eqn{\tau_{0}.}
 \deqn{
 \int_{0}^{\tau_{0}} \left| \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau) \right| d\tau ,
 }
@@ -30,7 +30,7 @@ where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autoco
 
 To approximate this integral the trapezoidal rule is used.
 
-If \code{lags} is empty a difference of 1 will be used which results in a different area than if lags is specified.
+If \code{lags} is empty, a uniform time grid with a step of 1 will be used which may result in a different area than if lags is specified.
 }
 \examples{
 x <- seq(0, 5, by=0.1)
