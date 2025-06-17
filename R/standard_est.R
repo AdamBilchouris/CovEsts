@@ -70,6 +70,6 @@ compute_standard_est <- function(X, meanX=mean(X), maxLag=length(X) - 1, pd=TRUE
 #' estCov <- compute_standard_est(X, meanX=mean(X), maxLag = 2, pd=FALSE)
 #' to_vario(estCov)
 to_vario <- function(cov) {
-  stopifnot(length(cov) > 0, is.vector(cov), is.numeric(cov))
+  stopifnot(length(cov) > 0, is.vector(cov), is.numeric(cov), !any(is.na(cov)))
   return(cov[1] - cov)
 }

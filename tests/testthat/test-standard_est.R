@@ -66,3 +66,31 @@ test_that("compute_standard_est() for NA meanX", {
 test_that("compute_standard_est() for NA meanX", {
   expect_error(compute_standard_est(c(1, 2, 3), type = 'covariance'))
 })
+
+# to_vario works
+test_that("to_vario() works", {
+  expect_equal(to_vario(c(1, 0.5, 0)), c(0, 0.5, 1))
+})
+
+# to_vario fails if cov is empty
+test_that("to_vario() fails if cov is empty", {
+  expect_error(to_vario(c()))
+})
+
+# to_vario fails if cov is not a vector
+test_that("to_vario() fails if cov is not a vector", {
+  expect_error(to_vario(matrix(c(1, 2, 3, 4), 2)))
+})
+
+# to_vario fails if at least one value in cov is nonnumeric
+test_that("to_vario() fails if at least one value in cov is nonnumeric", {
+  expect_error(to_vario(c(1, 'a', 3)))
+  expect_error(to_vario(c(1, 1i, 3)))
+})
+
+# to_vario fails if cov has at least one NA
+test_that("to_vario() fails f cov has at least one NA", {
+  expect_error(to_vario(c(1, NA, 3)))
+})
+
+

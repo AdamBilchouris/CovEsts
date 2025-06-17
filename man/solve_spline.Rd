@@ -26,11 +26,11 @@ Let \eqn{\mathbf{\beta} = (\beta_{0}, \dots, \beta_{m + p})^{\prime}} be a vecto
 are a set of completely monotone basis functions, and \eqn{\widehat{C}} is an estimated covariance function.
 As per Choi, Li & Wang (2013, p. 617), \eqn{\mathbf{\beta}} can be estimated via weighted-least squares,
 \deqn{
-\hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(\tau_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(\tau_{i}^{2})  \right)^{2} ,
+\hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(h_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(h_{i}^{2})  \right)^{2} ,
 }
-where there is a set of lags \eqn{\{\tau_{1} , \dots , \tau_{L} \}} and a set of weights \eqn{\{w_{1}, \dots , w_{L} \}.}
+where there is a set of lags \eqn{\{h_{1} , \dots , h_{L} \}} and a set of weights \eqn{\{w_{1}, \dots , w_{L} \}.}
 The set of weights are calculated in \link{compute_splines_est}, and are of form
-\eqn{w_{i} = (N - \tau_{i}) / ((1 - \widehat{C}(\tau_{i}))^{2}).}
+\eqn{w_{i} = (N - h_{i}) / ((1 - \widehat{C}(h_{i}))^{2}).}
 }
 \examples{
 taus <- get_all_tau(3, 2)
@@ -47,5 +47,5 @@ weights <- c(weights, (length(X) - i) / ( (1 - splines_df$estCov[i + 1])^2 ))
 solve_spline(pars, splines_df, weights)
 }
 \references{
-Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
+Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
 }

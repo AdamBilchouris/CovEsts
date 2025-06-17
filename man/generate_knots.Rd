@@ -23,5 +23,5 @@ The knots are equally spaced with boundary knots \eqn{\kappa_{0} = 0} and \eqn{\
 generate_knots(3)
 }
 \references{
-Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611–630). 10.1007/s13253-013-0152-z
+Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
 }
