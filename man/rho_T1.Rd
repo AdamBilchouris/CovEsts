@@ -42,9 +42,9 @@ This helper function computes \eqn{\rho(T_{1})} for the truncated kernel regress
 \details{
 This function computes the following value,
 \deqn{
-\hat{\rho}(T_{1}) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((T_{1} - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((T_{1} - t_{ij}) / b) \right)^{-1},
+\hat{\rho}(T_{1}) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((T_{1} - (t_{i} - t_{j})) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((T_{1} - (t_{i} - t_{j}))) / b) \right)^{-1},
 }
-where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}).}
 }
 \examples{
 X <- c(1, 2, 3, 4)

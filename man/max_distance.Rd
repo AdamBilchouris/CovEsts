@@ -23,7 +23,7 @@ This function computes the maximum vertical distance between functions.
 }
 \details{
 This function computes the maximum vertical distance between functions. The vector of function values must be of the same length.
-\deqn{D(\hat{C}_{1}(\tau), \hat{C}_{2}(\tau)) = \max_{\tau} \left| \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau) \right| ,
+\deqn{D(\hat{C}_{1}(h), \hat{C}_{2}(h)) = \displaystyle \max_{h} \left| \hat{C}_{1}(h) - \hat{C}_{2}(h) \right| ,
 }
 where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 It assumes that the estimated functions are estimated over the same set of lags.

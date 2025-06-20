@@ -16,14 +16,14 @@ A boolean where \code{TRUE} denotes a positive-definite autocovariance function 
 This function checks if an autocovariance function estimate is positive-definite or not by determining if the eigenvalues of the corresponding matrix (see the Details section) are all positive.
 }
 \details{
-For an autocovariance function estimate \eqn{\hat{C}(\cdot)} over a set of lags separated by a constant difference \eqn{\{0, h_{1} , h_{2} , \dots , h_{n} \},}
+For an autocovariance function estimate \eqn{\hat{C}(\cdot)} over a set of lags separated by a constant difference \eqn{\{h_{0}, h_{1} , h_{2} , \dots , h_{n} \},}
 construct the symmetric matrix
 \deqn{\left[ {\begin{array}{ccccc}
-\hat{C}(0)         & \hat{C}(h_{1})     & \cdots & \hat{C}(h_{N - 1}) & \hat{C}(h_{N})     \\
-\hat{C}(h_{1})     & \hat{C}(0)         & \cdots & \hat{C}(h_{N - 2}) & \hat{C}(h_{N - 1}) \\
+\hat{C}(h_{0})     & \hat{C}(h_{1})     & \cdots & \hat{C}(h_{n - 1}) & \hat{C}(h_{n})     \\
+\hat{C}(h_{1})     & \hat{C}(h_{0})     & \cdots & \hat{C}(h_{n - 2}) & \hat{C}(h_{n - 1}) \\
 \vdots             & \vdots             & \ddots & \vdots             & \vdots             \\
-\hat{C}(h_{N - 1}) & \hat{C}(h_{N - 2}) & \cdots & \hat{C}(0)         & \hat{C}(h_{1})     \\
-\hat{C}(h_{N})     & \hat{C}(h_{N - 1}) & \cdots & \hat{C}(h_{1})     & \hat{C}(0)         \\
+\hat{C}(h_{n - 1}) & \hat{C}(h_{n - 2}) & \cdots & \hat{C}(h_{0})     & \hat{C}(h_{1})     \\
+\hat{C}(h_{n})     & \hat{C}(h_{n - 1}) & \cdots & \hat{C}(h_{1})     & \hat{C}(h_{0})     \\
 \end{array}} \right] .
 }
 

@@ -38,13 +38,13 @@ A vector whose values are the estimated tapered autocovariances.
 }
 \description{
 This function computes the tapered autocovariance over a set of lags,
-\deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
+\deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{j=1}^{N-h}  (X(j) - \bar{X} ) ( X(j + h) - \bar{X} ) a((j - 1/2) / N; \rho) a((j + h - 1/2) / N; \rho) ,}
 where \eqn{a(\cdot)} is a window function, \eqn{\rho \in (0, 1]} is a scale parameter.
 For each lag, the tapered autocovariance is computed using the function \link{tapered_cov_single}.
 }
 \details{
 This function computes the estimated tapered autocovariance over a set of lags,
-\deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{t=1}^{n-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
+\deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{j=1}^{N-h}  (X(j) - \bar{X} ) ( X(j + h) - \bar{X} ) a((j - 1/2) / N; \rho) a((j + h - 1/2) / N; \rho) ,}
 where \eqn{a(\cdot)} is a window function, \eqn{\rho \in (0, 1]}  is a scale parameter.
 This estimator considers the edge effect during estimation, assigning a lower weight to values closer to the boundaries and higher weights for observations closer to the middle.
 This estimator is positive-definite and asymptotically unbiased.

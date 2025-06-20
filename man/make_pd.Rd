@@ -23,20 +23,18 @@ This function perform positive-definite adjustments proposed by P. Hall and his 
 Method 1 is as follows:
 \enumerate{
 \item Take the discrete cosine transform,
-\eqn{\mathcal{F}^{c}(\hat{\rho}(t))}.
-\item Set all negative values to zero,
-\eqn{\hat{\mathcal{F}}^{c}(\hat{\rho}(t)) = \mathcal{F}(\hat{\rho}(t))} if \eqn{\mathcal{F}(\hat{\rho}(t)) > 0} and \eqn{\hat{\mathcal{F}}^{c}(\hat{\rho}(t)) = 0} otherwise,
-for all sample frequencies.
+\eqn{\widehat{\mathcal{F}}(\theta)}.
+\item Construct a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
 \item Perform the inversion to obtain a new estimator.
 }
 
 Method 2 is as follows:
 \enumerate{
-\item Take the discrete cosine transform
-\eqn{\mathcal{F}^{c}(\hat{\rho}_{1}(t))}.
+\item Take the discrete cosine transform \eqn{\widehat{\mathcal{F}}(\theta)}.
 \item Find the smallest frequency where its associated value in the spectral domain is negative
-\deqn{\hat{\theta} = \inf\{ \theta > 0 :  \mathcal{F}^{c}(\hat{\rho}_{1}(t)) < 0\}.}
-\item Set all values starting at the frequency to zero.
+\deqn{\hat{\theta} = \inf\{ \theta > 0 :  \widehat{\mathcal{F}}(\theta) < 0\}.}
+\item Construct a modified spectrum \eqn{\widetilde{\mathcal{F}} \widehat{\mathcal{F}}(\theta)\textbf{1}(\theta < \hat{\theta}),}
+where \eqn{\textbf{1}(A)} is the indicator function over the set \eqn{A.}
 \item Perform the inversion.
 }
 }

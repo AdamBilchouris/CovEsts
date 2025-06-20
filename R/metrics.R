@@ -3,9 +3,9 @@
 #' This function estimates the area between two estimated autocovariance functions.
 #'
 #' @details
-#' This function estimates the area between two estimated autocovariance functions over a set of lags, from 0 up to \eqn{\tau_{0}.}
+#' This function estimates the area between two estimated autocovariance functions over a set of lags, from 0 up to \eqn{h_{n}.}
 #' \deqn{
-#' \int_{0}^{\tau_{0}} \left| \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau) \right| d\tau ,
+#' \int_{0}^{h_{n}} \left| \hat{C}_{1}(h) - \hat{C}_{2}(h) \right| dh ,
 #' }
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 #'
@@ -61,7 +61,6 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
              col=c(2, 3, "#AAAAAAAA"), lwd=c(2, 2, NA), lty=c(1, 1, NA), density=c(0, 0, NA), fill=c(NA, NA, "#AAAAAAAA"), border=c(NA, NA, "#000000FF"))
   }
 
-  # \sigma_{i=1}^{n} f(x_{i}) \delta x
   return(integral_val)
 }
 
@@ -71,7 +70,7 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
 #'
 #' @details
 #' This function computes the maximum vertical distance between functions. The vector of function values must be of the same length.
-#' \deqn{D(\hat{C}_{1}(\tau), \hat{C}_{2}(\tau)) = \max_{\tau} \left| \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau) \right| ,
+#' \deqn{D(\hat{C}_{1}(h), \hat{C}_{2}(h)) = \displaystyle \max_{h} \left| \hat{C}_{1}(h) - \hat{C}_{2}(h) \right| ,
 #' }
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 #' It assumes that the estimated functions are estimated over the same set of lags.
@@ -169,19 +168,19 @@ create_cyclic_matrix <- function(v) {
 #'
 #' @details
 #' This function computes the spectral norm of the difference of two estimated autocovariance functions.
-#' Let \eqn{D(\tau) = \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau),}
+#' Let \eqn{D(h) = \hat{C}_{1}(h) - \hat{C}_{2}(h),}
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 #'
 #' A matrix \eqn{D} is created from \eqn{D(\cdot)},
 #' \deqn{\left[ {\begin{array}{ccccc}
-#' D(0)            & D(\tau_{1})     & \cdots & D(\tau_{N - 1}) & D(\tau_{N})     \\
-#' D(\tau_{1})     & D(0)            & \cdots & D(\tau_{N - 2}) & D(\tau_{N - 1}) \\
-#' \vdots          & \vdots          & \ddots & \vdots          & \vdots       \\
-#' D(\tau_{N - 1}) & D(\tau_{N - 2}) & \cdots & D(0)            & D(\tau_{1})     \\
-#' D(\tau_{N})     & D(\tau_{N - 1}) & \cdots & D(\tau_{1})     & D(0)         \\
+#' D(h_{0})     & D(h_{1})     & \cdots & D(h_{n - 1}) & D(h_{n})     \\
+#' D(h_{1})     & D(h_{0})     & \cdots & D(h_{n - 2}) & D(h_{n - 1}) \\
+#' \vdots       & \vdots       & \ddots & \vdots       & \vdots       \\
+#' D(h_{n - 1}) & D(h_{n - 2}) & \cdots & D(h_{0})     & D(h_{1})     \\
+#' D(h_{n})     & D(h_{n - 1}) & \cdots & D(h_{1})     & D(h_{0})     \\
 #' \end{array}} \right] ,
 #' }
-#' over a set of lags \eqn{\{0, \tau_{1}, \dots , \tau_{N} \}.}
+#' over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \}.}
 #' This matrix is created in [create_cyclic_matrix].
 #'
 #' The spectral norm is simply the largest eigenvalue of \eqn{D.}
@@ -212,14 +211,14 @@ spectral_norm <- function(est1, est2) {
 #' This function checks if an autocovariance function estimate is positive-definite or not by determining if the eigenvalues of the corresponding matrix (see the Details section) are all positive.
 #'
 #' @details
-#' For an autocovariance function estimate \eqn{\hat{C}(\cdot)} over a set of lags separated by a constant difference \eqn{\{0, h_{1} , h_{2} , \dots , h_{n} \},}
+#' For an autocovariance function estimate \eqn{\hat{C}(\cdot)} over a set of lags separated by a constant difference \eqn{\{h_{0}, h_{1} , h_{2} , \dots , h_{n} \},}
 #' construct the symmetric matrix
 #' \deqn{\left[ {\begin{array}{ccccc}
-#' \hat{C}(0)         & \hat{C}(h_{1})     & \cdots & \hat{C}(h_{N - 1}) & \hat{C}(h_{N})     \\
-#' \hat{C}(h_{1})     & \hat{C}(0)         & \cdots & \hat{C}(h_{N - 2}) & \hat{C}(h_{N - 1}) \\
+#' \hat{C}(h_{0})     & \hat{C}(h_{1})     & \cdots & \hat{C}(h_{n - 1}) & \hat{C}(h_{n})     \\
+#' \hat{C}(h_{1})     & \hat{C}(h_{0})     & \cdots & \hat{C}(h_{n - 2}) & \hat{C}(h_{n - 1}) \\
 #' \vdots             & \vdots             & \ddots & \vdots             & \vdots             \\
-#' \hat{C}(h_{N - 1}) & \hat{C}(h_{N - 2}) & \cdots & \hat{C}(0)         & \hat{C}(h_{1})     \\
-#' \hat{C}(h_{N})     & \hat{C}(h_{N - 1}) & \cdots & \hat{C}(h_{1})     & \hat{C}(0)         \\
+#' \hat{C}(h_{n - 1}) & \hat{C}(h_{n - 2}) & \cdots & \hat{C}(h_{0})     & \hat{C}(h_{1})     \\
+#' \hat{C}(h_{n})     & \hat{C}(h_{n - 1}) & \cdots & \hat{C}(h_{1})     & \hat{C}(h_{0})     \\
 #' \end{array}} \right] .
 #' }
 #'

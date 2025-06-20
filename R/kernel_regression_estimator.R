@@ -37,9 +37,9 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' @details
 #' This function computes the following value,
 #' \deqn{
-#' \hat{\rho}(T_{1}) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((T_{1} - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((T_{1} - t_{ij}) / b) \right)^{-1},
+#' \hat{\rho}(T_{1}) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((T_{1} - (t_{i} - t_{j})) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((T_{1} - (t_{i} - t_{j}))) / b) \right)^{-1},
 #' }
-#' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+#' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}).}
 #'
 #' @references
 #' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899
@@ -201,9 +201,9 @@ idct_1d <- function(X) {
 #'
 #' To make this estimator positive-definite, the following procedure is used:
 #' 1. Take the discrete cosine transform
-#' \eqn{\mathcal{F}^{c}(\theta)}.
+#' \eqn{\widehat{\mathcal{F}}(\theta)}.
 #' 2. Find the smallest frequency where its associated value in the spectral domain is negative
-#' \deqn{\hat{\theta} = \inf\{ \theta > 0 :  \mathcal{F}^{c}(\theta)) < 0\}.}
+#' \deqn{\hat{\theta} = \inf\{ \theta > 0 :  \widehat{\mathcal{F}}(\theta)) < 0\}.}
 #' 3. Set all values starting at the frequency to zero.
 #' 4. Perform the inversion.
 #'
@@ -312,16 +312,14 @@ compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name="gaussian", ke
 #' @details
 #' The kernel regression estimator of an autocovariance function is defined as
 #' \deqn{
-#' \hat{\rho}(t) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((t - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((t - t_{ij}) / b) \right)^{-1},
+#' \hat{\rho}(t) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((t -  (t_{i} - t_{j})) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((t -  (t_{i} - t_{j})) / b) \right)^{-1},
 #' }
-#' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+#' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}).}
 #'
 #' If \code{pd} is \code{TRUE}, the estimator will be made positive-definite through the following procedure
 #' 1. Take the discrete cosine transform,
-#' \eqn{\mathcal{F}^{c}(\theta)}, of the estimated autocovariance function
-#' 2. Set all its negative values to zero,
-#' \eqn{\hat{\mathcal{F}}^{c}(\theta) = \mathcal{F}(\theta)} if \eqn{\mathcal{F}(\theta) > 0} and \eqn{\hat{\mathcal{F}}^{c}(\theta) = 0} otherwise,
-#' for all sample frequencies.
+#' \eqn{\widehat{\mathcal{F}}(\theta)}, of the estimated autocovariance function
+#' 2. Construct a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
 #' 3. Perform the inversion to obtain a new estimator.
 #'
 #' This ensures the autocovariance estimate is positive-definite.
@@ -407,18 +405,17 @@ compute_adjusted_est <- function(X, x, t, b, kernel_name="gaussian", kernel_para
 #'
 #' Method 1 is as follows:
 #' 1. Take the discrete cosine transform,
-#' \eqn{\mathcal{F}^{c}(\hat{\rho}(t))}.
-#' 2. Set all negative values to zero,
-#' \eqn{\hat{\mathcal{F}}^{c}(\hat{\rho}(t)) = \mathcal{F}(\hat{\rho}(t))} if \eqn{\mathcal{F}(\hat{\rho}(t)) > 0} and \eqn{\hat{\mathcal{F}}^{c}(\hat{\rho}(t)) = 0} otherwise,
-#' for all sample frequencies.
+#' \eqn{\widehat{\mathcal{F}}(\theta)}.
+#' 2. Construct a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
 #' 3. Perform the inversion to obtain a new estimator.
 #'
+#'
 #' Method 2 is as follows:
-#' 1. Take the discrete cosine transform
-#' \eqn{\mathcal{F}^{c}(\hat{\rho}_{1}(t))}.
+#' 1. Take the discrete cosine transform \eqn{\widehat{\mathcal{F}}(\theta)}.
 #' 2. Find the smallest frequency where its associated value in the spectral domain is negative
-#' \deqn{\hat{\theta} = \inf\{ \theta > 0 :  \mathcal{F}^{c}(\hat{\rho}_{1}(t)) < 0\}.}
-#' 3. Set all values starting at the frequency to zero.
+#' \deqn{\hat{\theta} = \inf\{ \theta > 0 :  \widehat{\mathcal{F}}(\theta) < 0\}.}
+#' 3. Construct a modified spectrum \eqn{\widetilde{\mathcal{F}} \widehat{\mathcal{F}}(\theta)\textbf{1}(\theta < \hat{\theta}),}
+#' where \eqn{\textbf{1}(A)} is the indicator function over the set \eqn{A.}
 #' 4. Perform the inversion.
 #'
 #' @references

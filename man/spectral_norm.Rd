@@ -20,19 +20,19 @@ This function is intended for estimates over lags with a constant difference.
 }
 \details{
 This function computes the spectral norm of the difference of two estimated autocovariance functions.
-Let \eqn{D(\tau) = \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau),}
+Let \eqn{D(h) = \hat{C}_{1}(h) - \hat{C}_{2}(h),}
 where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 
 A matrix \eqn{D} is created from \eqn{D(\cdot)},
 \deqn{\left[ {\begin{array}{ccccc}
-D(0)            & D(\tau_{1})     & \cdots & D(\tau_{N - 1}) & D(\tau_{N})     \\
-D(\tau_{1})     & D(0)            & \cdots & D(\tau_{N - 2}) & D(\tau_{N - 1}) \\
-\vdots          & \vdots          & \ddots & \vdots          & \vdots       \\
-D(\tau_{N - 1}) & D(\tau_{N - 2}) & \cdots & D(0)            & D(\tau_{1})     \\
-D(\tau_{N})     & D(\tau_{N - 1}) & \cdots & D(\tau_{1})     & D(0)         \\
+D(h_{0})     & D(h_{1})     & \cdots & D(h_{n - 1}) & D(h_{n})     \\
+D(h_{1})     & D(h_{0})     & \cdots & D(h_{n - 2}) & D(h_{n - 1}) \\
+\vdots       & \vdots       & \ddots & \vdots       & \vdots       \\
+D(h_{n - 1}) & D(h_{n - 2}) & \cdots & D(h_{0})     & D(h_{1})     \\
+D(h_{n})     & D(h_{n - 1}) & \cdots & D(h_{1})     & D(h_{0})     \\
 \end{array}} \right] ,
 }
-over a set of lags \eqn{\{0, \tau_{1}, \dots , \tau_{N} \}.}
+over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \}.}
 This matrix is created in \link{create_cyclic_matrix}.
 
 The spectral norm is simply the largest eigenvalue of \eqn{D.}

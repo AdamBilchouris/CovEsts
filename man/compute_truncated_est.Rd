@@ -66,9 +66,9 @@ In the case of short-range dependence, this may be beneficial as it can remove e
 To make this estimator positive-definite, the following procedure is used:
 \enumerate{
 \item Take the discrete cosine transform
-\eqn{\mathcal{F}^{c}(\theta)}.
+\eqn{\widehat{\mathcal{F}}(\theta)}.
 \item Find the smallest frequency where its associated value in the spectral domain is negative
-\deqn{\hat{\theta} = \inf\{ \theta > 0 :  \mathcal{F}^{c}(\theta)) < 0\}.}
+\deqn{\hat{\theta} = \inf\{ \theta > 0 :  \widehat{\mathcal{F}}(\theta)) < 0\}.}
 \item Set all values starting at the frequency to zero.
 \item Perform the inversion.
 }

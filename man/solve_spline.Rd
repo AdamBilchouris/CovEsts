@@ -25,7 +25,7 @@ The weights are chosen as per Choi, Li & Wang (2013, p. 617).
 Let \eqn{\mathbf{\beta} = (\beta_{0}, \dots, \beta_{m + p})^{\prime}} be a vector of model coefficients, \eqn{\{f_{1}^{(p - 1)} , \dots , f_{m + p}^{(p - 1)} \}}
 are a set of completely monotone basis functions, and \eqn{\widehat{C}} is an estimated covariance function.
 As per Choi, Li & Wang (2013, p. 617), \eqn{\mathbf{\beta}} can be estimated via weighted-least squares,
-\deqn{
+\deqn{\
 \hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(h_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(h_{i}^{2})  \right)^{2} ,
 }
 where there is a set of lags \eqn{\{h_{1} , \dots , h_{L} \}} and a set of weights \eqn{\{w_{1}, \dots , w_{L} \}.}

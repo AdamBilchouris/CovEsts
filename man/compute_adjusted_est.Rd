@@ -48,17 +48,15 @@ This function computes the kernel regression estimator of the autocovariance fun
 \details{
 The kernel regression estimator of an autocovariance function is defined as
 \deqn{
-\hat{\rho}(t) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((t - t_{ij}) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((t - t_{ij}) / b) \right)^{-1},
+\hat{\rho}(t) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((t -  (t_{i} - t_{j})) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((t -  (t_{i} - t_{j})) / b) \right)^{-1},
 }
-where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X})}, and \eqn{t_{ij} = t_{i} - t_{j}.}
+where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}).}
 
 If \code{pd} is \code{TRUE}, the estimator will be made positive-definite through the following procedure
 \enumerate{
 \item Take the discrete cosine transform,
-\eqn{\mathcal{F}^{c}(\theta)}, of the estimated autocovariance function
-\item Set all its negative values to zero,
-\eqn{\hat{\mathcal{F}}^{c}(\theta) = \mathcal{F}(\theta)} if \eqn{\mathcal{F}(\theta) > 0} and \eqn{\hat{\mathcal{F}}^{c}(\theta) = 0} otherwise,
-for all sample frequencies.
+\eqn{\widehat{\mathcal{F}}(\theta)}, of the estimated autocovariance function
+\item Construct a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
 \item Perform the inversion to obtain a new estimator.
 }
 

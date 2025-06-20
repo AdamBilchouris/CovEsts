@@ -39,7 +39,7 @@ A vector whose values are the kernel corrected autocovariance estimates.
 This function applies kernel correction to an estimated autocovariance function.
 It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
 The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the observation window, however, one may need to play with this value.
-\deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
+\deqn{\widehat{C}_{T}^{(a)}(h) = \widehat{C}(h) a_{T}(h),} where \eqn{a_{T}(h) := a(h / N_{T}).}
 }
 \examples{
 X <- rnorm(1000)

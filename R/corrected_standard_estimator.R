@@ -3,7 +3,7 @@
 #' This function computes the standard autocovariance estimator and applies kernel correction to it.
 #' It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
 #' The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the observation window, however, one may need to play with this value.
-#' \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
+#' \deqn{\widehat{C}_{T}^{(a)}(h) = \widehat{C}(h) a_{T}(h), } where \eqn{a_{T}(h) := a(h / N_{T}).}
 #'
 #' @details
 #' The aim of this estimator is gradually bring the estimated values to zero through the use of a kernel multiplier. This can be useful when estimating an
@@ -85,7 +85,7 @@ compute_corrected_standard_est <- function(X, kernel_name, kernel_params=c(), N_
 #' This function applies kernel correction to an estimated autocovariance function.
 #' It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
 #' The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the observation window, however, one may need to play with this value.
-#' \deqn{\widehat{C}^{(a)}(h) = \widehat{C}(h) a(h / N_{T}).}
+#' \deqn{\widehat{C}_{T}^{(a)}(h) = \widehat{C}(h) a_{T}(h),} where \eqn{a_{T}(h) := a(h / N_{T}).}
 #'
 #' @param cov A vector whose values are an estimate autocovariance function.
 #' @param kernel_name The name of the [kernel] function to be used. Possible values are:

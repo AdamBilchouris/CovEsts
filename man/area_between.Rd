@@ -22,9 +22,9 @@ A numeric value representing the estimated area between two estimated autocovari
 This function estimates the area between two estimated autocovariance functions.
 }
 \details{
-This function estimates the area between two estimated autocovariance functions over a set of lags, from 0 up to \eqn{\tau_{0}.}
+This function estimates the area between two estimated autocovariance functions over a set of lags, from 0 up to \eqn{h_{n}.}
 \deqn{
-\int_{0}^{\tau_{0}} \left| \hat{C}_{1}(\tau) - \hat{C}_{2}(\tau) \right| d\tau ,
+\int_{0}^{h_{n}} \left| \hat{C}_{1}(h) - \hat{C}_{2}(h) \right| dh ,
 }
 where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
 

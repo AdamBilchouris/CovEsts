@@ -88,9 +88,9 @@ get_all_tau <- function(p, m) {
 #'
 #' A helper function that is an implementation of the formula from Choi, Li & Wang (2013, p. 616).
 #' \deqn{
-#' f_{j}^{[l]}(x) = \frac{m + 1}{l} \left( f_{j}^{[l - 1]}(x + 1) - \tau_{j - p} f_{j}^{[l - 1]}(x) + \tau_{j - p + l + 1} f_{j + 1}^{[l - 1]}(x) -  f_{j + 1}^{[l - 1]}(x + 1)  \right) ,
+#' f_{j}^{(l)}(x) = \frac{m + 1}{l} \left( f_{j}^{(l - 1)}(x + 1) - \tau_{j - p} f_{j}^{(l - 1)}(x) + \tau_{j - p + l + 1} f_{j + 1}^{(l - 1)}(x) -  f_{j + 1}^{(l - 1)}(x + 1)  \right) ,
 #' }
-#' where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the spline, \eqn{l} is the order of the adjusted spline (the function \eqn{f(\cdot)}) and \eqn{j = 1, 2, \dots , m + p.}
+#' where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the spline, \eqn{l} is the order of the adjusted spline (the function \eqn{f_{j}^{(l)}(\cdot)}) and \eqn{j = 1, 2, \dots , m + p.}
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
 #'
@@ -101,7 +101,7 @@ get_all_tau <- function(p, m) {
 #' @param m The number of nonboundary knots.
 #' @param taus Vector of \eqn{\tau}s, see [get_tau].
 #'
-#' @return A numeric value of the adjusted spline \eqn{f_{j}^{[l]}(x).}
+#' @return A numeric value of the adjusted spline \eqn{f_{j}^{(l)}(x).}
 #' @export
 #'
 #' @examples
@@ -183,7 +183,7 @@ get_splines_df <- function(x, p, m, taus) {
 #' Let \eqn{\mathbf{\beta} = (\beta_{0}, \dots, \beta_{m + p})^{\prime}} be a vector of model coefficients, \eqn{\{f_{1}^{(p - 1)} , \dots , f_{m + p}^{(p - 1)} \}}
 #' are a set of completely monotone basis functions, and \eqn{\widehat{C}} is an estimated covariance function.
 #' As per Choi, Li & Wang (2013, p. 617), \eqn{\mathbf{\beta}} can be estimated via weighted-least squares,
-#' \deqn{
+#' \deqn{\
 #' \hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(h_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(h_{i}^{2})  \right)^{2} ,
 #' }
 #' where there is a set of lags \eqn{\{h_{1} , \dots , h_{L} \}} and a set of weights \eqn{\{w_{1}, \dots , w_{L} \}.}
@@ -228,8 +228,8 @@ solve_spline <- function(par, splines_df, weights) {
 #' Compute the Splines Estimator.
 #'
 #' Compute the estimated covariance function by using the method from Choi, Li & Wang (2013, pp. 614-617).
-#' \deqn{C(\tau) = \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{[p]}(\tau^{2}),}
-#' where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the splines, \eqn{\tau} is the isotropic distance, \eqn{\beta_{j}} are nonnegative weights and \eqn{f_{j}^{[p]}} are basis functions of order \eqn{p.}
+#' \deqn{C(\tau) = \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p-1)}(\tau^{2}),}
+#' where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the splines, \eqn{\tau} is the isotropic distance, \eqn{\beta_{j}} are nonnegative weights and \eqn{f_{j}^{(p)}} are basis functions of order \eqn{p.}
 #' For optimisation, the Nelder-Mead and L-BFGS-B methods are used, the one which selects parameters which minimises the objective function is chosen.
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
