@@ -216,7 +216,7 @@ idct_1d <- function(X) {
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
 #'
-#' @param X A vector with observed values.
+#' @param X A vector representing observed values of the time series.
 #' @param x A vector of lags.
 #' @param t The arguments at which the autocovariance function is calculated at.
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
@@ -329,7 +329,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name="gaussian", ke
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
 #'
-#' @param X A vector with observed values.
+#' @param X A vector representing observed values of the time series.
 #' @param x A vector of lags.
 #' @param t The arguments at which the autocovariance function is calculated at.
 #' @param b Bandwidth parameter, greater than 0.

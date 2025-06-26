@@ -4,10 +4,10 @@
 \alias{to_vario}
 \title{Autocovariance to Semivariogram}
 \usage{
-to_vario(cov)
+to_vario(estCov)
 }
 \arguments{
-\item{cov}{A vector whose values are an estimate autocovariance function.}
+\item{estCov}{A vector whose values are an estimate autocovariance function.}
 }
 \value{
 A vector whose values are an approximate estimate to the semivariogram.

@@ -18,7 +18,7 @@ compute_adjusted_est(
 )
 }
 \arguments{
-\item{X}{A vector with observed values.}
+\item{X}{A vector representing observed values of the time series.}
 
 \item{x}{A vector of lags.}
 

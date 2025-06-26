@@ -234,7 +234,7 @@ solve_spline <- function(par, splines_df, weights) {
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
 #'
-#' @param X A vector with observed values.
+#' @param X A vector representing observed values of the time series.
 #' @param x A vector of lags.
 #' @param estCov An estimated autocovariance function to fit to (a vector).
 #' @param p The order of the splines.

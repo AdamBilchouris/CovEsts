@@ -16,7 +16,7 @@ compute_tapered_est(
 )
 }
 \arguments{
-\item{X}{A vector with observed values.}
+\item{X}{A vector representing observed values of the time series.}
 
 \item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 

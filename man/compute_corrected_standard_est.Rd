@@ -17,7 +17,7 @@ compute_corrected_standard_est(
 )
 }
 \arguments{
-\item{X}{A vector with observed values.}
+\item{X}{A vector representing observed values of the time series.}
 
 \item{kernel_name}{The name of the \link{kernel} function to be used. Possible values are:
 "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".}

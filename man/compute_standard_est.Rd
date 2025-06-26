@@ -13,7 +13,7 @@ compute_standard_est(
 )
 }
 \arguments{
-\item{X}{A vector with observed values.}
+\item{X}{A vector representing observed values of the time series.}
 
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 

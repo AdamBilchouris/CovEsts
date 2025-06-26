@@ -13,7 +13,7 @@
 #' @references
 #' Yaglom, AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.
 #'
-#' @param X A vector with observed values.
+#' @param X A vector representing observed values of the time series.
 #' @param kernel_name The name of the [kernel] function to be used. Possible values are:
 #' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel] for parameters.

@@ -20,7 +20,7 @@
 #'
 #' @references Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society (Vol. 54, Issue 1). 10.17713/ajs.v54i1.1975
 #'
-#' @param X A vector with observed values.
+#' @param X A vector representing observed values of the time series.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #' @param maxLag An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.
@@ -60,7 +60,7 @@ compute_standard_est <- function(X, meanX=mean(X), maxLag=length(X) - 1, pd=TRUE
 #' When an empirical autocovariance function is considered instead, this relation does not necessarily hold, however,
 #' it can be used to obtain a function that is close to a semivariogram.
 #'
-#' @param cov A vector whose values are an estimate autocovariance function.
+#' @param estCov A vector whose values are an estimate autocovariance function.
 #'
 #' @return A vector whose values are an approximate estimate to the semivariogram.
 #' @export
@@ -69,7 +69,7 @@ compute_standard_est <- function(X, meanX=mean(X), maxLag=length(X) - 1, pd=TRUE
 #' X <- c(1, 2, 3)
 #' estCov <- compute_standard_est(X, meanX=mean(X), maxLag = 2, pd=FALSE)
 #' to_vario(estCov)
-to_vario <- function(cov) {
-  stopifnot(length(cov) > 0, is.vector(cov), is.numeric(cov), !any(is.na(cov)))
-  return(cov[1] - cov)
+to_vario <- function(estCov) {
+  stopifnot(length(estCov) > 0, is.vector(estCov), is.numeric(estCov), !any(is.na(estCov)))
+  return(estCov[1] - estCov)
 }
