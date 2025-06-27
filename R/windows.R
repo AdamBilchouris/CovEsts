@@ -44,7 +44,7 @@
 #' The \code{params} argument is empty, see the example.
 #'
 #' @param x A vector or matrix of arguments of at least length 1. Each value must be between 0 and 1, inclusive.
-#' @param name The name of the window. Options are: "tukey", "triangular", "sine", "power_sine", "blackman", "hann_poisson", "welch".
+#' @param name The name of the window. Options are: tukey, triangular, sine, power_sine, blackman, hann_poisson, welch.
 #' @param params A vector of parameters for the windows. See the documentation below for the position of the parameters.
 #'
 #' @return A vector or matrix of values.

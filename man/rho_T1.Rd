@@ -27,7 +27,7 @@ rho_T1(
 \item{xij_mat}{The matrix of pairwise covariance values.}
 
 \item{kernel_name}{The name of the symmetric kernel (see \link{kernel_symm}) function to be used. Possible values are:
-"gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.}
+gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel function can be provided, see the examples.}
 
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_symm} for parameters.}
 

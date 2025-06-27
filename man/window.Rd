@@ -9,7 +9,7 @@ window(x, name, params = c(1))
 \arguments{
 \item{x}{A vector or matrix of arguments of at least length 1. Each value must be between 0 and 1, inclusive.}
 
-\item{name}{The name of the window. Options are: "tukey", "triangular", "sine", "power_sine", "blackman", "hann_poisson", "welch".}
+\item{name}{The name of the window. Options are: tukey, triangular, sine, power_sine, blackman, hann_poisson, welch.}
 
 \item{params}{A vector of parameters for the windows. See the documentation below for the position of the parameters.}
 }

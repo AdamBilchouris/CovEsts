@@ -14,7 +14,7 @@
 #' @param x A number between 0 and 1 (inclusive).
 #' @param rho A scale parameter in \eqn{(0, 1].}
 #' @param window_name The name of the [window] function to be used. Possible values are:
-#' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
+#' tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
 #'
@@ -79,7 +79,7 @@ taper_single <- function(x, rho, window_name, window_params=c(1), custom_window 
 #' @param n The sample size.
 #' @param rho A scale parameter in \eqn{(0, 1].}
 #' @param window_name The name of the [window] function to be used. Possible values are:
-#' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
+#' tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
 #'
@@ -102,7 +102,7 @@ H2n <- function(n, rho, window_name, window_params=c(1), custom_window = FALSE) 
 #' @param x A vector of number between 0 and 1 (inclusive).
 #' @param rho A scale parameter in \eqn{(0, 1].}
 #' @param window_name The name of the [window] function to be used. Possible values are:
-#' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
+#' tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
 #'
@@ -181,7 +181,7 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #' @param maxLag An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.
 #' @param rho A scale parameter in \eqn{(0, 1].}
 #' @param window_name The name of the [window] function to be used. Possible values are:
-#' "tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch". Alternatively, a custom window function can be provided, see the example.
+#' tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
 #' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.

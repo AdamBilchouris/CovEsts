@@ -15,9 +15,9 @@
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param kernel_name The name of the [kernel] function to be used. Possible values are:
-#' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
+#' gaussian, exponential, wave, rational_quadratic, spherical, circular, bessel_j, matern, cauchy.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel] for parameters.
-#' In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", \code{N_T} takes the place of \eqn{\theta}.
+#' In the case of gaussian, wave, rational_quadratic, spherical and circular, \code{N_T} takes the place of \eqn{\theta}.
 #' For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, those parameters are passed.
 #' @param N_T The range at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a lag small estimation lag.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
@@ -89,9 +89,9 @@ compute_corrected_standard_est <- function(X, kernel_name, kernel_params=c(), N_
 #'
 #' @param cov A vector whose values are an estimate autocovariance function.
 #' @param kernel_name The name of the [kernel] function to be used. Possible values are:
-#' "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".
+#' gaussian, exponential, wave, rational_quadratic, spherical, circular, bessel_j, matern, cauchy.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel] for parameters.
-#' In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", \code{N_T} takes the place of \eqn{\theta}.
+#' In the case of gaussian, wave, rational_quadratic, spherical and circular, \code{N_T} takes the place of \eqn{\theta}.
 #' For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, those parameters are passed.
 #' @param N_T The range at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a lag small estimation lag.
 #' @param maxLag An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(cov) - 1}.

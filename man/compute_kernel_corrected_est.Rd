@@ -18,10 +18,10 @@ compute_kernel_corrected_est(
 \item{cov}{A vector whose values are an estimate autocovariance function.}
 
 \item{kernel_name}{The name of the \link{kernel} function to be used. Possible values are:
-"gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy".}
+gaussian, exponential, wave, rational_quadratic, spherical, circular, bessel_j, matern, cauchy.}
 
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel} for parameters.
-In the case of "gaussian", "wave", "rational_quadratic", "spherical" and "circular", \code{N_T} takes the place of \eqn{\theta}.
+In the case of gaussian, wave, rational_quadratic, spherical and circular, \code{N_T} takes the place of \eqn{\theta}.
 For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, those parameters are passed.}
 
 \item{N_T}{The range at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a lag small estimation lag.}

@@ -52,7 +52,7 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' @param b Bandwidth parameter, greater than 0.
 #' @param xij_mat The matrix of pairwise covariance values.
 #' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
+#' gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
 #'
@@ -223,7 +223,7 @@ idct_1d <- function(X) {
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param b Bandwidth parameter, greater than 0.
 #' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
+#' gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
@@ -334,7 +334,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name="gaussian", ke
 #' @param t The arguments at which the autocovariance function is calculated at.
 #' @param b Bandwidth parameter, greater than 0.
 #' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
-#' "gaussian", "wave", "rational_quadratic", and "bessel_j". Alternatively, a custom kernel function can be provided, see the examples.
+#' gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel function can be provided, see the examples.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.

@@ -9,7 +9,7 @@ kernel(x, name, params = c(1))
 \arguments{
 \item{x}{A vector or matrix of arguments of at least length 1 for which the kernel is computed at.}
 
-\item{name}{The name of the kernel. Options are: "gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", and "cauchy".}
+\item{name}{The name of the kernel. Options are: gaussian, exponential, wave, rational_quadratic, spherical, circular, bessel_j, matern, and cauchy.}
 
 \item{params}{A vector of parameters for the kernel. See the documentation below for the position of the parameters. All kernels have a scale parameter as the first value in the vector.}
 }
