@@ -202,55 +202,55 @@ test_that("tapered_cov_single() fails for any taperVals_t between [-1, 1]", {
 
 # compute_tapered_est
 test_that("compute_tapered_est(, , , \"tukey\") works", {
-  expect_equal(compute_tapered_est(test_X, 2, 1, "tukey"), c(1/12, 0, -1/24))
+  expect_equal(compute_tapered_est(test_X, 1, "tukey", maxLag = 2), c(1/12, 0, -1/24))
 })
 
 test_that("compute_tapered_est() fails for nonnumeric X", {
-  expect_error(compute_tapered_est(c(1, 'a', 3), 2, 1, "tukey"))
-  expect_error(compute_tapered_est(c(1, 1i, 3), 2, 1, "tukey"))
+  expect_error(compute_tapered_est(c(1, 'a', 3), 1, "tukey", maxLag = 2))
+  expect_error(compute_tapered_est(c(1, 1i, 3), 1, "tukey", maxLag = 2))
 })
 
 test_that("compute_tapered_est() fails for empty X", {
-  expect_error(compute_tapered_est(c(), 2, 1, "tukey"))
+  expect_error(compute_tapered_est(c(), 1, "tukey", maxLag = 2))
 })
 
 test_that("compute_tapered_est() fails for at least one NA in X", {
-  expect_error(compute_tapered_est(c(1, NA, 3), 2, 1, "tukey"))
+  expect_error(compute_tapered_est(c(1, NA, 3), 1, "tukey", maxLag = 2))
 })
 
 test_that("compute_tapered_est() fails for at nonnumeric maxLag", {
-  expect_error(compute_tapered_est(test_X, 'a', 1, "tukey"))
-  expect_error(compute_tapered_est(test_X, 1i, 1, "tukey"))
+  expect_error(compute_tapered_est(test_X, 1, "tukey", maxLag = 'a'))
+  expect_error(compute_tapered_est(test_X, 1, "tukey", maxLag = 1i))
 })
 
 test_that("compute_tapered_est() fails for maxLag whose length is not 1", {
-  expect_error(compute_tapered_est(test_X, c(), 1, "tukey"))
-  expect_error(compute_tapered_est(test_X, c(1, 2), 1, "tukey"))
+  expect_error(compute_tapered_est(test_X, 1, "tukey", maxLag = c()))
+  expect_error(compute_tapered_est(test_X, 1, "tukey", maxLag = c(1, 2)))
 })
 
 test_that("compute_tapered_est() fails for maxLag less than 1", {
-  expect_error(compute_tapered_est(test_X, 0, 1, "tukey"))
+  expect_error(compute_tapered_est(test_X, 1, "tukey", , maxLag = 0))
 })
 
 test_that("compute_tapered_est() fails for maxLag greater than or equal to length(X)", {
-  expect_error(compute_tapered_est(test_X, 3, 1, "tukey"))
+  expect_error(compute_tapered_est(test_X, 1, "tukey", maxLag = 3))
 })
 
 test_that("compute_tapered_est() fails for noninteger maxLag", {
-  expect_error(compute_tapered_est(test_X, 1.2, 1, "tukey"))
+  expect_error(compute_tapered_est(test_X, 1, "tukey", maxLag = 1.2))
 })
 
 test_that("compute_tapered_est() fails for nonnumeric rho", {
-  expect_error(compute_tapered_est(test_X, 2, 'a', "tukey"))
-  expect_error(compute_tapered_est(test_X, 2, 1i, "tukey"))
+  expect_error(compute_tapered_est(test_X, 'a', "tukey", maxLag = 2))
+  expect_error(compute_tapered_est(test_X, 1i, "tukey", maxLag = 2))
 })
 
 test_that("compute_tapered_est() fails for rho not of length 1", {
-  expect_error(compute_tapered_est(test_X, 2, c(), "tukey"))
-  expect_error(compute_tapered_est(test_X, 2, c(1, 2), "tukey"))
+  expect_error(compute_tapered_est(test_X, c(), "tukey", maxLag = 2))
+  expect_error(compute_tapered_est(test_X, c(1, 2), "tukey", maxLag = 2))
 })
 
 test_that("compute_tapered_est() fails for nonboolean custom_window", {
-  expect_error(compute_tapered_est(test_X, 2, 1, "tukey", custom_window = 1))
-  expect_error(compute_tapered_est(test_X, 2, 1, "tukey", custom_window = 'TRUE'))
+  expect_error(compute_tapered_est(test_X, 1, "tukey", custom_window = 1, , maxLag = 2))
+  expect_error(compute_tapered_est(test_X, 1, "tukey", custom_window = 'TRUE', maxLag = 2))
 })

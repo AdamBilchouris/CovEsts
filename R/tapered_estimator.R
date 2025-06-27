@@ -178,12 +178,12 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #' Dahlhaus R., Künsch, H. (1987). Edge Effects and Efficient Parameter Estimation for Stationary Random Fields. In Biometrika (Vol. 74 Issue 4, pp. 877-882). 10.1093/biomet/74.4.877
 #'
 #' @param X A vector representing observed values of the time series.
-#' @param maxLag An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.
 #' @param rho A scale parameter in \eqn{(0, 1].}
 #' @param window_name The name of the [window] function to be used. Possible values are:
 #' tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
+#' @param maxLag An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.
 #' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #'
@@ -192,8 +192,8 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' compute_tapered_est(X, 2, 0.5, "tukey")
-compute_tapered_est <- function(X, maxLag, rho, window_name, window_params = c(1), custom_window = FALSE, type = 'autocovariance',  meanX = mean(X)) {
+#' compute_tapered_est(X, 0.5, "tukey", maxLag = 2)
+compute_tapered_est <- function(X, rho, window_name, window_params = c(1), custom_window = FALSE, maxLag = length(X) - 1, type = 'autocovariance',  meanX = mean(X)) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1,
             maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(rho), length(rho) == 1, rho > 0, rho <= 1,
             is.logical(custom_window),  length(meanX) == 1, is.numeric(meanX), !is.na(meanX),

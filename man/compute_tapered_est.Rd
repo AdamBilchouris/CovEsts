@@ -6,19 +6,17 @@
 \usage{
 compute_tapered_est(
   X,
-  maxLag,
   rho,
   window_name,
   window_params = c(1),
   custom_window = FALSE,
+  maxLag = length(X) - 1,
   type = "autocovariance",
   meanX = mean(X)
 )
 }
 \arguments{
 \item{X}{A vector representing observed values of the time series.}
-
-\item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
 \item{rho}{A scale parameter in \eqn{(0, 1].}}
 
@@ -28,6 +26,8 @@ tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternative
 \item{window_params}{A vector of parameters of the window function.}
 
 \item{custom_window}{If a custom window is to be used or not. Defaults to \code{FALSE}.}
+
+\item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 
@@ -53,7 +53,7 @@ Internally, this function calls \link{tapered_cov_single} for each lag \eqn{h}.
 }
 \examples{
 X <- c(1, 2, 3)
-compute_tapered_est(X, 2, 0.5, "tukey")
+compute_tapered_est(X, 0.5, "tukey", maxLag = 2)
 }
 \references{
 Dahlhaus R., Künsch, H. (1987). Edge Effects and Efficient Parameter Estimation for Stationary Random Fields. In Biometrika (Vol. 74 Issue 4, pp. 877-882). 10.1093/biomet/74.4.877

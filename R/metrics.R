@@ -119,7 +119,7 @@ max_distance <- function(est1, est2, lags=c(), plot = FALSE) {
   }
 
   if(plot) {
-    plot(lags, distVec, type='o', xlab='Lag (h)', ylab='Distance')
+    plot(lags, distVec, type='l', xlab='Lag (h)', ylab='Distance')
   }
 
   return(maxDist)
