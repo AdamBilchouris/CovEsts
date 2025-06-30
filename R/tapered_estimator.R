@@ -142,7 +142,7 @@ taper <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' tapered_cov_single(X, mean(X), 9, 2.5, c(0.75, 1, 0.75), c(0.75, 1, 0.75))
+#' tapered_cov_single(X, mean(X), 2, 2.5, c(0.75, 1, 0.75), c(0.75, 1, 0.75))
 tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(meanX), length(meanX) == 1,
             is.numeric(h), length(h) == 1, h %% 1 == 0, is.numeric(h2n), length(h2n) == 1,

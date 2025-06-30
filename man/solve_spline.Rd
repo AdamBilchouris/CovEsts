@@ -37,7 +37,7 @@ taus <- get_all_tau(3, 2)
 x <- seq(0, 2, by=0.25)
 maxLag <- 4
 splines_df <- get_splines_df(x[1:maxLag], 3, 2, taus)
-splines_df$estCov <- exp(-splines_df$lags^2)
+splines_df$estCov <- exp(-splines_df$lags^2) + 0.001
 pars <- c(0.5, 0.5, 0.5, 0.5, 0.5)
 weights <- c()
 X <- rnorm(50)

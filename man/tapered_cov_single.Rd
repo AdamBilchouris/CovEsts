@@ -29,5 +29,5 @@ where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter. The 
 }
 \examples{
 X <- c(1, 2, 3)
-tapered_cov_single(X, mean(X), 9, 2.5, c(0.75, 1, 0.75), c(0.75, 1, 0.75))
+tapered_cov_single(X, mean(X), 2, 2.5, c(0.75, 1, 0.75), c(0.75, 1, 0.75))
 }
