@@ -254,10 +254,10 @@ solve_spline <- function(par, splines_df, weights) {
 #' X <- rnorm(100)
 #' x <- seq(0, 5, by = 0.25)
 #' maxLag <- 5
-#' estCov <- compute_standard_est(X, maxLag=maxLag)
+#' estCov <- compute_standard_est(X, maxLag = maxLag)
 #' estimated <- compute_splines_est(X, x, estCov, 3, 2, maxLag = maxLag)
 #' estimated
-compute_splines_est <- function(X, x, estCov, p, m, maxLag=length(X) - 1, inital_pars = c(), control=list('maxit' = 1000), type='autocovariance') {
+compute_splines_est <- function(X, x, estCov, p, m, maxLag = length(X) - 1, type = "autocovariance", inital_pars = c(), control = list('maxit' = 1000)) {
   stopifnot(is.numeric(X), is.vector(X), all(!is.na(X)), is.numeric(x), is.vector(x), all(!is.na(x)),
             is.numeric(maxLag), maxLag >= 0, maxLag <= (length(estCov) - 1), is.numeric(estCov),
             is.vector(estCov), all(!is.na(estCov)), is.numeric(p), p >= 0, p %% 1 == 0,

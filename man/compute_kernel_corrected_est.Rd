@@ -5,17 +5,17 @@
 \title{Kernel Correction for an Estimated Autocovariance Function.}
 \usage{
 compute_kernel_corrected_est(
-  cov,
+  estCov,
   kernel_name,
   kernel_params = c(),
-  N_T = 0.1 * length(cov),
-  maxLag = length(cov) - 1,
-  custom_kernel = FALSE,
-  type = "autocovariance"
+  N_T = 0.1 * length(estCov),
+  maxLag = length(estCov) - 1,
+  type = "autocovariance",
+  custom_kernel = FALSE
 )
 }
 \arguments{
-\item{cov}{A vector whose values are an estimate autocovariance function.}
+\item{estCov}{A vector whose values are an estimate autocovariance function.}
 
 \item{kernel_name}{The name of the \link{kernel} function to be used. Possible values are:
 gaussian, exponential, wave, rational_quadratic, spherical, circular, bessel_j, matern, cauchy.}
@@ -26,11 +26,11 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 
 \item{N_T}{The range at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a lag small estimation lag.}
 
-\item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(cov) - 1}.}
-
-\item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}. See the examples of \link{compute_corrected_standard_est} for usage.}
+\item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(estCov) - 1}.}
 
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
+
+\item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}. See the examples of \link{compute_corrected_standard_est} for usage.}
 }
 \value{
 A vector whose values are the kernel corrected autocovariance estimates.

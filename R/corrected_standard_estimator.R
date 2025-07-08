@@ -41,6 +41,7 @@
 #'      kernel_params=c(0, 1), N_T=0.2*length(Y)))
 #'
 #' # Custom kernel
+#' \dontrun{
 #' my_kernel <- function(x, theta, params) {
 #'   stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
 #'   return(sapply(x, function(t) ifelse(t == 0, 1,
@@ -49,13 +50,14 @@
 #' }
 #' plot(compute_corrected_standard_est(Y,
 #'      "my_kernel", kernel_params=c(2, 0.25), custom_kernel = TRUE))
-compute_corrected_standard_est <- function(X, kernel_name, kernel_params=c(), N_T=0.1*length(X), meanX=mean(X), maxLag=length(X)-1, pd=TRUE, custom_kernel = FALSE, type='autocovariance') {
+#' }
+compute_corrected_standard_est <- function(X, kernel_name, kernel_params = c(), N_T = 0.1 * length(X), pd = TRUE, maxLag = length(X) - 1, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
   stopifnot(is.logical(custom_kernel), length(X) > 0, is.vector(X), is.numeric(X), is.numeric(N_T),
             N_T > 0, is.numeric(meanX), is.logical(pd), is.numeric(maxLag), maxLag >= 0,
             maxLag <= (length(X) - 1), maxLag %% 1 == 0, length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
             type %in% c('autocovariance', 'autocorrelation'))
 
-  retVec <- compute_standard_est(X, meanX, pd, maxLag = maxLag, type='autocovariance')
+  retVec <- compute_standard_est(X, pd = pd, maxLag = maxLag, type='autocovariance', meanX = meanX)
   if(!custom_kernel) {
     stopifnot(kernel_name %in% c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"))
     retVec <- retVec * sapply(seq(0, maxLag, by=1), function(t) kernel(t, kernel_name, c(N_T, kernel_params)))
@@ -87,14 +89,14 @@ compute_corrected_standard_est <- function(X, kernel_name, kernel_params=c(), N_
 #' The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the observation window, however, one may need to play with this value.
 #' \deqn{\widehat{C}_{T}^{(a)}(h) = \widehat{C}(h) a_{T}(h),} where \eqn{a_{T}(h) := a(h / N_{T}).}
 #'
-#' @param cov A vector whose values are an estimate autocovariance function.
+#' @param estCov A vector whose values are an estimate autocovariance function.
 #' @param kernel_name The name of the [kernel] function to be used. Possible values are:
 #' gaussian, exponential, wave, rational_quadratic, spherical, circular, bessel_j, matern, cauchy.
 #' @param kernel_params A vector of parameters of the kernel function. See [kernel] for parameters.
 #' In the case of gaussian, wave, rational_quadratic, spherical and circular, \code{N_T} takes the place of \eqn{\theta}.
 #' For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, those parameters are passed.
 #' @param N_T The range at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a lag small estimation lag.
-#' @param maxLag An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(cov) - 1}.
+#' @param maxLag An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(estCov) - 1}.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}. See the examples of [compute_corrected_standard_est] for usage.
 #' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
 #'
@@ -109,31 +111,31 @@ compute_corrected_standard_est <- function(X, kernel_name, kernel_params=c(), N_
 #' plot(cov_est)
 #' plot(compute_kernel_corrected_est(cov_est,
 #'      "bessel_j", kernel_params=c(0, 1), N_T=0.2*length(Y)))
-compute_kernel_corrected_est <- function(cov, kernel_name, kernel_params=c(), N_T=0.1*length(cov), maxLag = length(cov) - 1, custom_kernel = FALSE, type = 'autocovariance') {
-  stopifnot(is.logical(custom_kernel), length(cov) > 0, is.vector(cov), is.numeric(cov), is.numeric(N_T), N_T > 0,
-            is.numeric(maxLag), maxLag >= 0, maxLag <= (length(cov) - 1), maxLag %% 1 == 0,
+compute_kernel_corrected_est <- function(estCov, kernel_name, kernel_params = c(), N_T = 0.1 * length(estCov), maxLag = length(estCov) - 1, type = "autocovariance", custom_kernel = FALSE) {
+  stopifnot(is.logical(custom_kernel), length(estCov) > 0, is.vector(estCov), is.numeric(estCov), is.numeric(N_T), N_T > 0,
+            is.numeric(maxLag), maxLag >= 0, maxLag <= (length(estCov) - 1), maxLag %% 1 == 0,
             type %in% c('autocovariance', 'autocorrelation'))
 
   if(!custom_kernel) {
     stopifnot(kernel_name %in% c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"))
 
-    cov <- cov[1:(maxLag+1)] * sapply(seq(0, maxLag, by=1), function(t) kernel(t, kernel_name, c(N_T, kernel_params)))
+    estCov <- estCov[1:(maxLag+1)] * sapply(seq(0, maxLag, by=1), function(t) kernel(t, kernel_name, c(N_T, kernel_params)))
 
     if(type == 'autocorrelation') {
-      cov <- cov / cov[1]
+      estCov <- estCov / estCov[1]
     }
 
-    return(cov)
+    return(estCov)
   }
 
   if(custom_kernel) {
-    cov <- cov[1:(maxLag+1)] * sapply(seq(0, maxLag, by=1), function(t) get(kernel_name)(t, N_T, kernel_params))
+    estCov <- estCov[1:(maxLag+1)] * sapply(seq(0, maxLag, by=1), function(t) get(kernel_name)(t, N_T, kernel_params))
 
     if(type == 'autocorrelation') {
-      cov <- cov / cov[1]
+      estCov <- estCov / estCov[1]
     }
 
-    return(cov)
+    return(estCov)
   }
 
   return("Something went wrong in `compute_kernel_corrected_est`.")

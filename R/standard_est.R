@@ -33,8 +33,8 @@
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' compute_standard_est(X, meanX=mean(X), maxLag=2, pd=FALSE)
-compute_standard_est <- function(X, meanX=mean(X), maxLag=length(X) - 1, pd=TRUE, type='autocovariance') {
+#' compute_standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
+compute_standard_est <- function(X, pd = TRUE, maxLag = length(X) - 1, type = "autocovariance", meanX = mean(X)) {
   stopifnot(length(X) > 0, is.vector(X), is.numeric(X), is.logical(pd), maxLag >= 0, maxLag <= (length(X) - 1),
             maxLag %% 1 == 0, length(meanX) == 1, is.numeric(meanX), !is.na(meanX), type %in% c('autocovariance', 'autocorrelation'))
   retVec <- as.vector(stats::acf(X, lag.max = maxLag, type = "covariance", plot = FALSE)$acf)

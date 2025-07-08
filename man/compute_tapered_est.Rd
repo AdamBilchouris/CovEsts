@@ -9,10 +9,10 @@ compute_tapered_est(
   rho,
   window_name,
   window_params = c(1),
-  custom_window = FALSE,
   maxLag = length(X) - 1,
   type = "autocovariance",
-  meanX = mean(X)
+  meanX = mean(X),
+  custom_window = FALSE
 )
 }
 \arguments{
@@ -25,13 +25,13 @@ tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternative
 
 \item{window_params}{A vector of parameters of the window function.}
 
-\item{custom_window}{If a custom window is to be used or not. Defaults to \code{FALSE}.}
-
 \item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
+
+\item{custom_window}{If a custom window is to be used or not. Defaults to \code{FALSE}.}
 }
 \value{
 A vector whose values are the estimated tapered autocovariances.

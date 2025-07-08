@@ -6,22 +6,22 @@
 \usage{
 compute_standard_est(
   X,
-  meanX = mean(X),
-  maxLag = length(X) - 1,
   pd = TRUE,
-  type = "autocovariance"
+  maxLag = length(X) - 1,
+  type = "autocovariance",
+  meanX = mean(X)
 )
 }
 \arguments{
 \item{X}{A vector representing observed values of the time series.}
 
-\item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
+\item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
 \item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
-\item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
-
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
+
+\item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 }
 \value{
 A vector whose values are the autocovariance estimates.
@@ -48,7 +48,7 @@ This does not occur for the nonpositive-definite estimator.
 }
 \examples{
 X <- c(1, 2, 3)
-compute_standard_est(X, meanX=mean(X), maxLag=2, pd=FALSE)
+compute_standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
 }
 \references{
 Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society (Vol. 54, Issue 1). 10.17713/ajs.v54i1.1975

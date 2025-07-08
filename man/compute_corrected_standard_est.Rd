@@ -9,11 +9,11 @@ compute_corrected_standard_est(
   kernel_name,
   kernel_params = c(),
   N_T = 0.1 * length(X),
-  meanX = mean(X),
-  maxLag = length(X) - 1,
   pd = TRUE,
-  custom_kernel = FALSE,
-  type = "autocovariance"
+  maxLag = length(X) - 1,
+  type = "autocovariance",
+  meanX = mean(X),
+  custom_kernel = FALSE
 )
 }
 \arguments{
@@ -28,15 +28,15 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 
 \item{N_T}{The range at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a lag small estimation lag.}
 
-\item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
+\item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
 \item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
-\item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
+\item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
+
+\item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 
 \item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}. See examples.}
-
-\item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 }
 \value{
 A vector whose values are the kernel corrected autocovariance estimates.
@@ -64,6 +64,7 @@ plot(compute_corrected_standard_est(Y, "bessel_j",
      kernel_params=c(0, 1), N_T=0.2*length(Y)))
 
 # Custom kernel
+\dontrun{
 my_kernel <- function(x, theta, params) {
   stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
   return(sapply(x, function(t) ifelse(t == 0, 1,
@@ -72,6 +73,7 @@ my_kernel <- function(x, theta, params) {
 }
 plot(compute_corrected_standard_est(Y,
      "my_kernel", kernel_params=c(2, 0.25), custom_kernel = TRUE))
+}
 }
 \references{
 Yaglom, AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.

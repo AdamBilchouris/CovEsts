@@ -53,6 +53,10 @@ test_that("compute_corrected_standard_est() fails for noninteger maxLag", {
   expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", maxLag = 1.5))
 })
 
+test_that("compute_corrected_standard_est() fails if maxLag is NA", {
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", maxLag = NA))
+})
+
 test_that("compute_corrected_standard_est() fails if meanX's length is not 1", {
   expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", meanX = c(1, 2)))
 })
@@ -63,7 +67,7 @@ test_that("compute_corrected_standard_est() fails for nonnumeric meanX", {
 })
 
 test_that("compute_corrected_standard_est() fails if meanX is NA", {
-  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", maxLag = NA))
+  expect_error(compute_corrected_standard_est(c(1, 2, 3), "gaussian", meanX = NA))
 })
 
 test_that("compute_corrected_standard_est() fails if type is neither 'autocovariance' or 'autocorrelation'", {

@@ -62,12 +62,13 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "gaussian", c(), FALSE)
-#'
+#' \dontrun{
 #' my_kernel <- function(x, theta, params) {
 #'   stopifnot(theta > 0, length(x) >= 1)
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
 #' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "my_kernel", c(0.25), TRUE)
+#' }
 rho_T1 <- function(x, meanX, T1, b, xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(b) == 1, is.numeric(b), !is.na(b), b > 0,
@@ -236,14 +237,16 @@ idct_1d <- function(X) {
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
-#'                   "gaussian", c(), FALSE, TRUE, meanX = mean(X))
+#'                   "gaussian")
 #'
+#' \dontrun{
 #' my_kernel <- function(x, theta, params) {
 #'   stopifnot(theta > 0, length(x) >= 1)
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
-#' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "my_kernel", c(0.25), TRUE, TRUE)
-compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='autocovariance', meanX = mean(X)) {
+#' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "my_kernel", c(0.25), custom_kernel = TRUE)
+#' }
+compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", kernel_params = c(), pd = TRUE, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(x) >= 1, is.numeric(x), !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), is.numeric(t), length(t) >= 1,
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(T2) == 1, is.numeric(T2),
@@ -346,13 +349,15 @@ compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name="gaussian", ke
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
-#' compute_adjusted_est(X, 1:4, 1:3, 0.1, "gaussian", c(), FALSE, TRUE)
+#' compute_adjusted_est(X, 1:4, 1:3, 0.1, "gaussian")
+#' \dontrun{
 #' my_kernel <- function(x, theta, params) {
 #'   stopifnot(theta > 0, length(x) >= 1)
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
-#' compute_adjusted_est(X, 1:4, 1:3, 0.1, "my_kernel", c(0.25), TRUE, TRUE)
-compute_adjusted_est <- function(X, x, t, b, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE, pd = TRUE, type='autocovariance', meanX = mean(X)) {
+#' compute_adjusted_est(X, 1:4, 1:3, 0.1, "my_kernel", c(0.25), custom_kernel = TRUE)
+#' }
+compute_adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_params=c(), pd = TRUE, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(x), length(x) >= 1, !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
             length(t) >= 1, length(b) == 1, is.numeric(b), b > 0, is.logical(custom_kernel),

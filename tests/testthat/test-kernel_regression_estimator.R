@@ -195,20 +195,6 @@ test_that("compute_truncated_est fails for at least one NA in x", {
   expect_error(compute_truncated_est(test_X, c(1, NA, 3), 2, 2, 3, 0.01, "gaussian"))
 })
 
-test_that("compute_truncated_est fails for meanX of length not equal to 1", {
-  expect_error(compute_truncated_est(test_X, test_x, c(1, 2), 2, 2, 3, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, c(), 2, 2, 3, 0.01, "gaussian"))
-})
-
-test_that("compute_truncated_est fails for nonnumeric meanX", {
-  expect_error(compute_truncated_est(test_X, test_x, 'a', 2, 2, 3, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, 1i, 2, 2, 3, 0.01, "gaussian"))
-})
-
-test_that("compute_truncated_est fails for NA meanX", {
-  expect_error(compute_truncated_est(test_X, test_x, NA, 2, 2, 3, 0.01, "gaussian"))
-})
-
 test_that("compute_truncated_est fails for empty t", {
   expect_error(compute_truncated_est(test_X, test_x, c(), 2, 3, 0.01, "gaussian"))
 })
@@ -216,7 +202,10 @@ test_that("compute_truncated_est fails for empty t", {
 test_that("compute_truncated_est fails for nonnumeric t", {
   expect_error(compute_truncated_est(test_X, test_x, 'a', 2, 3, 0.01, "gaussian"))
   expect_error(compute_truncated_est(test_X, test_x, 1i, 2, 3, 0.01, "gaussian"))
-  expect_error(compute_truncated_est(test_X, test_x, c(1, 'a', 3), 2, 3, 0.01, "gaussian"))
+})
+
+test_that("compute_truncated_est fails for NA t", {
+  expect_error(compute_truncated_est(test_X, test_x, NA, 2, 3, 0.01, "gaussian"))
 })
 
 test_that("compute_truncated_est fails for T1 of length not equal to 1", {
@@ -282,6 +271,24 @@ test_that("compute_truncated_est fails for nonboolean pd", {
   expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", pd = 'TRUE'))
 })
 
+test_that("compute_truncated_est fails for nonnumeric mean", {
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", meanX = 'a'))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", meanX = 1i))
+})
+
+test_that("compute_truncated_est fails for NA mean", {
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", meanX = NA))
+})
+
+test_that("compute_truncated_est fails for meanX not of length 1", {
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", meanX = c()))
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", meanX = c(1, 2)))
+})
+
+test_that("compute_truncated_est fails for type not 'autocovariance' or 'autocorrelation'", {
+  expect_error(compute_truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", type = "covariance"))
+})
+
 # compute_adjusted_est_est
 test_that("compute_adjusted_est works", {
   expect_equal(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", meanX = test_meanX), c(2/3, -1/3, -1/3))
@@ -314,17 +321,17 @@ test_that("compute_adjusted_est fails for at least one NA in x", {
 })
 
 test_that("compute_adjusted_est fails for meanX of length not equal to 1", {
-  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2), c(1, 2, 3), 0.01, "gaussian"))
-  expect_error(compute_adjusted_est(test_X, test_x, c(), c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", meanX = c(1, 2)))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", meanX = c()))
 })
 
 test_that("compute_adjusted_est fails for nonnumeric meanX", {
-  expect_error(compute_adjusted_est(test_X, test_x, 'a', c(1, 2, 3), 0.01, "gaussian"))
-  expect_error(compute_adjusted_est(test_X, test_x, 1i, c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", meanX = 'a'))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", meanX = 1i))
 })
 
 test_that("compute_adjusted_est fails for NA meanX", {
-  expect_error(compute_adjusted_est(test_X, test_x, NA, c(1, 2, 3), 0.01, "gaussian"))
+  expect_error(compute_adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", NA))
 })
 
 test_that("compute_adjusted_est fails for at least one NA in t", {

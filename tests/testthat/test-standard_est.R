@@ -25,12 +25,6 @@ test_that("compute_standard_est() for nonboolean pd", {
   expect_error(compute_standard_est(c(1, 2, 3), pd=1))
 })
 
-# compute_standard_est fails for nonboolean pd
-test_that("compute_standard_est() for nonboolean pd", {
-  expect_error(compute_standard_est(c(1, 2, 3), pd='TRUE'))
-  expect_error(compute_standard_est(c(1, 2, 3), pd=1))
-})
-
 # compute_standard_est fails for maxLag < 0
 test_that("compute_standard_est() for maxLag < 0", {
   expect_error(compute_standard_est(c(1, 2, 3), maxLag = -1))

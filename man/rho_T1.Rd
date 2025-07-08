@@ -49,12 +49,13 @@ where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}).}
 \examples{
 X <- c(1, 2, 3, 4)
 rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "gaussian", c(), FALSE)
-
+\dontrun{
 my_kernel <- function(x, theta, params) {
   stopifnot(theta > 0, length(x) >= 1)
   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 }
 rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "my_kernel", c(0.25), TRUE)
+}
 }
 \references{
 Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899

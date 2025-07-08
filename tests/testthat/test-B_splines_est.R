@@ -226,29 +226,29 @@ test_that("get_splines_df() fails for at least one NA in taus", {
 # hard to test this function as it is random.
 
 test_that("compute_splines_est() fails for nonnumeric X", {
-  expect_error(compute_splines_est(c(1, 'a', 3), test_x, test_estCov, test_p, test_m, maxLag = 3))
-  expect_error(compute_splines_est(c(1, 1i, 3), test_x, test_estCov, test_p, test_m, maxLag = 3))
+  expect_error(compute_splines_est(c(1, 'a', 3), test_x, test_estCov, test_p, test_m, maxLag = 2))
+  expect_error(compute_splines_est(c(1, 1i, 3), test_x, test_estCov, test_p, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for nonvector X", {
-  expect_error(compute_splines_est(matrix(c(1, 2, 3, 4), 2), test_x, test_estCov, test_p, test_m, maxLag = 3))
+  expect_error(compute_splines_est(matrix(c(1, 2, 3, 4), 2), test_x, test_estCov, test_p, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for at least one NA in X", {
-  expect_error(compute_splines_est(c(1, NA, 3), test_x, test_estCov, test_p, test_m, maxLag = 3))
+  expect_error(compute_splines_est(c(1, NA, 3), test_x, test_estCov, test_p, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for nonnumeric x", {
-  expect_error(compute_splines_est(test_X, c(1, 'a', 3), test_estCov, test_p, test_m, maxLag = 3))
-  expect_error(compute_splines_est(test_X, c(1, 1i, 3), test_estCov, test_p, test_m, maxLag = 3))
+  expect_error(compute_splines_est(test_X, c(1, 'a', 3), test_estCov, test_p, test_m, maxLag = 2))
+  expect_error(compute_splines_est(test_X, c(1, 1i, 3), test_estCov, test_p, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for nonvector x", {
-  expect_error(compute_splines_est(test_X, matrix(c(1, 2, 3, 4), 2), test_estCov, test_p, test_m, maxLag = 3))
+  expect_error(compute_splines_est(test_X, matrix(c(1, 2, 3, 4), 2), test_estCov, test_p, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for at least one NA in x", {
-  expect_error(compute_splines_est(test_X, c(1, NA, 3), test_estCov, test_p, test_m, maxLag = 3))
+  expect_error(compute_splines_est(test_X, c(1, NA, 3), test_estCov, test_p, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for nonnumeric maxLag", {
@@ -265,49 +265,48 @@ test_that("compute_splines_est() fails for maxLag >= length(X)", {
 })
 
 test_that("compute_splines_est() fails for nonnumeric estCov", {
-  expect_error(compute_splines_est(test_X, test_x, c(1, 'a', 3), test_p, test_m, maxLag = 3))
-  expect_error(compute_splines_est(test_X, test_x, c(1, 1i, 3), test_p, test_m, maxLag = 3))
+  expect_error(compute_splines_est(test_X, test_x, c(1, 'a', 3), test_p, test_m, maxLag = 2))
+  expect_error(compute_splines_est(test_X, test_x, c(1, 1i, 3), test_p, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for nonvector estCov", {
-  expect_error(compute_splines_est(test_X, test_x, matrix(c(1, 2, 3, 4), 2), test_p, test_m, maxLag = 3))
+  expect_error(compute_splines_est(test_X, test_x, matrix(c(1, 2, 3, 4), 2), test_p, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for at least one NA in estCov", {
-  expect_error(compute_splines_est(test_X, test_x, c(1, NA, 3), test_p, test_m, maxLag = 3))
+  expect_error(compute_splines_est(test_X, test_x, c(1, NA, 3), test_p, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails when length(estCov) != maxLag", {
-  expect_error(compute_splines_est(test_X, test_x, c(1, 2, 3, 4), test_p, test_m, maxLag = 3))
+  expect_error(compute_splines_est(test_X, test_x, c(1, 2, 3, 4), test_p, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for nonnumeric p", {
-  expect_error(compute_splines_est(test_X, test_x, test_estCov, 'a', test_m, maxLag = 3))
-  expect_error(compute_splines_est(test_X, test_x, test_estCov, 1i, test_m, maxLag = 3))
+  expect_error(compute_splines_est(test_X, test_x, test_estCov, 'a', test_m, maxLag = 2))
+  expect_error(compute_splines_est(test_X, test_x, test_estCov, 1i, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for p < 0", {
-  expect_error(compute_splines_est(test_X, test_x, test_estCov, -1, test_m, maxLag = 3))
+  expect_error(compute_splines_est(test_X, test_x, test_estCov, -1, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for noninteger p", {
-  expect_error(compute_splines_est(test_X, test_x, test_estCov, 1.1, test_m, maxLag = 3))
+  expect_error(compute_splines_est(test_X, test_x, test_estCov, 1.1, test_m, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for nonnumeric m", {
-  expect_error(compute_splines_est(test_X, test_x, test_estCov, test_p, 'a', maxLag = 3))
-  expect_error(compute_splines_est(test_X, test_x, test_estCov, test_p, 1i, maxLag = 3))
+  expect_error(compute_splines_est(test_X, test_x, test_estCov, test_p, 'a', maxLag = 2))
+  expect_error(compute_splines_est(test_X, test_x, test_estCov, test_p, 1i, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for m < 0", {
-  expect_error(compute_splines_est(test_X, test_x, test_estCov, test_p, -1, maxLag = 3))
+  expect_error(compute_splines_est(test_X, test_x, test_estCov, test_p, -1, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for noninteger m", {
-  expect_error(compute_splines_est(test_X, test_x, Test_estCov, test_p, 1.1, maxLag = 3))
+  expect_error(compute_splines_est(test_X, test_x, Test_estCov, test_p, 1.1, maxLag = 2))
 })
 
 test_that("compute_splines_est() fails for length(initial_pars) !=  m + p", {
-  expect_error(compute_splines_est(test_X, test_x, test_estCov, test_p, test_m, initial_pars = c(), maxLag = 3
-  ))
+  expect_error(compute_splines_est(test_X, test_x, test_estCov, test_p, test_m, initial_pars = c(), maxLag = 2))
 })

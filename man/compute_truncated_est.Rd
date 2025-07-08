@@ -13,10 +13,10 @@ compute_truncated_est(
   b,
   kernel_name = "gaussian",
   kernel_params = c(),
-  custom_kernel = FALSE,
   pd = TRUE,
   type = "autocovariance",
-  meanX = mean(X)
+  meanX = mean(X),
+  custom_kernel = FALSE
 )
 }
 \arguments{
@@ -37,13 +37,13 @@ gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel
 
 \item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_symm} for parameters.}
 
-\item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}.}
-
 \item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
+
+\item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}.}
 }
 \value{
 A vector whose values are the truncated kernel regression estimates.
@@ -80,13 +80,15 @@ If \eqn{\hat{\theta}} is a small frequency, most of the spectrum equals zero, re
 \examples{
 X <- c(1, 2, 3, 4)
 compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
-                  "gaussian", c(), FALSE, TRUE, meanX = mean(X))
+                  "gaussian")
 
+\dontrun{
 my_kernel <- function(x, theta, params) {
   stopifnot(theta > 0, length(x) >= 1)
   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 }
-compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "my_kernel", c(0.25), TRUE, TRUE)
+compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "my_kernel", c(0.25), custom_kernel = TRUE)
+}
 }
 \references{
 Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899

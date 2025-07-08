@@ -193,7 +193,7 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #' @examples
 #' X <- c(1, 2, 3)
 #' compute_tapered_est(X, 0.5, "tukey", maxLag = 2)
-compute_tapered_est <- function(X, rho, window_name, window_params = c(1), custom_window = FALSE, maxLag = length(X) - 1, type = 'autocovariance',  meanX = mean(X)) {
+compute_tapered_est <- function(X, rho, window_name, window_params = c(1), maxLag = length(X) - 1, type = "autocovariance",  meanX = mean(X), custom_window = FALSE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1,
             maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(rho), length(rho) == 1, rho > 0, rho <= 1,
             is.logical(custom_window),  length(meanX) == 1, is.numeric(meanX), !is.na(meanX),

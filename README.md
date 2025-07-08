@@ -1,5 +1,5 @@
 
-# CovEsts: Nonparametric Autocovariance Estimation and Estimator Adjustment
+# CovEsts: Nonparametric Autocovariance Estimation and Analysis
 
 <!-- badges: start -->
 <!-- badges: end -->

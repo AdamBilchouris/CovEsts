@@ -11,9 +11,9 @@ compute_splines_est(
   p,
   m,
   maxLag = length(X) - 1,
+  type = "autocovariance",
   inital_pars = c(),
-  control = list(maxit = 1000),
-  type = "autocovariance"
+  control = list(maxit = 1000)
 )
 }
 \arguments{
@@ -29,11 +29,11 @@ compute_splines_est(
 
 \item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
+\item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
+
 \item{inital_pars}{An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}}
 
 \item{control}{An optional list of optimisation parameters used in the optimisation process, see \code{control} in \link[stats:optim]{stats::optim}.}
-
-\item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 }
 \value{
 A vector whose values are the spline autocovariance estimates.
@@ -48,7 +48,7 @@ For optimisation, the Nelder-Mead and L-BFGS-B methods are used, the one which s
 X <- rnorm(100)
 x <- seq(0, 5, by = 0.25)
 maxLag <- 5
-estCov <- compute_standard_est(X, maxLag=maxLag)
+estCov <- compute_standard_est(X, maxLag = maxLag)
 estimated <- compute_splines_est(X, x, estCov, 3, 2, maxLag = maxLag)
 estimated
 }
