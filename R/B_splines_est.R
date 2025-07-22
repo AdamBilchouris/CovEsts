@@ -6,7 +6,7 @@
 #' }
 #' The knots are equally spaced with boundary knots \eqn{\kappa_{0} = 0} and \eqn{\kappa_{m + 1} = 1 .}
 #'
-#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 #'
 #' @param m The number of nonboundary knots.
 #'
@@ -28,11 +28,11 @@ generate_knots <- function(m) {
 #' Get a Specific \eqn{\tau_{i}}.
 #'
 #' A helper function that transforms the knots from [generate_knots] into the following form:
-#' For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
+#' For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1,} it is equal to \eqn{\tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1,} it is \eqn{\tau_{i} = \kappa_{i}.}
 #' See Choi, Li & Wang (2013) page 615 for details.
 #' This is a helper function of [get_all_tau].
 #'
-#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 #'
 #' @param i The knot index (\eqn{-p} through \eqn{m + p + 1}).
 #' @param p The order of the splines.
@@ -60,16 +60,16 @@ get_tau <- function(i, p, m, kVec) {
 }
 #' Get all \eqn{\tau}.
 #'
-#' A helper function that repeatedly calls [get_tau] to obtain all \eqn{\tau_{i},} where each \eqn{\tau_{i}} is as follows.
-#' For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
+#' A helper function that repeatedly calls [get_tau] to obtain all \eqn{\tau_{i}, i=-p, \dots, m + p + 1,} where each \eqn{\tau_{i}} is as follows.
+#' For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1,} it is equal to \eqn{\tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1,} it is \eqn{\tau_{i} = \kappa_{i}.}
 #' See Choi, Li & Wang (2013, p. 615) for details.
 #'
-#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 #'
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #'
-#' @return A numeric vector of all \eqn{\tau_{i}}.
+#' @return A numeric vector of all \eqn{\tau_{i}, i = -p, \dots, m + p + 1.}
 #' @export
 #'
 #' @examples
@@ -92,7 +92,7 @@ get_all_tau <- function(p, m) {
 #' }
 #' where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the spline, \eqn{l} is the order of the adjusted spline (the function \eqn{f_{j}^{(l)}(\cdot)}) and \eqn{j = 1, 2, \dots , m + p.}
 #'
-#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 #'
 #' @param x Argument of the function.
 #' @param j Index of basis function of order \eqn{l}.
@@ -106,8 +106,8 @@ get_all_tau <- function(p, m) {
 #'
 #' @examples
 #' taus <- get_all_tau(3, 2)
-#' f_j_l(1, 2, 1, 3, 2, taus)
-f_j_l <- function(x, j, l, p, m, taus) {
+#' adjusted_spline(1, 2, 1, 3, 2, taus)
+adjusted_spline <- function(x, j, l, p, m, taus) {
   stopifnot(is.numeric(x), j %% 1 == 0, is.numeric(j), j > 0, l %% 1 == 0, is.numeric(l), is.numeric(p), p >= 0, p %% 1 == 0,
             is.numeric(m), m > 0, m %% 1 == 0, is.vector(taus), length(taus) > 0, all(!is.na(taus)))
   # base case
@@ -123,14 +123,14 @@ f_j_l <- function(x, j, l, p, m, taus) {
   }
   else {
     constant <- (m + 1) / l
-    firstInner <- f_j_l(x + 1, j, l - 1, p, m, taus)
+    firstInner <- adjusted_spline(x + 1, j, l - 1, p, m, taus)
     tau_jp <- taus[[paste0("", j - p, "")]]
-    secondInner <- tau_jp * f_j_l(x, j, l - 1, p, m, taus)
+    secondInner <- tau_jp * adjusted_spline(x, j, l - 1, p, m, taus)
 
     tau_jpl1 <- taus[[paste0("", j - p + l + 1, "")]]
 
-    thirdInner <- tau_jpl1 * f_j_l(x, j + 1, l - 1, p, m, taus)
-    fourthInner <- f_j_l(x + 1, j + 1, l - 1, p, m, taus)
+    thirdInner <- tau_jpl1 * adjusted_spline(x, j + 1, l - 1, p, m, taus)
+    fourthInner <- adjusted_spline(x + 1, j + 1, l - 1, p, m, taus)
 
     retVal <- constant * (firstInner - secondInner + thirdInner - fourthInner)
     return(retVal)
@@ -166,7 +166,7 @@ get_splines_df <- function(x, p, m, taus) {
   l <- p - 1
   for(i in 1:nrow(valsDf)) {
     for(j in 1:(m+p)) {
-      valsDf[i, j + 1] <- f_j_l(valsDf[i, 1]^2, j, l, p, m, taus)
+      valsDf[i, j + 1] <- adjusted_spline(valsDf[i, 1]^2, j, l, p, m, taus)
     }
   }
 
@@ -175,25 +175,24 @@ get_splines_df <- function(x, p, m, taus) {
 
 #' Objective Function for WLS.
 #'
-#' This is the objective function to find the weights for each basis function, see Choi, Li & Wang (2013, p. 617).
+#' This is the objective function to find the weights for each basis function in the minimising spline, see Choi, Li & Wang (2013, p. 617).
 #' The parameters must be nonnegative, so a penalty of \eqn{10^{12}} is given if any parameters are negative.
 #' The weights are chosen as per Choi, Li & Wang (2013, p. 617).
 #'
 #' @details
 #' Let \eqn{\mathbf{\beta} = (\beta_{0}, \dots, \beta_{m + p})^{\prime}} be a vector of model coefficients, \eqn{\{f_{1}^{(p - 1)} , \dots , f_{m + p}^{(p - 1)} \}}
-#' are a set of completely monotone basis functions, and \eqn{\widehat{C}} is an estimated covariance function.
+#' be a set of completely monotone basis functions, and \eqn{\widehat{C}(\cdot)} be an estimated covariance function.
 #' As per Choi, Li & Wang (2013, p. 617), \eqn{\mathbf{\beta}} can be estimated via weighted-least squares,
 #' \deqn{\
 #' \hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(h_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(h_{i}^{2})  \right)^{2} ,
 #' }
-#' where there is a set of lags \eqn{\{h_{1} , \dots , h_{L} \}} and a set of weights \eqn{\{w_{1}, \dots , w_{L} \}.}
-#' The set of weights are calculated in [compute_splines_est], and are of form
-#' \eqn{w_{i} = (N - h_{i}) / ((1 - \widehat{C}(h_{i}))^{2}).}
+#' where \eqn{\{h_{1} , \dots , h_{L} \}} is a set of lags and \eqn{\{w_{1}, \dots , w_{L} \}} is a set of weights.
+#' The set of weights is calculated in [compute_splines_est], and they are of the form \eqn{w_{i} = (N - h_{i}) / ((1 - \widehat{C}(h_{i}))^{2}).}
 #'
-#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 #'
-#' @param par A vector of parameters to minimise.
-#' @param splines_df A data frame whose structure can be found in [get_splines_df].
+#' @param par A vector of initial parameters to used in the minimisation process.
+#' @param splines_df A data frame whose structure is defined in [get_splines_df].
 #' @param weights A vector of weights, see the description.
 #'
 #' @return The value of the objective function at those parameters.
@@ -205,6 +204,7 @@ get_splines_df <- function(x, p, m, taus) {
 #' maxLag <- 4
 #' splines_df <- get_splines_df(x[1:maxLag], 3, 2, taus)
 #' splines_df$estCov <- exp(-splines_df$lags^2) + 0.001
+#' # pars are the inital parameters used in the minimisation process.
 #' pars <- c(0.5, 0.5, 0.5, 0.5, 0.5)
 #' weights <- c()
 #' X <- rnorm(50)
@@ -232,7 +232,7 @@ solve_spline <- function(par, splines_df, weights) {
 #' where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the splines, \eqn{\tau} is the isotropic distance, \eqn{\beta_{j}} are nonnegative weights and \eqn{f_{j}^{(p)}} are basis functions of order \eqn{p.}
 #' For optimisation, the Nelder-Mead and L-BFGS-B methods are used, the one which selects parameters which minimises the objective function is chosen.
 #'
-#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
+#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param x A vector of lags.

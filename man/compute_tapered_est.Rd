@@ -37,16 +37,14 @@ tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternative
 A vector whose values are the estimated tapered autocovariances.
 }
 \description{
-This function computes the tapered autocovariance over a set of lags,
-\deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{j=1}^{N-h}  (X(j) - \bar{X} ) ( X(j + h) - \bar{X} ) a((j - 1/2) / N; \rho) a((j + h - 1/2) / N; \rho) ,}
-where \eqn{a(\cdot)} is a window function, \eqn{\rho \in (0, 1]} is a scale parameter.
+This function computes the tapered autocovariance over a set of lags.
 For each lag, the tapered autocovariance is computed using the function \link{tapered_cov_single}.
 }
 \details{
 This function computes the estimated tapered autocovariance over a set of lags,
 \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n}(0))^{-1} \sum_{j=1}^{N-h}  (X(j) - \bar{X} ) ( X(j + h) - \bar{X} ) a((j - 1/2) / N; \rho) a((j + h - 1/2) / N; \rho) ,}
 where \eqn{a(\cdot)} is a window function, \eqn{\rho \in (0, 1]}  is a scale parameter.
-This estimator considers the edge effect during estimation, assigning a lower weight to values closer to the boundaries and higher weights for observations closer to the middle.
+This estimator takes into account the edge effect during estimation, assigning a lower weight to values closer to the boundaries and higher weights for observations closer to the middle.
 This estimator is positive-definite and asymptotically unbiased.
 
 Internally, this function calls \link{tapered_cov_single} for each lag \eqn{h}.
@@ -56,5 +54,5 @@ X <- c(1, 2, 3)
 compute_tapered_est(X, 0.5, "tukey", maxLag = 2)
 }
 \references{
-Dahlhaus R., Künsch, H. (1987). Edge Effects and Efficient Parameter Estimation for Stationary Random Fields. In Biometrika (Vol. 74 Issue 4, pp. 877-882). 10.1093/biomet/74.4.877
+Dahlhaus R. & Künsch, H. (1987). Edge Effects and Efficient Parameter Estimation for Stationary Random Fields. Biometrika 74(4), 877-882. 10.1093/biomet/74.4.877
 }

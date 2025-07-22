@@ -13,7 +13,7 @@ to_vario(estCov)
 A vector whose values are an approximate estimate to the semivariogram.
 }
 \description{
-This function computes an approximate estimated semivariogram from an an estimated autocovariance function.
+This function computes an approximate estimated semivariogram using an estimated autocovariance function.
 }
 \details{
 The semivariogram, \eqn{\gamma(h)} and autocovariance function, \eqn{C(h)}, under the assumption of weak stationarity are related as follows:
@@ -22,10 +22,13 @@ The semivariogram, \eqn{\gamma(h)} and autocovariance function, \eqn{C(h)}, unde
 }
 
 When an empirical autocovariance function is considered instead, this relation does not necessarily hold, however,
-it can be used to obtain a function that is close to a semivariogram.
+it can be used to obtain a function that is close to a semivariogram, see Bilchouris and Olenko (2025).
 }
 \examples{
 X <- c(1, 2, 3)
 estCov <- compute_standard_est(X, meanX=mean(X), maxLag = 2, pd=FALSE)
 to_vario(estCov)
+}
+\references{
+Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112-137. 10.17713/ajs.v54i1.1975
 }

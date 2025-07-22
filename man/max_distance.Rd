@@ -22,16 +22,17 @@ A numeric value representing the maximum vertical distance between the two estim
 This function computes the maximum vertical distance between functions.
 }
 \details{
-This function computes the maximum vertical distance between functions. The vector of function values must be of the same length.
+This function computes the maximum vertical distance between functions:
 \deqn{D(\hat{C}_{1}(h), \hat{C}_{2}(h)) = \displaystyle \max_{h} \left| \hat{C}_{1}(h) - \hat{C}_{2}(h) \right| ,
 }
 where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
-It assumes that the estimated functions are estimated over the same set of lags.
+It assumes that the estimated values are given for the same set of lags.
+The vectors of the function values must be of the same length.
 }
 \examples{
 x <- seq(0, 5, by=0.1)
 estCov1 <- exp(-x^2) + rnorm(length(x), sd=0.1)
 estCov2 <- exp(-x^2.1) + rnorm(length(x), sd=0.1)
-max_distance(estCov1, estCov2)
-max_distance(estCov1, estCov2, plot = TRUE)
+max_distance(estCov1, estCov2, lags=x)
+max_distance(estCov1, estCov2, lags=x, plot = TRUE)
 }

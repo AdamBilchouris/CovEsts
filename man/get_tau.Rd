@@ -20,7 +20,7 @@ The numerical value of \eqn{\tau_{i}.}
 }
 \description{
 A helper function that transforms the knots from \link{generate_knots} into the following form:
-For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1, \tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1, \tau_{i} = \kappa_{i}.}
+For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1,} it is equal to \eqn{\tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1,} it is \eqn{\tau_{i} = \kappa_{i}.}
 See Choi, Li & Wang (2013) page 615 for details.
 This is a helper function of \link{get_all_tau}.
 }
@@ -29,5 +29,5 @@ kVec <- generate_knots(2)
 get_tau(1, 3, 2, kVec)
 }
 \references{
-Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
+Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 }

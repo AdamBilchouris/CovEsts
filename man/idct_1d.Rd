@@ -19,17 +19,17 @@ This function computes the inverse of the Type-II discrete cosine transform.
 The Type-II inverse discrete cosine transform is computed using \link[stats:fft]{stats::fft}.
 For autocovariance function estimation, the spectrum is given in the input \code{X} and then an inverse FFT is applied.
 
-The original spectrum, \code{dct_full}, from \code{X} is obtained as follows:
-\code{dct_full <- c(X, 0, -X[-1], 0, rev(X[-1]))}. After this, an inverse FFT is applied,
-\code{idct <- Re(stats::fft(dct_full, inverse = T)) * (2 / length(dct_full))}, and then the first half of inverse transform is taken, and the zeroes are dropped,
-which gives the untransformed X.
+The original spectrum, \code{dct_full}, from \code{X} is obtained as follows.
+First, the original sample Fourier spectrum is reconstructed using \code{dct_full <- c(X, 0, -X[-1], 0, rev(X[-1]))}. After this, an inverse FFT is applied,
+\code{idct <- Re(stats::fft(dct_full, inverse = T)) * (2 / length(dct_full))}, which gives the original function with additional zero-values at even indices.
+The zeroes are dropped, which gives the untransformed X.
 }
 \examples{
 X <- dct_1d(c(1, 2, 3))
 idct_1d(X)
 }
 \references{
-Ochoa-Dominguez, H., & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
+Ochoa-Dominguez, H. & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
 
-endolith (2013, September 4). Fast Cosine Transform via FFT. https://dsp.stackexchange.com/a/10606 (archive: https://web.archive.org/web/20240423074416/https://dsp.stackexchange.com/questions/2807/fast-cosine-transform-via-fft).
+endolith (2013, September 4). Fast Cosine Transform via FFT. https://dsp.stackexchange.com/a/10606 (Internet Acrhive version: https://web.archive.org/web/20240423074416/https://dsp.stackexchange.com/questions/2807/fast-cosine-transform-via-fft).
 }

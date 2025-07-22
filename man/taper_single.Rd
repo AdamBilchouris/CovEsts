@@ -2,7 +2,7 @@
 % Please edit documentation in R/tapered_estimator.R
 \name{taper_single}
 \alias{taper_single}
-\title{Compute Taper}
+\title{Compute Taper at a Specified Argument}
 \usage{
 taper_single(x, rho, window_name, window_params = c(1), custom_window = FALSE)
 }
@@ -19,10 +19,10 @@ tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternative
 \item{custom_window}{If a custom window is to be used or not. Defaults to \code{FALSE}.}
 }
 \value{
-A single value being the taper function value at x.
+A value of the taper function at x.
 }
 \description{
-This helper function computes the taper function for a given window.
+This helper function computes the taper function for a given window function as
 \deqn{a(x; \rho) = \left\{
 \begin{array}{ll}
    w(2x/\rho)     & 0 \leq x < \frac{1}{2} \rho, \\
@@ -31,7 +31,7 @@ This helper function computes the taper function for a given window.
 \end{array} ,
 \right. }
 where \eqn{w(\cdot)} is a continuous increasing function with \eqn{w(0)=0, w(1)=1,}
-\eqn{\rho \in (0, 1],} and \eqn{x \in [0, 1].} The possible window choices are found in \link{window}.
+\eqn{\rho \in (0, 1],} and \eqn{x \in [0, 1].} The possible window function choices are found in \link{window}.
 }
 \examples{
 x <- 0.4
@@ -39,5 +39,5 @@ taper_single(x, 0.5, "tukey")
 my_taper <- function(x, ...) {
   return(x)
 }
-taper_single(x, 0.5, "my_taper", custom_window = TRUE)
+taper_single(x, 0.5, my_taper, custom_window = TRUE)
 }

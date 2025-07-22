@@ -2,7 +2,7 @@
 % Please edit documentation in R/tapered_estimator.R
 \name{tapered_cov_single}
 \alias{tapered_cov_single}
-\title{Computes the Tapered Autocovariance for a Single Lag.}
+\title{Computes the Tapered Autocovariance for a Specified Lag.}
 \usage{
 tapered_cov_single(X, meanX, h, h2n, taperVals_t, taperVals_h)
 }
@@ -23,9 +23,9 @@ tapered_cov_single(X, meanX, h, h2n, taperVals_t, taperVals_h)
 The tapered autocovariance function at the specified lag.
 }
 \description{
-This helper function computes the tapered autocovariance for a single lag \eqn{h},
-\deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n})^{-1} \sum_{t=1}^{N-h}  (X(t_{i}) - \bar{X} ) ( X(t_{i} + h) - \bar{X} ) [ a((t_{i} - 1/2) / n; \rho) a((t_{i} + h - 1/2) / n; \rho)  ] ,}
-where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter. The taper functions are precomputed in \link{compute_tapered_est}.
+This helper function computes the tapered autocovariance for a specified lag \eqn{h},
+\deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n})^{-1} \sum_{j=1}^{N-h}  (X(j) - \bar{X} ) ( X(j+ h) - \bar{X} ) a((j - 1/2) / n; \rho) a((j + h - 1/2) / n; \rho) ,}
+where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter. This taper functions is used in \link{compute_tapered_est}.
 }
 \examples{
 X <- c(1, 2, 3)

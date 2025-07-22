@@ -7,7 +7,7 @@
 taper(x, rho, window_name, window_params = c(1), custom_window = FALSE)
 }
 \arguments{
-\item{x}{A vector of number between 0 and 1 (inclusive).}
+\item{x}{A vector of numbers between 0 and 1 (inclusive).}
 
 \item{rho}{A scale parameter in \eqn{(0, 1].}}
 
@@ -22,7 +22,7 @@ tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternative
 A vector of taper values.
 }
 \description{
-This function repeatedly calls \link{taper_single} (refer to its manual).
+This function repeatedly calls \link{taper_single} on all elements of a vector.
 }
 \examples{
 X <- c(0.1, 0.2, 0.3)

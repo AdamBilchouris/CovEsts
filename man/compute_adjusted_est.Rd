@@ -54,27 +54,23 @@ where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}).}
 
 If \code{pd} is \code{TRUE}, the estimator will be made positive-definite through the following procedure
 \enumerate{
-\item Take the discrete cosine transform,
+\item Take the discrete Fourier cosine transform,
 \eqn{\widehat{\mathcal{F}}(\theta)}, of the estimated autocovariance function
-\item Construct a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
-\item Perform the inversion to obtain a new estimator.
+\item Compute a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
+\item Perform the Fourier inversion to obtain a new estimator.
 }
-
-This ensures the autocovariance estimate is positive-definite.
 }
 \examples{
 X <- c(1, 2, 3, 4)
 compute_adjusted_est(X, 1:4, 1:3, 0.1, "gaussian")
-\dontrun{
 my_kernel <- function(x, theta, params) {
   stopifnot(theta > 0, length(x) >= 1)
   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 }
-compute_adjusted_est(X, 1:4, 1:3, 0.1, "my_kernel", c(0.25), custom_kernel = TRUE)
-}
+compute_adjusted_est(X, 1:4, 1:3, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
 }
 \references{
-Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899
+Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. 10.1007/bf01199899
 
-Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
+Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. 10.1214/aos/1176325774
 }

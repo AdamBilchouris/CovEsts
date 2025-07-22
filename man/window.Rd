@@ -24,38 +24,40 @@ This computes one of the window functions listed below.
 \strong{Tukey Window}.
 The Tukey window is defined as
 \deqn{w(x) = \frac{1}{2} - \frac{1}{2} \cos(\pi x) , x \in [0, 1].}
-The \code{params} argument is empty, see the example.
+The \code{params} argument is empty.
 
 \strong{Triangular Window}.
 The triangular window is given by
 \deqn{w(x) = x, x \in [0, 1].}
-The \code{params} argument is empty, see the example.
+The \code{params} argument is empty.
 
 \strong{Sine Window}.
 The sine window is given by
 \deqn{w(x) = \sin\left(\pi x / 2 \right), x \in [0, 1].}
-The \code{params} argument is empty, see the example.
+The \code{params} argument is empty.
 
 \strong{Power Sine Window}.
 The power sine window is given by
 \deqn{w(x; a) = \sin^{a}(\pi x / 2), x \in [0, 1], a > 0.}
-The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
+The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}.
 
 \strong{Blackman Window}.
 The Blackman window is defined as
 \deqn{w(x; a) = ( (1 - a) / 2) - \frac{1}{2} \cos(\pi x) + \frac{a}{2} \cos(2 \pi x), x \in [0, 1], a \in {R} .}
-The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
+The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}.
 It is recommended that \eqn{a \in [-0.25, 0.25]} to ensure that the window is nondecreasing on \eqn{[0, 1].}
 
 \strong{Hann-Poisson Window}.
 The Hann-Poisson window is defined as
 \deqn{w(x; a) = \frac{1}{2} (1 - \cos(\pi x)) \exp( - (a \left|1 - x \right|) ) , x \in [0, 1], a \in {R} .}
-The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
+The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}.
 
 \strong{Welch Window}.
 The Welch window is given by
 \deqn{w(x) = 1 - (x - 1)^2 , x \in [0, 1] . }
-The \code{params} argument is empty, see the example.
+The \code{params} argument is empty.
+
+See the function call examples below.
 }
 \examples{
 x <- c(0.2, 0.4, 0.6)

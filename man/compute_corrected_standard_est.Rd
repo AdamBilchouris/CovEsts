@@ -42,14 +42,14 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 A vector whose values are the kernel corrected autocovariance estimates.
 }
 \description{
-This function computes the standard autocovariance estimator and applies kernel correction to it.
-It considers a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
-The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the observation window, however, one may need to play with this value.
+This function computes the standard autocovariance estimator and applies kernel correction to it,
 \deqn{\widehat{C}_{T}^{(a)}(h) = \widehat{C}(h) a_{T}(h), } where \eqn{a_{T}(h) := a(h / N_{T}).}
+It uses a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
+The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the observation window, however, one may need to play with this value.
 }
 \details{
 The aim of this estimator is gradually bring the estimated values to zero through the use of a kernel multiplier. This can be useful when estimating an
-autocovariance function that is short-range dependent as estimators can have large fluctuations as the lag increases, or to deal with the wave artefacts for large lags.
+autocovariance function that is short-range dependent as estimators can have large fluctuations as the lag increases, or to deal with the wave artefacts for large lags, see Bilchouris and Olenko (2025).
 This estimator can be positive-definite depending on whether the choice of \eqn{\widehat{C}(\cdot)} and \eqn{a} are chosen to be positive-definite or not.
 }
 \examples{
@@ -64,7 +64,6 @@ plot(compute_corrected_standard_est(Y, "bessel_j",
      kernel_params=c(0, 1), N_T=0.2*length(Y)))
 
 # Custom kernel
-\dontrun{
 my_kernel <- function(x, theta, params) {
   stopifnot(theta > 0, length(x) >= 1, all(x >= 0))
   return(sapply(x, function(t) ifelse(t == 0, 1,
@@ -72,9 +71,10 @@ my_kernel <- function(x, theta, params) {
          (sin((t^params[1]) / theta) / ((t^params[1]) / theta)) * cos((t^params[2]) / theta)))))
 }
 plot(compute_corrected_standard_est(Y,
-     "my_kernel", kernel_params=c(2, 0.25), custom_kernel = TRUE))
-}
+     my_kernel, kernel_params=c(2, 0.25), custom_kernel = TRUE))
 }
 \references{
 Yaglom, AM (1987). Correlation Theory of Stationary and Related Random Functions. Volume I: Basic Results. Springer New York. 10.1007/978-1-4612-4628-2.
+
+Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society (Vol. 54, Issue 1). 10.17713/ajs.v54i1.1975
 }

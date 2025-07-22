@@ -98,69 +98,69 @@ test_that("get_all_tau() fails for noninteger m", {
   expect_error(get_all_tau(test_p, 1.1))
 })
 
-# f_j_l
-test_that("f_j_l() works", {
-  expect_equal(f_j_l(1, 1, 1, test_p, test_m, test_taus), 1/24)
+# adjusted_spline
+test_that("adjusted_spline() works", {
+  expect_equal(adjusted_spline(1, 1, 1, test_p, test_m, test_taus), 1/24)
 })
 
-test_that("f_j_l() fails for nonnumeric x", {
-  expect_error(f_j_l('a', 1, 1, test_p, test_m, test_taus))
-  expect_error(f_j_l(1i, 1, 1, test_p, test_m, test_taus))
+test_that("adjusted_spline() fails for nonnumeric x", {
+  expect_error(adjusted_spline('a', 1, 1, test_p, test_m, test_taus))
+  expect_error(adjusted_spline(1i, 1, 1, test_p, test_m, test_taus))
 })
 
-test_that("f_j_l() fails for noninteger j", {
-  expect_error(f_j_l(1, 1.1, 1, test_p, test_m, test_taus))
+test_that("adjusted_spline() fails for noninteger j", {
+  expect_error(adjusted_spline(1, 1.1, 1, test_p, test_m, test_taus))
 })
 
-test_that("f_j_l() fails for j <= 0", {
-  expect_error(f_j_l(1, -1, 1, test_p, test_m, test_taus))
+test_that("adjusted_spline() fails for j <= 0", {
+  expect_error(adjusted_spline(1, -1, 1, test_p, test_m, test_taus))
 })
 
-test_that("f_j_l() fails for noninteger l", {
-  expect_error(f_j_l(1, 1, 1.1, test_p, test_m, test_taus))
+test_that("adjusted_spline() fails for noninteger l", {
+  expect_error(adjusted_spline(1, 1, 1.1, test_p, test_m, test_taus))
 })
 
-test_that("f_j_l() fails for nonnumeric l", {
-  expect_error(f_j_l(1, 1, 'a', test_p, test_m, test_taus))
-  expect_error(f_j_l(1, 1, 1i, test_p, test_m, test_taus))
+test_that("adjusted_spline() fails for nonnumeric l", {
+  expect_error(adjusted_spline(1, 1, 'a', test_p, test_m, test_taus))
+  expect_error(adjusted_spline(1, 1, 1i, test_p, test_m, test_taus))
 })
 
-test_that("f_j_l() fails for nonnumeric p", {
-  expect_error(f_j_l(1, 1, 1, 'a', test_m, test_taus))
-  expect_error(f_j_l(1, 1, 1, 1i, test_m, test_taus))
+test_that("adjusted_spline() fails for nonnumeric p", {
+  expect_error(adjusted_spline(1, 1, 1, 'a', test_m, test_taus))
+  expect_error(adjusted_spline(1, 1, 1, 1i, test_m, test_taus))
 })
 
-test_that("f_j_l() fails for p < 0", {
-  expect_error(f_j_l(1, 1, 1, -1, test_m, test_taus))
+test_that("adjusted_spline() fails for p < 0", {
+  expect_error(adjusted_spline(1, 1, 1, -1, test_m, test_taus))
 })
 
-test_that("f_j_l() fails for noninteger p", {
-  expect_error(f_j_l(1, 1, 1, 1.1, test_m, test_taus))
+test_that("adjusted_spline() fails for noninteger p", {
+  expect_error(adjusted_spline(1, 1, 1, 1.1, test_m, test_taus))
 })
 
-test_that("f_j_l() fails for nonnumeric m", {
-  expect_error(f_j_l(1, 1, 1, test_p, 'a', test_taus))
-  expect_error(f_j_l(1, 1, 1, test_p, 1i, test_taus))
+test_that("adjusted_spline() fails for nonnumeric m", {
+  expect_error(adjusted_spline(1, 1, 1, test_p, 'a', test_taus))
+  expect_error(adjusted_spline(1, 1, 1, test_p, 1i, test_taus))
 })
 
-test_that("f_j_l() fails for m < 0", {
-  expect_error(f_j_l(1, 1, 1, test_p, -1, test_taus))
+test_that("adjusted_spline() fails for m < 0", {
+  expect_error(adjusted_spline(1, 1, 1, test_p, -1, test_taus))
 })
 
-test_that("f_j_l() fails for noninteger m", {
-  expect_error(f_j_l(1, 1, 1, test_p, 1.1, test_taus))
+test_that("adjusted_spline() fails for noninteger m", {
+  expect_error(adjusted_spline(1, 1, 1, test_p, 1.1, test_taus))
 })
 
-test_that("f_j_l() fails for nonvector taus", {
-  expect_error(f_j_l(1, 1, 1, test_p, test_m, matrix(c(1, 2, 3, 4), 2)))
+test_that("adjusted_spline() fails for nonvector taus", {
+  expect_error(adjusted_spline(1, 1, 1, test_p, test_m, matrix(c(1, 2, 3, 4), 2)))
 })
 
-test_that("f_j_l() fails for empty taus", {
-  expect_error(f_j_l(1, 1, 1, test_p, test_m, c()))
+test_that("adjusted_spline() fails for empty taus", {
+  expect_error(adjusted_spline(1, 1, 1, test_p, test_m, c()))
 })
 
-test_that("f_j_l() fails for at least one NA in taus", {
-  expect_error(f_j_l(1, 1, 1, test_p, test_m, c(1, NA, 2)))
+test_that("adjusted_spline() fails for at least one NA in taus", {
+  expect_error(adjusted_spline(1, 1, 1, test_p, test_m, c(1, NA, 2)))
 })
 
 # get_splines_df

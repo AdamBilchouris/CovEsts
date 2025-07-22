@@ -65,33 +65,31 @@ In the case of short-range dependence, this may be beneficial as it can remove e
 
 To make this estimator positive-definite, the following procedure is used:
 \enumerate{
-\item Take the discrete cosine transform
+\item Take the discrete Fourier cosine transform
 \eqn{\widehat{\mathcal{F}}(\theta)}.
 \item Find the smallest frequency where its associated value in the spectral domain is negative
 \deqn{\hat{\theta} = \inf\{ \theta > 0 :  \widehat{\mathcal{F}}(\theta)) < 0\}.}
 \item Set all values starting at the frequency to zero.
-\item Perform the inversion.
+\item Perform the Fourier inversion.
 }
 
-This ensures the autocovariance function estimate is positive-definite.
-
-If \eqn{\hat{\theta}} is a small frequency, most of the spectrum equals zero, resulting in an inaccurate estimate of the autocovariance function.
+If \eqn{\hat{\theta}} is a small frequency, most of the spectrum equals zero, resulting in an inaccurate estimate of the autocovariance function, see Bilchouris and Olenko (2025).
 }
 \examples{
 X <- c(1, 2, 3, 4)
 compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
                   "gaussian")
 
-\dontrun{
 my_kernel <- function(x, theta, params) {
   stopifnot(theta > 0, length(x) >= 1)
   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 }
-compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "my_kernel", c(0.25), custom_kernel = TRUE)
-}
+compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
 }
 \references{
-Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899
+Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. 10.1007/bf01199899
 
-Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
+Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. 10.1214/aos/1176325774
+
+Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112–137. 10.17713/ajs.v54i1.1975
 }

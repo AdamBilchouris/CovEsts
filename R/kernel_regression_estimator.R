@@ -4,9 +4,9 @@
 #' \deqn{X_{ij} = (X_{i} - \bar{X}) (X_{j} - \bar{X}) .}
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899
+#' Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. 10.1214/aos/1176325774
 #'
 #' @param X A vector of values.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
@@ -30,21 +30,28 @@ Xij_mat <- function(X, meanX = mean(X)) {
   return(Xij)
 }
 
-#' Compute \eqn{\rho(T_{1})} for the Truncated Kernel Regression Estimator.
+#' Compute \eqn{\rho(T_{1})} used in the Truncated Kernel Regression Estimator.
 #'
-#' This helper function computes \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
+#' This helper function computes \eqn{\rho(T_{1})} used in the truncated kernel regression estimator, [compute_truncated_est].
+
 #'
 #' @details
 #' This function computes the following value,
 #' \deqn{
 #' \hat{\rho}(T_{1}) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((T_{1} - (t_{i} - t_{j})) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((T_{1} - (t_{i} - t_{j}))) / b) \right)^{-1},
 #' }
-#' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}).}
+#' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}),}
+#' which is then used in [compute_truncated_est],
+#' \deqn{\hat{\rho}_{1}(t) = \left\{ \begin{array}{ll}
+#' \hat{\rho}(t) & 0 \leq t \leq T_{1} \\
+#' \hat{\rho}(T_{1}) (T_{2} - t)(T_{2} - T_{1})^{-1} & T_{1} < t \leq T_{2} \\
+#' 0 & t > T_{2}
+#' \end{array} \right. .}
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899
+#' Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. 10.1214/aos/1176325774
 #'
 #' @param x A vector of lags.
 #' @param meanX The average value of \code{X}.
@@ -62,13 +69,11 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "gaussian", c(), FALSE)
-#' \dontrun{
 #' my_kernel <- function(x, theta, params) {
 #'   stopifnot(theta > 0, length(x) >= 1)
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
-#' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "my_kernel", c(0.25), TRUE)
-#' }
+#' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), my_kernel, c(0.25), TRUE)
 rho_T1 <- function(x, meanX, T1, b, xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(b) == 1, is.numeric(b), !is.na(b), b > 0,
@@ -83,7 +88,7 @@ rho_T1 <- function(x, meanX, T1, b, xij_mat, kernel_name="gaussian", kernel_para
       tij <- x[i] - x
       t_tij <- T1 - tij
       X_ij <- xij_mat[i, ]
-      K_ij <- get(kernel_name)(t_tij, b, kernel_params)
+      K_ij <- kernel_name(t_tij, b, kernel_params)
       numerator <- K_ij * X_ij
       denominator <- K_ij
 
@@ -113,15 +118,15 @@ rho_T1 <- function(x, meanX, T1, b, xij_mat, kernel_name="gaussian", kernel_para
 #'
 #' This function computes the Type-II discrete cosine transform.
 #'
-#' The Type-II discrete cosine transform is obtained using [stats::fft]. Note this method does not utilise Makhoul's method for computing the DCT.
-#' If \eqn{X} is of length N, construct a new signal \eqn{y} of length \eqn{4N}, with values \eqn{y_{2n} = 0, y_{2n + 1} = x_{n}} for \eqn{0 \le n < N},
-#' and \eqn{y_{4N - n} = y_{n}, y_{2N} = 0} for \eqn{0 < n < 2N.}
-#' After this, the following is done (in code): \code{dct <- 0.5 * Re(stats::fft(Y))[1:(length(Y) / 4)]}, which gives the Type-II discrete cosine transform.
+#' The Type-II discrete cosine transform is obtained using [stats::fft].
+#' If \eqn{X} is of length N, construct a new signal \eqn{Y} of length \eqn{4N}, with values \eqn{Y_{2n} = 0, Y_{2n + 1} = x_{n}} for \eqn{0 \le n < N},
+#' and , \eqn{Y_{2N} = 0, Y_{4N - n} = y_{n}} for \eqn{0 < n < 2N.}
+#' After this, the Type-II discrete cosine transform is computed by \code{0.5 * Re(stats::fft(Y))[1:(length(Y) / 4)]}.
 #'
 #' @references
-#' Ochoa-Dominguez, H., & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
+#' Ochoa-Dominguez, H. & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
 #'
-#' Makhoul, J. (1980). A Fast Cosine Transform in One and Two Dimensions. IEEE Transactions on Acoustics, Speech, and Signal Processing (Vol. 28, Issue 1, pp. 27-34). 10.1109/TASSP.1980.1163351
+#' Makhoul, J. (1980). A Fast Cosine Transform in One and Two Dimensions. IEEE Transactions on Acoustics, Speech, and Signal Processing 28(1), 27-34. 10.1109/TASSP.1980.1163351
 #'
 #' Stasiński, R. (2002). DCT Computation Using Real-Valued DFT Algorithms. Proceedings of the 11th European Signal Processing Conference.
 #'
@@ -151,15 +156,15 @@ dct_1d <- function(X) {
 #' The Type-II inverse discrete cosine transform is computed using [stats::fft].
 #' For autocovariance function estimation, the spectrum is given in the input \code{X} and then an inverse FFT is applied.
 #'
-#' The original spectrum, \code{dct_full}, from \code{X} is obtained as follows:
-#' \code{dct_full <- c(X, 0, -X[-1], 0, rev(X[-1]))}. After this, an inverse FFT is applied,
-#' \code{idct <- Re(stats::fft(dct_full, inverse = T)) * (2 / length(dct_full))}, and then the first half of inverse transform is taken, and the zeroes are dropped,
-#' which gives the untransformed X.
+#' The original spectrum, \code{dct_full}, from \code{X} is obtained as follows.
+#' First, the original sample Fourier spectrum is reconstructed using \code{dct_full <- c(X, 0, -X[-1], 0, rev(X[-1]))}. After this, an inverse FFT is applied,
+#' \code{idct <- Re(stats::fft(dct_full, inverse = T)) * (2 / length(dct_full))}, which gives the original function with additional zero-values at even indices.
+#' The zeroes are dropped, which gives the untransformed X.
 #'
 #' @references
-#' Ochoa-Dominguez, H., & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
+#' Ochoa-Dominguez, H. & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
 #'
-#' endolith (2013, September 4). Fast Cosine Transform via FFT. https://dsp.stackexchange.com/a/10606 (archive: https://web.archive.org/web/20240423074416/https://dsp.stackexchange.com/questions/2807/fast-cosine-transform-via-fft).
+#' endolith (2013, September 4). Fast Cosine Transform via FFT. https://dsp.stackexchange.com/a/10606 (Internet Acrhive version: https://web.archive.org/web/20240423074416/https://dsp.stackexchange.com/questions/2807/fast-cosine-transform-via-fft).
 #'
 #' @param X A vector of values for which the discrete cosine transform is being computed.
 #'
@@ -201,21 +206,21 @@ idct_1d <- function(X) {
 #' In the case of short-range dependence, this may be beneficial as it can remove estimation artefacts at large lags.
 #'
 #' To make this estimator positive-definite, the following procedure is used:
-#' 1. Take the discrete cosine transform
+#' 1. Take the discrete Fourier cosine transform
 #' \eqn{\widehat{\mathcal{F}}(\theta)}.
 #' 2. Find the smallest frequency where its associated value in the spectral domain is negative
 #' \deqn{\hat{\theta} = \inf\{ \theta > 0 :  \widehat{\mathcal{F}}(\theta)) < 0\}.}
 #' 3. Set all values starting at the frequency to zero.
-#' 4. Perform the inversion.
+#' 4. Perform the Fourier inversion.
 #'
-#' This ensures the autocovariance function estimate is positive-definite.
-#'
-#' If \eqn{\hat{\theta}} is a small frequency, most of the spectrum equals zero, resulting in an inaccurate estimate of the autocovariance function.
+#' If \eqn{\hat{\theta}} is a small frequency, most of the spectrum equals zero, resulting in an inaccurate estimate of the autocovariance function, see Bilchouris and Olenko (2025).
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899
+#' Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. 10.1214/aos/1176325774
+#'
+#' Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112–137. 10.17713/ajs.v54i1.1975
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param x A vector of lags.
@@ -239,13 +244,11 @@ idct_1d <- function(X) {
 #' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
 #'                   "gaussian")
 #'
-#' \dontrun{
 #' my_kernel <- function(x, theta, params) {
 #'   stopifnot(theta > 0, length(x) >= 1)
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
-#' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "my_kernel", c(0.25), custom_kernel = TRUE)
-#' }
+#' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
 compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", kernel_params = c(), pd = TRUE, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(x) >= 1, is.numeric(x), !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), is.numeric(t), length(t) >= 1,
@@ -262,7 +265,7 @@ compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", 
   t_vals <- t[t <= T1]
   if(custom_kernel) {
     for(tt in t_vals) {
-      K_ij <- get(kernel_name)(tt - outer_x_x, b, kernel_params)
+      K_ij <- kernel_name(tt - outer_x_x, b, kernel_params)
       vals_truncated_1 <- c(vals_truncated_1, sum(K_ij * xij_mat) / sum(K_ij))
     }
   }
@@ -320,17 +323,15 @@ compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", 
 #' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}).}
 #'
 #' If \code{pd} is \code{TRUE}, the estimator will be made positive-definite through the following procedure
-#' 1. Take the discrete cosine transform,
+#' 1. Take the discrete Fourier cosine transform,
 #' \eqn{\widehat{\mathcal{F}}(\theta)}, of the estimated autocovariance function
-#' 2. Construct a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
-#' 3. Perform the inversion to obtain a new estimator.
-#'
-#' This ensures the autocovariance estimate is positive-definite.
+#' 2. Compute a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
+#' 3. Perform the Fourier inversion to obtain a new estimator.
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899
+#' Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. 10.1214/aos/1176325774
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param x A vector of lags.
@@ -350,13 +351,11 @@ compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", 
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' compute_adjusted_est(X, 1:4, 1:3, 0.1, "gaussian")
-#' \dontrun{
 #' my_kernel <- function(x, theta, params) {
 #'   stopifnot(theta > 0, length(x) >= 1)
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
-#' compute_adjusted_est(X, 1:4, 1:3, 0.1, "my_kernel", c(0.25), custom_kernel = TRUE)
-#' }
+#' compute_adjusted_est(X, 1:4, 1:3, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
 compute_adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_params=c(), pd = TRUE, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(x), length(x) >= 1, !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
@@ -368,7 +367,7 @@ compute_adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_pa
   cov_vals <- c()
   if(custom_kernel) {
     for(tt in t) {
-      K_ij <- get(kernel_name)(tt - outer_x_x, b, kernel_params)
+      K_ij <- kernel_name(tt - outer_x_x, b, kernel_params)
       cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))
     }
   }
@@ -401,34 +400,36 @@ compute_adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_pa
   return(cov_vals)
 }
 
-#' Make any Function Positive-Definite
+#' Make a Function Positive-Definite
 #'
-#' This function can make any function positive-definite using methods proposed by P. Hall and his coauthors.
+#' This function can make a function positive-definite using the methods proposed by P. Hall and his coauthors.
 #'
 #' @details
 #' This function perform positive-definite adjustments proposed by P. Hall and his coauthors.
 #'
 #' Method 1 is as follows:
-#' 1. Take the discrete cosine transform,
+#' 1. Take the discrete Fourier cosine transform,
 #' \eqn{\widehat{\mathcal{F}}(\theta)}.
-#' 2. Construct a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
-#' 3. Perform the inversion to obtain a new estimator.
+#' 2. Compute a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
+#' 3. Perform the Fourier inversion to obtain a new estimator.
 #'
 #'
 #' Method 2 is as follows:
-#' 1. Take the discrete cosine transform \eqn{\widehat{\mathcal{F}}(\theta)}.
+#' 1. Take the discrete Fourier cosine transform \eqn{\widehat{\mathcal{F}}(\theta)}.
 #' 2. Find the smallest frequency where its associated value in the spectral domain is negative
 #' \deqn{\hat{\theta} = \inf\{ \theta > 0 :  \widehat{\mathcal{F}}(\theta) < 0\}.}
-#' 3. Construct a modified spectrum \eqn{\widetilde{\mathcal{F}} \widehat{\mathcal{F}}(\theta)\textbf{1}(\theta < \hat{\theta}),}
+#' 3. Compute a modified spectrum \eqn{\widetilde{\mathcal{F}} = \widehat{\mathcal{F}}(\theta)\textbf{1}(\theta < \hat{\theta}),}
 #' where \eqn{\textbf{1}(A)} is the indicator function over the set \eqn{A.}
-#' 4. Perform the inversion.
+#' 4. Perform the Fourier inversion.
 #'
 #' @references
-#' Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899
+#' Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. 10.1007/bf01199899
 #'
-#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
+#' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. 10.1214/aos/1176325774
 #'
-#' @param x A vector of numeric values - for example, an estimated autocovariance function.
+#' Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112-137. 10.17713/ajs.v54i1.1975
+#'
+#' @param x A vector of numeric values of an estimated autocovariance function.
 #' @param method.1 Should method 1 be used (TRUE) or method 2 (FALSE).
 #'
 #' @return A vector that is the adjusted function.

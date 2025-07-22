@@ -43,13 +43,13 @@ For \code{pd = FALSE}:
 
 This function will generate autocovariance values for lags \eqn{h} from the set \eqn{\{0, \dots, \mbox{maxLag}\}.}
 
-The positive-definite estimator must be used cautiously when estimating over all lags as the sum of the autocorrelation function converges to \eqn{-1/2}.
-This does not occur for the nonpositive-definite estimator.
+The positive-definite estimator must be used cautiously when estimating over all lags as the sum of all values of the autocorrelation function equals to \eqn{-1/2}.
+For the nonpositive-definite estimator a similar constant summation property holds.
 }
 \examples{
 X <- c(1, 2, 3)
 compute_standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
 }
 \references{
-Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society (Vol. 54, Issue 1). 10.17713/ajs.v54i1.1975
+Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112-137. 10.17713/ajs.v54i1.1975
 }

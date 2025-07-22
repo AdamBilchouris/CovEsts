@@ -7,9 +7,9 @@
 solve_spline(par, splines_df, weights)
 }
 \arguments{
-\item{par}{A vector of parameters to minimise.}
+\item{par}{A vector of initial parameters to used in the minimisation process.}
 
-\item{splines_df}{A data frame whose structure can be found in \link{get_splines_df}.}
+\item{splines_df}{A data frame whose structure is defined in \link{get_splines_df}.}
 
 \item{weights}{A vector of weights, see the description.}
 }
@@ -17,20 +17,19 @@ solve_spline(par, splines_df, weights)
 The value of the objective function at those parameters.
 }
 \description{
-This is the objective function to find the weights for each basis function, see Choi, Li & Wang (2013, p. 617).
+This is the objective function to find the weights for each basis function in the minimising spline, see Choi, Li & Wang (2013, p. 617).
 The parameters must be nonnegative, so a penalty of \eqn{10^{12}} is given if any parameters are negative.
 The weights are chosen as per Choi, Li & Wang (2013, p. 617).
 }
 \details{
 Let \eqn{\mathbf{\beta} = (\beta_{0}, \dots, \beta_{m + p})^{\prime}} be a vector of model coefficients, \eqn{\{f_{1}^{(p - 1)} , \dots , f_{m + p}^{(p - 1)} \}}
-are a set of completely monotone basis functions, and \eqn{\widehat{C}} is an estimated covariance function.
+be a set of completely monotone basis functions, and \eqn{\widehat{C}(\cdot)} be an estimated covariance function.
 As per Choi, Li & Wang (2013, p. 617), \eqn{\mathbf{\beta}} can be estimated via weighted-least squares,
 \deqn{\
 \hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(h_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(h_{i}^{2})  \right)^{2} ,
 }
-where there is a set of lags \eqn{\{h_{1} , \dots , h_{L} \}} and a set of weights \eqn{\{w_{1}, \dots , w_{L} \}.}
-The set of weights are calculated in \link{compute_splines_est}, and are of form
-\eqn{w_{i} = (N - h_{i}) / ((1 - \widehat{C}(h_{i}))^{2}).}
+where \eqn{\{h_{1} , \dots , h_{L} \}} is a set of lags and \eqn{\{w_{1}, \dots , w_{L} \}} is a set of weights.
+The set of weights is calculated in \link{compute_splines_est}, and they are of the form \eqn{w_{i} = (N - h_{i}) / ((1 - \widehat{C}(h_{i}))^{2}).}
 }
 \examples{
 taus <- get_all_tau(3, 2)
@@ -38,6 +37,7 @@ x <- seq(0, 2, by=0.25)
 maxLag <- 4
 splines_df <- get_splines_df(x[1:maxLag], 3, 2, taus)
 splines_df$estCov <- exp(-splines_df$lags^2) + 0.001
+# pars are the inital parameters used in the minimisation process.
 pars <- c(0.5, 0.5, 0.5, 0.5, 0.5)
 weights <- c()
 X <- rnorm(50)
@@ -47,5 +47,5 @@ weights <- c(weights, (length(X) - i) / ( (1 - splines_df$estCov[i + 1])^2 ))
 solve_spline(pars, splines_df, weights)
 }
 \references{
-Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES (Vol. 18, pp. 611-630). 10.1007/s13253-013-0152-z
+Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 }

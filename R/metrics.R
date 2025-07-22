@@ -3,7 +3,7 @@
 #' This function estimates the area between two estimated autocovariance functions.
 #'
 #' @details
-#' This function estimates the area between two estimated autocovariance functions over a set of lags, from 0 up to \eqn{h_{n}.}
+#' This function estimates the area between two estimated autocovariance functions over a set of lags, from 0 up to \eqn{h_{n}} defined by
 #' \deqn{
 #' \int_{0}^{h_{n}} \left| \hat{C}_{1}(h) - \hat{C}_{2}(h) \right| dh ,
 #' }
@@ -69,11 +69,12 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
 #' This function computes the maximum vertical distance between functions.
 #'
 #' @details
-#' This function computes the maximum vertical distance between functions. The vector of function values must be of the same length.
+#' This function computes the maximum vertical distance between functions:
 #' \deqn{D(\hat{C}_{1}(h), \hat{C}_{2}(h)) = \displaystyle \max_{h} \left| \hat{C}_{1}(h) - \hat{C}_{2}(h) \right| ,
 #' }
 #' where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autocovariance functions.
-#' It assumes that the estimated functions are estimated over the same set of lags.
+#' It assumes that the estimated values are given for the same set of lags.
+#' The vectors of the function values must be of the same length.
 #'
 #' @param est1 A numeric vector representing the first estimated autocovariance function.
 #' @param est2 A numeric vector representing the second estimated autocovariance function.
@@ -87,8 +88,8 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
 #' x <- seq(0, 5, by=0.1)
 #' estCov1 <- exp(-x^2) + rnorm(length(x), sd=0.1)
 #' estCov2 <- exp(-x^2.1) + rnorm(length(x), sd=0.1)
-#' max_distance(estCov1, estCov2)
-#' max_distance(estCov1, estCov2, plot = TRUE)
+#' max_distance(estCov1, estCov2, lags=x)
+#' max_distance(estCov1, estCov2, lags=x, plot = TRUE)
 max_distance <- function(est1, est2, lags=c(), plot = FALSE) {
   stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
             length(est1) == length(est2), is.logical(plot))
@@ -181,9 +182,9 @@ create_cyclic_matrix <- function(v) {
 #' \end{array}} \right] ,
 #' }
 #' over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \}.}
-#' This matrix is created in [create_cyclic_matrix].
+#' This matrix is created by [create_cyclic_matrix].
 #'
-#' The spectral norm is simply the largest eigenvalue of \eqn{D.}
+#' The spectral norm is defined as the largest eigenvalue of \eqn{D.}
 #'
 #' @param est1 A numeric vector representing the first estimated autocovariance function.
 #' @param est2 A numeric vector representing the second estimated autocovariance function.
@@ -222,7 +223,7 @@ spectral_norm <- function(est1, est2) {
 #' \end{array}} \right] .
 #' }
 #'
-#' The eigendecomposition of this matrix is computed to determine if all eigenvalues are positive, if so, the estimated autocovariance function is assumed to be positive-definite.
+#' The eigendecomposition of this matrix is computed to determine if all eigenvalues are positive. If so, the estimated autocovariance function is assumed to be positive-definite.
 #'
 #' @param est A numeric vector representing an estimated autocovariance function.
 #'
@@ -238,4 +239,101 @@ check_pd <- function(est) {
   cyclic_mat <- create_cyclic_matrix(est)
   eigens <- zapsmall(eigen(cyclic_mat)$values)
   return(!any(eigens < 0) && !all(eigens == 0))
+}
+
+#' MSE Between Estimated Autocovariance Functions.
+#'
+#' This function computes the mean-square difference/error between two estimated autocovariance functions or one estimated and one theoertical autocovariance functions.
+#'
+#' @details
+#' This function computes the mean-square difference/error (MSE) between two estimated autocovariance functions or one estimated and one theoertical autocovariance functions.
+#' The MSE is defined as
+#' \deqn{\frac{1}{N} \sum_{i=0}^{n} \left(\widehat{C}_{1}(h_{i}) - \widehat{C}_{2}(h_{i})\right)^{2}}
+#' over a set of lags \eqn{\{h_{0}, h_{1} , h_{2} , \dots , h_{n} \}.}
+#'
+#' @param est1 A numeric vector representing the first estimated autocovariance function.
+#' @param est2 A numeric vector representing the second estimated autocovariance function.
+#'
+#' @return A numeric value representing the estimated MSE between two estimated autocovariance functions.
+#' @export
+#'
+#' @examples
+#' x <- seq(0, 5, by=0.1)
+#' estCov1 <- exp(-x^2) + rnorm(length(x), sd=0.1)
+#' estCov2 <- exp(-x^2.1) + rnorm(length(x), sd=0.1)
+#' mse(estCov1, estCov2)
+mse <- function(est1, est2) {
+  stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
+            length(est1) == length(est2))
+  return(mean((est1 - est2)^2))
+}
+
+#' Hilbert-Schmidt Norm Between Estimated Autocovariance Functions.
+#'
+#' This function computes the Hilbert-Schidmt norm between two estimated autocovariance functions.
+#'
+#' @details
+#' This function computes the Hilbert-Schidmt norm between two estimated autocovariance functions.
+#' The Hilbert-Schmidt norm of a matrix
+#' \deqn{D = \left[ {\begin{array}{ccccc}
+#' D(h_{0})     & D(h_{1})     & \cdots & D(h_{n - 1}) & D(h_{n})     \\
+#' D(h_{1})     & D(h_{0})     & \cdots & D(h_{n - 2}) & D(h_{n - 1}) \\
+#' \vdots       & \vdots       & \ddots & \vdots       & \vdots       \\
+#' D(h_{n - 1}) & D(h_{n - 2}) & \cdots & D(h_{0})     & D(h_{1})     \\
+#' D(h_{n})     & D(h_{n - 1}) & \cdots & D(h_{1})     & D(h_{0})     \\
+#' \end{array}} \right] ,
+#' }
+#' over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \},} where \eqn{D(h) = \hat{C}_{1}(h) - \hat{C}_{2}(h),}
+#' is defined as \deqn{{\left\Vert D \right\Vert}_{HS} \coloneqq \sqrt{\sum_{i,j} d_{i, j}^{2}}.}
+#'
+#' @param est1 A numeric vector representing the first estimated autocovariance function.
+#' @param est2 A numeric vector representing the second estimated autocovariance function
+#'
+#' @return A numeric value representing the estimated Hilbert-Schmidt Norm between two estimated autocovariance functions.
+#' @export
+#'
+#' @examples
+#' x <- seq(0, 5, by=0.1)
+#' estCov1 <- exp(-x^2) + rnorm(length(x), sd=0.1)
+#' estCov2 <- exp(-x^2.1) + rnorm(length(x), sd=0.1)
+#' hilbert_schmidt(estCov1, estCov2)
+hilbert_schmidt <- function(est1, est2) {
+  stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
+            length(est1) == length(est2))
+  return(sqrt(sum(create_cyclic_matrix(est1 - est2)^2)))
+}
+
+# Write documentation
+# @references Nicholas J. Higham (1988). Computing a nearest symmetric positive semidefinite matrix. Linear Algebra and its Applications, 103(none), 103–118. doi:10.1016/0024-3795(88)90223-6
+# https://scicomp.stackexchange.com/questions/30631/how-to-find-the-nearest-a-near-positive-definite-from-a-given-matrix
+#' Compute the Nearest Positive-Definite Matrix.
+#'
+#' This function computes the nearest positive-definite matrix to some matrix \eqn{X}.
+#'
+#' @references
+#' Higham, N. J. (1988). Computing a nearest symmetric positive semidefinite matrix. Linear Algebra and its Applications, 103, 103–118. 10.1016/0024-3795(88)90223-6
+#'
+#' @param X Either a numeric vector or a square matrix. If a vector is provided, a matrix will be created of the form found in [create_cyclic_matrix].
+#' @param return_matrix A boolean determining whether or not the closest matrix is given or not. If \code{FALSE}, it returns the closest autocorrelation function. Defaults to \code{FALSE}.
+#'
+#' @return The closest positive-definite autocorrelation function or matrix (depending on \code{return_matrix}).
+#' @export
+#'
+#' @examples
+#' X <- c(1, 0, -1.1)
+#' nearest_pd(X)
+#' nearest_pd(X, TRUE)
+nearest_pd <- function(X, return_matrix = FALSE) {
+  stopifnot(is.numeric(X), !any(is.na(X)), length(X) > 0, is.logical(return_matrix))
+  if(!is.matrix(X)) {
+    X <- create_cyclic_matrix(X)
+  }
+  B <- (X + t(X)) / 2
+  eigB <- eigen(B)
+  XF <- eigB$vectors %*% diag(pmax(eigB$values, 0)) %*% t(eigB$vectors)
+
+  if(!return_matrix) {
+    return(as.numeric(XF[1, ]))
+  }
+  return(XF)
 }

@@ -18,7 +18,7 @@ A vector or matrix of kernel values.
 }
 \description{
 This function computes one of the isotropic kernels listed below.
-Unlike \link{kernel_symm}, these kernels are only used for (where \eqn{x \geq 0})
+Unlike \link{kernel_symm}, these kernels are only defined when \eqn{x \geq 0.} They are used as
 kernel multipliers in estimators \link{compute_corrected_standard_est} and \link{compute_kernel_corrected_est}.
 }
 \details{
@@ -67,19 +67,19 @@ The isotropic circular kernel, which is positive-definite for \eqn{{R}^{d}, d \l
 The \code{params} argument is of the form \code{c(}\eqn{\theta}\code{)}.
 
 \strong{Isotropic Matérn Kernel}.
-The isotropic Matérn kernel, which is positive-definite for \eqn{{R}^{d}, d \in N}  and when \eqn{\nu > 0,} is defined as
+The isotropic Matérn kernel, which is positive-definite for \eqn{{R}^{d}, d \in N,} and when \eqn{\nu > 0,} is defined as
 \deqn{a(x; \theta, \nu) = \left(\sqrt{2\nu} \frac{x}{\theta} \right)^{\nu} \left(2^{\nu - 1} \Gamma(\nu) \right)^{-1} K_{\nu}\left( \sqrt{2\nu} \frac{x}{\theta} \right) ,}
 where \eqn{K_{\nu}(\cdot)} is the modified Bessel function of the second kind.
 The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu}\code{)}.
 
 \strong{Isotropic Bessel Kernel}.
-The isotropic Bessel kernel, which is positive-definite for \eqn{{R}^{d}, d \in N} and when \eqn{\nu \geq \frac{d}{2} - 1,} is given by
+The isotropic Bessel kernel, which is positive-definite for \eqn{{R}^{d}, d \in N,} and when \eqn{\nu \geq \frac{d}{2} - 1,} is given by
 \deqn{a(x; \theta, \nu) = 2^{\nu} \Gamma(\nu + 1) J_{\nu}(x / \theta) (x / \theta)^{-\nu} ,}
 where \eqn{J_{\nu}(\cdot)} is the Bessel function of the first kind.
 The \code{params} argument is of the form \code{c(}\eqn{\theta, \nu, d} \code{)}.
 
 \strong{Isotropic Cauchy Kernel}.
-The isotropic Cauchy kernel, which is positive-definite for \eqn{{R}^{d}, d \in N} and when \eqn{0 < \alpha \leq 2} and \eqn{\beta \geq 0.}
+The isotropic Cauchy kernel, which is positive-definite for \eqn{{R}^{d}, d \in N,} and when \eqn{0 < \alpha \leq 2} and \eqn{\beta \geq 0,} is defined by
 \deqn{a(x ; \theta, \alpha, \beta) = (1 + (x / \theta)^{\alpha})^{-(\beta / \alpha)} .}
 The \code{params} argument is of the form \code{c(}\eqn{\theta, \alpha, \beta} \code{)}.
 }
@@ -110,6 +110,7 @@ curve(kernel(x, "bessel_j", c(theta, nu, dim)), from = 0, to = 5)
 curve(kernel(x, "cauchy", c(theta, alpha, beta)), from = 0, to = 5)
 }
 \references{
-Genton, Marc. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2. 299-312. 10.1162/15324430260185646.
-Table 4.2 of Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. In Advances in Geographic Information Science. Springer Netherlands. https://doi.org/10.1007/978-94-024-1918-4
+Genton, M. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2, 299-312. 10.1162/15324430260185646.
+
+Table 4.2 of Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. Springer. https://doi.org/10.1007/978-94-024-1918-4
 }

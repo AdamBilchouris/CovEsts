@@ -2,12 +2,12 @@
 % Please edit documentation in R/kernel_regression_estimator.R
 \name{make_pd}
 \alias{make_pd}
-\title{Make any Function Positive-Definite}
+\title{Make a Function Positive-Definite}
 \usage{
 make_pd(x, method.1 = TRUE)
 }
 \arguments{
-\item{x}{A vector of numeric values - for example, an estimated autocovariance function.}
+\item{x}{A vector of numeric values of an estimated autocovariance function.}
 
 \item{method.1}{Should method 1 be used (TRUE) or method 2 (FALSE).}
 }
@@ -15,27 +15,27 @@ make_pd(x, method.1 = TRUE)
 A vector that is the adjusted function.
 }
 \description{
-This function can make any function positive-definite using methods proposed by P. Hall and his coauthors.
+This function can make a function positive-definite using the methods proposed by P. Hall and his coauthors.
 }
 \details{
 This function perform positive-definite adjustments proposed by P. Hall and his coauthors.
 
 Method 1 is as follows:
 \enumerate{
-\item Take the discrete cosine transform,
+\item Take the discrete Fourier cosine transform,
 \eqn{\widehat{\mathcal{F}}(\theta)}.
-\item Construct a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
-\item Perform the inversion to obtain a new estimator.
+\item Compute a modified spectrum \eqn{\widetilde{\mathcal{F}}(\theta) = \max(\widehat{\mathcal{F}}(\theta), 0)} for all sample frequencies.
+\item Perform the Fourier inversion to obtain a new estimator.
 }
 
 Method 2 is as follows:
 \enumerate{
-\item Take the discrete cosine transform \eqn{\widehat{\mathcal{F}}(\theta)}.
+\item Take the discrete Fourier cosine transform \eqn{\widehat{\mathcal{F}}(\theta)}.
 \item Find the smallest frequency where its associated value in the spectral domain is negative
 \deqn{\hat{\theta} = \inf\{ \theta > 0 :  \widehat{\mathcal{F}}(\theta) < 0\}.}
-\item Construct a modified spectrum \eqn{\widetilde{\mathcal{F}} \widehat{\mathcal{F}}(\theta)\textbf{1}(\theta < \hat{\theta}),}
+\item Compute a modified spectrum \eqn{\widetilde{\mathcal{F}} = \widehat{\mathcal{F}}(\theta)\textbf{1}(\theta < \hat{\theta}),}
 where \eqn{\textbf{1}(A)} is the indicator function over the set \eqn{A.}
-\item Perform the inversion.
+\item Perform the Fourier inversion.
 }
 }
 \examples{
@@ -43,7 +43,9 @@ X <- c(1, 2, 3, 4)
 make_pd(X)
 }
 \references{
-Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899
+Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. 10.1007/bf01199899
 
-Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
+Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. 10.1214/aos/1176325774
+
+Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112-137. 10.17713/ajs.v54i1.1975
 }

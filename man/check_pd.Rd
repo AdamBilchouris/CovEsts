@@ -27,7 +27,7 @@ construct the symmetric matrix
 \end{array}} \right] .
 }
 
-The eigendecomposition of this matrix is computed to determine if all eigenvalues are positive, if so, the estimated autocovariance function is assumed to be positive-definite.
+The eigendecomposition of this matrix is computed to determine if all eigenvalues are positive. If so, the estimated autocovariance function is assumed to be positive-definite.
 }
 \examples{
 x <- seq(0, 5, by=0.1)

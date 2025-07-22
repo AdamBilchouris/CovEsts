@@ -2,7 +2,7 @@
 % Please edit documentation in R/kernel_regression_estimator.R
 \name{rho_T1}
 \alias{rho_T1}
-\title{Compute \eqn{\rho(T_{1})} for the Truncated Kernel Regression Estimator.}
+\title{Compute \eqn{\rho(T_{1})} used in the Truncated Kernel Regression Estimator.}
 \usage{
 rho_T1(
   x,
@@ -37,28 +37,32 @@ gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel
 The estimated autocovariance function at \eqn{T_{1}}.
 }
 \description{
-This helper function computes \eqn{\rho(T_{1})} for the truncated kernel regression estimator.
+This helper function computes \eqn{\rho(T_{1})} used in the truncated kernel regression estimator, \link{compute_truncated_est}.
 }
 \details{
 This function computes the following value,
 \deqn{
 \hat{\rho}(T_{1}) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((T_{1} - (t_{i} - t_{j})) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((T_{1} - (t_{i} - t_{j}))) / b) \right)^{-1},
 }
-where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}).}
+where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}),}
+which is then used in \link{compute_truncated_est},
+\deqn{\hat{\rho}_{1}(t) = \left\{ \begin{array}{ll}
+\hat{\rho}(t) & 0 \leq t \leq T_{1} \\
+\hat{\rho}(T_{1}) (T_{2} - t)(T_{2} - T_{1})^{-1} & T_{1} < t \leq T_{2} \\
+0 & t > T_{2}
+\end{array} \right. .}
 }
 \examples{
 X <- c(1, 2, 3, 4)
 rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "gaussian", c(), FALSE)
-\dontrun{
 my_kernel <- function(x, theta, params) {
   stopifnot(theta > 0, length(x) >= 1)
   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 }
-rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "my_kernel", c(0.25), TRUE)
-}
+rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), my_kernel, c(0.25), TRUE)
 }
 \references{
-Hall, P., & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields (Vol. 99, Issue 3, pp. 399-424). 10.1007/bf01199899
+Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. 10.1007/bf01199899
 
-Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics (Vol. 22, Issue 4, pp. 2115-2134). 10.1214/aos/1176325774
+Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. 10.1214/aos/1176325774
 }
