@@ -150,6 +150,7 @@ compute_kernel_corrected_est <- function(estCov, kernel_name, kernel_params = c(
 #'
 #' @param par The initial parameter  used in the maximisation process.
 #' @param corr_mat The autocorrelation matrix of the considered time series.
+#' @param target A shrinkage target matrix used in the shrinking process. This should only be used if you wish to use a specific matrix as the target.
 #'
 #' @references
 #' Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation ofand Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531
@@ -162,9 +163,9 @@ compute_kernel_corrected_est <- function(estCov, kernel_name, kernel_params = c(
 #' @examples
 #' estCorr <- c(1, 0.5, 0)
 #' corr_mat <- create_cyclic_matrix(estCorr)
-#' solve_linear_shrinking(0.5, corr_mat)
-solve_linear_shrinking <- function(par, corr_mat) {
-  adj_corr_mat <- (par[1] * corr_mat) + (1 - par[1]) * diag(nrow(corr_mat))
+#' solve_linear_shrinking(0.5, corr_mat, diag(length(estCorr)))
+solve_linear_shrinking <- function(par, corr_mat, target) {
+  adj_corr_mat <- (par[1] * corr_mat) + (1 - par[1]) * target
   isPd <- check_pd(adj_corr_mat[1, ])
   if(isPd) {
     return(-par[1])
@@ -191,6 +192,7 @@ solve_linear_shrinking <- function(par, corr_mat) {
 #'
 #' @param estCov A vector whose values are an estimate autocovariance/autocorrelation function.
 #' @param return_matrix A boolean determining whether or not the shrunken matrix is given or not. If \code{FALSE}, it returns the shrunken autocorrelation function. Defaults to \code{FALSE}.
+#' @param target A shrinkage target matrix used in the shrinking process. This should only be used if you wish to use a specific matrix as the target.
 #'
 #' @return The shrunken autocorrelation function or matrix (depending on \code{return_matrix}).
 #' @export
@@ -198,11 +200,20 @@ solve_linear_shrinking <- function(par, corr_mat) {
 #' @examples
 #' estCorr <- c(1, 0.8, 0.5, -1.2)
 #' compute_linear_shrinking(estCorr)
-#' compute_linear_shrinking(estCorr, TRUE)
-compute_linear_shrinking <- function(estCov, return_matrix = FALSE) {
+#' target <- diag(length(estCorr))
+#' compute_linear_shrinking(estCorr, TRUE, target)
+compute_linear_shrinking <- function(estCov, return_matrix = FALSE, target = NULL) {
   estCorr <- estCov / estCov[1]
   corr_mat <- create_cyclic_matrix(estCorr)
-  optimRes <- optim(0.5, solve_linear_shrinking, corr_mat = corr_mat, method = 'Brent', lower = 0, upper = 1)
+
+  if(is.null(target)) {
+    target <- diag(nrow(corr_mat))
+  }
+  else {
+    stopifnot(is.matrix(target), is.numeric(target),  !any(is.na(target)))
+  }
+
+  optimRes <- optim(0.5, solve_linear_shrinking, corr_mat = corr_mat, target = target, method = 'Brent', lower = 0, upper = 1)
   if(optimRes$convergence != 0) {
     stop(paste0("Failed to converge. Convergence code: ", optimRes$convergence))
   }

@@ -4,12 +4,14 @@
 \alias{compute_linear_shrinking}
 \title{Linear Shrinking}
 \usage{
-compute_linear_shrinking(estCov, return_matrix = FALSE)
+compute_linear_shrinking(estCov, return_matrix = FALSE, target = NULL)
 }
 \arguments{
 \item{estCov}{A vector whose values are an estimate autocovariance/autocorrelation function.}
 
 \item{return_matrix}{A boolean determining whether or not the shrunken matrix is given or not. If \code{FALSE}, it returns the shrunken autocorrelation function. Defaults to \code{FALSE}.}
+
+\item{target}{A target matrix used in the shrinking process. This should only be used if you wish to use a specific matrix as the target.}
 }
 \value{
 The shrunken autocorrelation function or matrix (depending on \code{return_matrix}).
@@ -28,7 +30,8 @@ The shrunken matrix will be positive-definite.
 \examples{
 estCorr <- c(1, 0.8, 0.5, -1.2)
 compute_linear_shrinking(estCorr)
-compute_linear_shrinking(estCorr, TRUE)
+target <- diag(length(estCorr))
+compute_linear_shrinking(estCorr, TRUE, target)
 }
 \references{
 Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation ofand Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531

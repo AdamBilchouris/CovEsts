@@ -4,12 +4,14 @@
 \alias{solve_linear_shrinking}
 \title{Solve Linear Shrinking}
 \usage{
-solve_linear_shrinking(par, corr_mat)
+solve_linear_shrinking(par, corr_mat, target)
 }
 \arguments{
 \item{par}{The initial parameter  used in the maximisation process.}
 
 \item{corr_mat}{The autocorrelation matrix of the considered time series.}
+
+\item{target}{A target matrix used in the shrinking process. This should only be used if you wish to use a specific matrix as the target.}
 }
 \value{
 A numeric value that is either equal to \eqn{-}\code{par} or 1.
@@ -20,7 +22,7 @@ This is an objective function used to select \eqn{\lambda} in linear shrinking, 
 \examples{
 estCorr <- c(1, 0.5, 0)
 corr_mat <- create_cyclic_matrix(estCorr)
-solve_linear_shrinking(0.5, corr_mat)
+solve_linear_shrinking(0.5, corr_mat, diag(length(estCorr)))
 }
 \references{
 Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation ofand Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531
