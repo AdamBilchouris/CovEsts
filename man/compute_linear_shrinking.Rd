@@ -11,7 +11,7 @@ compute_linear_shrinking(estCov, return_matrix = FALSE, target = NULL)
 
 \item{return_matrix}{A boolean determining whether or not the shrunken matrix is given or not. If \code{FALSE}, it returns the shrunken autocorrelation function. Defaults to \code{FALSE}.}
 
-\item{target}{A target matrix used in the shrinking process. This should only be used if you wish to use a specific matrix as the target.}
+\item{target}{A shrinkage target matrix used in the shrinking process. This should only be used if you wish to use a specific matrix as the target.}
 }
 \value{
 The shrunken autocorrelation function or matrix (depending on \code{return_matrix}).

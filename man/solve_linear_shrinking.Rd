@@ -11,7 +11,7 @@ solve_linear_shrinking(par, corr_mat, target)
 
 \item{corr_mat}{The autocorrelation matrix of the considered time series.}
 
-\item{target}{A target matrix used in the shrinking process. This should only be used if you wish to use a specific matrix as the target.}
+\item{target}{A shrinkage target matrix used in the shrinking process. This should only be used if you wish to use a specific matrix as the target.}
 }
 \value{
 A numeric value that is either equal to \eqn{-}\code{par} or 1.
