@@ -33,8 +33,8 @@
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' compute_standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
-compute_standard_est <- function(X, pd = TRUE, maxLag = length(X) - 1, type = "autocovariance", meanX = mean(X)) {
+#' standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
+standard_est <- function(X, pd = TRUE, maxLag = length(X) - 1, type = "autocovariance", meanX = mean(X)) {
   stopifnot(length(X) > 0, is.vector(X), is.numeric(X), is.logical(pd), maxLag >= 0, maxLag <= (length(X) - 1),
             maxLag %% 1 == 0, length(meanX) == 1, is.numeric(meanX), !is.na(meanX), type %in% c('autocovariance', 'autocorrelation'))
   retVec <- as.vector(stats::acf(X, lag.max = maxLag, type = "covariance", plot = FALSE)$acf)
@@ -49,7 +49,7 @@ compute_standard_est <- function(X, pd = TRUE, maxLag = length(X) - 1, type = "a
 
 #' Autocovariance to Semivariogram
 #'
-#' This function computes an approximate estimated semivariogram using an estimated autocovariance function.
+#' This function computes an estimated semivariogram using an estimated autocovariance function.
 #'
 #' @details
 #' The semivariogram, \eqn{\gamma(h)} and autocovariance function, \eqn{C(h)}, under the assumption of weak stationarity are related as follows:
@@ -64,12 +64,12 @@ compute_standard_est <- function(X, pd = TRUE, maxLag = length(X) - 1, type = "a
 #'
 #' @param estCov A vector whose values are an estimate autocovariance function.
 #'
-#' @return A vector whose values are an approximate estimate to the semivariogram.
+#' @return A vector whose values are an estimate of the semivariogram.
 #' @export
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' estCov <- compute_standard_est(X, meanX=mean(X), maxLag = 2, pd=FALSE)
+#' estCov <- standard_est(X, meanX=mean(X), maxLag = 2, pd=FALSE)
 #' to_vario(estCov)
 to_vario <- function(estCov) {
   stopifnot(length(estCov) > 0, is.vector(estCov), is.numeric(estCov), !any(is.na(estCov)))
@@ -83,14 +83,14 @@ to_vario <- function(estCov) {
 #' @details
 #' This function is a translation of the 'uni_pacf' function in src/library/stats/src/pacf.c of the R source code which is an implementation of the Durbin–Levinson algorithm.
 #'
-#' @param estCov A vector representing observed values of the time series.
+#' @param estCov A numeric vector representing an estimated autocovariance or autocorrelation function.
 #'
-#' @return A vector whose values are an estimate autocovariance function.
+#' @return A vector whose values are an estimate partial autocorrelation function.
 #' @export
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' compute_standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
+#' standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
 to_pacf <- function(estCov) {
   stopifnot(length(estCov) > 0, is.vector(estCov), is.numeric(estCov))
 

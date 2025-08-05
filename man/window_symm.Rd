@@ -44,8 +44,8 @@ The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
 \strong{Blackman Window}.
 The Blackman window is defined as
 \deqn{w(x; a) = 1 +  ( (a - 1) / 2) + \frac{1}{2} \cos(\pi |x|) - \frac{a}{2} \cos(2 \pi |x|), x \in [-1, 1], a \in {R} .}
-The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}
-The standard value for this window is \eqn{a=0.16.}
+The \code{params} argument is of the form \code{c(}\eqn{a}\code{)}.
+The standard value of \eqn{a} for this window is \eqn{0.16.}
 
 \strong{Hann-Poisson Window}.
 The Hann-Poisson window is defined as

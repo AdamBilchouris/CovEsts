@@ -51,7 +51,7 @@ Below is a basic use case of the package.
 library(CovEsts)
 ## basic example code
 X <- rnorm(100)
-compute_standard_est(X, 20)
-plot(compute_standard_est(X, 20))
+compute_standard_est(X, maxLag = 20)
+plot(compute_standard_est(X, maxLag = 20))
 ```
 

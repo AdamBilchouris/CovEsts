@@ -86,7 +86,7 @@ get_all_tau <- function(p, m) {
 
 #' Compute Adjusted Splines.
 #'
-#' A helper function that is an implementation of the formula from Choi, Li & Wang (2013, p. 616).
+#' A helper function that is an implementation of the formula from Choi, Li & Wang (2013, p. 616),
 #' \deqn{
 #' f_{j}^{(l)}(x) = \frac{m + 1}{l} \left( f_{j}^{(l - 1)}(x + 1) - \tau_{j - p} f_{j}^{(l - 1)}(x) + \tau_{j - p + l + 1} f_{j + 1}^{(l - 1)}(x) -  f_{j + 1}^{(l - 1)}(x + 1)  \right) ,
 #' }
@@ -187,7 +187,7 @@ get_splines_df <- function(x, p, m, taus) {
 #' \hat{\mathbf{\beta}}_{WLS} = {\arg\min}_{\beta_{j} \ge 0} \sum_{i=1}^{L} w_{i} \left(\widehat{C}(h_{i}) - \sum_{j = 1}^{m + p} \beta_{j} f_{j}^{(p - 1)}(h_{i}^{2})  \right)^{2} ,
 #' }
 #' where \eqn{\{h_{1} , \dots , h_{L} \}} is a set of lags and \eqn{\{w_{1}, \dots , w_{L} \}} is a set of weights.
-#' The set of weights is calculated in [compute_splines_est], and they are of the form \eqn{w_{i} = (N - h_{i}) / ((1 - \widehat{C}(h_{i}))^{2}).}
+#' The set of weights is calculated in [splines_est], and they are of the form \eqn{w_{i} = (N - h_{i}) / ((1 - \widehat{C}(h_{i}))^{2}).}
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 #'
@@ -254,10 +254,10 @@ solve_spline <- function(par, splines_df, weights) {
 #' X <- rnorm(100)
 #' x <- seq(0, 5, by = 0.25)
 #' maxLag <- 5
-#' estCov <- compute_standard_est(X, maxLag = maxLag)
-#' estimated <- compute_splines_est(X, x, estCov, 3, 2, maxLag = maxLag)
+#' estCov <- standard_est(X, maxLag = maxLag)
+#' estimated <- splines_est(X, x, estCov, 3, 2, maxLag = maxLag)
 #' estimated
-compute_splines_est <- function(X, x, estCov, p, m, maxLag = length(X) - 1, type = "autocovariance", inital_pars = c(), control = list('maxit' = 1000)) {
+splines_est <- function(X, x, estCov, p, m, maxLag = length(X) - 1, type = "autocovariance", inital_pars = c(), control = list('maxit' = 1000)) {
   stopifnot(is.numeric(X), is.vector(X), all(!is.na(X)), is.numeric(x), is.vector(x), all(!is.na(x)),
             is.numeric(maxLag), maxLag >= 0, maxLag <= (length(estCov) - 1), is.numeric(estCov),
             is.vector(estCov), all(!is.na(estCov)), is.numeric(p), p >= 0, p %% 1 == 0,

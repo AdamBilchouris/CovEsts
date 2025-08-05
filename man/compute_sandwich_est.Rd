@@ -25,7 +25,7 @@ tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternative
 
 \item{b}{Bandwidth parameter, greater than 0. Defaults to \eqn{\lfloor} length(X) \eqn{\rfloor^{1/5}.}}
 
-\item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
+\item{pd}{Whether the standard positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
 \item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated long-run covariance. Defaults to \code{length(X) - 1}.}
 
@@ -48,7 +48,7 @@ Shang (2024) provides the following estimator (adapted for the nonfunctional tim
 \widehat{C}_{b} \coloneqq \sum_{h=-(N-1)}^{N-1} w(h / b) \widehat{C}(h) ,
 }
 where \eqn{b > 0} is the bandwith parameter, \eqn{w(\cdot)} is a symmetric window function such that \eqn{w(0) = 1, w(\cdot) \leq 1} and after some value \eqn{\iota} (we selected 1) \eqn{w(\cdot) = 0}.
-In the paper, \eqn{\widehat{C}(\cdot)} is the standard positive-definite autocovariance estimator (see \link{compute_standard_est}).
+In the paper, \eqn{\widehat{C}(\cdot)} is the standard positive-definite autocovariance estimator (see \link{standard_est}).
 }
 \examples{
 X <- 0:4

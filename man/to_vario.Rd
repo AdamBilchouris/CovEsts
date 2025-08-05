@@ -10,10 +10,10 @@ to_vario(estCov)
 \item{estCov}{A vector whose values are an estimate autocovariance function.}
 }
 \value{
-A vector whose values are an approximate estimate to the semivariogram.
+A vector whose values are an estimate of the semivariogram.
 }
 \description{
-This function computes an approximate estimated semivariogram using an estimated autocovariance function.
+This function computes an estimated semivariogram using an estimated autocovariance function.
 }
 \details{
 The semivariogram, \eqn{\gamma(h)} and autocovariance function, \eqn{C(h)}, under the assumption of weak stationarity are related as follows:
@@ -26,7 +26,7 @@ it can be used to obtain a function that is close to a semivariogram, see Bilcho
 }
 \examples{
 X <- c(1, 2, 3)
-estCov <- compute_standard_est(X, meanX=mean(X), maxLag = 2, pd=FALSE)
+estCov <- standard_est(X, meanX=mean(X), maxLag = 2, pd=FALSE)
 to_vario(estCov)
 }
 \references{

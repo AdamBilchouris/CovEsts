@@ -9,7 +9,7 @@ area_between(est1, est2, lags = c(), plot = FALSE)
 \arguments{
 \item{est1}{A numeric vector representing the first estimated autocovariance function.}
 
-\item{est2}{A numeric vector representing the second estimated autocovariance function.}
+\item{est2}{A numeric vector of the same length as \code{est1} representing the second estimated autocovariance function}
 
 \item{lags}{An optional vector of lags starting from 0 up until some other lag. If empty, a vector of lags is created starting from 0 until \code{len(est1) - 1}, by 1.}
 
@@ -34,8 +34,8 @@ If \code{lags} is empty, a uniform time grid with a step of 1 will be used which
 }
 \examples{
 x <- seq(0, 5, by=0.1)
-estCov1 <- exp(-x^2) + rnorm(length(x), sd=0.1)
-estCov2 <- exp(-x^2.1) + rnorm(length(x), sd=0.1)
+estCov1 <- exp(-x^2)
+estCov2 <- exp(-x^2.1)
 area_between(estCov1, estCov2, lags=x)
 area_between(estCov1, estCov2, lags=x, plot = TRUE)
 }

@@ -9,7 +9,7 @@ spectral_norm(est1, est2)
 \arguments{
 \item{est1}{A numeric vector representing the first estimated autocovariance function.}
 
-\item{est2}{A numeric vector representing the second estimated autocovariance function.}
+\item{est2}{A numeric vector of the same length as \code{est1} representing the second estimated autocovariance function}
 }
 \value{
 The spectral norm of the differences between the two functions.
@@ -39,7 +39,7 @@ The spectral norm is defined as the largest eigenvalue of \eqn{D.}
 }
 \examples{
 x <- seq(0, 5, by=0.1)
-estCov1 <- exp(-x^2) + rnorm(length(x), sd=0.1)
-estCov2 <- exp(-x^2.1) + rnorm(length(x), sd=0.1)
+estCov1 <- exp(-x^2)
+estCov2 <- exp(-x^2.1)
 spectral_norm(estCov1, estCov2)
 }

@@ -19,7 +19,7 @@ A vector or matrix of values.
 \description{
 These functions computes values of kernels that have the properties of symmetric probability distributions.
 For a kernel \eqn{a(x)}, the standardised version is \eqn{a(x) / \int_{-\infty}^{\infty} a(x) dx}, so that the integral is 1.
-The symmetric kernels are different to \link{kernel} and are used in the functions \link{compute_adjusted_est} and \link{compute_truncated_est}.
+The symmetric kernels are different to \link{kernel} and are used in the functions \link{adjusted_est} and \link{truncated_est}.
 }
 \details{
 \strong{Symmetric Gaussian Kernel}.

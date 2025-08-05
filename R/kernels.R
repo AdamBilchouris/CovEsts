@@ -10,7 +10,7 @@
 #'
 #' This function computes one of the isotropic kernels listed below.
 #' Unlike [kernel_symm], these kernels are only defined when \eqn{x \geq 0.} They are used as
-#' kernel multipliers in estimators [compute_corrected_standard_est] and [compute_kernel_corrected_est].
+#' kernel multipliers in estimators [corrected_standard_est] and [kernel_corrected_est].
 #'
 #' \strong{Gaussian Kernel}.
 #' The isotropic Gaussian kernel, which is positive-definite for \eqn{{R}^{d}, d \in N,} is defined as
@@ -76,7 +76,7 @@
 #' @references
 #' Genton, M. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2, 299-312. 10.1162/15324430260185646.
 #'
-#' Table 4.2 of Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. Springer. https://doi.org/10.1007/978-94-024-1918-4
+#' Table 4.2 in Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. Springer. https://doi.org/10.1007/978-94-024-1918-4
 #'
 #' @param x A vector or matrix of arguments of at least length 1 for which the kernel is computed at.
 #' @param name The name of the kernel. Options are: gaussian, exponential, wave, rational_quadratic, spherical, circular, bessel_j, matern, and cauchy.
@@ -194,7 +194,7 @@ kernel <- function(x, name, params=c(1)) {
 #'
 #' These functions computes values of kernels that have the properties of symmetric probability distributions.
 #' For a kernel \eqn{a(x)}, the standardised version is \eqn{a(x) / \int_{-\infty}^{\infty} a(x) dx}, so that the integral is 1.
-#' The symmetric kernels are different to [kernel] and are used in the functions [compute_adjusted_est] and [compute_truncated_est].
+#' The symmetric kernels are different to [kernel] and are used in the functions [adjusted_est] and [truncated_est].
 #'
 #' \strong{Symmetric Gaussian Kernel}.
 #' The symmetric Gaussian kernel is defined as

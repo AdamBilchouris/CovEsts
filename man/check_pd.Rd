@@ -7,7 +7,7 @@
 check_pd(est)
 }
 \arguments{
-\item{est}{A numeric vector representing an estimated autocovariance function.}
+\item{est}{A numeric vector or corresponding cyclic matrix representing an estimated autocovariance function.}
 }
 \value{
 A boolean where \code{TRUE} denotes a positive-definite autocovariance function estimate and \code{FALSE} for an estimate that is not positive-definite.
@@ -33,4 +33,5 @@ The eigendecomposition of this matrix is computed to determine if all eigenvalue
 x <- seq(0, 5, by=0.1)
 estCov <- exp(-x^2)
 check_pd(estCov)
+check_pd(create_cyclic_matrix(estCov))
 }

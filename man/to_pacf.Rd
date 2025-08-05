@@ -7,10 +7,10 @@
 to_pacf(estCov)
 }
 \arguments{
-\item{estCov}{A vector representing observed values of the time series.}
+\item{estCov}{A numeric vector representing an estimated autocovariance or autocorrelation function.}
 }
 \value{
-A vector whose values are an estimate autocovariance function.
+A vector whose values are an estimate partial autocorrelation function.
 }
 \description{
 This function computes the partial autocorrelation function from an estimated autocovariance or autocorrelation function.
@@ -20,5 +20,5 @@ This function is a translation of the 'uni_pacf' function in src/library/stats/s
 }
 \examples{
 X <- c(1, 2, 3)
-compute_standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
+standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
 }

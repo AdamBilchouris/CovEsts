@@ -128,14 +128,14 @@ taper <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE
 #'
 #' This helper function computes the tapered autocovariance for a specified lag \eqn{h},
 #' \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n})^{-1} \sum_{j=1}^{N-h}  (X(j) - \bar{X} ) ( X(j+ h) - \bar{X} ) a((j - 1/2) / n; \rho) a((j + h - 1/2) / n; \rho) ,}
-#' where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter. This taper functions is used in [compute_tapered_est].
+#' where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter. This taper functions is used in [tapered_est].
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param meanX The average value of the \code{X}.
 #' @param h The lag at which the tapered autocovariance function is computed at.
-#' @param h2n The value of \eqn{H_{2, n}(0)}, computed within [compute_tapered_est].
-#' @param taperVals_t The taper values for each index of the process, computed within [compute_tapered_est].
-#' @param taperVals_h The taper values shifted by the lag, computed within [compute_tapered_est].
+#' @param h2n The value of \eqn{H_{2, n}(0)}, computed within [tapered_est].
+#' @param taperVals_t The taper values for each index of the process, computed within [tapered_est].
+#' @param taperVals_h The taper values shifted by the lag, computed within [tapered_est].
 #'
 #' @return The tapered autocovariance function at the specified lag.
 #' @export
@@ -190,8 +190,8 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' compute_tapered_est(X, 0.5, "tukey", maxLag = 2)
-compute_tapered_est <- function(X, rho, window_name, window_params = c(1), maxLag = length(X) - 1, type = "autocovariance",  meanX = mean(X), custom_window = FALSE) {
+#' tapered_est(X, 0.5, "tukey", maxLag = 2)
+tapered_est <- function(X, rho, window_name, window_params = c(1), maxLag = length(X) - 1, type = "autocovariance",  meanX = mean(X), custom_window = FALSE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1,
             maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(rho), length(rho) == 1, rho > 0, rho <= 1,
             is.logical(custom_window),  length(meanX) == 1, is.numeric(meanX), !is.na(meanX),

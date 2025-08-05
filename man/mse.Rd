@@ -9,23 +9,23 @@ mse(est1, est2)
 \arguments{
 \item{est1}{A numeric vector representing the first estimated autocovariance function.}
 
-\item{est2}{A numeric vector representing the second estimated autocovariance function.}
+\item{est2}{A numeric vector of the same length as \code{est1} representing the second estimated (or theoretical) autocovariance function}
 }
 \value{
-A numeric value representing the estimated MSE between two estimated autocovariance functions.
+A numeric value representing the MSE between two autocovariance functions (estimated or theoretical).
 }
 \description{
-This function computes the mean-square difference/error between two estimated autocovariance functions or one estimated and one theoertical autocovariance functions.
+This function computes the mean-square difference/error between two autocovariance functions (estimated or theoretical).
 }
 \details{
-This function computes the mean-square difference/error (MSE) between two estimated autocovariance functions or one estimated and one theoertical autocovariance functions.
+This function computes the mean-square difference/error (MSE) between two estimated autocovariance functions (estimated or theoretical).
 The MSE is defined as
-\deqn{\frac{1}{N} \sum_{i=0}^{n} \left(\widehat{C}_{1}(h_{i}) - \widehat{C}_{2}(h_{i})\right)^{2}}
+\deqn{\frac{1}{n} \sum_{i=0}^{n} \left(\widehat{C}_{1}(h_{i}) - \widehat{C}_{2}(h_{i})\right)^{2}}
 over a set of lags \eqn{\{h_{0}, h_{1} , h_{2} , \dots , h_{n} \}.}
 }
 \examples{
 x <- seq(0, 5, by=0.1)
-estCov1 <- exp(-x^2) + rnorm(length(x), sd=0.1)
-estCov2 <- exp(-x^2.1) + rnorm(length(x), sd=0.1)
+estCov1 <- exp(-x^2)
+estCov2 <- exp(-x^2.1)
 mse(estCov1, estCov2)
 }

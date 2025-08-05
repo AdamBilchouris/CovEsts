@@ -13,11 +13,11 @@ tapered_cov_single(X, meanX, h, h2n, taperVals_t, taperVals_h)
 
 \item{h}{The lag at which the tapered autocovariance function is computed at.}
 
-\item{h2n}{The value of \eqn{H_{2, n}(0)}, computed within \link{compute_tapered_est}.}
+\item{h2n}{The value of \eqn{H_{2, n}(0)}, computed within \link{tapered_est}.}
 
-\item{taperVals_t}{The taper values for each index of the process, computed within \link{compute_tapered_est}.}
+\item{taperVals_t}{The taper values for each index of the process, computed within \link{tapered_est}.}
 
-\item{taperVals_h}{The taper values shifted by the lag, computed within \link{compute_tapered_est}.}
+\item{taperVals_h}{The taper values shifted by the lag, computed within \link{tapered_est}.}
 }
 \value{
 The tapered autocovariance function at the specified lag.
@@ -25,7 +25,7 @@ The tapered autocovariance function at the specified lag.
 \description{
 This helper function computes the tapered autocovariance for a specified lag \eqn{h},
 \deqn{\widehat{C}_{N}^{a} (h) = (H_{2, n})^{-1} \sum_{j=1}^{N-h}  (X(j) - \bar{X} ) ( X(j+ h) - \bar{X} ) a((j - 1/2) / n; \rho) a((j + h - 1/2) / n; \rho) ,}
-where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter. This taper functions is used in \link{compute_tapered_est}.
+where \eqn{a(\cdot)} is a window function, \eqn{\rho} is a scale parameter. This taper functions is used in \link{tapered_est}.
 }
 \examples{
 X <- c(1, 2, 3)

@@ -4,24 +4,36 @@
 \alias{nearest_pd}
 \title{Compute the Nearest Positive-Definite Matrix.}
 \usage{
-nearest_pd(X, return_matrix = FALSE)
+nearest_pd(X)
 }
 \arguments{
 \item{X}{Either a numeric vector or a square matrix. If a vector is provided, a matrix will be created of the form found in \link{create_cyclic_matrix}.}
-
-\item{return_matrix}{A boolean determining whether or not the closest matrix is given or not. If \code{FALSE}, it returns the closest autocorrelation function. Defaults to \code{FALSE}.}
 }
 \value{
-The closest positive-definite autocorrelation function or matrix (depending on \code{return_matrix}).
+The closest positive-definite autocorrelation matrix.
 }
 \description{
-This function computes the nearest positive-definite matrix to some matrix \eqn{X}.
+This function computes the nearest positive-definite matrix to some matrix \eqn{A}.
+}
+\details{
+This function computes the nearest positive-definite matrix to some matrix \eqn{A}.
+
+The procedure to do so is as follows
+For a matrix \eqn{X}, compute the symmetric matrix \eqn{B = (A + A^{T}) / 2.}
+Let \eqn{B = UH} be the polar decomposition of B.
+The nearest positive-definite matrix to \eqn{X} is \eqn{X_{F} = (B + H) / 2.}
+
+Unlike \link{shrinking}, only an autocorrelation matrix can be returned, not an autocovariance function.
+
+The implementation is a translation of https://au.mathworks.com/matlabcentral/fileexchange/42885-nearestspd#functions_tab .
 }
 \examples{
 X <- c(1, 0, -1.1)
 nearest_pd(X)
-nearest_pd(X, TRUE)
+check_pd(nearest_pd(X))
 }
 \references{
 Higham, N. J. (1988). Computing a nearest symmetric positive semidefinite matrix. Linear Algebra and its Applications, 103, 103–118. 10.1016/0024-3795(88)90223-6
+
+D'Errico, J. (2025). nearestSPD (https://www.mathwor ks.com/matlabcentral/fileexchange/42885-nearestspd), MATLAB Central File Exchange. Retrieved August 2, 2025.
 }

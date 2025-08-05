@@ -9,10 +9,10 @@ hilbert_schmidt(est1, est2)
 \arguments{
 \item{est1}{A numeric vector representing the first estimated autocovariance function.}
 
-\item{est2}{A numeric vector representing the second estimated autocovariance function}
+\item{est2}{A numeric vector of the same length as \code{est1} representing the second estimated autocovariance function}
 }
 \value{
-A numeric value representing the estimated Hilbert-Schmidt Norm between two estimated autocovariance functions.
+A numeric value representing the estimated Hilbert-Schmidt norm between two estimated autocovariance functions.
 }
 \description{
 This function computes the Hilbert-Schidmt norm between two estimated autocovariance functions.
@@ -28,12 +28,15 @@ D(h_{n - 1}) & D(h_{n - 2}) & \cdots & D(h_{0})     & D(h_{1})     \\
 D(h_{n})     & D(h_{n - 1}) & \cdots & D(h_{1})     & D(h_{0})     \\
 \end{array}} \right] ,
 }
+\deqn{
+\left[ z \right]
+}
 over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \},} where \eqn{D(h) = \hat{C}_{1}(h) - \hat{C}_{2}(h),}
 is defined as \deqn{{\left\Vert D \right\Vert}_{HS} \coloneqq \sqrt{\sum_{i,j} d_{i, j}^{2}}.}
 }
 \examples{
 x <- seq(0, 5, by=0.1)
-estCov1 <- exp(-x^2) + rnorm(length(x), sd=0.1)
-estCov2 <- exp(-x^2.1) + rnorm(length(x), sd=0.1)
+estCov1 <- exp(-x^2)
+estCov2 <- exp(-x^2.1)
 hilbert_schmidt(estCov1, estCov2)
 }

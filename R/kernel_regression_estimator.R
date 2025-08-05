@@ -32,7 +32,7 @@ Xij_mat <- function(X, meanX = mean(X)) {
 
 #' Compute \eqn{\rho(T_{1})} used in the Truncated Kernel Regression Estimator.
 #'
-#' This helper function computes \eqn{\rho(T_{1})} used in the truncated kernel regression estimator, [compute_truncated_est].
+#' This helper function computes \eqn{\rho(T_{1})} used in the truncated kernel regression estimator, [truncated_est].
 
 #'
 #' @details
@@ -41,7 +41,7 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' \hat{\rho}(T_{1}) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((T_{1} - (t_{i} - t_{j})) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((T_{1} - (t_{i} - t_{j}))) / b) \right)^{-1},
 #' }
 #' where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}),}
-#' which is then used in [compute_truncated_est],
+#' which is then used in [truncated_est],
 #' \deqn{\hat{\rho}_{1}(t) = \left\{ \begin{array}{ll}
 #' \hat{\rho}(t) & 0 \leq t \leq T_{1} \\
 #' \hat{\rho}(T_{1}) (T_{2} - t)(T_{2} - T_{1})^{-1} & T_{1} < t \leq T_{2} \\
@@ -120,7 +120,7 @@ rho_T1 <- function(x, meanX, T1, b, xij_mat, kernel_name="gaussian", kernel_para
 #'
 #' The Type-II discrete cosine transform is obtained using [stats::fft].
 #' If \eqn{X} is of length N, construct a new signal \eqn{Y} of length \eqn{4N}, with values \eqn{Y_{2n} = 0, Y_{2n + 1} = x_{n}} for \eqn{0 \le n < N},
-#' and , \eqn{Y_{2N} = 0, Y_{4N - n} = y_{n}} for \eqn{0 < n < 2N.}
+#' and \eqn{Y_{2N} = 0, Y_{4N - n} = y_{n}} for \eqn{0 < n < 2N.}
 #' After this, the Type-II discrete cosine transform is computed by \code{0.5 * Re(stats::fft(Y))[1:(length(Y) / 4)]}.
 #'
 #' @references
@@ -191,7 +191,7 @@ idct_1d <- function(X) {
 
 #' Compute the Truncated Kernel Regression Estimator.
 #'
-#' This function computes the truncated kernel regression estimator, based on the kernel regression estimator \eqn{\hat{\rho}(\cdot)}, see [compute_adjusted_est].
+#' This function computes the truncated kernel regression estimator, based on the kernel regression estimator \eqn{\hat{\rho}(\cdot)}, see [adjusted_est].
 #'
 #' @details
 #' This function computes the truncated kernel regression estimator,
@@ -200,9 +200,9 @@ idct_1d <- function(X) {
 #' \hat{\rho}(T_{1}) (T_{2} - t)(T_{2} - T_{1})^{-1} & T_{1} < t \leq T_{2} \\
 #' 0 & t > T_{2}
 #' \end{array} \right. }
-#' where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator, see [compute_adjusted_est].
+#' where \eqn{\hat{\rho}(\cdot)} is the kernel regression estimator, see [adjusted_est].
 #'
-#' Compared to [compute_adjusted_est], this function brings down the estimate to zero linearly between \eqn{T_{1}} and \eqn{T_{2}}.
+#' Compared to [adjusted_est], this function brings down the estimate to zero linearly between \eqn{T_{1}} and \eqn{T_{2}}.
 #' In the case of short-range dependence, this may be beneficial as it can remove estimation artefacts at large lags.
 #'
 #' To make this estimator positive-definite, the following procedure is used:
@@ -241,15 +241,15 @@ idct_1d <- function(X) {
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
-#' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
+#' truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
 #'                   "gaussian")
 #'
 #' my_kernel <- function(x, theta, params) {
 #'   stopifnot(theta > 0, length(x) >= 1)
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
-#' compute_truncated_est(X, 1:4, 1:3, 1, 2, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
-compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", kernel_params = c(), pd = TRUE, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
+#' truncated_est(X, 1:4, 1:3, 1, 2, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
+truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", kernel_params = c(), pd = TRUE, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(x) >= 1, is.numeric(x), !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), is.numeric(t), length(t) >= 1,
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(T2) == 1, is.numeric(T2),
@@ -350,13 +350,13 @@ compute_truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", 
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
-#' compute_adjusted_est(X, 1:4, 1:3, 0.1, "gaussian")
+#' adjusted_est(X, 1:4, 1:3, 0.1, "gaussian")
 #' my_kernel <- function(x, theta, params) {
 #'   stopifnot(theta > 0, length(x) >= 1)
 #'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
 #' }
-#' compute_adjusted_est(X, 1:4, 1:3, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
-compute_adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_params=c(), pd = TRUE, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
+#' adjusted_est(X, 1:4, 1:3, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
+adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_params=c(), pd = TRUE, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(x), length(x) >= 1, !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
             length(t) >= 1, length(b) == 1, is.numeric(b), b > 0, is.logical(custom_kernel),

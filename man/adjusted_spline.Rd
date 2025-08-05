@@ -23,7 +23,7 @@ adjusted_spline(x, j, l, p, m, taus)
 A numeric value of the adjusted spline \eqn{f_{j}^{(l)}(x).}
 }
 \description{
-A helper function that is an implementation of the formula from Choi, Li & Wang (2013, p. 616).
+A helper function that is an implementation of the formula from Choi, Li & Wang (2013, p. 616),
 \deqn{
 f_{j}^{(l)}(x) = \frac{m + 1}{l} \left( f_{j}^{(l - 1)}(x + 1) - \tau_{j - p} f_{j}^{(l - 1)}(x) + \tau_{j - p + l + 1} f_{j + 1}^{(l - 1)}(x) -  f_{j + 1}^{(l - 1)}(x + 1)  \right) ,
 }

@@ -19,7 +19,7 @@ A vector or matrix of kernel values.
 \description{
 This function computes one of the isotropic kernels listed below.
 Unlike \link{kernel_symm}, these kernels are only defined when \eqn{x \geq 0.} They are used as
-kernel multipliers in estimators \link{compute_corrected_standard_est} and \link{compute_kernel_corrected_est}.
+kernel multipliers in estimators \link{corrected_standard_est} and \link{kernel_corrected_est}.
 }
 \details{
 \strong{Gaussian Kernel}.
@@ -112,5 +112,5 @@ curve(kernel(x, "cauchy", c(theta, alpha, beta)), from = 0, to = 5)
 \references{
 Genton, M. (2001). Classes of Kernels for Machine Learning: A Statistics Perspective. Journal of Machine Learning Research. 2, 299-312. 10.1162/15324430260185646.
 
-Table 4.2 of Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. Springer. https://doi.org/10.1007/978-94-024-1918-4
+Table 4.2 in Hristopulos, D. T. (2020). Random Fields for Spatial Data Modeling:  A Primer for Scientists and Engineers. Springer. https://doi.org/10.1007/978-94-024-1918-4
 }

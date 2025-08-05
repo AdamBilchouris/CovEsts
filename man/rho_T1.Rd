@@ -37,7 +37,7 @@ gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel
 The estimated autocovariance function at \eqn{T_{1}}.
 }
 \description{
-This helper function computes \eqn{\rho(T_{1})} used in the truncated kernel regression estimator, \link{compute_truncated_est}.
+This helper function computes \eqn{\rho(T_{1})} used in the truncated kernel regression estimator, \link{truncated_est}.
 }
 \details{
 This function computes the following value,
@@ -45,7 +45,7 @@ This function computes the following value,
 \hat{\rho}(T_{1}) = \left( \sum_{i=1}^{N} \sum_{j=1}^{N} \check{X}_{ij} K((T_{1} - (t_{i} - t_{j})) / b) \right) \left( \sum_{i=1}^{N} \sum_{j=1}^{N} K((T_{1} - (t_{i} - t_{j}))) / b) \right)^{-1},
 }
 where \eqn{\check{X}_{ij} = (X(t_{i}) - \bar{X}) (X(t_{j}) - \bar{X}),}
-which is then used in \link{compute_truncated_est},
+which is then used in \link{truncated_est},
 \deqn{\hat{\rho}_{1}(t) = \left\{ \begin{array}{ll}
 \hat{\rho}(t) & 0 \leq t \leq T_{1} \\
 \hat{\rho}(T_{1}) (T_{2} - t)(T_{2} - T_{1})^{-1} & T_{1} < t \leq T_{2} \\

@@ -18,7 +18,7 @@ This function computes the Type-II discrete cosine transform.
 \details{
 The Type-II discrete cosine transform is obtained using \link[stats:fft]{stats::fft}.
 If \eqn{X} is of length N, construct a new signal \eqn{Y} of length \eqn{4N}, with values \eqn{Y_{2n} = 0, Y_{2n + 1} = x_{n}} for \eqn{0 \le n < N},
-and , \eqn{Y_{2N} = 0, Y_{4N - n} = y_{n}} for \eqn{0 < n < 2N.}
+and \eqn{Y_{2N} = 0, Y_{4N - n} = y_{n}} for \eqn{0 < n < 2N.}
 After this, the Type-II discrete cosine transform is computed by \code{0.5 * Re(stats::fft(Y))[1:(length(Y) / 4)]}.
 }
 \examples{
