@@ -2,9 +2,9 @@ Package: CovEsts
 Title: Nonparametric Estimators for Covariance Functions
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Adam", "Bilchouris", email = "adam.bilchouris@gmail.com", role = c("cre", "aut")),
-    person("Andriy", "Olenko", email = "a.olenko@latrobe.edu.au", role = "aut")
-    )
+    person(given = "Adam", family = "Bilchouris", role = c("cre", "aut"), email = "adam.bilchouris@gmail.com"),
+    person(given = "Andriy", family = "Olenko", role = "aut", email = "a.olenko@latrobe.edu.au")
+  )
 Description: Several nonparametric and corrected estimators for covariance functions,  and related functions for the analysis.
 License: GPL (>= 3)
 Encoding: UTF-8

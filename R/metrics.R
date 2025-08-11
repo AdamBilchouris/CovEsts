@@ -294,7 +294,7 @@ mse <- function(est1, est2) {
 #' \left[ z \right]
 #' }
 #' over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \},} where \eqn{D(h) = \hat{C}_{1}(h) - \hat{C}_{2}(h),}
-#' is defined as \deqn{{\left\Vert D \right\Vert}_{HS} \coloneqq \sqrt{\sum_{i,j} d_{i, j}^{2}}.}
+#' is defined as \deqn{{\left\Vert D \right\Vert}_{HS} = \sqrt{\sum_{i,j} d_{i, j}^{2}}.}
 #'
 #' @param est1 A numeric vector representing the first estimated autocovariance function.
 #' @param est2 A numeric vector of the same length as \code{est1} representing the second estimated autocovariance function

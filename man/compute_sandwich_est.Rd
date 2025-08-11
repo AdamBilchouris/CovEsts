@@ -45,7 +45,7 @@ The long-run covariance is a measure of total dependence in a time series as opp
 
 Shang (2024) provides the following estimator (adapted for the nonfunctional time series case)
 \deqn{
-\widehat{C}_{b} \coloneqq \sum_{h=-(N-1)}^{N-1} w(h / b) \widehat{C}(h) ,
+\widehat{C}_{b} = \sum_{h=-(N-1)}^{N-1} w(h / b) \widehat{C}(h) ,
 }
 where \eqn{b > 0} is the bandwith parameter, \eqn{w(\cdot)} is a symmetric window function such that \eqn{w(0) = 1, w(\cdot) \leq 1} and after some value \eqn{\iota} (we selected 1) \eqn{w(\cdot) = 0}.
 In the paper, \eqn{\widehat{C}(\cdot)} is the standard positive-definite autocovariance estimator (see \link{standard_est}).

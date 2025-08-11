@@ -20,5 +20,5 @@ This function is a translation of the 'uni_pacf' function in src/library/stats/s
 }
 \examples{
 X <- c(1, 2, 3)
-standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
+to_pacf(standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X)))
 }

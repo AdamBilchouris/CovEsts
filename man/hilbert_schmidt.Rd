@@ -32,7 +32,7 @@ D(h_{n})     & D(h_{n - 1}) & \cdots & D(h_{1})     & D(h_{0})     \\
 \left[ z \right]
 }
 over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \},} where \eqn{D(h) = \hat{C}_{1}(h) - \hat{C}_{2}(h),}
-is defined as \deqn{{\left\Vert D \right\Vert}_{HS} \coloneqq \sqrt{\sum_{i,j} d_{i, j}^{2}}.}
+is defined as \deqn{{\left\Vert D \right\Vert}_{HS} = \sqrt{\sum_{i,j} d_{i, j}^{2}}.}
 }
 \examples{
 x <- seq(0, 5, by=0.1)

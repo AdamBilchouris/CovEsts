@@ -90,7 +90,7 @@ to_vario <- function(estCov) {
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
+#' to_pacf(standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X)))
 to_pacf <- function(estCov) {
   stopifnot(length(estCov) > 0, is.vector(estCov), is.numeric(estCov))
 

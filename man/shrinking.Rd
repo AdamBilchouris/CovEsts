@@ -22,7 +22,7 @@ This function corrects an autocovariance/autocorrelation function estimate via l
 \details{
 This function corrects an autocovariance/autocorrelation function estimate via linear shrinking of the autocorrelation matrix.
 The shrunken autocorrelation matrix is computed as follows
-\deqn{\widetilde{R} \coloneqq \lambda R + (1 - \lambda)I_{p},}
+\deqn{\widetilde{R} = \lambda R + (1 - \lambda)I_{p},}
 where \eqn{\widetilde{R}} is the shrunken autocorrelation matrix, \eqn{R} is the original autocorrelation matrix, \eqn{\lambda \in [0, 1],} and \eqn{I_{p}} is the \eqn{p\times p} identity matrix.
 \eqn{\lambda} is chosen in such a away that largest value which still results in a positive-definite matrix.
 The shrunken matrix will be positive-definite.

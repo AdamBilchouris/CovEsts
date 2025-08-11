@@ -166,7 +166,7 @@ kernel_corrected_est <- function(estCov, kernel_name, kernel_params = c(), N_T =
 #' solve_shrinking(0.5, corr_mat, diag(length(estCorr)))
 solve_shrinking <- function(par, corr_mat, target) {
   adj_corr_mat <- (par[1] * corr_mat) + (1 - par[1]) * target
-  isPd <- check_pd(adj_corr_mat[1, ])
+  isPd <- check_pd(adj_corr_mat)
   if(isPd) {
     return(-par[1])
   }
@@ -180,7 +180,7 @@ solve_shrinking <- function(par, corr_mat, target) {
 #' @details
 #' This function corrects an autocovariance/autocorrelation function estimate via linear shrinking of the autocorrelation matrix.
 #' The shrunken autocorrelation matrix is computed as follows
-#' \deqn{\widetilde{R} \coloneqq \lambda R + (1 - \lambda)I_{p},}
+#' \deqn{\widetilde{R} = \lambda R + (1 - \lambda)I_{p},}
 #' where \eqn{\widetilde{R}} is the shrunken autocorrelation matrix, \eqn{R} is the original autocorrelation matrix, \eqn{\lambda \in [0, 1],} and \eqn{I_{p}} is the \eqn{p\times p} identity matrix.
 #' \eqn{\lambda} is chosen in such a away that largest value which still results in a positive-definite matrix.
 #' The shrunken matrix will be positive-definite.
@@ -238,7 +238,7 @@ shrinking <- function(estCov, return_matrix = FALSE, target = NULL) {
 #'
 #' Shang (2024) provides the following estimator (adapted for the nonfunctional time series case)
 #' \deqn{
-#' \widehat{C}_{b} \coloneqq \sum_{h=-(N-1)}^{N-1} w(h / b) \widehat{C}(h) ,
+#' \widehat{C}_{b} = \sum_{h=-(N-1)}^{N-1} w(h / b) \widehat{C}(h) ,
 #' }
 #' where \eqn{b > 0} is the bandwith parameter, \eqn{w(\cdot)} is a symmetric window function such that \eqn{w(0) = 1, w(\cdot) \leq 1} and after some value \eqn{\iota} (we selected 1) \eqn{w(\cdot) = 0}.
 #' In the paper, \eqn{\widehat{C}(\cdot)} is the standard positive-definite autocovariance estimator (see [standard_est]).
