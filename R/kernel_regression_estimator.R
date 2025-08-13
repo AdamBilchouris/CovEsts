@@ -438,6 +438,8 @@ adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_params=c()
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' make_pd(X)
+#' check_pd(make_pd(X))
+#' check_pd(make_pd(X, method.1 = FALSE))
 make_pd <- function(x, method.1 = TRUE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), is.logical(method.1))
   dct_x <- dct_1d(x)

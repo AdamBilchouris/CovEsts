@@ -41,6 +41,8 @@ where \eqn{\textbf{1}(A)} is the indicator function over the set \eqn{A.}
 \examples{
 X <- c(1, 2, 3, 4)
 make_pd(X)
+check_pd(make_pd(X))
+check_pd(make_pd(X, method.1 = FALSE))
 }
 \references{
 Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. 10.1007/bf01199899
