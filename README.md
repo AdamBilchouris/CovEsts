@@ -25,13 +25,15 @@ Briefly, the estimators are
 * an estimator adjusting for the edge effect,
 * an estimator utilising splines,
 * kernel correction of estimators,
-* computing the variogram from an autocovariance function estimate.
+* computing the semivariogram from an autocovariance function estimate, and
+* computing the partial autocorelation function from an autocovariance function estimate.
 
 The package also provides several general functions, which are
   
-* the forward and inverse one-dimensional discretre cosine transforms,
+* the forward and inverse one-dimensional discrete cosine transforms,
 * making a function positive-definite,
-* constructing a cyclic matrix.
+* linear shrinking, and
+* computing the nearest positive-definite matrix.
 
 ## Installation
 
@@ -50,7 +52,7 @@ Below is a basic use case of the package.
 library(CovEsts)
 ## basic example code
 X <- rnorm(100)
-compute_standard_est(X, maxLag = 20)
-plot(compute_standard_est(X, maxLag = 20))
+standard_est(X, maxLag = 20)
+plot(standard_est(X, maxLag = 20))
 ```
 
