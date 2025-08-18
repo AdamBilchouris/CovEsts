@@ -34,7 +34,7 @@ target <- diag(length(estCorr))
 shrinking(estCorr, TRUE, target)
 }
 \references{
-Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation ofand Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531
+Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation and Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531
 
 Rousseeuw, P. J. & Molenberghs, G. (1993). Transformation of Non Positive Semidefinite Correlation Matrices. Communications in Statistics - Theory and Methods, 22(4), 965–984. 10.1080/03610928308831068
 }

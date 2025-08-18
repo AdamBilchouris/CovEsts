@@ -30,7 +30,7 @@ f_{j}^{(l)}(x) = \frac{m + 1}{l} \left( f_{j}^{(l - 1)}(x + 1) - \tau_{j - p} f_
 where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the spline, \eqn{l} is the order of the adjusted spline (the function \eqn{f_{j}^{(l)}(\cdot)}) and \eqn{j = 1, 2, \dots , m + p.}
 }
 \examples{
-taus <- get_all_tau(3, 2)
+taus <- get_taus(3, 2)
 adjusted_spline(1, 2, 1, 3, 2, taus)
 }
 \references{

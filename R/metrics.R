@@ -128,11 +128,11 @@ max_distance <- function(est1, est2, lags=c(), plot = FALSE) {
 
 #' Create a Cyclic Matrix for a Given Vector.
 #'
-#' This helper function creates a cyclic matrix from a given vector \eqn{v}.
+#' This helper function creates a symmetric matrix from a given vector \eqn{v}.
 #'
 #' @details
-#' This function creates a cylic matrix for a given vector \eqn{v}.
-#' If \eqn{v = \{v_{0}, v_{1} , \dots , v_{N-1} , v_{N} \},} then the cyclic matrix will has the form
+#' This function creates a symmetric matrix for a given vector \eqn{v}.
+#' If \eqn{v = \{v_{0}, v_{1} , \dots , v_{N-1} , v_{N} \},} then the symmetric matrix will has the form
 #' \deqn{\left[ {\begin{array}{ccccc}
 #' v_{0}     & v_{1}     & \cdots & v_{N - 1} & v_{N}     \\
 #' v_{1}     & v_{0}     & \cdots & v_{N - 2} & v_{N - 1} \\
@@ -144,22 +144,17 @@ max_distance <- function(est1, est2, lags=c(), plot = FALSE) {
 #'
 #' @param v A numeric vector.
 #'
-#' @return A cyclic matrix.
+#' @return A symmetric matrix.
 #' @export
+#'
+#' @importFrom stats toeplitz
 #'
 #' @examples
 #' v <- c(1, 2, 3)
-#' create_cyclic_matrix(v)
-create_cyclic_matrix <- function(v) {
- stopifnot(is.numeric(v), !any(is.na(v)), length(v) >= 1)
-  n <- length(v)
-  mat <- matrix(NA, nrow = n, ncol = n)
-  for (i in 1:n) {
-    for (j in 1:n) {
-      mat[i, j] <- v[1 + abs(i - j)]
-    }
-  }
-  return(mat)
+#' cyclic_matrix(v)
+cyclic_matrix <- function(v) {
+  stopifnot(is.numeric(v), !any(is.na(v)), length(v) >= 1)
+  return(toeplitz(v))
 }
 
 #' Compute the Spectral Norm Between Estimated Functions.
@@ -182,7 +177,7 @@ create_cyclic_matrix <- function(v) {
 #' \end{array}} \right] ,
 #' }
 #' over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \}.}
-#' This matrix is created by [create_cyclic_matrix].
+#' This matrix is created by [cyclic_matrix].
 #'
 #' The spectral norm is defined as the largest eigenvalue of \eqn{D.}
 #'
@@ -200,7 +195,7 @@ create_cyclic_matrix <- function(v) {
 spectral_norm <- function(est1, est2) {
   stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
             length(est1) == length(est2))
-  det1 <- norm(create_cyclic_matrix((est1 - est2)), type = "2")
+  det1 <- norm(cyclic_matrix((est1 - est2)), type = "2")
   if(is.numeric(det1)) {
     return(det1)
   }
@@ -234,7 +229,7 @@ spectral_norm <- function(est1, est2) {
 #' x <- seq(0, 5, by=0.1)
 #' estCov <- exp(-x^2)
 #' check_pd(estCov)
-#' check_pd(create_cyclic_matrix(estCov))
+#' check_pd(cyclic_matrix(estCov))
 check_pd <- function(est) {
   stopifnot(is.numeric(est), length(est) >= 1, !any(is.na(est)))
 
@@ -243,7 +238,7 @@ check_pd <- function(est) {
     return(!any(eigens < 0) && !all(eigens == 0))
   }
 
-  cyclic_mat <- create_cyclic_matrix(est)
+  cyclic_mat <- cyclic_matrix(est)
   eigens <- zapsmall(eigen(cyclic_mat)$values)
   return(!any(eigens < 0) && !all(eigens == 0))
 }
@@ -282,16 +277,13 @@ mse <- function(est1, est2) {
 #' @details
 #' This function computes the Hilbert-Schidmt norm between two estimated autocovariance functions.
 #' The Hilbert-Schmidt norm of a matrix
-#' \deqn{D = \left[ {\begin{array}{ccccc}
+#' \deqn{D = \left[(d_{i,j})_{1 \le i,j \le n}\right] = \left[ {\begin{array}{ccccc}
 #' D(h_{0})     & D(h_{1})     & \cdots & D(h_{n - 1}) & D(h_{n})     \\
 #' D(h_{1})     & D(h_{0})     & \cdots & D(h_{n - 2}) & D(h_{n - 1}) \\
 #' \vdots       & \vdots       & \ddots & \vdots       & \vdots       \\
 #' D(h_{n - 1}) & D(h_{n - 2}) & \cdots & D(h_{0})     & D(h_{1})     \\
 #' D(h_{n})     & D(h_{n - 1}) & \cdots & D(h_{1})     & D(h_{0})     \\
 #' \end{array}} \right] ,
-#' }
-#' \deqn{
-#' \left[ z \right]
 #' }
 #' over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \},} where \eqn{D(h) = \hat{C}_{1}(h) - \hat{C}_{2}(h),}
 #' is defined as \deqn{{\left\Vert D \right\Vert}_{HS} = \sqrt{\sum_{i,j} d_{i, j}^{2}}.}
@@ -310,7 +302,7 @@ mse <- function(est1, est2) {
 hilbert_schmidt <- function(est1, est2) {
   stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
             length(est1) == length(est2))
-  return(sqrt(sum(create_cyclic_matrix(est1 - est2)^2)))
+  return(sqrt(sum(cyclic_matrix(est1 - est2)^2)))
 }
 
 #' Compute the Nearest Positive-Definite Matrix.
@@ -334,7 +326,7 @@ hilbert_schmidt <- function(est1, est2) {
 #'
 #' D'Errico, J. (2025). nearestSPD (https://www.mathwor ks.com/matlabcentral/fileexchange/42885-nearestspd), MATLAB Central File Exchange. Retrieved August 2, 2025.
 #'
-#' @param X Either a numeric vector or a square matrix. If a vector is provided, a matrix will be created of the form found in [create_cyclic_matrix].
+#' @param X Either a numeric vector or a square matrix. If a vector is provided, a matrix will be created of the form found in [cyclic_matrix].
 #'
 #' @return The closest positive-definite autocorrelation matrix.
 #' @export
@@ -346,7 +338,7 @@ hilbert_schmidt <- function(est1, est2) {
 nearest_pd <- function(X) {
   stopifnot(is.numeric(X), !any(is.na(X)), length(X) > 0)
   if(!is.matrix(X)) {
-    X <- create_cyclic_matrix(X)
+    X <- cyclic_matrix(X)
   }
   # https://au.mathworks.com/matlabcentral/fileexchange/42885-nearestspd#functions_tab
   B <- (X + t(X)) / 2

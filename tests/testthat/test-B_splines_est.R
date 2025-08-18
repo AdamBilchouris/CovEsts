@@ -68,34 +68,34 @@ test_that("get_tau() returns NA if i > -p or i > m + p + 1)", {
   expect_equal(get_tau(test_p + test_m + 2, test_p, test_m, test_kVec), NA)
 })
 
-test_that("get_all_tau() works", {
-  expect_equal(get_all_tau(test_p, test_m), list('-2' = -1/2, '-1' = -1/4, '0' = 0, '1' = 1/4, '2'= 1/2, '3' = 3/4, '4' = 1, '5' = 5/4, '6' = 3/2))
+test_that("get_taus() works", {
+  expect_equal(get_taus(test_p, test_m), list('-2' = -1/2, '-1' = -1/4, '0' = 0, '1' = 1/4, '2'= 1/2, '3' = 3/4, '4' = 1, '5' = 5/4, '6' = 3/2))
 })
 
-test_that("get_all_tau() fails for nonnumeric p", {
-  expect_error(get_all_tau('a', test_m))
-  expect_error(get_all_tau(1i, test_m))
+test_that("get_taus() fails for nonnumeric p", {
+  expect_error(get_taus('a', test_m))
+  expect_error(get_taus(1i, test_m))
 })
 
-test_that("get_all_tau() fails for p < 0", {
-  expect_error(get_all_tau(-0.1, test_m))
+test_that("get_taus() fails for p < 0", {
+  expect_error(get_taus(-0.1, test_m))
 })
 
-test_that("get_all_tau() fails for noninteger p", {
-  expect_error(get_all_tau(1.1, test_m))
+test_that("get_taus() fails for noninteger p", {
+  expect_error(get_taus(1.1, test_m))
 })
 
-test_that("get_all_tau() fails for nonnumeric m", {
-  expect_error(get_all_tau(test_p, 'a'))
-  expect_error(get_all_tau(test_p, 1i))
+test_that("get_taus() fails for nonnumeric m", {
+  expect_error(get_taus(test_p, 'a'))
+  expect_error(get_taus(test_p, 1i))
 })
 
-test_that("get_all_tau() fails for m < 0", {
-  expect_error(get_all_tau(test_p, -0.1))
+test_that("get_taus() fails for m < 0", {
+  expect_error(get_taus(test_p, -0.1))
 })
 
-test_that("get_all_tau() fails for noninteger m", {
-  expect_error(get_all_tau(test_p, 1.1))
+test_that("get_taus() fails for noninteger m", {
+  expect_error(get_taus(test_p, 1.1))
 })
 
 # adjusted_spline
@@ -163,60 +163,60 @@ test_that("adjusted_spline() fails for at least one NA in taus", {
   expect_error(adjusted_spline(1, 1, 1, test_p, test_m, c(1, NA, 2)))
 })
 
-# get_splines_df
-test_that("get_splines_df() fails for nonnumeric x", {
-  expect_equal(get_splines_df(1, 1, 1, list('-1' = -0.5, '0' = 0, '1' = 0.5, '2' = 1, '3' = 1.5)),
+# splines_df
+test_that("splines_df() fails for nonnumeric x", {
+  expect_equal(splines_df(1, 1, 1, list('-1' = -0.5, '0' = 0, '1' = 0.5, '2' = 1, '3' = 1.5)),
                data.frame(lags = 1, j1 = 1/4, j2 = 3/4))
 })
-test_that("get_splines_df() fails for nonnumeric x", {
-  expect_error(get_splines_df(c(1, 'a', 3), test_p, test_m, test_taus))
-  expect_error(get_splines_df(c(1, 1i, 3), test_p, test_m, test_taus))
+test_that("splines_df() fails for nonnumeric x", {
+  expect_error(splines_df(c(1, 'a', 3), test_p, test_m, test_taus))
+  expect_error(splines_df(c(1, 1i, 3), test_p, test_m, test_taus))
 })
 
-test_that("get_splines_df() fails for empty x", {
-  expect_error(get_splines_df(c(), test_p, test_m, test_taus))
+test_that("splines_df() fails for empty x", {
+  expect_error(splines_df(c(), test_p, test_m, test_taus))
 })
 
-test_that("get_splines_df() fails for at least one NA in x", {
-  expect_error(get_splines_df(c(1, NA, 3), test_p, test_m, test_taus))
+test_that("splines_df() fails for at least one NA in x", {
+  expect_error(splines_df(c(1, NA, 3), test_p, test_m, test_taus))
 })
 
-test_that("get_splines_df() fails for nonnumeric p", {
-  expect_error(get_splines_df(test_x, 'a', test_m, test_taus))
-  expect_error(get_splines_df(test_x, 1i, test_m, test_taus))
+test_that("splines_df() fails for nonnumeric p", {
+  expect_error(splines_df(test_x, 'a', test_m, test_taus))
+  expect_error(splines_df(test_x, 1i, test_m, test_taus))
 })
 
-test_that("get_splines_df() fails for p < 0", {
-  expect_error(get_splines_df(test_x, -1, test_m, test_taus))
+test_that("splines_df() fails for p < 0", {
+  expect_error(splines_df(test_x, -1, test_m, test_taus))
 })
 
-test_that("get_splines_df() fails for nonninteger p", {
-  expect_error(get_splines_df(test_x, 1.1, test_m, test_taus))
+test_that("splines_df() fails for nonninteger p", {
+  expect_error(splines_df(test_x, 1.1, test_m, test_taus))
 })
 
-test_that("get_splines_df() fails for nonnumeric m", {
-  expect_error(get_splines_df(test_x, test_p, 'a', test_m, test_taus))
-  expect_error(get_splines_df(test_x, test_p, 1i, test_taus))
+test_that("splines_df() fails for nonnumeric m", {
+  expect_error(splines_df(test_x, test_p, 'a', test_m, test_taus))
+  expect_error(splines_df(test_x, test_p, 1i, test_taus))
 })
 
-test_that("get_splines_df() fails for m < 0", {
-  expect_error(get_splines_df(test_x, test_p, -1, test_taus))
+test_that("splines_df() fails for m < 0", {
+  expect_error(splines_df(test_x, test_p, -1, test_taus))
 })
 
-test_that("get_splines_df() fails for nonninteger m", {
-  expect_error(get_splines_df(test_x, test_p, 1.1, test_taus))
+test_that("splines_df() fails for nonninteger m", {
+  expect_error(splines_df(test_x, test_p, 1.1, test_taus))
 })
 
-test_that("get_splines_df() fails for nonvector taus", {
-  expect_error(get_splines_df(test_x, test_p, test_m, matrix(c(1, 2, 3, 4), 2)))
+test_that("splines_df() fails for nonvector taus", {
+  expect_error(splines_df(test_x, test_p, test_m, matrix(c(1, 2, 3, 4), 2)))
 })
 
-test_that("get_splines_df() fails for empty taus", {
-  expect_error(get_splines_df(test_x, test_p, test_m, c()))
+test_that("splines_df() fails for empty taus", {
+  expect_error(splines_df(test_x, test_p, test_m, c()))
 })
 
-test_that("get_splines_df() fails for at least one NA in taus", {
-  expect_error(get_splines_df(test_x, test_p, test_m, c(1, NA, 2)))
+test_that("splines_df() fails for at least one NA in taus", {
+  expect_error(splines_df(test_x, test_p, test_m, c(1, NA, 2)))
 })
 
 # splines_est

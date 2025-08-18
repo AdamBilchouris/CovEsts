@@ -31,5 +31,5 @@ idct_1d(X)
 \references{
 Ochoa-Dominguez, H. & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
 
-endolith (2013, September 4). Fast Cosine Transform via FFT. https://dsp.stackexchange.com/a/10606 (Internet Acrhive version: https://web.archive.org/web/20240423074416/https://dsp.stackexchange.com/questions/2807/fast-cosine-transform-via-fft).
+endolith (2013). Fast Cosine Transform via FFT. Signal Processing Stack Exchange. https://dsp.stackexchange.com/a/10606
 }

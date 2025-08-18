@@ -20,16 +20,13 @@ This function computes the Hilbert-Schidmt norm between two estimated autocovari
 \details{
 This function computes the Hilbert-Schidmt norm between two estimated autocovariance functions.
 The Hilbert-Schmidt norm of a matrix
-\deqn{D = \left[ {\begin{array}{ccccc}
+\deqn{D = \left[(d_{i,j})_{1 \le i,j \le n}\right] = \left[ {\begin{array}{ccccc}
 D(h_{0})     & D(h_{1})     & \cdots & D(h_{n - 1}) & D(h_{n})     \\
 D(h_{1})     & D(h_{0})     & \cdots & D(h_{n - 2}) & D(h_{n - 1}) \\
 \vdots       & \vdots       & \ddots & \vdots       & \vdots       \\
 D(h_{n - 1}) & D(h_{n - 2}) & \cdots & D(h_{0})     & D(h_{1})     \\
 D(h_{n})     & D(h_{n - 1}) & \cdots & D(h_{1})     & D(h_{0})     \\
 \end{array}} \right] ,
-}
-\deqn{
-\left[ z \right]
 }
 over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \},} where \eqn{D(h) = \hat{C}_{1}(h) - \hat{C}_{2}(h),}
 is defined as \deqn{{\left\Vert D \right\Vert}_{HS} = \sqrt{\sum_{i,j} d_{i, j}^{2}}.}

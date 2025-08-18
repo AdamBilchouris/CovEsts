@@ -30,7 +30,7 @@ generate_knots <- function(m) {
 #' A helper function that transforms the knots from [generate_knots] into the following form:
 #' For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1,} it is equal to \eqn{\tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1,} it is \eqn{\tau_{i} = \kappa_{i}.}
 #' See Choi, Li & Wang (2013) page 615 for details.
-#' This is a helper function of [get_all_tau].
+#' This is a helper function of [get_taus].
 #'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 #'
@@ -73,8 +73,8 @@ get_tau <- function(i, p, m, kVec) {
 #' @export
 #'
 #' @examples
-#' get_all_tau(3, 2)
-get_all_tau <- function(p, m) {
+#' get_taus(3, 2)
+get_taus <- function(p, m) {
   stopifnot(is.numeric(p), p >= 0, p %% 1 == 0, is.numeric(m), m > 0, m %% 1 == 0)
   kVec <- generate_knots(m)
   tauVec <- list()
@@ -105,7 +105,7 @@ get_all_tau <- function(p, m) {
 #' @export
 #'
 #' @examples
-#' taus <- get_all_tau(3, 2)
+#' taus <- get_taus(3, 2)
 #' adjusted_spline(1, 2, 1, 3, 2, taus)
 adjusted_spline <- function(x, j, l, p, m, taus) {
   stopifnot(is.numeric(x), j %% 1 == 0, is.numeric(j), j > 0, l %% 1 == 0, is.numeric(l), is.numeric(p), p >= 0, p %% 1 == 0,
@@ -152,9 +152,9 @@ adjusted_spline <- function(x, j, l, p, m, taus) {
 #' @export
 #'
 #' @examples
-#' taus <- get_all_tau(3, 2)
-#' get_splines_df(seq(0, 2, by=0.25), 3, 2, taus)
-get_splines_df <- function(x, p, m, taus) {
+#' taus <- get_taus(3, 2)
+#' splines_df(seq(0, 2, by=0.25), 3, 2, taus)
+splines_df <- function(x, p, m, taus) {
   stopifnot(is.numeric(x), length(x) > 0, all(!is.na(x)), is.numeric(p), p >= 0, p %% 1 == 0, is.numeric(m), m > 0, m %% 1 == 0,
             is.vector(taus), length(taus) > 0, all(!is.na(taus)))
   valsDf <- data.frame('lags' = x)
@@ -192,17 +192,17 @@ get_splines_df <- function(x, p, m, taus) {
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. 10.1007/s13253-013-0152-z
 #'
 #' @param par A vector of initial parameters to used in the minimisation process.
-#' @param splines_df A data frame whose structure is defined in [get_splines_df].
+#' @param splines_df A data frame whose structure is defined in [splines_df].
 #' @param weights A vector of weights, see the description.
 #'
 #' @return The value of the objective function at those parameters.
 #' @export
 #'
 #' @examples
-#' taus <- get_all_tau(3, 2)
+#' taus <- get_taus(3, 2)
 #' x <- seq(0, 2, by=0.25)
 #' maxLag <- 4
-#' splines_df <- get_splines_df(x[1:maxLag], 3, 2, taus)
+#' splines_df <- splines_df(x[1:maxLag], 3, 2, taus)
 #' splines_df$estCov <- exp(-splines_df$lags^2) + 0.001
 #' # pars are the inital parameters used in the minimisation process.
 #' pars <- c(0.5, 0.5, 0.5, 0.5, 0.5)
@@ -266,9 +266,9 @@ splines_est <- function(X, x, estCov, p, m, maxLag = length(X) - 1, type = "auto
   if(is.vector(inital_pars)) {
     stopifnot(length(inital_pars) == p + m)
   }
-  taus <- get_all_tau(p, m)
+  taus <- get_taus(p, m)
 
-  splines_df <- get_splines_df(x[1:(maxLag + 1)], p, m, taus)
+  splines_df <- splines_df(x[1:(maxLag + 1)], p, m, taus)
   splines_df[, 'estCov'] <- estCov
 
   weights <- c()

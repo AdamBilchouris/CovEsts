@@ -19,7 +19,7 @@ A vector or matrix of kernel values.
 \description{
 This function computes one of the isotropic kernels listed below.
 Unlike \link{kernel_symm}, these kernels are only defined when \eqn{x \geq 0.} They are used as
-kernel multipliers in estimators \link{corrected_standard_est} and \link{kernel_corrected_est}.
+kernel multipliers in estimators \link{corrected_est} and \link{kernel_est}.
 }
 \details{
 \strong{Gaussian Kernel}.

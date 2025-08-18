@@ -100,23 +100,23 @@ test_that("max_distance() fails if plot is not a boolean", {
   expect_error(max_distance(test_estCov1, test_estCov2, plot = 'TRUE'))
 })
 
-# create_cyclic_matrix
-test_that("create_cyclic_matrix() works", {
-  expect_equal(create_cyclic_matrix(c(1, 2)), matrix(c(1, 2, 2, 1), 2))
+# cyclic_matrix
+test_that("cyclic_matrix() works", {
+  expect_equal(cyclic_matrix(c(1, 2)), matrix(c(1, 2, 2, 1), 2))
 })
 
-test_that("create_cyclic_matrix() fails for nonnumeric v", {
-  expect_error(create_cyclic_matrix(c(1, 'a', 3)))
-  expect_error(create_cyclic_matrix(c(1, 1i, 3)))
+test_that("cyclic_matrix() fails for nonnumeric v", {
+  expect_error(cyclic_matrix(c(1, 'a', 3)))
+  expect_error(cyclic_matrix(c(1, 1i, 3)))
 })
 
-test_that("create_cyclic_matrix() fails for at least one NA in v", {
-  expect_error(create_cyclic_matrix(c(1, NA, 3)))
+test_that("cyclic_matrix() fails for at least one NA in v", {
+  expect_error(cyclic_matrix(c(1, NA, 3)))
 })
 
 
-test_that("create_cyclic_matrix() fails if v is empty", {
-  expect_error(create_cyclic_matrix(c()))
+test_that("cyclic_matrix() fails if v is empty", {
+  expect_error(cyclic_matrix(c()))
 })
 
 # spectral_norm

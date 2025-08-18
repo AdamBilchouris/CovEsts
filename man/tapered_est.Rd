@@ -38,7 +38,7 @@ A vector whose values are the estimated tapered autocovariances.
 }
 \description{
 This function computes the tapered autocovariance over a set of lags.
-For each lag, the tapered autocovariance is computed using the function \link{tapered_cov_single}.
+For each lag, the tapered autocovariance is computed using the function \link{tapered_single}.
 }
 \details{
 This function computes the estimated tapered autocovariance over a set of lags,
@@ -47,7 +47,7 @@ where \eqn{a(\cdot)} is a window function, \eqn{\rho \in (0, 1]}  is a scale par
 This estimator takes into account the edge effect during estimation, assigning a lower weight to values closer to the boundaries and higher weights for observations closer to the middle.
 This estimator is positive-definite and asymptotically unbiased.
 
-Internally, this function calls \link{tapered_cov_single} for each lag \eqn{h}.
+Internally, this function calls \link{tapered_single} for each lag \eqn{h}.
 }
 \examples{
 X <- c(1, 2, 3)

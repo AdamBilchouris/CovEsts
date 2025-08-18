@@ -34,13 +34,13 @@
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' corrected_standard_est(X, "gaussian")
+#' corrected_est(X, "gaussian")
 #'
 #' X <- rnorm(1000)
 #' Y <- c(X[1], X[2])
 #' for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 #' plot(Y)
-#' plot(corrected_standard_est(Y, "bessel_j",
+#' plot(corrected_est(Y, "bessel_j",
 #'      kernel_params=c(0, 1), N_T=0.2*length(Y)))
 #'
 #' # Custom kernel
@@ -50,9 +50,9 @@
 #'          ifelse(t == Inf, 0,
 #'          (sin((t^params[1]) / theta) / ((t^params[1]) / theta)) * cos((t^params[2]) / theta)))))
 #' }
-#' plot(corrected_standard_est(Y,
+#' plot(corrected_est(Y,
 #'      my_kernel, kernel_params=c(2, 0.25), custom_kernel = TRUE))
-corrected_standard_est <- function(X, kernel_name, kernel_params = c(), N_T = 0.1 * length(X), pd = TRUE, maxLag = length(X) - 1, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
+corrected_est <- function(X, kernel_name, kernel_params = c(), N_T = 0.1 * length(X), pd = TRUE, maxLag = length(X) - 1, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
   stopifnot(is.logical(custom_kernel), length(X) > 0, is.vector(X), is.numeric(X), is.numeric(N_T),
             N_T > 0, is.numeric(meanX), is.logical(pd), is.numeric(maxLag), maxLag >= 0,
             maxLag <= (length(X) - 1), maxLag %% 1 == 0, length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
@@ -80,7 +80,7 @@ corrected_standard_est <- function(X, kernel_name, kernel_params = c(), N_T = 0.
     return(retVec)
   }
 
-  return("Something went wrong in `corrected_standard_est`.")
+  return("Something went wrong in `corrected_est`.")
 }
 
 #' Kernel Correction for an Estimated Autocovariance Function.
@@ -99,7 +99,7 @@ corrected_standard_est <- function(X, kernel_name, kernel_params = c(), N_T = 0.
 #' For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, those parameters are passed.
 #' @param N_T The range at which the kernel function vanishes at. Recommended to be \eqn{0.1 N} when considering all lags. This parameter may be large for a lag small estimation lag.
 #' @param maxLag An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(estCov) - 1}.
-#' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}. See the examples of [corrected_standard_est] for usage.
+#' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}. See the examples of [corrected_est] for usage.
 #' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
 #'
 #' @return A vector whose values are the kernel corrected autocovariance estimates.
@@ -111,9 +111,9 @@ corrected_standard_est <- function(X, kernel_name, kernel_params = c(), N_T = 0.
 #' for(i in 3:length(X)) { Y[i] <- X[i] - 0.3*X[i - 1] - 0.6*X[i - 2] }
 #' cov_est <- standard_est(Y)
 #' plot(cov_est)
-#' plot(kernel_corrected_est(cov_est,
+#' plot(kernel_est(cov_est,
 #'      "bessel_j", kernel_params=c(0, 1), N_T=0.2*length(Y)))
-kernel_corrected_est <- function(estCov, kernel_name, kernel_params = c(), N_T = 0.1 * length(estCov), maxLag = length(estCov) - 1, type = "autocovariance", custom_kernel = FALSE) {
+kernel_est <- function(estCov, kernel_name, kernel_params = c(), N_T = 0.1 * length(estCov), maxLag = length(estCov) - 1, type = "autocovariance", custom_kernel = FALSE) {
   stopifnot(is.logical(custom_kernel), length(estCov) > 0, is.vector(estCov), is.numeric(estCov), is.numeric(N_T), N_T > 0,
             is.numeric(maxLag), maxLag >= 0, maxLag <= (length(estCov) - 1), maxLag %% 1 == 0,
             type %in% c('autocovariance', 'autocorrelation'))
@@ -140,7 +140,7 @@ kernel_corrected_est <- function(estCov, kernel_name, kernel_params = c(), N_T =
     return(estCov)
   }
 
-  return("Something went wrong in `kernel_corrected_est`.")
+  return("Something went wrong in `kernel_est`.")
 
 }
 
@@ -153,7 +153,7 @@ kernel_corrected_est <- function(estCov, kernel_name, kernel_params = c(), N_T =
 #' @param target A shrinkage target matrix used in the shrinking process. This should only be used if you wish to use a specific matrix as the target.
 #'
 #' @references
-#' Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation ofand Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531
+#' Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation and Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531
 #'
 #' Rousseeuw, P. J. & Molenberghs, G. (1993). Transformation of Non Positive Semidefinite Correlation Matrices. Communications in Statistics - Theory and Methods, 22(4), 965–984. 10.1080/03610928308831068
 #'
@@ -162,7 +162,7 @@ kernel_corrected_est <- function(estCov, kernel_name, kernel_params = c(), N_T =
 #'
 #' @examples
 #' estCorr <- c(1, 0.5, 0)
-#' corr_mat <- create_cyclic_matrix(estCorr)
+#' corr_mat <- cyclic_matrix(estCorr)
 #' solve_shrinking(0.5, corr_mat, diag(length(estCorr)))
 solve_shrinking <- function(par, corr_mat, target) {
   adj_corr_mat <- (par[1] * corr_mat) + (1 - par[1]) * target
@@ -186,7 +186,7 @@ solve_shrinking <- function(par, corr_mat, target) {
 #' The shrunken matrix will be positive-definite.
 #'
 #' @references
-#' Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation ofand Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531
+#' Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation and Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531
 #'
 #' Rousseeuw, P. J. & Molenberghs, G. (1993). Transformation of Non Positive Semidefinite Correlation Matrices. Communications in Statistics - Theory and Methods, 22(4), 965–984. 10.1080/03610928308831068
 #'
@@ -204,7 +204,7 @@ solve_shrinking <- function(par, corr_mat, target) {
 #' shrinking(estCorr, TRUE, target)
 shrinking <- function(estCov, return_matrix = FALSE, target = NULL) {
   estCorr <- estCov / estCov[1]
-  corr_mat <- create_cyclic_matrix(estCorr)
+  corr_mat <- cyclic_matrix(estCorr)
 
   if(is.null(target)) {
     target <- diag(nrow(corr_mat))
@@ -225,63 +225,4 @@ shrinking <- function(estCov, return_matrix = FALSE, target = NULL) {
   }
 
   return(list('shrunken'=adj_corr_mat[1, ], 'lambda'=optimRes$par))
-}
-
-#' Compute the Long-Run Covariance Sandwich Estimator
-#'
-#' @description
-#' This function computes the long-run covariance sandwich estimator of a time series, proposed in Shang (2024).
-#'
-#' @details
-#' This function computes the long-run covariance sandwich estimator of a time series.
-#' The long-run covariance is a measure of total dependence in a time series as opposed to at a single lag, like the autocovariance.
-#'
-#' Shang (2024) provides the following estimator (adapted for the nonfunctional time series case)
-#' \deqn{
-#' \widehat{C}_{b} = \sum_{h=-(N-1)}^{N-1} w(h / b) \widehat{C}(h) ,
-#' }
-#' where \eqn{b > 0} is the bandwith parameter, \eqn{w(\cdot)} is a symmetric window function such that \eqn{w(0) = 1, w(\cdot) \leq 1} and after some value \eqn{\iota} (we selected 1) \eqn{w(\cdot) = 0}.
-#' In the paper, \eqn{\widehat{C}(\cdot)} is the standard positive-definite autocovariance estimator (see [standard_est]).
-#'
-#'
-#' @references Shang, H. L. (2024). Bootstrapping Long-Run Covariance of Stationary Functional Time Series. Forecasting 6(1), 138-151. 10.3390/forecast6010008
-#'
-#' @param X A vector representing observed values of the time series.
-#' @param window_name The name of the [window] function to be used. Possible values are:
-#' tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example
-#' @param window_params A vector of parameters of the window function.
-#' @param b Bandwidth parameter, greater than 0. Defaults to \eqn{\lfloor} length(X) \eqn{\rfloor^{1/5}.}
-#' @param pd Whether the standard positive-definite estimate should be used. Defaults to \code{TRUE}.
-#' @param maxLag An optional parameter that determines the maximum lag to compute the estimated long-run covariance. Defaults to \code{length(X) - 1}.
-#' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
-#' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
-#'
-#' @return The long-run covariance of the time series.
-#' @export
-#'
-#' @examples
-#' X <- 0:4
-#' compute_sandwich_est(X)
-#' my_window <- function(x, ...) {
-#'   retVal <- 1 - x
-#'   retVal[abs(x) > 1] <- 0
-#'   return(retVal)
-#' }
-#' compute_sandwich_est(X, window_name=my_window, custom_window = TRUE)
-compute_sandwich_est <- function(X, window_name = 'tukey', window_params = c(1), b = floor(length(X)^(1/5)), pd = TRUE, maxLag = length(X) - 1, meanX = mean(X), custom_window = FALSE) {
-  stopifnot(length(X) > 0, is.vector(X), is.numeric(X), is.logical(pd), maxLag >= 0, maxLag <= (length(X) - 1),
-            maxLag %% 1 == 0, length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
-            length(b) == 1, is.numeric(b), !is.na(b), is.logical(custom_window))
-  base_est <- standard_est(X, pd = pd, maxLag = maxLag, type = 'autocovariance', meanX = meanX)
-  base_est <- c(rev(base_est[-1]), base_est)
-  window_vals <- (0:maxLag) / b
-  window_vals <- c(rev(window_vals[-1]), window_vals)
-
-  if(custom_window) {
-    return(sum(base_est * window_name(window_vals, window_params)))
-  }
-  else {
-    stopifnot(window_name %in% c("tukey", "triangular", "sine", "power_sine", "blackman", "hann_poisson", "welch"))
-    return(sum(base_est * window_symm(window_vals, window_name, window_params)))
-  }
 }

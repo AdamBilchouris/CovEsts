@@ -120,84 +120,84 @@ test_that("taper() fails for nonboolean custom_window", {
   expect_error(taper(3, 1, "window", custom_window = 'TRUE'))
 })
 
-# tapered_cov_single
-test_that("tapered_cov_single(, , \"tukey\") works", {
-  expect_equal(tapered_cov_single(test_X, test_meanX, 1, test_h2n, test_taperVals_t, test_taperVals_h), 0)
+# tapered_single
+test_that("tapered_single(, , \"tukey\") works", {
+  expect_equal(tapered_single(test_X, test_meanX, 1, test_h2n, test_taperVals_t, test_taperVals_h), 0)
 })
 
-test_that("tapered_cov_single() fails for nonnumeric X", {
-  expect_error(tapered_cov_single(c(1, 'a', 3), test_meanX, 1, test_h2n, test_taperVals_t, test_taperVals_h))
-  expect_error(tapered_cov_single(c(1, 1i, 3), test_meanX, 1, test_h2n, test_taperVals_t, test_taperVals_h))
+test_that("tapered_single() fails for nonnumeric X", {
+  expect_error(tapered_single(c(1, 'a', 3), test_meanX, 1, test_h2n, test_taperVals_t, test_taperVals_h))
+  expect_error(tapered_single(c(1, 1i, 3), test_meanX, 1, test_h2n, test_taperVals_t, test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for empty X", {
-  expect_error(tapered_cov_single(c(), test_meanX, 1, test_h2n, test_taperVals_t, test_taperVals_h))
+test_that("tapered_single() fails for empty X", {
+  expect_error(tapered_single(c(), test_meanX, 1, test_h2n, test_taperVals_t, test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for at least one NA in X", {
-  expect_error(tapered_cov_single(c(1, NA, 3), test_meanX, 1, test_h2n, test_taperVals_t, test_taperVals_h))
+test_that("tapered_single() fails for at least one NA in X", {
+  expect_error(tapered_single(c(1, NA, 3), test_meanX, 1, test_h2n, test_taperVals_t, test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for nonnumeric meanX", {
-  expect_error(tapered_cov_single(test_X, 'a', 1, test_h2n, test_taperVals_t, test_taperVals_h))
-  expect_error(tapered_cov_single(test_X, 1i, 1, test_h2n, test_taperVals_t, test_taperVals_h))
+test_that("tapered_single() fails for nonnumeric meanX", {
+  expect_error(tapered_single(test_X, 'a', 1, test_h2n, test_taperVals_t, test_taperVals_h))
+  expect_error(tapered_single(test_X, 1i, 1, test_h2n, test_taperVals_t, test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for meanX not of length 1", {
-  expect_error(tapered_cov_single(test_X, c(), 1, test_h2n, test_taperVals_t, test_taperVals_h))
-  expect_error(tapered_cov_single(test_X, c(1, 2), 1, test_h2n, test_taperVals_t, test_taperVals_h))
+test_that("tapered_single() fails for meanX not of length 1", {
+  expect_error(tapered_single(test_X, c(), 1, test_h2n, test_taperVals_t, test_taperVals_h))
+  expect_error(tapered_single(test_X, c(1, 2), 1, test_h2n, test_taperVals_t, test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for nonnumeric h", {
-  expect_error(tapered_cov_single(test_X, test_meanX, 'a', test_h2n, test_taperVals_t, test_taperVals_h))
-  expect_error(tapered_cov_single(test_X, test_meanX, 1i, test_h2n, test_taperVals_t, test_taperVals_h))
+test_that("tapered_single() fails for nonnumeric h", {
+  expect_error(tapered_single(test_X, test_meanX, 'a', test_h2n, test_taperVals_t, test_taperVals_h))
+  expect_error(tapered_single(test_X, test_meanX, 1i, test_h2n, test_taperVals_t, test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for h not of length 1", {
-  expect_error(tapered_cov_single(test_X, test_meanX, c(), test_h2n, test_taperVals_t, test_taperVals_h))
-  expect_error(tapered_cov_single(test_X, test_meanX, c(1, 2), test_h2n, test_taperVals_t, test_taperVals_h))
+test_that("tapered_single() fails for h not of length 1", {
+  expect_error(tapered_single(test_X, test_meanX, c(), test_h2n, test_taperVals_t, test_taperVals_h))
+  expect_error(tapered_single(test_X, test_meanX, c(1, 2), test_h2n, test_taperVals_t, test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for noninteger h", {
-  expect_error(tapered_cov_single(test_X, test_meanX, 0.1, test_h2n, test_taperVals_t, test_taperVals_h))
+test_that("tapered_single() fails for noninteger h", {
+  expect_error(tapered_single(test_X, test_meanX, 0.1, test_h2n, test_taperVals_t, test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for nonnumeric h2n", {
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, 'a', test_taperVals_t, test_taperVals_h))
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, 1i, test_taperVals_t, test_taperVals_h))
+test_that("tapered_single() fails for nonnumeric h2n", {
+  expect_error(tapered_single(test_X, test_meanX, 1, 'a', test_taperVals_t, test_taperVals_h))
+  expect_error(tapered_single(test_X, test_meanX, 1, 1i, test_taperVals_t, test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for h2n not of length 1", {
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, c(), test_taperVals_t, test_taperVals_h))
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, c(1, 2), test_taperVals_t, test_taperVals_h))
+test_that("tapered_single() fails for h2n not of length 1", {
+  expect_error(tapered_single(test_X, test_meanX, 1, c(), test_taperVals_t, test_taperVals_h))
+  expect_error(tapered_single(test_X, test_meanX, 1, c(1, 2), test_taperVals_t, test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for nonnumeric taperVals_t", {
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, test_h2n, c(0.1, 'a', 0.3), test_taperVals_h))
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, test_h2n, c(0.1, 1i, 0.3), test_taperVals_h))
+test_that("tapered_single() fails for nonnumeric taperVals_t", {
+  expect_error(tapered_single(test_X, test_meanX, 1, test_h2n, c(0.1, 'a', 0.3), test_taperVals_h))
+  expect_error(tapered_single(test_X, test_meanX, 1, test_h2n, c(0.1, 1i, 0.3), test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for empty taperVals_t", {
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, test_h2n, c(), test_taperVals_h))
+test_that("tapered_single() fails for empty taperVals_t", {
+  expect_error(tapered_single(test_X, test_meanX, 1, test_h2n, c(), test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for any taperVals_t between [-1, 1]", {
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, test_h2n, c(-1.1, 0.2, 0.3), test_taperVals_h))
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, test_h2n, c(0.1, 0.2, 1.1), test_taperVals_h))
+test_that("tapered_single() fails for any taperVals_t between [-1, 1]", {
+  expect_error(tapered_single(test_X, test_meanX, 1, test_h2n, c(-1.1, 0.2, 0.3), test_taperVals_h))
+  expect_error(tapered_single(test_X, test_meanX, 1, test_h2n, c(0.1, 0.2, 1.1), test_taperVals_h))
 })
 
-test_that("tapered_cov_single() fails for nonnumeric taperVals_t", {
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, test_h2n, test_taperVals_t, c(0.1, 'a', 0.3)))
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, test_h2n, test_taperVals_t, c(0.1, 1i, 0.3)))
+test_that("tapered_single() fails for nonnumeric taperVals_t", {
+  expect_error(tapered_single(test_X, test_meanX, 1, test_h2n, test_taperVals_t, c(0.1, 'a', 0.3)))
+  expect_error(tapered_single(test_X, test_meanX, 1, test_h2n, test_taperVals_t, c(0.1, 1i, 0.3)))
 })
 
-test_that("tapered_cov_single() fails for empty taperVals_t", {
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, test_h2n, test_taperVals_h, c()))
+test_that("tapered_single() fails for empty taperVals_t", {
+  expect_error(tapered_single(test_X, test_meanX, 1, test_h2n, test_taperVals_h, c()))
 })
 
-test_that("tapered_cov_single() fails for any taperVals_t between [-1, 1]", {
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, test_h2n, test_taperVals_t, c(-1.1, 0.2, 0.3)))
-  expect_error(tapered_cov_single(test_X, test_meanX, 1, test_h2n, test_taperVals_t, c(0.1, 0.2, 1.1)))
+test_that("tapered_single() fails for any taperVals_t between [-1, 1]", {
+  expect_error(tapered_single(test_X, test_meanX, 1, test_h2n, test_taperVals_t, c(-1.1, 0.2, 0.3)))
+  expect_error(tapered_single(test_X, test_meanX, 1, test_h2n, test_taperVals_t, c(0.1, 0.2, 1.1)))
 })
 
 # tapered_est

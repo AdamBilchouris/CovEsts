@@ -10,7 +10,7 @@
 #'
 #' This function computes one of the isotropic kernels listed below.
 #' Unlike [kernel_symm], these kernels are only defined when \eqn{x \geq 0.} They are used as
-#' kernel multipliers in estimators [corrected_standard_est] and [kernel_corrected_est].
+#' kernel multipliers in estimators [corrected_est] and [kernel_est].
 #'
 #' \strong{Gaussian Kernel}.
 #' The isotropic Gaussian kernel, which is positive-definite for \eqn{{R}^{d}, d \in N,} is defined as

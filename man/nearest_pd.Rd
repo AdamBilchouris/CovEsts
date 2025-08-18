@@ -7,7 +7,7 @@
 nearest_pd(X)
 }
 \arguments{
-\item{X}{Either a numeric vector or a square matrix. If a vector is provided, a matrix will be created of the form found in \link{create_cyclic_matrix}.}
+\item{X}{Either a numeric vector or a square matrix. If a vector is provided, a matrix will be created of the form found in \link{cyclic_matrix}.}
 }
 \value{
 The closest positive-definite autocorrelation matrix.

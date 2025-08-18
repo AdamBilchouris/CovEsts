@@ -72,7 +72,7 @@ taper_single <- function(x, rho, window_name, window_params=c(1), custom_window 
 
 #' Compute Normalisation Factor
 #'
-#' This helper function is used in the computation of the normalisation factor the function [tapered_cov_single],
+#' This helper function is used in the computation of the normalisation factor the function [tapered_single],
 #' \deqn{H_{2, n}(0) = \sum_{s=1}^{n} a((s - 1/2) / n; \rho)^{2}, }
 #' where \eqn{a(\cdot; \cdot)} is a window function.
 #'
@@ -142,8 +142,8 @@ taper <- function(x, rho, window_name, window_params=c(1), custom_window = FALSE
 #'
 #' @examples
 #' X <- c(1, 2, 3)
-#' tapered_cov_single(X, mean(X), 2, 2.5, c(0.75, 1, 0.75), c(0.75, 1, 0.75))
-tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
+#' tapered_single(X, mean(X), 2, 2.5, c(0.75, 1, 0.75), c(0.75, 1, 0.75))
+tapered_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(meanX), length(meanX) == 1,
             is.numeric(h), length(h) == 1, h %% 1 == 0, is.numeric(h2n), length(h2n) == 1,
             is.numeric(taperVals_t), length(taperVals_t) >= 1, all(abs(taperVals_t) <= 1), all(abs(taperVals_t) >= 0),
@@ -161,7 +161,7 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #' Compute the Estimated Tapered Autocovariance Function over a Set of Lags.
 #'
 #' This function computes the tapered autocovariance over a set of lags.
-#' For each lag, the tapered autocovariance is computed using the function [tapered_cov_single].
+#' For each lag, the tapered autocovariance is computed using the function [tapered_single].
 #'
 #' @details
 #' This function computes the estimated tapered autocovariance over a set of lags,
@@ -170,7 +170,7 @@ tapered_cov_single <- function(X, meanX, h, h2n, taperVals_t, taperVals_h) {
 #' This estimator takes into account the edge effect during estimation, assigning a lower weight to values closer to the boundaries and higher weights for observations closer to the middle.
 #' This estimator is positive-definite and asymptotically unbiased.
 #'
-#' Internally, this function calls [tapered_cov_single] for each lag \eqn{h}.
+#' Internally, this function calls [tapered_single] for each lag \eqn{h}.
 #'
 #' @references
 #' Dahlhaus R. & Künsch, H. (1987). Edge Effects and Efficient Parameter Estimation for Stationary Random Fields. Biometrika 74(4), 877-882. 10.1093/biomet/74.4.877
@@ -206,7 +206,7 @@ tapered_est <- function(X, rho, window_name, window_params = c(1), maxLag = leng
   for(i in 0:maxLag) {
     taperVals_h <- taperVals_t[(1 + i):length(taperVals_t)]
 
-    covVals <- c(covVals, tapered_cov_single(X, meanX, i, h2n, taperVals_t, taperVals_h))
+    covVals <- c(covVals, tapered_single(X, meanX, i, h2n, taperVals_t, taperVals_h))
   }
 
   if(type == 'autocorrelation') {

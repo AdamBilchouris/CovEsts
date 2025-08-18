@@ -33,5 +33,5 @@ The eigendecomposition of this matrix is computed to determine if all eigenvalue
 x <- seq(0, 5, by=0.1)
 estCov <- exp(-x^2)
 check_pd(estCov)
-check_pd(create_cyclic_matrix(estCov))
+check_pd(cyclic_matrix(estCov))
 }

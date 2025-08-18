@@ -33,7 +33,7 @@ D(h_{n})     & D(h_{n - 1}) & \cdots & D(h_{1})     & D(h_{0})     \\
 \end{array}} \right] ,
 }
 over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \}.}
-This matrix is created by \link{create_cyclic_matrix}.
+This matrix is created by \link{cyclic_matrix}.
 
 The spectral norm is defined as the largest eigenvalue of \eqn{D.}
 }

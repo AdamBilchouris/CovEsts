@@ -9,7 +9,7 @@ solve_spline(par, splines_df, weights)
 \arguments{
 \item{par}{A vector of initial parameters to used in the minimisation process.}
 
-\item{splines_df}{A data frame whose structure is defined in \link{get_splines_df}.}
+\item{splines_df}{A data frame whose structure is defined in \link{splines_df}.}
 
 \item{weights}{A vector of weights, see the description.}
 }
@@ -32,10 +32,10 @@ where \eqn{\{h_{1} , \dots , h_{L} \}} is a set of lags and \eqn{\{w_{1}, \dots 
 The set of weights is calculated in \link{splines_est}, and they are of the form \eqn{w_{i} = (N - h_{i}) / ((1 - \widehat{C}(h_{i}))^{2}).}
 }
 \examples{
-taus <- get_all_tau(3, 2)
+taus <- get_taus(3, 2)
 x <- seq(0, 2, by=0.25)
 maxLag <- 4
-splines_df <- get_splines_df(x[1:maxLag], 3, 2, taus)
+splines_df <- splines_df(x[1:maxLag], 3, 2, taus)
 splines_df$estCov <- exp(-splines_df$lags^2) + 0.001
 # pars are the inital parameters used in the minimisation process.
 pars <- c(0.5, 0.5, 0.5, 0.5, 0.5)
