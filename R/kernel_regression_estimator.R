@@ -84,6 +84,7 @@ rho_T1 <- function(x, meanX, T1, b, xij_mat, kernel_name="gaussian", kernel_para
 
   # Duplicating code as to only have 1 if statement, not length(x) if statements.
   if(custom_kernel) {
+    stopifnot(exists(quote(kernel_name)))
     for(i in 1:length(x)) {
       tij <- x[i] - x
       t_tij <- T1 - tij
@@ -264,6 +265,7 @@ truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", kernel_p
 
   t_vals <- t[t <= T1]
   if(custom_kernel) {
+    stopifnot(exists(quote(kernel_name)))
     for(tt in t_vals) {
       K_ij <- kernel_name(tt - outer_x_x, b, kernel_params)
       vals_truncated_1 <- c(vals_truncated_1, sum(K_ij * xij_mat) / sum(K_ij))
@@ -366,6 +368,7 @@ adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_params=c()
   xij_mat <- Xij_mat(X, meanX)
   cov_vals <- c()
   if(custom_kernel) {
+    stopifnot(exists(quote(kernel_name)))
     for(tt in t) {
       K_ij <- kernel_name(tt - outer_x_x, b, kernel_params)
       cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))

@@ -14,7 +14,7 @@
 #' @param x A number between 0 and 1 (inclusive).
 #' @param rho A scale parameter in \eqn{(0, 1].}
 #' @param window_name The name of the [window] function to be used. Possible values are:
-#' tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example.
+#' tukey, triangular, power_sine, blackman, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example.
 #' @param window_params A vector of parameters of the window function.
 #' @param custom_window If a custom window is to be used or not. Defaults to \code{FALSE}.
 #'
@@ -32,6 +32,7 @@ taper_single <- function(x, rho, window_name, window_params=c(1), custom_window 
   stopifnot(is.numeric(x), length(x) == 1, x >= 0, x <= 1, is.numeric(rho), rho > 0, rho <= 1, length(rho) == 1, is.logical(custom_window))
 
   if(custom_window) {
+    stopifnot(exists(quote(window_name)))
     if(x >= 0 && x < ((1/2) * rho)) {
       return(window_name((2*x) / rho, window_params))
     }
@@ -50,7 +51,7 @@ taper_single <- function(x, rho, window_name, window_params=c(1), custom_window 
   }
 
   else {
-    stopifnot(window_name %in% c("tukey", "triangular", "power_sine", "blackman_window", "hann_poisson", "welch"))
+    stopifnot(window_name %in% c("tukey", "triangular", "power_sine", "blackman", "hann_poisson", "welch"))
     if(x >= 0 && x < ((1/2) * rho)) {
       return(window((2*x) / rho, window_name, c(window_params[1])))
     }

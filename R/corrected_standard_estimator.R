@@ -71,6 +71,7 @@ corrected_est <- function(X, kernel_name, kernel_params = c(), N_T = 0.1 * lengt
   }
 
   if(custom_kernel) {
+    stopifnot(exists(quote(kernel_name)))
     retVec <- retVec * sapply(seq(0, maxLag, by=1), function(t) kernel_name(t, N_T, kernel_params))
 
     if(type == 'autocorrelation') {
@@ -131,6 +132,7 @@ kernel_est <- function(estCov, kernel_name, kernel_params = c(), N_T = 0.1 * len
   }
 
   if(custom_kernel) {
+    stopifnot(exists(quote(kernel_name)))
     estCov <- estCov[1:(maxLag+1)] * sapply(seq(0, maxLag, by=1), function(t) kernel_name(t, N_T, kernel_params))
 
     if(type == 'autocorrelation') {

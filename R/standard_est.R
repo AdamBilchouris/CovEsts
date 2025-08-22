@@ -37,7 +37,7 @@
 standard_est <- function(X, pd = TRUE, maxLag = length(X) - 1, type = "autocovariance", meanX = mean(X)) {
   stopifnot(length(X) > 0, is.vector(X), is.numeric(X), is.logical(pd), maxLag >= 0, maxLag <= (length(X) - 1),
             maxLag %% 1 == 0, length(meanX) == 1, is.numeric(meanX), !is.na(meanX), type %in% c('autocovariance', 'autocorrelation'))
-  retVec <- as.vector(stats::acf(X, lag.max = maxLag, type = "covariance", plot = FALSE)$acf)
+  retVec <- as.vector(stats::acf(X - meanX, lag.max = maxLag, type = "covariance", plot = FALSE, demean = FALSE)$acf)
   if(!pd) {
     retVec <- retVec * (length(X) / (length(X) - 0:maxLag))
   }
