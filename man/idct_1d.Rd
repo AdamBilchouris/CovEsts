@@ -29,7 +29,8 @@ X <- dct_1d(c(1, 2, 3))
 idct_1d(X)
 }
 \references{
-Ochoa-Dominguez, H. & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. 10.1201/9780203729854
+Ochoa-Dominguez, H. & Rao, K.R. (2019). Discrete Cosine Transform, Second Edition. CRC Press. https://doi.org/10.1201/9780203729854
 
-endolith (2013). Fast Cosine Transform via FFT. Signal Processing Stack Exchange. https://dsp.stackexchange.com/a/10606
+endolith (2013). Fast Cosine Transform via FFT. Signal Processing Stack Exchange.
+https://dsp.stackexchange.com/a/10606
 }

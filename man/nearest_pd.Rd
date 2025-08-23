@@ -33,7 +33,7 @@ nearest_pd(X)
 check_pd(nearest_pd(X))
 }
 \references{
-Higham, N. J. (1988). Computing a nearest symmetric positive semidefinite matrix. Linear Algebra and its Applications, 103, 103–118. 10.1016/0024-3795(88)90223-6
+Higham, N. J. (1988). Computing a nearest symmetric positive semidefinite matrix. Linear Algebra and its Applications, 103, 103–118. https://doi.org/10.1016/0024-3795(88)90223-6
 
 D'Errico, J. (2025). nearestSPD (https://www.mathwor ks.com/matlabcentral/fileexchange/42885-nearestspd), MATLAB Central File Exchange. Retrieved August 2, 2025.
 }

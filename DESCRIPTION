@@ -11,7 +11,7 @@ Authors@R:
              role = "aut",
              email = "a.olenko@latrobe.edu.au")
      )
-Description: Several nonparametric and corrected estimators for covariance functions,  and related functions for the analysis.
+Description: Several nonparametric and corrected estimators for autocovariance functions, and related functions for their analysis.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

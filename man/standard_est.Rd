@@ -51,5 +51,5 @@ X <- c(1, 2, 3)
 standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X))
 }
 \references{
-Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112-137. 10.17713/ajs.v54i1.1975
+Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112-137. https://doi.org/10.17713/ajs.v54i1.1975
 }

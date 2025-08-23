@@ -14,11 +14,14 @@ starting_locs(N, l, k)
 \item{k}{The number of blocks considered for bootstrap.}
 }
 \value{
-A vector of length \code{k} whose values are random
+A vector of length \code{k} whose values are random block locations.
 }
 \description{
-
+This function randomly samples \eqn{\{1, \dots, N - l  + 1\}} \eqn{k} times to obtain random block locations for moving block bootstrap.
 }
 \examples{
 starting_locs(4, 2, 2)
+}
+\references{
+Chapter 2.5 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
 }

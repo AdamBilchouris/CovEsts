@@ -18,7 +18,8 @@
 #' The positive-definite estimator must be used cautiously when estimating over all lags as the sum of all values of the autocorrelation function equals to \eqn{-1/2}.
 #' For the nonpositive-definite estimator a similar constant summation property holds.
 #'
-#' @references Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112-137. 10.17713/ajs.v54i1.1975
+#' @references
+#' Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112-137. https://doi.org/10.17713/ajs.v54i1.1975
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
