@@ -4,7 +4,7 @@
 \alias{starting_locs}
 \title{Random Block Locations}
 \usage{
-starting_locs(N, l, k)
+starting_locs(N, l, k, boot_type = "moving")
 }
 \arguments{
 \item{N}{The length of the observation window.}
@@ -12,16 +12,24 @@ starting_locs(N, l, k)
 \item{l}{The block length considered for bootstrap.}
 
 \item{k}{The number of blocks considered for bootstrap.}
+
+\item{boot_type}{What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.}
 }
 \value{
 A vector of length \code{k} whose values are random block locations.
 }
 \description{
-This function randomly samples \eqn{\{1, \dots, N - l  + 1\}} \eqn{k} times to obtain random block locations for moving block bootstrap.
+This function performs random sampling to obtian random block locations for block bootstrap.
+}
+\details{
+This function performs random sampling to obtian random block locations for block bootstrap.
+If \code{type} is \verb{moving', the set \eqn{\{1, \dots, N - l  + 1\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap. If \code{type} is }circular', the set \eqn{\{1, \dots, N\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap.
 }
 \examples{
 starting_locs(4, 2, 2)
 }
 \references{
-Chapter 2.5 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
+Chapters 2.5 and 2.7 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
+
+Politis, D. N. & Romano, J. P. (1991). A Circular Block-Resampling Procedure for Stationary Data. In R. LePage & L. Billard, eds, Exploring the Limits of Bootstrap, Wiley, 263-270.
 }

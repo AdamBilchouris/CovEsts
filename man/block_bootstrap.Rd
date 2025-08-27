@@ -11,6 +11,7 @@ block_bootstrap(
   l = ceiling(length(X)^(1/3)),
   estimator = standard_est,
   alpha = 0.05,
+  boot_type = "moving",
   plot = FALSE,
   ...
 )
@@ -28,6 +29,8 @@ block_bootstrap(
 
 \item{alpha}{The quantile used to compute the \eqn{(1 - \alpha)\%} confidence interval. Defaults to \eqn{0.05.}}
 
+\item{boot_type}{What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.}
+
 \item{plot}{A boolean determining whether a plot should be created. By default, no plot is created.}
 
 \item{...}{Optional named arguments to the chosen estimator. See the examples.}
@@ -39,7 +42,7 @@ A list consisting of three items. The first is the average estimated autocovaria
 This function performs moving block bootstrap to obtain a \eqn{(1-\alpha)\%} confidence-interval for the autocovariance function. It will also compute average autocovariance function across all bootstrapped estimates.
 }
 \details{
-This function performs moving block bootstrap to obtain a \eqn{(1-\alpha)\%} confidence-interval for the autocovariance function. It will also compute average autocovariance function across all bootstrapped estimates.
+This function performs block bootstrap to obtain a \eqn{(1-\alpha)\%} confidence-interval for the autocovariance function. It will also compute average autocovariance function across all bootstrapped estimates.
 Moving block bootstrap can be described as follows.
 For some times series \eqn{X_{1}, X_{2}, \dots, X_{n},} construct \eqn{k \in Z} overlapping blocks of the form
 \eqn{B_{i} = (X_{i}, \dots, X_{i + \ell - 1}),} where \eqn{\ell \in [1, n]} is the block length.
@@ -48,7 +51,13 @@ Construct a bootstrapped time series \eqn{X_{1}^{\ast}, X_{2}^{\ast}, \dots, X_{
 The bootstrapped time series is truncated to have an observation window of size \eqn{n.}
 The autocovariance function is then computed for the bootstrapped time series.
 
-This process is repeated \code{n\_bootstrap} times to obtain many estimates of the autocovariance function using the bootstrapped time series, for which the average autocovariance function
+An alternative to moving block bootstrap is circular block bootstrap.
+Circular block bootstrap considers the time series to wrap like a circle, that is, the observation at \eqn{n + i \equiv i \; (\bmod \; n).}
+For example, for the block \eqn{B_{n - \ell + 2}}, we obtain \eqn{(X(n - \ell + 2) , \dots , X(n + 1)) \equiv (X(n - \ell + 2) , \dots , X(1)) \; (\bmod \; n).}
+When performing random sampling to obtain starting locations, the set \{1, \dots, n\} is now considered.
+The procedure for constructing the time series after constructing the blocks and selection the starting indices is the same as moving block bootstrap.
+
+This process is repeated \code{n_bootstrap} times to obtain many estimates of the autocovariance function using the bootstrapped time series, for which the average autocovariance function
 and the \eqn{(1 - \alpha)\%} confidence intervals are constructed.
 
 Any estimator of the autocovariance function can be used in this function, including a custom estimator not in the package, see the examples.
@@ -59,7 +68,7 @@ block_bootstrap(X, 4, n_bootstrap = 3, l = 2, type = 'autocorrelation')
 block_bootstrap(X, 4, n_bootstrap = 3, l = 2, plot =TRUE, type = 'autocovariance')
 block_bootstrap(X, 4, n_bootstrap = 3, l = 2, estimator=tapered_est,
     rho = 0.5, window_name = 'blackman', window_params = c(0.16),
-   type='autocorrelation')
+    type='autocorrelation')
 my_cov_est <- function(X, maxLag) {
   n <- length(X)
   covVals <- c()
@@ -72,7 +81,9 @@ my_cov_est <- function(X, maxLag) {
 block_bootstrap(X, 4, n_bootstrap = 3, l = 2, estimator=my_cov_est)
 }
 \references{
-Chapter 2.5 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
+Chapters 2.5 and 2.7 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
 
 Künsch, H. R. (1989). The Jackknife and the Bootstrap for General Stationary Observations. The Annals of Statistics 17(3), 1217-1241. https://doi.org/10.1214/aos/1176347265
+
+Politis, D. N. & Romano, J. P. (1991). A Circular Block-Resampling Procedure for Stationary Data. In R. LePage & L. Billard, eds, Exploring the Limits of Bootstrap, Wiley, 263-270.
 }

@@ -1,22 +1,35 @@
 #' Random Block Locations
 #'
-#' This function randomly samples \eqn{\{1, \dots, N - l  + 1\}} \eqn{k} times to obtain random block locations for moving block bootstrap.
+#' This function performs random sampling to obtian random block locations for block bootstrap.
+#'
+#' @details
+#' This function performs random sampling to obtian random block locations for block bootstrap.
+#' If \code{type} is `moving', the set \eqn{\{1, \dots, N - l  + 1\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap.
+#' If \code{type} is `circular', the set \eqn{\{1, \dots, N\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap.
 #'
 #' @param N The length of the observation window.
 #' @param l The block length considered for bootstrap.
 #' @param k The number of blocks considered for bootstrap.
+#' @param boot_type What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.
 #'
 #' @references
-#' Chapter 2.5 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
+#' Chapters 2.5 and 2.7 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
 #'
+#' Politis, D. N. & Romano, J. P. (1991). A Circular Block-Resampling Procedure for Stationary Data. In R. LePage & L. Billard, eds, Exploring the Limits of Bootstrap, Wiley, 263-270.
 #'
 #' @return A vector of length \code{k} whose values are random block locations.
 #' @export
 #'
 #' @examples
 #' starting_locs(4, 2, 2)
-starting_locs <- function(N, l, k) {
-  sampleVec <- 1:(N - l + 1)
+starting_locs <- function(N, l, k, boot_type = 'moving') {
+  stopifnot(is.numeric(N), N >= 1, !is.na(N), is.numeric(l), l >= 1, !is.na(l),
+            is.numeric(k), k >= 1, !is.na(k), boot_type %in% c('moving', 'circular'))
+
+  sampleVec <- switch(boot_type,
+                      moving = 1:(N - l + 1),
+                      circular = 1:N)
+
   return(sample(sampleVec, k, replace = T))
 }
 
@@ -33,13 +46,16 @@ starting_locs <- function(N, l, k) {
 #' The bootstrapped time series is truncated to have an observation window of size \eqn{n.}
 #'
 #' @references
-#' Chapter 2.5 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
+#' Chapters 2.5 and 2.7 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
 #'
 #' Künsch, H. R. (1989). The Jackknife and the Bootstrap for General Stationary Observations. The Annals of Statistics 17(3), 1217-1241. https://doi.org/10.1214/aos/1176347265
+#'
+#' Politis, D. N. & Romano, J. P. (1991). A Circular Block-Resampling Procedure for Stationary Data. In R. LePage & L. Billard, eds, Exploring the Limits of Bootstrap, Wiley, 263-270.
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param l The block length considered for bootstrap.
 #' @param k The number of blocks considered for bootstrap.
+#' @param boot_type What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.
 #'
 #' @return A vector of length \code{length(X)} whose values are a bootstrapped time series.
 #' @export
@@ -47,13 +63,26 @@ starting_locs <- function(N, l, k) {
 #' @examples
 #' X <- c(1, 2, 3, 3, 2, 1)
 #' bootstrap_samples(X, 2, 3)
-bootstrap_samples <- function(X, l, k) {
+bootstrap_samples <- function(X, l, k, boot_type = 'moving') {
+  stopifnot(is.numeric(X), length(X) >= 1, !is.na(X), is.numeric(l), l >= 1, !is.na(l),
+            is.numeric(k), k >= 1, !is.na(k), boot_type %in% c('moving', 'circular'))
   N <- length(X)
   Y <- c()
-  S <- starting_locs(N, k)
-  for(j in 1:k) {
-    Y <- c(Y, X[(S[j]):(S[j] + l - 1)])
+  S <- starting_locs(N, l, k, boot_type)
+
+  if(boot_type == 'moving') {
+    for(j in 1:k) {
+      Y <- c(Y, X[(S[j]):(S[j] + l - 1)])
+    }
   }
+
+  else if(boot_type == 'circular') {
+    for(j in 1:k) {
+      indices <- ( ((S[j]:(S[j] + l - 1)) - 1) %% N) + 1
+      Y <- c(Y, X[indices])
+    }
+  }
+
   Y <- Y[1:N]
   return(Y)
 }
@@ -63,7 +92,7 @@ bootstrap_samples <- function(X, l, k) {
 #' This function performs moving block bootstrap to obtain a \eqn{(1-\alpha)\%} confidence-interval for the autocovariance function. It will also compute average autocovariance function across all bootstrapped estimates.
 #'
 #' @details
-#' This function performs moving block bootstrap to obtain a \eqn{(1-\alpha)\%} confidence-interval for the autocovariance function. It will also compute average autocovariance function across all bootstrapped estimates.
+#' This function performs block bootstrap to obtain a \eqn{(1-\alpha)\%} confidence-interval for the autocovariance function. It will also compute average autocovariance function across all bootstrapped estimates.
 #' Moving block bootstrap can be described as follows.
 #' For some times series \eqn{X_{1}, X_{2}, \dots, X_{n},} construct \eqn{k \in Z} overlapping blocks of the form
 #' \eqn{B_{i} = (X_{i}, \dots, X_{i + \ell - 1}),} where \eqn{\ell \in [1, n]} is the block length.
@@ -72,15 +101,24 @@ bootstrap_samples <- function(X, l, k) {
 #' The bootstrapped time series is truncated to have an observation window of size \eqn{n.}
 #' The autocovariance function is then computed for the bootstrapped time series.
 #'
-#' This process is repeated \code{n\_bootstrap} times to obtain many estimates of the autocovariance function using the bootstrapped time series, for which the average autocovariance function
+#' An alternative to moving block bootstrap is circular block bootstrap.
+#' Circular block bootstrap considers the time series to wrap like a circle, that is, the observation at \eqn{n + i \equiv i \; (\bmod \; n).}
+#' For example, for the block \eqn{B_{n - \ell + 2}}, we obtain \eqn{(X(n - \ell + 2) , \dots , X(n + 1)) \equiv (X(n - \ell + 2) , \dots , X(1)) \; (\bmod \; n).}
+#' When performing random sampling to obtain starting locations, the set \{1, \dots, n\} is now considered.
+#' The procedure for constructing the time series after constructing the blocks and selection the starting indices is the same as moving block bootstrap.
+#'
+#'
+#' This process is repeated \code{n_bootstrap} times to obtain many estimates of the autocovariance function using the bootstrapped time series, for which the average autocovariance function
 #' and the \eqn{(1 - \alpha)\%} confidence intervals are constructed.
 #'
 #' Any estimator of the autocovariance function can be used in this function, including a custom estimator not in the package, see the examples.
 #'
 #' @references
-#' Chapter 2.5 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
+#' Chapters 2.5 and 2.7 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
 #'
 #' Künsch, H. R. (1989). The Jackknife and the Bootstrap for General Stationary Observations. The Annals of Statistics 17(3), 1217-1241. https://doi.org/10.1214/aos/1176347265
+#'
+#' Politis, D. N. & Romano, J. P. (1991). A Circular Block-Resampling Procedure for Stationary Data. In R. LePage & L. Billard, eds, Exploring the Limits of Bootstrap, Wiley, 263-270.
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param maxLag The maximum lag to compute the estimated autocovariance function at.
@@ -88,6 +126,7 @@ bootstrap_samples <- function(X, l, k) {
 #' @param l The block length considered for bootstrap. Defaults to \eqn{\lceil N \rceil^{1/3}}, where \eqn{N} is the length of the observation window.
 #' @param estimator The function name of the estimator to use. Defaults to \code{standard\_est}.
 #' @param alpha The quantile used to compute the \eqn{(1 - \alpha)\%} confidence interval. Defaults to \eqn{0.05.}
+#' @param boot_type What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.
 #' @param plot A boolean determining whether a plot should be created. By default, no plot is created.
 #' @param ... Optional named arguments to the chosen estimator. See the examples.
 #'
@@ -115,21 +154,21 @@ bootstrap_samples <- function(X, l, k) {
 #'   return(covVals)
 #' }
 #' block_bootstrap(X, 4, n_bootstrap = 3, l = 2, estimator=my_cov_est)
-block_bootstrap <- function(X, maxLag, n_bootstrap = 100, l = ceiling(length(X)^(1/3)), estimator = standard_est, alpha = 0.05, plot = FALSE, ...) {
+block_bootstrap <- function(X, maxLag, n_bootstrap = 100, l = ceiling(length(X)^(1/3)), estimator = standard_est, alpha = 0.05, boot_type = 'moving', plot = FALSE, ...) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1,
             maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(n_bootstrap), n_bootstrap > 0,
             is.numeric(l), length(l) == 1, l > 0, l <= length(X), l %% 1 == 0, exists(quote(estimator)),
-            is.numeric(alpha), alpha <= 1, alpha >=0, is.logical(plot))
+            is.numeric(alpha), alpha <= 1, alpha >=0, boot_type %in% c('moving', 'circular'), is.logical(plot))
 
   N <- length(X)
   k <- ceiling(N / l)
   acf_mat <- matrix(NA, ncol = maxLag + 1, nrow = n_bootstrap)
 
   for (i in 1:n_bootstrap) {
-    Y <- bootstrap_samples(X, l, k)
+    Y <- bootstrap_samples(X, l, k, boot_type)
     # If the time series is too small, the same block may be sampled k times.
     while(length(unique(Y)) == 1) {
-      Y <- bootstrap_samples(X, l, k)
+      Y <- bootstrap_samples(X, l, k, boot_type)
     }
     acf_mat[i, ] <- estimator(Y, maxLag = maxLag, ...)
   }

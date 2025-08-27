@@ -4,7 +4,7 @@
 \alias{bootstrap_samples}
 \title{Moving Block Bootstrap Samples}
 \usage{
-bootstrap_samples(X, l, k)
+bootstrap_samples(X, l, k, boot_type = "moving")
 }
 \arguments{
 \item{X}{A vector representing observed values of the time series.}
@@ -12,6 +12,8 @@ bootstrap_samples(X, l, k)
 \item{l}{The block length considered for bootstrap.}
 
 \item{k}{The number of blocks considered for bootstrap.}
+
+\item{boot_type}{What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.}
 }
 \value{
 A vector of length \code{length(X)} whose values are a bootstrapped time series.
@@ -32,7 +34,9 @@ X <- c(1, 2, 3, 3, 2, 1)
 bootstrap_samples(X, 2, 3)
 }
 \references{
-Chapter 2.5 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
+Chapters 2.5 and 2.7 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
 
 Künsch, H. R. (1989). The Jackknife and the Bootstrap for General Stationary Observations. The Annals of Statistics 17(3), 1217-1241. https://doi.org/10.1214/aos/1176347265
+
+Politis, D. N. & Romano, J. P. (1991). A Circular Block-Resampling Procedure for Stationary Data. In R. LePage & L. Billard, eds, Exploring the Limits of Bootstrap, Wiley, 263-270.
 }
