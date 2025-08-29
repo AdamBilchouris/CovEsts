@@ -1,9 +1,9 @@
 #' Random Block Locations
 #'
-#' This function performs random sampling to obtian random block locations for block bootstrap.
+#' This function performs random sampling to obtain starting points for the random blocks for block bootstrap.
 #'
 #' @details
-#' This function performs random sampling to obtian random block locations for block bootstrap.
+#' This function performs random sampling to obtain starting points for the random blocks for block bootstrap.
 #' If \code{type = 'moving'}, the set \eqn{\{1, \dots, N - \ell  + 1\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap.
 #' If \code{type = 'circular'}, the set \eqn{\{1, \dots, N\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap.
 #'
@@ -26,7 +26,8 @@
 #' starting_locs(4, 2, 2)
 starting_locs <- function(N, l, k, boot_type = 'moving') {
   stopifnot(is.numeric(N), N >= 1, !is.na(N), is.numeric(l), l >= 1, !is.na(l),
-            is.numeric(k), k >= 1, !is.na(k), boot_type %in% c('moving', 'circular'))
+            is.numeric(k), k >= 1, !is.na(k), N - l + 1 >= 1,
+            boot_type %in% c('moving', 'circular'))
 
   sampleVec <- switch(boot_type,
                       moving = 1:(N - l + 1),
@@ -35,9 +36,9 @@ starting_locs <- function(N, l, k, boot_type = 'moving') {
   return(sample(sampleVec, k, replace = T))
 }
 
-#' Block Bootstrap Samples
+#' Block Bootstrap Sample
 #'
-#' This function generates block bootstrap samples for either moving block bootstrap or circular bootstrap.
+#' This function generates a block bootstrap sample for either moving block bootstrap or circular bootstrap.
 #'
 #' @details
 #' This function generates a block bootstrap sample for a time series \eqn{X.}
@@ -60,11 +61,12 @@ starting_locs <- function(N, l, k, boot_type = 'moving') {
 #'
 #' @examples
 #' X <- c(1, 2, 3, 3, 2, 1)
-#' bootstrap_samples(X, 2, 3)
-bootstrap_samples <- function(X, l, k, boot_type = 'moving') {
+#' bootstrap_sample(X, 2, 3)
+bootstrap_sample <- function(X, l, k, boot_type = 'moving') {
   stopifnot(is.numeric(X), length(X) >= 1, !is.na(X), is.numeric(l), l >= 1, !is.na(l),
             is.numeric(k), k >= 1, !is.na(k), boot_type %in% c('moving', 'circular'))
   N <- length(X)
+  stopifnot(N - l + 1 >= 1)
   Y <- c()
   S <- starting_locs(N, l, k, boot_type)
 
@@ -93,21 +95,21 @@ bootstrap_samples <- function(X, l, k, boot_type = 'moving') {
 #' This function performs block bootstrap to obtain a \eqn{(1-\alpha)\%} confidence-interval for the autocovariance function. It will also compute average autocovariance function across all bootstrapped estimates.
 #'
 #' Moving block bootstrap can be described as follows.
-#' For some times series \eqn{X_{1}, X_{2}, \dots, X_{n},} construct \eqn{k \in Z} overlapping blocks of the form
-#' \eqn{B_{i} = (X(i), \dots, X(i + \ell - 1)),} where \eqn{\ell \in [1, n]} is the block length.
-#' Randomly sample, with replacement, from the discrete uniform distribution with on \eqn{\{1, \dots, n - \ell + 1\}} to obtain a set of random block locations \eqn{I_{1}, \dots, I_{k}.}
-#' Construct a bootstrapped time series \eqn{B_{1}^{\ast}, B_{2}^{\ast}, \dots, B_{k}^{\ast}} where \eqn{B_{i}^{\ast} = B_{I_{i}}.}
-#' The bootstrapped time series is truncated to have an observation window of size \eqn{n,} and will be of the form \eqn{X^{\ast}(1), \dots , X^{\ast}(n).}
+#' For some times series \eqn{X(1), X(2), \dots, X(n),} construct \eqn{k \in N} overlapping blocks of the form
+#' \eqn{B_{i} = (X(i), \dots, X(i + \ell - 1)),} where \eqn{\ell} is the block length.
+#' Randomly sample, with replacement, from the discrete uniform distribution with on \eqn{\{1, \dots, n - \ell + 1\}} to obtain a set of starting points for the random blocks, \eqn{I_{1}, \dots, I_{k}.}
+#' Construct a bootstrapped time series \eqn{B_{1}^{\ast}, B_{2}^{\ast}, \dots, B_{k}^{\ast},} where \eqn{B_{i}^{\ast} = B_{I_{i}}.}
+#' The bootstrapped time series is truncated to have length \eqn{n,} and will be of the form \eqn{X^{\ast}(1), \dots , X^{\ast}(n).}
 #' The autocovariance function is then computed for the bootstrapped time series.
 #'
 #' An alternative to moving block bootstrap is circular block bootstrap.
-#' Circular block bootstrap considers the time series to wrap like a circle, that is, the observation at \eqn{n + i \equiv i \; (\bmod \; n).}
-#' For example, for the block \eqn{B_{n - \ell + 2}}, we obtain \eqn{(X(n - \ell + 2) , \dots , X(n + 1)) \equiv (X(n - \ell + 2) , \dots , X(1)) \; (\bmod \; n).}
+#' Circular block bootstrap considers a time series wrapped like a circle, that is, the observation at \eqn{n + i} is the same as \eqn{i.}
+#' For example, for the block \eqn{B_{n - \ell + 2}}, we obtain \eqn{(X(n - \ell + 2) , \dots , X(n), X(n + 1))} which is \eqn{(X(n - \ell + 2) , \dots , X(n), X(1)).}
 #' When performing random sampling to obtain starting locations, the set \eqn{\{1, \dots, n\}} is now considered.
 #' The procedure for constructing the bootstrap time series after constructing the blocks and selecting the starting indices is the same as moving block bootstrap.
 #'
-#' This process is repeated \code{n_bootstrap} times to obtain many estimates of the autocovariance function using the bootstrapped time series, for which the average autocovariance function
-#' and the \eqn{(1 - \alpha)\%} confidence intervals are constructed.
+#' This process is repeated \code{n_bootstrap} times to obtain \code{n_bootstrap} estimates of the autocovariance function using the bootstrapped time series, for which the average autocovariance function
+#' and the \eqn{(1 - \alpha)\%} confidence intervals are constructed pointwise for each lag.
 #'
 #' The choice of the block length, \eqn{\ell ,} depends on the degree of dependence present in the time series. If the time series has a high degree of dependence, a larger block size should be chosen to ensure the dependency structure is maintained within the block.
 #'
@@ -122,17 +124,19 @@ bootstrap_samples <- function(X, l, k, boot_type = 'moving') {
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param maxLag The maximum lag to compute the estimated autocovariance function at.
-#' @param x A vector of indices. Defaults to the sequence \code{1:length(X)}.
 #' @param n_bootstrap The number of times to run moving block bootstrap. Defaults to 100.
 #' @param l The block length considered for bootstrap. Defaults to \eqn{\lceil N \rceil^{1/3}}, where \eqn{N} is the length of the observation window.
-#' @param estimator The function name of the estimator to use. Defaults to \code{standard\_est}.
+#' @param estimator The function name of the estimator to use. Defaults to \code{standard_est}.
+#' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
 #' @param alpha The quantile used to compute the \eqn{(1 - \alpha)\%} confidence interval. Defaults to \eqn{0.05.}
 #' @param boot_type What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.
-#' @param plot A boolean determining whether a plot should be created. By default, no plot is created.
 #' @param boot_mat A boolean determining whether a bootstrap matrix should be returned or not. By default, no matrix is returned.
+#' @param plot A boolean determining whether a plot should be created. By default, no plot is created.
+#' @param lags A vector of lag indices. Defaults to the sequence \code{0:(length(X) - 1)}. Used for plotting.
+#' @param ylim A vector of length two denoting the limits of the y-axis for the plot. Defaults to \code{c(-1, 1)}.
 #' @param ... Optional named arguments to the chosen estimator. See the examples.
 #'
-#' @return A list consisting of three items. The first is the average estimated autocovariance/autocorrelation function for the bootstrap samples, the second is a matrix of the estimated autocovariance/autocorrelation functions from the bootstrapped samples, and the third is a matrix of confidence intervals for each lag.
+#' @return A list consisting of three or four items. The first estimated autocovariance/autocorrelation function using the time series \eqn{X}, the second is the average estimated autocovariance/autocorrelation function for the bootstrap samples, and the third is a matrix of confidence intervals for each lag. The fourth third is a matrix of the estimated autocovariance/autocorrelation functions from the bootstrapped samples, which is returned if \code{boot_mat = TRUE}. If the option \code{plot = TRUE} is used, the plot shows the estimated autocovariance function in black, the average bootstrap estimate in red, and the \eqn{(1-\alpha)\%} confidence interval in the shaded grey region.
 #' @export
 #'
 #' @importFrom stats quantile
@@ -156,40 +160,50 @@ bootstrap_samples <- function(X, l, k, boot_type = 'moving') {
 #'   return(covVals)
 #' }
 #' block_bootstrap(X, 4, n_bootstrap = 3, l = 2, estimator=my_cov_est)
-block_bootstrap <- function(X, maxLag, x = 1:length(X), n_bootstrap = 100, l = ceiling(length(X)^(1/3)), estimator = standard_est, alpha = 0.05, boot_type = 'moving', plot = FALSE, boot_mat = FALSE, ...) {
+block_bootstrap <- function(X, maxLag, n_bootstrap = 100, l = ceiling(length(X)^(1/3)), estimator = standard_est, type = 'autocovariance', alpha = 0.05, boot_type = 'moving', plot = FALSE, boot_mat = FALSE, lags = 0:(length(X) - 1), ylim=c(-1, 1), ...) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1,
-            maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(x), length(x) == length(X),
+            maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(lags), length(lags) == length(X),
             is.numeric(n_bootstrap), n_bootstrap > 0, is.numeric(l), length(l) == 1, l > 0, l <= length(X),
-            l %% 1 == 0, exists(quote(estimator)), is.numeric(alpha), alpha <= 1, alpha >=0,
-            boot_type %in% c('moving', 'circular'), is.logical(plot), is.logical(boot_mat))
+            l %% 1 == 0, exists(quote(estimator)), type %in% c('autocovariance', 'autocorrelation'),
+            is.numeric(alpha), alpha <= 1, alpha >= 0, boot_type %in% c('moving', 'circular'),
+            is.logical(plot), is.logical(boot_mat), is.numeric(ylim), length(ylim) == 2, !any(is.na(ylim)))
 
   N <- length(X)
   k <- ceiling(N / l)
   acf_mat <- matrix(NA, ncol = maxLag + 1, nrow = n_bootstrap)
 
   for (i in 1:n_bootstrap) {
-    Y <- bootstrap_samples(X, l, k, boot_type)
+    Y <- bootstrap_sample(X, l, k, boot_type)
     # If the time series is too small, the same block may be sampled k times.
     while(length(unique(Y)) == 1) {
-      Y <- bootstrap_samples(X, l, k, boot_type)
+      Y <- bootstrap_sample(X, l, k, boot_type)
     }
     acf_mat[i, ] <- estimator(Y, maxLag = maxLag, ...)
+  }
+
+  if(type == 'autocorrelation') {
+    for(i in 1:nrow(acf_mat)) {
+      acf_mat[i, ] <- acf_mat[i, ] / acf_mat[i, 1]
+    }
   }
 
   lower_vals <- apply(acf_mat, 2, quantile, alpha / 2)
   upper_vals <- apply(acf_mat, 2, quantile, 1 - (alpha / 2))
 
   original_acf <- estimator(X, ..., maxLag = maxLag)
+  if(type == 'autocorrelation') {
+    original_acf <- original_acf / original_acf[1]
+  }
   average_acf <- colMeans(acf_mat)
 
   if(plot) {
-    plot(x[1:(maxLag + 1)], original_acf, type = "l", ylim = c(-0.6, 1.1), lwd = 2)
-    lines(x[1:(maxLag + 1)], average_acf, lty = 2, col = 2, lwd = 2)
-    polygon(c(rev(0:maxLag), 0:maxLag), c(rev(upper_vals), lower_vals), col = rgb(0.9, 0.9, 0.9, 0.6))
+    plot(lags[1:(maxLag + 1)], original_acf, type = "l", ylim=ylim, lwd = 2, xlab = 'Lag (h)', ylab = 'ACF')
+    lines(lags[1:(maxLag + 1)], average_acf, lty = 2, col = 2, lwd = 2)
+    polygon(c(rev(lags[1:(maxLag + 1)]), lags[1:(maxLag + 1)]), c(rev(upper_vals), lower_vals), col = rgb(0.9, 0.9, 0.9, 0.6))
   }
 
   if(boot_mat) {
-    return(list(average_acf = average_acf, acf_mat = acf_mat, confidence=cbind(lower_vals, upper_vals)))
+    return(list(original_acf = original_acf, average_acf = average_acf, confidence=cbind(lower_vals, upper_vals), acf_mat = acf_mat))
   }
-  return(list(average_acf = average_acf, confidence=cbind(lower_vals, upper_vals)))
+  return(list(original_acf = original_acf, average_acf = average_acf, confidence=cbind(lower_vals, upper_vals)))
 }
