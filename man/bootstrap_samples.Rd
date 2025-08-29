@@ -2,7 +2,7 @@
 % Please edit documentation in R/block_bootstrap.R
 \name{bootstrap_samples}
 \alias{bootstrap_samples}
-\title{Moving Block Bootstrap Samples}
+\title{Block Bootstrap Samples}
 \usage{
 bootstrap_samples(X, l, k, boot_type = "moving")
 }
@@ -19,15 +19,11 @@ bootstrap_samples(X, l, k, boot_type = "moving")
 A vector of length \code{length(X)} whose values are a bootstrapped time series.
 }
 \description{
-This function generates moving block bootstrap samples.
+This function generates block bootstrap samples for either moving block bootstrap or circular bootstrap.
 }
 \details{
-This function generates a moving block bootstrap sample for a time series \eqn{X.}
-For some times series \eqn{X_{1}, X_{2}, \dots, X_{n},} construct \eqn{k \in Z} overlapping blocks of the form
-\eqn{B_{i} = (X_{i}, \dots, X_{i + \ell - 1}),} where \eqn{\ell \in [1, n]} is the block length.
-Randomly sample, with replacement, from the discrete uniform distribution with on \eqn{\{1, \dots, n - \ell + 1\}} to obtain a set of random block locations \eqn{I_{1}, \dots, I_{k}.}
-Construct a bootstrapped time series \eqn{X_{1}^{\ast}, X_{2}^{\ast}, \dots, X_{n}^{\ast}} where \eqn{X_{i}^{\ast} = B_{I_{i}}.}
-The bootstrapped time series is truncated to have an observation window of size \eqn{n.}
+This function generates a block bootstrap sample for a time series \eqn{X.}
+For the moving block bootstrap and circular bootstrap procedures see \link{block_bootstrap} and the included references.
 }
 \examples{
 X <- c(1, 2, 3, 3, 2, 1)

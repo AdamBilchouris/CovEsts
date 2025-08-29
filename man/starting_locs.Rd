@@ -23,13 +23,16 @@ This function performs random sampling to obtian random block locations for bloc
 }
 \details{
 This function performs random sampling to obtian random block locations for block bootstrap.
-If \code{type} is \verb{moving', the set \eqn{\{1, \dots, N - l  + 1\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap. If \code{type} is }circular', the set \eqn{\{1, \dots, N\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap.
+If \code{type = 'moving'}, the set \eqn{\{1, \dots, N - \ell  + 1\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap.
+If \code{type = 'circular'}, the set \eqn{\{1, \dots, N\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap.
 }
 \examples{
 starting_locs(4, 2, 2)
 }
 \references{
 Chapters 2.5 and 2.7 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
+
+Künsch, H. R. (1989). The Jackknife and the Bootstrap for General Stationary Observations. The Annals of Statistics 17(3), 1217-1241. https://doi.org/10.1214/aos/1176347265
 
 Politis, D. N. & Romano, J. P. (1991). A Circular Block-Resampling Procedure for Stationary Data. In R. LePage & L. Billard, eds, Exploring the Limits of Bootstrap, Wiley, 263-270.
 }
