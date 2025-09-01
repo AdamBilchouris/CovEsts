@@ -159,9 +159,10 @@ bootstrap_samples <- function(X, l, k, boot_type = 'moving') {
 block_bootstrap <- function(X, maxLag, x = 1:length(X), n_bootstrap = 100, l = ceiling(length(X)^(1/3)), estimator = standard_est, alpha = 0.05, boot_type = 'moving', plot = FALSE, boot_mat = FALSE, ...) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1,
             maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(x), length(x) == length(X),
-            is.numeric(n_bootstrap), n_bootstrap > 0, is.numeric(l), length(l) == 1, l > 0, l <= length(X),
-            l %% 1 == 0, exists(quote(estimator)), is.numeric(alpha), alpha <= 1, alpha >=0,
-            boot_type %in% c('moving', 'circular'), is.logical(plot), is.logical(boot_mat))
+            is.numeric(n_bootstrap), n_bootstrap > 0, n_bootstrap %% 1 ==0, is.numeric(l), length(l) == 1,
+            l > 0, l <= length(X), l %% 1 == 0, exists(quote(estimator)), is.numeric(alpha),
+            alpha <= 1, alpha >=0, boot_type %in% c('moving', 'circular'), is.logical(plot),
+            is.logical(boot_mat))
 
   N <- length(X)
   k <- ceiling(N / l)
