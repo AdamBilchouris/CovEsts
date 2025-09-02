@@ -124,3 +124,78 @@ test_that("kernel_est() fails for noninteger maxLag", {
   expect_error(kernel_est(c(1, 2, 3), "gaussian", maxLag=1.5))
 })
 
+# solve_shrinking
+test_that("solve_shrinking() fails for nonnumeric par", {
+  expect_error(solve_shrinking('a', diag(2), diag(2)))
+  expect_error(solve_shrinking(1i, diag(2), diag(2)))
+})
+
+test_that("solve_shrinking() fails for NA in par", {
+  expect_error(solve_shrinking(NA, diag(2), diag(2)))
+})
+
+test_that("solve_shrinking() fails for par not of length 1", {
+  expect_error(solve_shrinking(c(0.5, 0.5), diag(2), diag(2)))
+})
+
+test_that("solve_shrinking() fails for nonnumeric corr_mat", {
+  expect_error(solve_shrinking(0.5, matrix(c(1, 'a', 3, 4), 2), diag(2)))
+  expect_error(solve_shrinking(0.5, matrix(c(1, 2i, 3, 4), 2), diag(2)))
+})
+
+test_that("solve_shrinking() fails for at least one NA in corr_mat", {
+  expect_error(solve_shrinking(0.5, matrix(c(1, NA, 3, 4), 2), diag(2)))
+})
+
+test_that("solve_shrinking() fails for nonnumeric target", {
+  expect_error(solve_shrinking(0.5, diag(2), matrix(c(1, 'a', 3, 4), 2)))
+  expect_error(solve_shrinking(0.5, diag(2), matrix(c(1, 2i, 3, 4), 2)))
+})
+
+test_that("solve_shrinking() fails for at least one NA in target", {
+  expect_error(solve_shrinking(0.5, diag(2), matrix(c(1, NA, 3, 4), 2)))
+})
+
+test_that("solve_shrinking() fails for corr_mat and target having different sizes", {
+  expect_error(solve_shrinking(0.5, diag(2), diag(3)))
+})
+
+# shrinking
+test_that("solve_shrinking() fails for estCov having length less than 1", {
+  expect_error(shrinking(c()))
+})
+
+test_that("solve_shrinking() fails for estCov having length less than 1", {
+  expect_error(shrinking(c()))
+})
+
+test_that("solve_shrinking() fails for nonvector estCov", {
+  expect_error(shrinking(diag(2)))
+})
+
+test_that("solve_shrinking() fails for nonnumeric estCov", {
+  expect_error(shrinking(c(1, 'a', 3)))
+  expect_error(shrinking(c(1, 2i, 3)))
+})
+
+test_that("solve_shrinking() fails for at least one NA in estCov", {
+  expect_error(shrinking(c(1, NA, 3)))
+})
+
+test_that("solve_shrinking() fails for nonlogical return_matrix", {
+  expect_error(shrinking(c(1, 2, 3), return_matrix = 1))
+  expect_error(shrinking(c(1, 2, 3), return_matrix = 'TRUE'))
+})
+
+test_that("solve_shrinking() fails for nonmatrix target", {
+  expect_error(shrinking(c(1, 2, 3), target = 1))
+})
+
+test_that("solve_shrinking() fails for nonnumeric target", {
+  expect_error(shrinking(c(1, 2, 3), target = matrix(c(1, 'a', 3, 4), 2)))
+  expect_error(shrinking(c(1, 2, 3), target = matrix(c(1, 2i, 3, 4), 2)))
+})
+
+test_that("solve_shrinking() fails for at least one NA in target", {
+  expect_error(shrinking(c(1, 2, 3), target = matrix(c(1, NA, 3, 4), 2)))
+})

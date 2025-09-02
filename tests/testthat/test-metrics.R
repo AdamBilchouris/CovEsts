@@ -180,3 +180,95 @@ test_that("check_pd() fails for empty est", {
 test_that("check_pd() fails for at least on NA in est", {
   expect_error(check_pd(c(1, NA, 3)))
 })
+
+# mse
+test_that("mse() works", {
+  expect_equal(mse(test_estCov1, test_estCov2), 0.013225263, tolerance = sqrt(.Machine$double.eps))
+})
+
+test_that("mse() fails for nonnumeric est1", {
+  expect_error(mse(c('a', test_estCov1[-1]), test_estCov2))
+  expect_error(mse(c(1i, test_estCov1[-1]), test_estCov2))
+})
+
+test_that("mse() fails for nonnumeric est2", {
+  expect_error(mse(test_estCov1, c('a', test_estCov2[-1])))
+  expect_error(mse(test_estCov1, c(1i, test_estCov2[-1])))
+})
+
+test_that("mse() fails for empty est1", {
+  expect_error(mse(c(), test_estCov2))
+})
+
+test_that("mse() fails for empty est2", {
+  expect_error(mse(test_estCov1, c()))
+})
+
+test_that("mse() fails for at least on NA in est1", {
+  expect_error(mse(c(NA, test_estCov1[-1]), test_estCov2))
+})
+
+test_that("mse() fails for at least on NA in est2", {
+  expect_error(mse(test_estCov1, c(NA, test_estCov2[-1])))
+})
+
+test_that("mse() fails if est1 is of a different length", {
+  expect_error(mse(test_estCov1[-1], test_estCov2))
+})
+
+test_that("mse() fails if est2 is of a different length", {
+  expect_error(mse(test_estCov1, test_estCov2[-1]))
+})
+
+# hilbert_schmidt
+test_that("hilbert_schmidt() works", {
+  expect_equal(hilbert_schmidt(test_estCov1, test_estCov2), 2.5411595, tolerance = sqrt(.Machine$double.eps))
+})
+
+test_that("hilbert_schmidt() fails for nonnumeric est1", {
+  expect_error(hilbert_schmidt(c('a', test_estCov1[-1]), test_estCov2))
+  expect_error(hilbert_schmidt(c(1i, test_estCov1[-1]), test_estCov2))
+})
+
+test_that("hilbert_schmidt() fails for nonnumeric est2", {
+  expect_error(hilbert_schmidt(test_estCov1, c('a', test_estCov2[-1])))
+  expect_error(hilbert_schmidt(test_estCov1, c(1i, test_estCov2[-1])))
+})
+
+test_that("hilbert_schmidt() fails for empty est1", {
+  expect_error(hilbert_schmidt(c(), test_estCov2))
+})
+
+test_that("hilbert_schmidt() fails for empty est2", {
+  expect_error(hilbert_schmidt(test_estCov1, c()))
+})
+
+test_that("hilbert_schmidt() fails for at least on NA in est1", {
+  expect_error(hilbert_schmidt(c(NA, test_estCov1[-1]), test_estCov2))
+})
+
+test_that("mse() fails for at least on NA in est2", {
+  expect_error(mse(test_estCov1, c(NA, test_estCov2[-1])))
+})
+
+test_that("hilbert_schmidt() fails if est1 is of a different length", {
+  expect_error(hilbert_schmidt(test_estCov1[-1], test_estCov2))
+})
+
+test_that("hilbert_schmidt() fails if est2 is of a different length", {
+  expect_error(hilbert_schmidt(test_estCov1, test_estCov2[-1]))
+})
+
+# nearest_pd
+test_that("nearest_pd() fails for nonnumeric X", {
+  expect_error(nearest_pd(c('a', test_estCov1[-1])))
+  expect_error(nearest_pd(c(1i, test_estCov1[-1])))
+})
+
+test_that("nearest_pd() fails for at least on NA in X", {
+  expect_error(nearest_pd(c(NA, test_estCov1[-1])))
+})
+
+test_that("nearest_pd() fails for empty X", {
+  expect_error(nearest_pd(c()))
+})

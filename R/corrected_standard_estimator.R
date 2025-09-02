@@ -167,6 +167,8 @@ kernel_est <- function(estCov, kernel_name, kernel_params = c(), N_T = 0.1 * len
 #' corr_mat <- cyclic_matrix(estCorr)
 #' solve_shrinking(0.5, corr_mat, diag(length(estCorr)))
 solve_shrinking <- function(par, corr_mat, target) {
+  stopifnot(is.numeric(par), !is.na(par), length(par) == 1, is.numeric(corr_mat), !any(is.na(corr_mat)), is.numeric(target), !any(is.na(target)),
+            all(dim(corr_mat) == dim(target)))
   adj_corr_mat <- (par[1] * corr_mat) + (1 - par[1]) * target
   isPd <- check_pd(adj_corr_mat)
   if(isPd) {
@@ -205,6 +207,7 @@ solve_shrinking <- function(par, corr_mat, target) {
 #' target <- diag(length(estCorr))
 #' shrinking(estCorr, TRUE, target)
 shrinking <- function(estCov, return_matrix = FALSE, target = NULL) {
+  stopifnot(length(estCov) > 0, is.vector(estCov), is.numeric(estCov), !any(is.na(estCov)), is.logical(return_matrix))
   estCorr <- estCov / estCov[1]
   corr_mat <- cyclic_matrix(estCorr)
 
