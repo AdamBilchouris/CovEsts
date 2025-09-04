@@ -32,7 +32,7 @@ starting_locs <- function(N, l, k, boot_type = 'moving') {
                       moving = 1:(N - l + 1),
                       circular = 1:N)
 
-  return(sample(sampleVec, k, replace = T))
+  return(sample(sampleVec, k, replace = TRUE))
 }
 
 #' Block Bootstrap Samples

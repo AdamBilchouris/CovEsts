@@ -159,7 +159,7 @@ dct_1d <- function(X) {
 #'
 #' The original spectrum, \code{dct_full}, from \code{X} is obtained as follows.
 #' First, the original sample Fourier spectrum is reconstructed using \code{dct_full <- c(X, 0, -X[-1], 0, rev(X[-1]))}. After this, an inverse FFT is applied,
-#' \code{idct <- Re(stats::fft(dct_full, inverse = T)) * (2 / length(dct_full))}, which gives the original function with additional zero-values at even indices.
+#' \code{idct <- Re(stats::fft(dct_full, inverse = TRUE)) * (2 / length(dct_full))}, which gives the original function with additional zero-values at even indices.
 #' The zeroes are dropped, which gives the untransformed X.
 #'
 #' @references
@@ -182,7 +182,7 @@ idct_1d <- function(X) {
   dct_full <- c(X, 0, -rev(X), -X[-1], 0, rev(X[-1]))
 
   # Perform the inversion
-  idct_vals <- Re(stats::fft(dct_full, inverse = T)) * (2 / length(dct_full))
+  idct_vals <- Re(stats::fft(dct_full, inverse = TRUE)) * (2 / length(dct_full))
 
   # Recover original signal, drop 0s
   seqEven <- seq(2, 2*length(X), by=2)

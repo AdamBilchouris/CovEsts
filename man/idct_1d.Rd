@@ -21,7 +21,7 @@ For autocovariance function estimation, the spectrum is given in the input \code
 
 The original spectrum, \code{dct_full}, from \code{X} is obtained as follows.
 First, the original sample Fourier spectrum is reconstructed using \code{dct_full <- c(X, 0, -X[-1], 0, rev(X[-1]))}. After this, an inverse FFT is applied,
-\code{idct <- Re(stats::fft(dct_full, inverse = T)) * (2 / length(dct_full))}, which gives the original function with additional zero-values at even indices.
+\code{idct <- Re(stats::fft(dct_full, inverse = TRUE)) * (2 / length(dct_full))}, which gives the original function with additional zero-values at even indices.
 The zeroes are dropped, which gives the untransformed X.
 }
 \examples{

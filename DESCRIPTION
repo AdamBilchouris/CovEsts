@@ -11,7 +11,7 @@ Authors@R:
              role = "aut",
              email = "a.olenko@latrobe.edu.au")
      )
-Description: Several nonparametric and corrected estimators for autocovariance functions, and related functions for their analysis.
+Description: Several nonparametric estimators of autocovariance functions. Procedures for constructing their confidence regions by using bootstrap techniques. Methods to correct autocovariance estimators and several tools for analysing and comparing them. Supplementary functions, including kernel computations and discrete cosine Fourier transforms. For more details see Bilchouris and Olenko (2025) <doi:10.17713/ajs.v54i1.1975>.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
