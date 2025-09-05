@@ -126,10 +126,12 @@ bootstrap_sample <- function(X, l, k, boot_type = 'moving') {
 #' @param n_bootstrap The number of times to run moving block bootstrap. Defaults to 100.
 #' @param l The block length considered for bootstrap. Defaults to \eqn{\lceil N \rceil^{1/3}}, where \eqn{N} is the length of the observation window.
 #' @param estimator The function name of the estimator to use. Defaults to \code{standard\_est}.
+#' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
 #' @param alpha The quantile used to compute the \eqn{(1 - \alpha)\%} confidence interval. Defaults to \eqn{0.05.}
 #' @param boot_type What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.
 #' @param plot A boolean determining whether a plot should be created. By default, no plot is created.
 #' @param boot_mat A boolean determining whether a bootstrap matrix should be returned or not. By default, no matrix is returned.
+#' @param ylim A vector of length two denoting the limits of the y-axis for the plot. Defaults to \code{c(-1, 1)}.
 #' @param ... Optional named arguments to the chosen estimator. See the examples.
 #'
 #' @return A list containing three items. The first
@@ -157,13 +159,33 @@ bootstrap_sample <- function(X, l, k, boot_type = 'moving') {
 #'   return(covVals)
 #' }
 #' block_bootstrap(X, 4, n_bootstrap = 3, l = 2, estimator=my_cov_est)
-block_bootstrap <- function(X, maxLag, x = 1:length(X), n_bootstrap = 100, l = ceiling(length(X)^(1/3)), estimator = standard_est, alpha = 0.05, boot_type = 'moving', plot = FALSE, boot_mat = FALSE, ...) {
+#'
+#' plot(LakeHuron, main="Lake Huron Levels", ylab="Feet")
+#' X <- as.vector(LakeHuron)
+#' block_bootstrap(X, 20, n_bootstrap = 100, l = 40, type = 'autocorrelation')
+#' block_bootstrap(X, 20, n_bootstrap = 100, l = 40, plot = TRUE, type = 'autocorrelation')
+#' block_bootstrap(X, 20, n_bootstrap = 100, l = 40, estimator=tapered_est,
+#'     rho = 0.5, window_name = 'blackman', window_params = c(0.16),
+#'     type='autocorrelation', plot =TRUE)
+#'
+#' my_cov_est <- function(X, maxLag) {
+#'   n <- length(X)
+#'   covVals <- c()
+#'   for(h in 0:maxLag) {
+#'     covVals_t <- (X[1:(n-h)] - mean(X)) * (X[(1+h):n] - mean(X))
+#'     covVals <- c(covVals, sum(covVals_t) / (n - h))
+#'   }
+#'   return(covVals)
+#' }
+#' block_bootstrap(X, 20, n_bootstrap = 100, l = 40, estimator = my_cov_est,
+#'     plot = TRUE, type = 'autocorrelation')
+block_bootstrap <- function(X, maxLag, x = 1:length(X), n_bootstrap = 100, l = ceiling(length(X)^(1/3)), estimator = standard_est, type = 'autocovariance', alpha = 0.05, boot_type = 'moving', plot = FALSE, boot_mat = FALSE, ylim=c(-1, 1), ...) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1,
             maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(x), length(x) == length(X),
             is.numeric(n_bootstrap), n_bootstrap > 0, n_bootstrap %% 1 ==0, is.numeric(l), length(l) == 1,
-            l > 0, l <= length(X), l %% 1 == 0, exists(quote(estimator)), is.numeric(alpha),
-            alpha <= 1, alpha >=0, boot_type %in% c('moving', 'circular'), is.logical(plot),
-            is.logical(boot_mat))
+            l > 0, l <= length(X), l %% 1 == 0, exists(quote(estimator)), type %in% c('autocovariance', 'autocorrelation'),
+            is.numeric(alpha), alpha <= 1, alpha >=0, boot_type %in% c('moving', 'circular'), is.logical(plot),
+            is.logical(boot_mat), is.numeric(ylim), length(ylim) == 2, !any(is.na(ylim)))
 
   N <- length(X)
   k <- ceiling(N / l)
@@ -178,16 +200,23 @@ block_bootstrap <- function(X, maxLag, x = 1:length(X), n_bootstrap = 100, l = c
     acf_mat[i, ] <- estimator(Y, maxLag = maxLag, ...)
   }
 
+  original_acf <- estimator(X, ..., maxLag = maxLag)
+  if(type == 'autocorrelation') {
+    original_acf <- original_acf / original_acf[1]
+
+    for(i in 1:nrow(acf_mat)) {
+      acf_mat[i, ] <- acf_mat[i, ] / acf_mat[i, 1]
+    }
+  }
+
   lower_vals <- apply(acf_mat, 2, quantile, alpha / 2)
   upper_vals <- apply(acf_mat, 2, quantile, 1 - (alpha / 2))
-
-  original_acf <- estimator(X, ..., maxLag = maxLag)
   average_acf <- colMeans(acf_mat)
 
   if(plot) {
-    plot(x[1:(maxLag + 1)], original_acf, type = "l", ylim = c(-0.6, 1.1), lwd = 2)
+    plot(x[1:(maxLag + 1)], original_acf, type = "l", ylim=ylim, lwd = 2, xlab = 'Lag (h)', ylab = 'ACF')
     lines(x[1:(maxLag + 1)], average_acf, lty = 2, col = 2, lwd = 2)
-    polygon(c(rev(0:maxLag), 0:maxLag), c(rev(upper_vals), lower_vals), col = rgb(0.9, 0.9, 0.9, 0.6))
+    polygon(c(rev(x[1:(maxLag + 1)]), x[1:(maxLag + 1)]), c(rev(upper_vals), lower_vals), col = rgb(0.9, 0.9, 0.9, 0.6))
   }
 
   if(boot_mat) {

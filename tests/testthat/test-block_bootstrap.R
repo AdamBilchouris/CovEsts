@@ -187,4 +187,16 @@ test_that("block_bootstrap fails for nonboolean boot_mat", {
   expect_error(block_bootstrap(c(1, 2, 3, 4), 2, boot_mat = 'TRUE'))
 })
 
+test_that("block_bootstrap fails for nonnumeric ylim", {
+  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, ylim = c('a', 1)))
+  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, ylim = c(1i, 1)))
+})
 
+test_that("block_bootstrap fails for ylim not of length 2", {
+  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, ylim = c()))
+  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, ylim = c(-1, 0, 1)))
+})
+
+test_that("block_bootstrap fails for at least type being neither autocovariance or autocorrelation", {
+  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, type = "covariance"))
+})

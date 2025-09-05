@@ -11,10 +11,12 @@ block_bootstrap(
   n_bootstrap = 100,
   l = ceiling(length(X)^(1/3)),
   estimator = standard_est,
+  type = "autocovariance",
   alpha = 0.05,
   boot_type = "moving",
   plot = FALSE,
   boot_mat = FALSE,
+  ylim = c(-1, 1),
   ...
 )
 }
@@ -31,6 +33,8 @@ block_bootstrap(
 
 \item{estimator}{The function name of the estimator to use. Defaults to \code{standard\_est}.}
 
+\item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
+
 \item{alpha}{The quantile used to compute the \eqn{(1 - \alpha)\%} confidence interval. Defaults to \eqn{0.05.}}
 
 \item{boot_type}{What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.}
@@ -38,6 +42,8 @@ block_bootstrap(
 \item{plot}{A boolean determining whether a plot should be created. By default, no plot is created.}
 
 \item{boot_mat}{A boolean determining whether a bootstrap matrix should be returned or not. By default, no matrix is returned.}
+
+\item{ylim}{A vector of length two denoting the limits of the y-axis for the plot. Defaults to \code{c(-1, 1)}.}
 
 \item{...}{Optional named arguments to the chosen estimator. See the examples.}
 }
@@ -89,6 +95,26 @@ my_cov_est <- function(X, maxLag) {
   return(covVals)
 }
 block_bootstrap(X, 4, n_bootstrap = 3, l = 2, estimator=my_cov_est)
+
+plot(LakeHuron, main="Lake Huron Levels", ylab="Feet")
+X <- as.vector(LakeHuron)
+block_bootstrap(X, 20, n_bootstrap = 100, l = 40, type = 'autocorrelation')
+block_bootstrap(X, 20, n_bootstrap = 100, l = 40, plot = TRUE, type = 'autocorrelation')
+block_bootstrap(X, 20, n_bootstrap = 100, l = 40, estimator=tapered_est,
+    rho = 0.5, window_name = 'blackman', window_params = c(0.16),
+    type='autocorrelation', plot =TRUE)
+
+my_cov_est <- function(X, maxLag) {
+  n <- length(X)
+  covVals <- c()
+  for(h in 0:maxLag) {
+    covVals_t <- (X[1:(n-h)] - mean(X)) * (X[(1+h):n] - mean(X))
+    covVals <- c(covVals, sum(covVals_t) / (n - h))
+  }
+  return(covVals)
+}
+block_bootstrap(X, 20, n_bootstrap = 100, l = 40, estimator = my_cov_est,
+    plot = TRUE, type = 'autocorrelation')
 }
 \references{
 Chapters 2.5 and 2.7 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2

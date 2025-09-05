@@ -6,3 +6,4 @@
 ^NEWS\.md$
 ^OLD_TESTS$
 ^\.github$
+^cran-comments\.md$
