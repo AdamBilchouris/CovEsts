@@ -5,11 +5,13 @@ Authors@R:
     c(person(given = "Adam",
              family = "Bilchouris",
              role = c("cre", "aut"),
-             email = "adam.bilchouris@gmail.com"),
+             email = "adam.bilchouris@gmail.com",
+             comment = c(ORCID = "0009-0002-4649-0247")),
       person(given = "Andriy",
              family = "Olenko",
              role = "aut",
-             email = "a.olenko@latrobe.edu.au")
+             email = "a.olenko@latrobe.edu.au",
+             comment = c(ORCID = "0000-0002-0917-7000"))
      )
 Description: Several nonparametric estimators of autocovariance functions. Procedures for constructing their confidence regions by using bootstrap techniques. Methods to correct autocovariance estimators and several tools for analysing and comparing them. Supplementary functions, including kernel computations and discrete cosine Fourier transforms. For more details see Bilchouris and Olenko (2025) <doi:10.17713/ajs.v54i1.1975>.
 License: GPL (>= 3)

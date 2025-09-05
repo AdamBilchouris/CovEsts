@@ -19,10 +19,10 @@ starting_locs(N, l, k, boot_type = "moving")
 A vector of length \code{k} whose values are random block locations.
 }
 \description{
-This function performs random sampling to obtian random block locations for block bootstrap.
+This function performs random sampling to obtain random starting locations for block bootstrap.
 }
 \details{
-This function performs random sampling to obtian random block locations for block bootstrap.
+This function performs random sampling to obtain random starting locations for block bootstrap.
 If \code{type = 'moving'}, the set \eqn{\{1, \dots, N - \ell  + 1\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap.
 If \code{type = 'circular'}, the set \eqn{\{1, \dots, N\}} is randomly sampled, with replacement, \eqn{k} times to obtain random block locations for moving block bootstrap.
 }

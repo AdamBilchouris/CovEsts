@@ -42,7 +42,8 @@ block_bootstrap(
 \item{...}{Optional named arguments to the chosen estimator. See the examples.}
 }
 \value{
-A list consisting of three items. The first is the average estimated autocovariance/autocorrelation function for the bootstrap samples, the second is a matrix of the estimated autocovariance/autocorrelation functions from the bootstrapped samples, and the third is a matrix of confidence intervals for each lag.
+A list containing three items. The first
+A list consisting of three items. The first is the average estimated autocovariance/autocorrelation function for the bootstrap samples, the second is a matrix of the estimated autocovariance/autocorrelation functions from the bootstrapped samples, and the third is a matrix of confidence intervals for each lag. If the option \code{boot_mat = TRUE}, an addition value is returned, a matrix where each row is a bootstrap estimated autocovariance function. If the option \code{plot = TRUE} is used, the plot shows the esitmated autocovariance function in black, the average bootstrap estimated autocovariance function in red and the \eqn{(1 - \alpha)\%} confidence region is the grey shaded area.
 }
 \description{
 This function performs block bootstrap (moving or circular) to obtain a \eqn{(1-\alpha)\%} confidence-interval for the autocovariance function. It will also compute average autocovariance function across all bootstrapped estimates.
@@ -51,21 +52,21 @@ This function performs block bootstrap (moving or circular) to obtain a \eqn{(1-
 This function performs block bootstrap to obtain a \eqn{(1-\alpha)\%} confidence-interval for the autocovariance function. It will also compute average autocovariance function across all bootstrapped estimates.
 
 Moving block bootstrap can be described as follows.
-For some times series \eqn{X_{1}, X_{2}, \dots, X_{n},} construct \eqn{k \in Z} overlapping blocks of the form
-\eqn{B_{i} = (X(i), \dots, X(i + \ell - 1)),} where \eqn{\ell \in [1, n]} is the block length.
-Randomly sample, with replacement, from the discrete uniform distribution with on \eqn{\{1, \dots, n - \ell + 1\}} to obtain a set of random block locations \eqn{I_{1}, \dots, I_{k}.}
-Construct a bootstrapped time series \eqn{B_{1}^{\ast}, B_{2}^{\ast}, \dots, B_{k}^{\ast}} where \eqn{B_{i}^{\ast} = B_{I_{i}}.}
-The bootstrapped time series is truncated to have an observation window of size \eqn{n,} and will be of the form \eqn{X^{\ast}(1), \dots , X^{\ast}(n).}
+For some times series \eqn{X(1), X(2), \dots, X(n),} construct \eqn{k \in N} overlapping blocks of the form
+\eqn{B_{i} = (X(i), \dots, X(i + \ell - 1)),} where \eqn{\ell \in \{1, \dots , n\}} is the block length.
+Randomly sample, with replacement, from the discrete uniform distribution with on \eqn{\{1, \dots, n - \ell + 1\}} to obtain a set of random starting locations \eqn{I_{1}, \dots, I_{k}.}
+Construct a bootstrapped time series \eqn{B_{1}^{\ast}, B_{2}^{\ast}, \dots, B_{k}^{\ast},} where \eqn{B_{i}^{\ast} = B_{I_{i}}.}
+The bootstrapped time series is truncated to have length \eqn{n,} and will be of the form \eqn{X^{\ast}(1), \dots , X^{\ast}(n).}
 The autocovariance function is then computed for the bootstrapped time series.
 
 An alternative to moving block bootstrap is circular block bootstrap.
-Circular block bootstrap considers the time series to wrap like a circle, that is, the observation at \eqn{n + i \equiv i \; (\bmod \; n).}
-For example, for the block \eqn{B_{n - \ell + 2}}, we obtain \eqn{(X(n - \ell + 2) , \dots , X(n + 1)) \equiv (X(n - \ell + 2) , \dots , X(1)) \; (\bmod \; n).}
+Circular block bootstrap uses the time series like a circle, that is, the observation at \eqn{n + i} is the same as the observation at location \eqn{i.}
+For example, for the block \eqn{B_{n - \ell + 2}}, we obtain \eqn{(X(n - \ell + 2) , \dots , X(n), X(n + 1))} is the same as \eqn{(X(n - \ell + 2) , \dots , X(n), X(1)).}
 When performing random sampling to obtain starting locations, the set \eqn{\{1, \dots, n\}} is now considered.
 The procedure for constructing the bootstrap time series after constructing the blocks and selecting the starting indices is the same as moving block bootstrap.
 
-This process is repeated \code{n_bootstrap} times to obtain many estimates of the autocovariance function using the bootstrapped time series, for which the average autocovariance function
-and the \eqn{(1 - \alpha)\%} confidence intervals are constructed.
+This process is repeated \code{n_bootstrap} times to obtain \code{n_boostrap} estimates of the autocovariance function using the bootstrapped time series, for which the average autocovariance function
+and the \eqn{(1 - \alpha)\%} confidence intervals are constructed pointwise for each lag.
 
 The choice of the block length, \eqn{\ell ,} depends on the degree of dependence present in the time series. If the time series has a high degree of dependence, a larger block size should be chosen to ensure the dependency structure is maintained within the block.
 
