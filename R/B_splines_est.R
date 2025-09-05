@@ -209,7 +209,7 @@ splines_df <- function(x, p, m, taus) {
 #' weights <- c()
 #' X <- rnorm(50)
 #' for(i in 0:(maxLag - 1)) {
-#' weights <- c(weights, (length(X) - i) / ( (1 - splines_df$estCov[i + 1])^2 ))
+#'   weights <- c(weights, (length(X) - i) / ( (1 - splines_df$estCov[i + 1])^2 ))
 #' }
 #' solve_spline(pars, splines_df, weights)
 solve_spline <- function(par, splines_df, weights) {
