@@ -2,6 +2,10 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/AdamBilchouris/CovEst/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AdamBilchouris/CovEst/actions/workflows/R-CMD-check.yaml)
+[![CRAN status](https://www.r-pkg.org/badges/version/CovEsts)](https://CRAN.R-project.org/package=CovEsts)
+[![CRAN release dates](http://www.r-pkg.org/badges/version-ago/CovEsts)](https://CRAN.R-project.org/package=CovEsts)
+[![CRAN monthly downloads](http://cranlogs.r-pkg.org/badges/last-month/CovEsts)](https://CRAN.R-project.org/package=CovEsts)
+[![CRAN downloads](http://cranlogs.r-pkg.org/badges/grand-total/CovEsts)](https://CRAN.R-project.org/package=CovEsts)
 <!-- badges: end -->
 
 
