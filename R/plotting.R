@@ -202,7 +202,7 @@ plot.BootEsts <- function(x, type = 'l', xlab = 'Lag (h)', ylab = 'ACF', ...) {
 #'
 #' @examples
 #' plot(block_bootstrap(c(1, 2, 3), 2))
-#' lines(block_bootstrap(c(1, 2, 3), 2, pd = FALSE))
+#' lines(block_bootstrap(c(1, 2, 3), 2, pd = FALSE), lwd = 2, lty = 3, col = 'blue')
 lines.BootEsts  <- function(x, type = "l", ...) {
   lines(x = x$lags, y = x$acf_avg, type = type, ...)
 }
@@ -241,7 +241,7 @@ print.BootEsts <- function(x, n_head = 5, n_tail = 5, digits = NULL, ...) {
     print(avg_df, row.names = FALSE, right = FALSE)
     cat("\nOriginal ACF estimate\n")
     print(orig_df, row.names = FALSE, right = FALSE)
-    cat("\nBootstrap pointwise 1 - ", x$alpha, "% confidence interval\n")
+    cat("\nBootstrap pointwise 1 - ", x$alpha, "% confidence interval\n", sep = '')
     print(conf_df, row.names = FALSE, right = FALSE)
   }
 

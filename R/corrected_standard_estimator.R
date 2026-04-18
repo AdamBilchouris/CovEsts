@@ -59,7 +59,7 @@
 #' }
 #' plot(corrected_est(Y,
 #'      my_kernel, kernel_params=c(2, 0.25), custom_kernel = TRUE))
-corrected_est <- function(X, kernel_name = c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"), kernel_params = c(), N_T = 0.1 * length(X), pd = TRUE, maxLag = length(X) - 1, x = 0:(maxLag - 1), type = c("autocovariance", "autocorrelation"), meanX = mean(X), custom_kernel = FALSE) {
+corrected_est <- function(X, kernel_name = c("gaussian", "exponential", "wave", "rational_quadratic", "spherical", "circular", "bessel_j", "matern", "cauchy"), kernel_params = c(), N_T = 0.1 * length(X), pd = TRUE, maxLag = length(X) - 1, x = 0:length(X), type = c("autocovariance", "autocorrelation"), meanX = mean(X), custom_kernel = FALSE) {
   stopifnot(is.logical(custom_kernel), length(X) > 0, all(!is.na(X)), is.numeric(X), is.numeric(N_T), !is.na(N_T),
             N_T > 0, is.numeric(meanX), !is.na(meanX), is.logical(pd), is.numeric(maxLag), maxLag >= 0, !is.na(maxLag),
             maxLag <= (length(X) - 1), maxLag %% 1 == 0, length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
