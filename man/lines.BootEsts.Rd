@@ -21,5 +21,5 @@ This function plots a BootEsts object as a line onto another plot.
 }
 \examples{
 plot(block_bootstrap(c(1, 2, 3), 2))
-lines(block_bootstrap(c(1, 2, 3), 2, pd = FALSE))
+lines(block_bootstrap(c(1, 2, 3), 2, pd = FALSE), lwd = 2, lty = 3, col = 'blue')
 }

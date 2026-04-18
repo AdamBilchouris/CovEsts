@@ -12,7 +12,7 @@ corrected_est(
   N_T = 0.1 * length(X),
   pd = TRUE,
   maxLag = length(X) - 1,
-  x = 0:(maxLag - 1),
+  x = 0:length(X),
   type = c("autocovariance", "autocorrelation"),
   meanX = mean(X),
   custom_kernel = FALSE
