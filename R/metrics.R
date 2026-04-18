@@ -32,11 +32,26 @@
 #' area_between(estCov1, estCov2, lags=x)
 #' area_between(estCov1, estCov2, lags=x, plot = TRUE)
 area_between <- function(est1, est2, lags=c(), plot = FALSE) {
+  UseMethod("area_between")
+}
+
+#' @describeIn area_between Method for `CovEsts` objects.
+#' @export
+area_between.CovEsts <- function(est1, est2, lags=c(), plot = FALSE) {
+  if(length(lags)) {
+    return(area_between.default(est1$acf, est2$acf, lags = lags, plot = plot))
+  }
+  return(area_between.default(est1$acf, est2$acf, lags = est1$lags, plot = plot))
+}
+
+#' @describeIn area_between Method for numeric vectors.
+#' @export
+area_between.default <- function(est1, est2, lags=c(), plot = FALSE) {
   stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
             length(est1) == length(est2), is.logical(plot))
 
   if(length(lags) != 0) {
-    stopifnot(is.vector(lags), length(est1) == length(lags), length(est2) == length(lags))
+    stopifnot(is.numeric(lags), length(est1) == length(lags), length(est2) == length(lags))
   }
   # Generate a vector of lags, {0, ..., length(est1) - 1}
   else {
@@ -91,11 +106,26 @@ area_between <- function(est1, est2, lags=c(), plot = FALSE) {
 #' max_distance(estCov1, estCov2, lags=x)
 #' max_distance(estCov1, estCov2, lags=x, plot = TRUE)
 max_distance <- function(est1, est2, lags=c(), plot = FALSE) {
+  UseMethod("max_distance")
+}
+
+#' @describeIn max_distance Method for `CovEsts` objects.
+#' @export
+max_distance.CovEsts <- function(est1, est2, lags=c(), plot = FALSE) {
+  if(length(lags)) {
+    return(max_distance.default(est1$acf, est2$acf, lags = lags, plot = plot))
+  }
+  return(max_distance.default(est1$acf, est2$acf, lags = est1$lags, plot = plot))
+}
+
+#' @describeIn max_distance Method for numeric vectors.
+#' @export
+max_distance.default <- function(est1, est2, lags=c(), plot = FALSE) {
   stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
             length(est1) == length(est2), is.logical(plot))
 
   if(length(lags) != 0) {
-    stopifnot(is.vector(lags), length(est1) == length(lags), length(est2) == length(lags))
+    stopifnot(is.numeric(lags), length(est1) == length(lags), length(est2) == length(lags))
   }
   # Generate a vector of lags, {0, ..., length(est1) - 1}
   else {
@@ -104,18 +134,18 @@ max_distance <- function(est1, est2, lags=c(), plot = FALSE) {
 
   maxDist <- -Inf
 
-  distVec <- c()
+  distVec <- rep(Inf, length(est1))
 
   for(i in 1:length(est1)) {
     d <- abs(est1[i] - est2[i])
     if(is.numeric(d)) {
-      distVec <- c(distVec, d)
+      distVec[i] <- d
       if(d > maxDist) {
         maxDist <- d
       }
     }
     else {
-      distVec <- c(distVec, 0)
+      distVec[i] <- 0
     }
   }
 
@@ -145,13 +175,14 @@ max_distance <- function(est1, est2, lags=c(), plot = FALSE) {
 #' @param v A numeric vector.
 #'
 #' @return A symmetric matrix.
-#' @export
 #'
 #' @importFrom stats toeplitz
 #'
 #' @examples
+#' \dontrun{
 #' v <- c(1, 2, 3)
 #' cyclic_matrix(v)
+#' }
 cyclic_matrix <- function(v) {
   stopifnot(is.numeric(v), !any(is.na(v)), length(v) >= 1)
   return(toeplitz(v))
@@ -193,9 +224,21 @@ cyclic_matrix <- function(v) {
 #' estCov2 <- exp(-x^2.1)
 #' spectral_norm(estCov1, estCov2)
 spectral_norm <- function(est1, est2) {
+  UseMethod("spectral_norm")
+}
+
+#' @describeIn spectral_norm Method for `CovEsts` objects.
+#' @export
+spectral_norm.CovEsts <- function(est1, est2) {
+  return(spectral_norm.default(est1$acf, est2$acf))
+}
+
+#' @describeIn spectral_norm Method for numeric vectors.
+#' @export
+spectral_norm.default <- function(est1, est2) {
   stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
             length(est1) == length(est2))
-  det1 <- norm(cyclic_matrix((est1 - est2)), type = "2")
+  det1 <- norm(cyclic_matrix(est1 - est2), type = "2")
   if(is.numeric(det1)) {
     return(det1)
   }
@@ -220,7 +263,7 @@ spectral_norm <- function(est1, est2) {
 #'
 #' The eigendecomposition of this matrix is computed to determine if all eigenvalues are positive. If so, the estimated autocovariance function is assumed to be positive-definite.
 #'
-#' @param est A numeric vector or corresponding cyclic matrix representing an estimated autocovariance function.
+#' @param est A numeric vector, corresponding cyclic matrix representing an estimated autocovariance function, or a \code{CovEsts} S3 object.
 #'
 #' @return A boolean where \code{TRUE} denotes a positive-definite autocovariance function estimate and \code{FALSE} for an estimate that is not positive-definite.
 #' @export
@@ -229,8 +272,19 @@ spectral_norm <- function(est1, est2) {
 #' x <- seq(0, 5, by=0.1)
 #' estCov <- exp(-x^2)
 #' check_pd(estCov)
-#' check_pd(cyclic_matrix(estCov))
 check_pd <- function(est) {
+  UseMethod("check_pd")
+}
+
+#' @describeIn check_pd Method for `CovEsts` objects.
+#' @export
+check_pd.CovEsts <- function(est) {
+  return(check_pd.default(est$acf))
+}
+
+#' @describeIn check_pd Method for numeric vectors.
+#' @export
+check_pd.default <- function(est) {
   stopifnot(is.numeric(est), length(est) >= 1, !any(is.na(est)))
 
   if(is.matrix(est)) {
@@ -265,6 +319,18 @@ check_pd <- function(est) {
 #' estCov2 <- exp(-x^2.1)
 #' mse(estCov1, estCov2)
 mse <- function(est1, est2) {
+  UseMethod("mse")
+}
+
+#' @describeIn mse Method for `CovEsts` object.
+#' @export
+mse.CovEsts <- function(est1, est2) {
+  return(mse.default(est1$acf, est2$acf))
+}
+
+#' @describeIn mse Method for numeric vectors.
+#' @export
+mse.default <- function(est1, est2) {
   stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
             length(est1) == length(est2))
   return(mean((est1 - est2)^2))
@@ -300,6 +366,18 @@ mse <- function(est1, est2) {
 #' estCov2 <- exp(-x^2.1)
 #' hilbert_schmidt(estCov1, estCov2)
 hilbert_schmidt <- function(est1, est2) {
+  UseMethod("hilbert_schmidt")
+}
+
+#' @describeIn hilbert_schmidt Method for `CovEsts` objects.
+#' @export
+hilbert_schmidt.CovEsts <- function(est1, est2) {
+  return(hilbert_schmidt.default(est1$acf, est2$acf))
+}
+
+#' @describeIn hilbert_schmidt Method for numeric vectors.
+#' @export
+hilbert_schmidt.default <- function(est1, est2) {
   stopifnot(is.numeric(est1), is.numeric(est2), length(est1) >= 1, length(est2) >= 1, !any(is.na(est1)), !any(is.na(est2)),
             length(est1) == length(est2))
   return(sqrt(sum(cyclic_matrix(est1 - est2)^2)))
@@ -322,11 +400,11 @@ hilbert_schmidt <- function(est1, est2) {
 #' The implementation is a translation of https://au.mathworks.com/matlabcentral/fileexchange/42885-nearestspd#functions_tab .
 #'
 #' @references
-#' Higham, N. J. (1988). Computing a nearest symmetric positive semidefinite matrix. Linear Algebra and its Applications, 103, 103–118. https://doi.org/10.1016/0024-3795(88)90223-6
+#' Higham, N. J. (1988). Computing a nearest symmetric positive semidefinite matrix. Linear Algebra and its Applications, 103, 103-118. https://doi.org/10.1016/0024-3795(88)90223-6
 #'
-#' D'Errico, J. (2025). nearestSPD (https://www.mathwor ks.com/matlabcentral/fileexchange/42885-nearestspd), MATLAB Central File Exchange. Retrieved August 2, 2025.
+#' D'Errico, J. (2025). nearestSPD (https://www.mathworks.com/matlabcentral/fileexchange/42885-nearestspd), MATLAB Central File Exchange. Retrieved August 2, 2025.
 #'
-#' @param X Either a numeric vector or a square matrix. If a vector is provided, a matrix will be created of the form found in [cyclic_matrix].
+#' @param X Either a numeric square matrix. If a vector is provided, a matrix will be created of the form found in [cyclic_matrix].
 #'
 #' @return The closest positive-definite autocorrelation matrix.
 #' @export
@@ -336,6 +414,18 @@ hilbert_schmidt <- function(est1, est2) {
 #' nearest_pd(X)
 #' check_pd(nearest_pd(X))
 nearest_pd <- function(X) {
+  UseMethod("nearest_pd")
+}
+
+#' @describeIn nearest_pd Method for `CovEsts` objects.
+#' @export
+nearest_pd.CovEsts <- function(X) {
+  return(nearest_pd.default(X$acf))
+}
+
+#' @describeIn nearest_pd Method for numeric vectors.
+#' @export
+nearest_pd.default <- function(X) {
   stopifnot(is.numeric(X), !any(is.na(X)), length(X) > 0)
   if(!is.matrix(X)) {
     X <- cyclic_matrix(X)

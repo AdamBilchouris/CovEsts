@@ -2,9 +2,15 @@
 % Please edit documentation in R/metrics.R
 \name{mse}
 \alias{mse}
+\alias{mse.CovEsts}
+\alias{mse.default}
 \title{MSE Between Estimated Autocovariance Functions.}
 \usage{
 mse(est1, est2)
+
+\method{mse}{CovEsts}(est1, est2)
+
+\method{mse}{default}(est1, est2)
 }
 \arguments{
 \item{est1}{A numeric vector representing the first estimated autocovariance function.}
@@ -23,6 +29,13 @@ The MSE is defined as
 \deqn{\frac{1}{n} \sum_{i=0}^{n} \left(\widehat{C}_{1}(h_{i}) - \widehat{C}_{2}(h_{i})\right)^{2}}
 over a set of lags \eqn{\{h_{0}, h_{1} , h_{2} , \dots , h_{n} \}.}
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{mse(CovEsts)}: Method for \code{CovEsts} object.
+
+\item \code{mse(default)}: Method for numeric vectors.
+
+}}
 \examples{
 x <- seq(0, 5, by=0.1)
 estCov1 <- exp(-x^2)

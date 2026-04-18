@@ -2,25 +2,53 @@
 % Please edit documentation in R/corrected_standard_estimator.R
 \name{kernel_est}
 \alias{kernel_est}
+\alias{kernel_est.CovEsts}
+\alias{kernel_est.default}
 \title{Kernel Correction for an Estimated Autocovariance Function.}
 \usage{
 kernel_est(
   estCov,
-  kernel_name,
+  kernel_name = c("gaussian", "exponential", "wave", "rational_quadratic", "spherical",
+    "circular", "bessel_j", "matern", "cauchy"),
   kernel_params = c(),
   N_T = 0.1 * length(estCov),
   maxLag = length(estCov) - 1,
-  type = "autocovariance",
+  x = 0:length(estCov),
+  type = c("autocovariance", "autocorrelation"),
+  custom_kernel = FALSE
+)
+
+\method{kernel_est}{CovEsts}(
+  estCov,
+  kernel_name = c("gaussian", "exponential", "wave", "rational_quadratic", "spherical",
+    "circular", "bessel_j", "matern", "cauchy"),
+  kernel_params = c(),
+  N_T = 0.1 * length(estCov$acf),
+  maxLag = length(estCov$acf) - 1,
+  x = estCov$lags,
+  type = c("autocovariance", "autocorrelation"),
+  custom_kernel = FALSE
+)
+
+\method{kernel_est}{default}(
+  estCov,
+  kernel_name = c("gaussian", "exponential", "wave", "rational_quadratic", "spherical",
+    "circular", "bessel_j", "matern", "cauchy"),
+  kernel_params = c(),
+  N_T = 0.1 * length(estCov),
+  maxLag = length(estCov) - 1,
+  x = 0:length(estCov),
+  type = c("autocovariance", "autocorrelation"),
   custom_kernel = FALSE
 )
 }
 \arguments{
 \item{estCov}{A vector whose values are an estimate autocovariance function.}
 
-\item{kernel_name}{The name of the \link{kernel} function to be used. Possible values are:
+\item{kernel_name}{The name of the \link{kernel_ec} function to be used. Possible values are:
 gaussian, exponential, wave, rational_quadratic, spherical, circular, bessel_j, matern, cauchy.}
 
-\item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel} for parameters.
+\item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_ec} for parameters.
 In the case of gaussian, wave, rational_quadratic, spherical and circular, \code{N_T} takes the place of \eqn{\theta}.
 For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, those parameters are passed.}
 
@@ -28,12 +56,21 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 
 \item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(estCov) - 1}.}
 
+\item{x}{A vector of lag indices. Defaults to the sequence \code{0:length(X)}. Must be at least as large as \code{maxLag + 1}.}
+
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 
 \item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}. See the examples of \link{corrected_est} for usage.}
 }
 \value{
-A vector whose values are the kernel corrected autocovariance estimates.
+A vector whose values are the kernel corrected autocovariance estimates or \code{CovEsts} S3 object (list) with the following values
+\describe{
+\item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on, inherited from the argument \code{estCov}.}
+\item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the argument \code{type}.}
+\item{\code{est_used}}{The estimator function used, in this case, 'kernel_est'.}
+}
+If a numeric vector is given for the argument \code{estCov}, then a numeric vector output is given, and if a \code{CovEsts} S3 object is given, a \code{CovEsts} object is given as output.
 }
 \description{
 This function applies kernel correction to an estimated autocovariance function,
@@ -41,6 +78,13 @@ This function applies kernel correction to an estimated autocovariance function,
 It uses a kernel \eqn{a(\cdot)} which decays or vanishes to zero (depending on the type of kernel) where \eqn{a(0) = 1.}
 The rate or value at which the kernel vanishes is \eqn{N_{T}}, which is recommended to be of order \eqn{0.1 N}, where \eqn{N} is the length of the observation window, however, one may need to play with this value.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{kernel_est(CovEsts)}: Method for \code{CovEsts} objects.
+
+\item \code{kernel_est(default)}: Method for numeric vectors.
+
+}}
 \examples{
 X <- rnorm(1000)
 Y <- c(X[1], X[2])

@@ -11,12 +11,16 @@ truncated_est(
   T1,
   T2,
   b,
-  kernel_name = "gaussian",
+  kernel_name = c("gaussian", "wave", "rational_quadratic", "bessel_j"),
   kernel_params = c(),
   pd = TRUE,
-  type = "autocovariance",
+  type = c("autocovariance", "autocorrelation"),
   meanX = mean(X),
-  custom_kernel = FALSE
+  custom_kernel = FALSE,
+  parallel = FALSE,
+  ncores = parallel::detectCores() - 1,
+  cl_export = NULL,
+  cl = NULL
 )
 }
 \arguments{
@@ -32,10 +36,10 @@ truncated_est(
 
 \item{b}{Bandwidth parameter, greater than 0.}
 
-\item{kernel_name}{The name of the symmetric kernel (see \link{kernel_symm}) function to be used. Possible values are:
+\item{kernel_name}{The name of the symmetric kernel (see \link{kernel_symm_ec}) function to be used. Possible values are:
 gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel function can be provided, see the examples.}
 
-\item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_symm} for parameters.}
+\item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_symm_ec} for parameters.}
 
 \item{pd}{Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.}
 
@@ -44,9 +48,23 @@ gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 
 \item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}.}
+
+\item{parallel}{Whether or not the computations should be done in parallel or not. Defaults to \code{FALSE}.}
+
+\item{ncores}{The number of cores to be used in the parallel computations. Defaults to the number cores - 1 (threads if hyperthreading is available), calculated from \code{parallel::detectCores() - 1}.}
+
+\item{cl_export}{A vector of any additional functions or variables to export for parallel computations. This may be required if \code{estimator} is not within the package. Defaults to \code{NULL}.}
+
+\item{cl}{An optional cluster object created by \code{parallel::makeCluster}. Defaults to \code{NULL}, which creates a temporary PSOCK cluster.}
 }
 \value{
-A vector whose values are the truncated kernel regression estimates.
+A \code{CovEsts} S3 object (list) with the following values
+\describe{
+\item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+\item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the \code{type} parameter.}
+\item{\code{est_used}}{The estimator function used, in this case, 'truncated_est'.}
+}
 }
 \description{
 This function computes the truncated kernel regression estimator, based on the kernel regression estimator \eqn{\hat{\rho}(\cdot)}, see \link{adjusted_est}.
@@ -80,16 +98,24 @@ X <- c(1, 2, 3, 4)
 truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
                   "gaussian")
 
-my_kernel <- function(x, theta, params) {
-  stopifnot(theta > 0, length(x) >= 1)
-  return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
+my_kernel <- function(x, params) {
+  stopifnot(params[1] > 0, length(x) >= 1)
+  return(exp(-((abs(x) / params[1])^params[2])) * (2 * params[1] * gamma(1 + 1/params[2])))
 }
+
 truncated_est(X, 1:4, 1:3, 1, 2, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
+\dontrun{
+library(parallel)
+X <- c(1, 2, 3, 4)
+my_cl <- makePSOCKcluster(2)
+truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "gaussian", parallel = TRUE, cl = my_cl)
+stopCluster(my_cl)
+}
 }
 \references{
 Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. https://doi.org/10.1007/bf01199899
 
 Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. https://doi.org/10.1214/aos/1176325774
 
-Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112–137. https://doi.org/10.17713/ajs.v54i1.1975
+Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112-137. https://doi.org/10.17713/ajs.v54i1.1975
 }

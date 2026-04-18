@@ -2,9 +2,15 @@
 % Please edit documentation in R/metrics.R
 \name{hilbert_schmidt}
 \alias{hilbert_schmidt}
+\alias{hilbert_schmidt.CovEsts}
+\alias{hilbert_schmidt.default}
 \title{Hilbert-Schmidt Norm Between Estimated Autocovariance Functions.}
 \usage{
 hilbert_schmidt(est1, est2)
+
+\method{hilbert_schmidt}{CovEsts}(est1, est2)
+
+\method{hilbert_schmidt}{default}(est1, est2)
 }
 \arguments{
 \item{est1}{A numeric vector representing the first estimated autocovariance function.}
@@ -31,6 +37,13 @@ D(h_{n})     & D(h_{n - 1}) & \cdots & D(h_{1})     & D(h_{0})     \\
 over a set of lags \eqn{\{h_{0}, h_{1}, \dots , h_{N} \},} where \eqn{D(h) = \hat{C}_{1}(h) - \hat{C}_{2}(h),}
 is defined as \deqn{{\left\Vert D \right\Vert}_{HS} = \sqrt{\sum_{i,j} d_{i, j}^{2}}.}
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{hilbert_schmidt(CovEsts)}: Method for \code{CovEsts} objects.
+
+\item \code{hilbert_schmidt(default)}: Method for numeric vectors.
+
+}}
 \examples{
 x <- seq(0, 5, by=0.1)
 estCov1 <- exp(-x^2)

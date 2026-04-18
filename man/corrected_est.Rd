@@ -6,12 +6,14 @@
 \usage{
 corrected_est(
   X,
-  kernel_name,
+  kernel_name = c("gaussian", "exponential", "wave", "rational_quadratic", "spherical",
+    "circular", "bessel_j", "matern", "cauchy"),
   kernel_params = c(),
   N_T = 0.1 * length(X),
   pd = TRUE,
   maxLag = length(X) - 1,
-  type = "autocovariance",
+  x = 0:(maxLag - 1),
+  type = c("autocovariance", "autocorrelation"),
   meanX = mean(X),
   custom_kernel = FALSE
 )
@@ -19,10 +21,10 @@ corrected_est(
 \arguments{
 \item{X}{A vector representing observed values of the time series.}
 
-\item{kernel_name}{The name of the \link{kernel} function to be used. Possible values are:
+\item{kernel_name}{The name of the \link{kernel_ec} function to be used. Possible values are:
 gaussian, exponential, wave, rational_quadratic, spherical, circular, bessel_j, matern, cauchy.}
 
-\item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel} for parameters.
+\item{kernel_params}{A vector of parameters of the kernel function. See \link{kernel_ec} for parameters.
 In the case of gaussian, wave, rational_quadratic, spherical and circular, \code{N_T} takes the place of \eqn{\theta}.
 For kernels that require parameters other than \eqn{\theta}, such as the Matern kernel, those parameters are passed.}
 
@@ -32,6 +34,8 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 
 \item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
+\item{x}{A vector of lag indices. Defaults to the sequence \code{0:length(X)}. Must be at least as large as \code{maxLag + 1}.}
+
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
@@ -39,7 +43,13 @@ For kernels that require parameters other than \eqn{\theta}, such as the Matern 
 \item{custom_kernel}{If a custom kernel is to be used or not. Defaults to \code{FALSE}. See examples.}
 }
 \value{
-A vector whose values are the kernel corrected autocovariance estimates.
+A \code{CovEsts} S3 object (list) with the following values
+\describe{
+\item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+\item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the \code{type} parameter.}
+\item{\code{est_used}}{The estimator function used, in this case, 'corrected_est'.}
+}
 }
 \description{
 This function computes the standard autocovariance estimator and applies kernel correction to it,

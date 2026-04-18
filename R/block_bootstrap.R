@@ -24,9 +24,11 @@
 #'
 #' @examples
 #' starting_locs(4, 2, 2)
-starting_locs <- function(N, l, k, boot_type = 'moving') {
+starting_locs <- function(N, l, k, boot_type = c("moving", "circular")) {
   stopifnot(is.numeric(N), N >= 1, !is.na(N), is.numeric(l), l >= 1, !is.na(l),
-            is.numeric(k), k >= 1, !is.na(k), boot_type %in% c('moving', 'circular'))
+            is.numeric(k), k >= 1, !is.na(k))
+
+  boot_type <- match.arg(boot_type)
 
   sampleVec <- switch(boot_type,
                       moving = 1:(N - l + 1),
@@ -61,26 +63,25 @@ starting_locs <- function(N, l, k, boot_type = 'moving') {
 #' @examples
 #' X <- c(1, 2, 3, 3, 2, 1)
 #' bootstrap_sample(X, 2, 3)
-bootstrap_sample <- function(X, l, k, boot_type = 'moving') {
+bootstrap_sample <- function(X, l, k, boot_type = c("moving", "circular")) {
   stopifnot(is.numeric(X), length(X) >= 1, !is.na(X), is.numeric(l), l >= 1, !is.na(l),
-            is.numeric(k), k >= 1, !is.na(k), boot_type %in% c('moving', 'circular'))
+            is.numeric(k), k >= 1, !is.na(k))
+  boot_type <- match.arg(boot_type)
+
   N <- length(X)
-  Y <- c()
   S <- starting_locs(N, l, k, boot_type)
+  block_offsets <- 0:(l-1)
 
   if(boot_type == 'moving') {
-    for(j in 1:k) {
-      Y <- c(Y, X[(S[j]):(S[j] + l - 1)])
-    }
+    indices <- outer(S, block_offsets, "+")
   }
 
   else if(boot_type == 'circular') {
-    for(j in 1:k) {
-      indices <- ( ((S[j]:(S[j] + l - 1)) - 1) %% N) + 1
-      Y <- c(Y, X[indices])
-    }
+    indices <- outer(S, block_offsets, "+")
+    indices <- ((indices - 1) %% N) + 1
   }
 
+  Y <- X[t(indices)]
   Y <- Y[1:N]
   return(Y)
 }
@@ -113,6 +114,8 @@ bootstrap_sample <- function(X, l, k, boot_type = 'moving') {
 #'
 #' Any estimator of the autocovariance function can be used in this function, including a custom estimator not in the package, see the examples.
 #'
+#' When \code{parallel = TRUE}, L'Ecuyer-CMRG is used to ensure independent random numbers across workers. The serial version uses the Mersenne-Twister algorithm.
+#'
 #' @references
 #' Chapters 2.5 and 2.7 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2
 #'
@@ -122,39 +125,51 @@ bootstrap_sample <- function(X, l, k, boot_type = 'moving') {
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param maxLag The maximum lag to compute the estimated autocovariance function at.
-#' @param x A vector of indices. Defaults to the sequence \code{1:length(X)}.
+#' @param x A vector of lag indices. Defaults to the sequence \code{0:length(X)}. Must be at least as large as \code{maxLag + 1}.
 #' @param n_bootstrap The number of times to run moving block bootstrap. Defaults to 100.
 #' @param l The block length considered for bootstrap. Defaults to \eqn{\lceil N \rceil^{1/3}}, where \eqn{N} is the length of the observation window.
 #' @param estimator The function name of the estimator to use. Defaults to \code{standard\_est}.
 #' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
 #' @param alpha The quantile used to compute the \eqn{(1 - \alpha)\%} confidence interval. Defaults to \eqn{0.05.}
 #' @param boot_type What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.
-#' @param plot A boolean determining whether a plot should be created. By default, no plot is created.
-#' @param boot_mat A boolean determining whether a bootstrap matrix should be returned or not. By default, no matrix is returned.
-#' @param ylim A vector of length two denoting the limits of the y-axis for the plot. Defaults to \code{c(-1, 1)}.
+#' @param parallel Whether or not the bootstrap computations should be done in parallel or not. Defaults to \code{FALSE}.
+#' @param ncores The number of cores to be used in the parallel bootstrap computations. Defaults to the number cores - 1 (threads if hyperthreading is available), calculated from \code{parallel::detectCores() - 1}.
+#' @param cl_export A vector of any additional functions or variables to export for parallel computations. This may be required if \code{estimator} is not within the package. Defaults to \code{NULL}.
+#' @param boot_seed An integer seed for reproducibility. This is used for
+#' @param cl An optional cluster object created by \code{parallel::makeCluster}. Defaults to \code{NULL}, which creates a temporary PSOCK cluster.
 #' @param ... Optional named arguments to the chosen estimator. See the examples.
 #'
-#' @return A list containing three items. The first
-#' A list consisting of three items. The first is the average estimated autocovariance/autocorrelation function for the bootstrap samples, the second is a matrix of the estimated autocovariance/autocorrelation functions from the bootstrapped samples, and the third is a matrix of confidence intervals for each lag. If the option \code{boot_mat = TRUE}, an addition value is returned, a matrix where each row is a bootstrap estimated autocovariance function. If the option \code{plot = TRUE} is used, the plot shows the esitmated autocovariance function in black, the average bootstrap estimated autocovariance function in red and the \eqn{(1 - \alpha)\%} confidence region is the grey shaded area.
+#' @return A \code{BootEsts} S3 object (list) with the following values
+#' \describe{
+#'  \item{\code{acf_avg}}{A numeric vector containing the average autocovariance/autocorrelation bootstrap estimate.}
+#'  \item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+#'  \item{\code{acf_orig}}{A numeric vector containing the nonbootstrapped autocovariance/autocorrelation estimate.}
+#'  \item{\code{acf_mat}}{A numeric matrix of the a matrix of all of the bootstrap estimates.}
+#'  \item{\code{conf_lower}}{A numeric vector containing the lower bounds for the estimated pointwise confidence interval.}
+#'  \item{\code{conf_upper}}{A numeric vector containing the upper bounds for the estimated pointwise confidence interval.}
+#'  \item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the argument \code{type}.}
+#'  \item{\code{est_used}}{The estimator function used, this depends on the argument \code{estimator}.}
+#'  \item{\code{boot_type}}{The type of estimate, namely 'moving' or 'circular', this depends on the argument \code{boot_type}.}
+#'  \item{\code{alpha}}{A numeric value, which is the \eqn{\alpha} value used to compute the confidence intervals, this depends on the argument \code{alpha}.}
+#' }
 #' @export
 #'
 #' @importFrom stats quantile
-#' @importFrom grDevices rgb
 #'
 #' @examples
 #' X <- c(1, 2, 3, 3, 2, 1)
 #' block_bootstrap(X, 4, n_bootstrap = 3, l = 2, type = 'autocorrelation')
-#' block_bootstrap(X, 4, n_bootstrap = 3, l = 2, plot =TRUE, type = 'autocovariance')
+#' block_bootstrap(X, 4, n_bootstrap = 3, l = 2, type = 'autocovariance')
 #' block_bootstrap(X, 4, n_bootstrap = 3, l = 2, estimator=tapered_est,
 #'     rho = 0.5, window_name = 'blackman', window_params = c(0.16),
 #'     type='autocorrelation')
 #
 #' my_cov_est <- function(X, maxLag) {
 #'   n <- length(X)
-#'   covVals <- c()
+#'   covVals <- rep(0, maxLag + 1)
 #'   for(h in 0:maxLag) {
 #'     covVals_t <- (X[1:(n-h)] - mean(X)) * (X[(1+h):n] - mean(X))
-#'     covVals <- c(covVals, sum(covVals_t) / (n - h))
+#'     covVals[h] <- sum(covVals_t) / (n - h)
 #'   }
 #'   return(covVals)
 #' }
@@ -163,64 +178,120 @@ bootstrap_sample <- function(X, l, k, boot_type = 'moving') {
 #' plot(LakeHuron, main="Lake Huron Levels", ylab="Feet")
 #' X <- as.vector(LakeHuron)
 #' block_bootstrap(X, 20, n_bootstrap = 100, l = 40, type = 'autocorrelation')
-#' block_bootstrap(X, 20, n_bootstrap = 100, l = 40, plot = TRUE, type = 'autocorrelation')
+#' block_bootstrap(X, 20, n_bootstrap = 100, l = 40, type = 'autocorrelation')
 #' block_bootstrap(X, 20, n_bootstrap = 100, l = 40, estimator=tapered_est,
 #'     rho = 0.5, window_name = 'blackman', window_params = c(0.16),
-#'     type='autocorrelation', plot =TRUE)
+#'     type='autocorrelation')
 #'
 #' my_cov_est <- function(X, maxLag) {
 #'   n <- length(X)
-#'   covVals <- c()
+#'   covVals <- rep(0, maxLag + 1)
 #'   for(h in 0:maxLag) {
 #'     covVals_t <- (X[1:(n-h)] - mean(X)) * (X[(1+h):n] - mean(X))
-#'     covVals <- c(covVals, sum(covVals_t) / (n - h))
+#'     covVals[h] <- sum(covVals_t) / (n - h)
 #'   }
 #'   return(covVals)
 #' }
 #' block_bootstrap(X, 20, n_bootstrap = 100, l = 40, estimator = my_cov_est,
-#'     plot = TRUE, type = 'autocorrelation')
-block_bootstrap <- function(X, maxLag, x = 1:length(X), n_bootstrap = 100, l = ceiling(length(X)^(1/3)), estimator = standard_est, type = 'autocovariance', alpha = 0.05, boot_type = 'moving', plot = FALSE, boot_mat = FALSE, ylim=c(-1, 1), ...) {
+#'     type = 'autocorrelation')
+#' \dontrun{
+#' library(parallel)
+#' X <- c(1, 2, 3, 3, 2, 1)
+#' my_cl <- makePSOCKcluster(2)
+#' block_bootstrap(X, 4, n_bootstrap = 1000, l = 3, parallel = TRUE, cl = my_cl)
+#' stopCluster(my_cl)
+#' }
+block_bootstrap <- function(X, maxLag, x = 0:length(X), n_bootstrap = 100, l = ceiling(length(X)^(1/3)), estimator = standard_est, type = c("autocovariance", "autocorrelation"), alpha = 0.05, boot_type = c("moving", "circular"), parallel = FALSE, ncores = parallel::detectCores() - 1, cl_export = NULL, boot_seed = NULL, cl = NULL, ...) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(maxLag), length(maxLag) == 1,
-            maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(x), length(x) == length(X),
+            maxLag > 0, maxLag <= (length(X) - 1), maxLag %% 1 == 0, is.numeric(x), length(x) >= maxLag,
             is.numeric(n_bootstrap), n_bootstrap > 0, n_bootstrap %% 1 ==0, is.numeric(l), length(l) == 1,
-            l > 0, l <= length(X), l %% 1 == 0, exists(quote(estimator)), type %in% c('autocovariance', 'autocorrelation'),
-            is.numeric(alpha), alpha <= 1, alpha >=0, boot_type %in% c('moving', 'circular'), is.logical(plot),
-            is.logical(boot_mat), is.numeric(ylim), length(ylim) == 2, !any(is.na(ylim)))
+            l > 0, l <= length(X), l %% 1 == 0, is.function(estimator), is.numeric(alpha), alpha <= 1, alpha >= 0,
+            is.logical(parallel))
+
+  type <- match.arg(type)
+  boot_type <- match.arg(boot_type)
+
+  ellipsis <- list(...)
 
   N <- length(X)
   k <- ceiling(N / l)
   acf_mat <- matrix(NA, ncol = maxLag + 1, nrow = n_bootstrap)
 
-  for (i in 1:n_bootstrap) {
+  boot_results <- NULL
+  boot_seed <- if(is.null(boot_seed)) sample.int(.Machine$integer.max, 1) else boot_seed
+
+  boot_iter <- function(i) {
     Y <- bootstrap_sample(X, l, k, boot_type)
-    # If the time series is too small, the same block may be sampled k times.
-    while(length(unique(Y)) == 1) {
+    attempts <- 1
+    max_attempts <- 100
+
+    while(length(unique(Y)) == 1 && attempts < max_attempts) {
       Y <- bootstrap_sample(X, l, k, boot_type)
+      attempts <- attempts + 1
     }
-    acf_mat[i, ] <- estimator(Y, maxLag = maxLag, ...)
+
+    if(attempts == max_attempts) {
+      stop("Failed to generate a nonconstant bootstrap sample after 100 attempts. Exiting.")
+    }
+
+    est_args <- c(list(Y, maxLag = maxLag), ellipsis)
+    return(as.numeric(do.call(estimator, est_args)))
   }
 
-  original_acf <- estimator(X, ..., maxLag = maxLag)
+  if(parallel) {
+    # See if the user objects actually exist before wasting time creating the PSOCK cluster.
+    if(!is.null(cl_export)) {
+      missing_exports <- cl_export[!sapply(cl_export, exists, envir = parent.frame())]
+      if(length(missing_exports) > 0) {
+        stop("The following objects in `cl_export` were not found in your environment: ", paste0(missing_exports, collapse = ", "))
+      }
+    }
+
+    if(is.null(cl)) {
+      cl <- parallel::makePSOCKcluster(ncores)
+      on.exit(parallel::stopCluster(cl), add = TRUE)
+    }
+
+    varList <- c("X", "l", "k", "boot_type", "maxLag", "estimator", "ellipsis", "boot_iter")
+    parallel::clusterExport(cl, varlist = varList, envir = environment())
+
+    package_funcs <- c("bootstrap_sample", "starting_locs")
+    parallel::clusterExport(cl, varlist = package_funcs, envir = asNamespace("CovEsts"))
+
+    parallel::clusterSetRNGStream(cl, boot_seed)
+
+    # Export user supplied objects
+    parallel::clusterExport(cl, varlist = cl_export, envir = parent.frame())
+
+    boot_results <- parallel::parLapply(cl, 1:n_bootstrap, boot_iter)
+  }
+
+  else {
+    prev_rng <- RNGkind()
+    on.exit(RNGkind(kind = prev_rng[1], normal.kind = prev_rng[2]), add = TRUE)
+    set.seed(boot_seed)
+
+    boot_results <- lapply(1:n_bootstrap, boot_iter)
+  }
+
+  acf_mat <- do.call(rbind, boot_results)
+
+  original_acf <- as.numeric(estimator(X, ..., maxLag = maxLag))
   if(type == 'autocorrelation') {
     original_acf <- original_acf / original_acf[1]
 
-    for(i in 1:nrow(acf_mat)) {
-      acf_mat[i, ] <- acf_mat[i, ] / acf_mat[i, 1]
-    }
+    acf_mat <- acf_mat / acf_mat[, 1]
   }
 
-  lower_vals <- apply(acf_mat, 2, quantile, alpha / 2)
-  upper_vals <- apply(acf_mat, 2, quantile, 1 - (alpha / 2))
+  quantiles <- apply(acf_mat, 2, quantile, probs = c(alpha / 2, 1 - (alpha / 2)))
+  lower_vals <- quantiles[1, ]
+  upper_vals <- quantiles[2, ]
   average_acf <- colMeans(acf_mat)
 
-  if(plot) {
-    plot(x[1:(maxLag + 1)], original_acf, type = "l", ylim=ylim, lwd = 2, xlab = 'Lag (h)', ylab = 'ACF')
-    lines(x[1:(maxLag + 1)], average_acf, lty = 2, col = 2, lwd = 2)
-    polygon(c(rev(x[1:(maxLag + 1)]), x[1:(maxLag + 1)]), c(rev(upper_vals), lower_vals), col = rgb(0.9, 0.9, 0.9, 0.6))
-  }
+  res <- list(acf_avg = average_acf, lags=x[1:(maxLag + 1)], acf_orig = original_acf,
+              acf_mat = acf_mat, conf_lower = lower_vals, conf_upper = upper_vals,
+              est_type = type, est_used = paste0(substitute(estimator)),
+              boot_type = boot_type, alpha = alpha)
 
-  if(boot_mat) {
-    return(list(average_acf = average_acf, acf_mat = acf_mat, confidence=cbind(lower_vals, upper_vals)))
-  }
-  return(list(average_acf = average_acf, confidence=cbind(lower_vals, upper_vals)))
+  return(structure(res, class = "BootEsts"))
 }

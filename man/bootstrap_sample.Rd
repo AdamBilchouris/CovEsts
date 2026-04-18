@@ -4,7 +4,7 @@
 \alias{bootstrap_sample}
 \title{Block Bootstrap Sample}
 \usage{
-bootstrap_sample(X, l, k, boot_type = "moving")
+bootstrap_sample(X, l, k, boot_type = c("moving", "circular"))
 }
 \arguments{
 \item{X}{A vector representing observed values of the time series.}

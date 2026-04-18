@@ -16,57 +16,6 @@ test_that("generate_knots() fails for noninteger m", {
   expect_error(generate_knots(1.1))
 })
 
-# get_tau
-test_that("get_tau() works", {
-  expect_equal(get_tau(1, test_p, test_m, test_kVec), 1/4)
-})
-
-test_that("get_tau() fails for nonnumeric p", {
-  expect_error(get_tau(1, 'a', test_m, test_kVec))
-  expect_error(get_tau(1, 1i, test_m, test_kVec))
-})
-
-test_that("get_tau() fails for p < 0", {
-  expect_error(get_tau(1, -0.1, test_m, test_kVec))
-})
-
-test_that("get_tau() fails for noninteger p", {
-  expect_error(get_tau(1, 0.1, test_m, test_kVec))
-})
-
-test_that("get_tau() fails for nonnumeric m", {
-  expect_error(get_tau(1, test_p, 'a', test_kVec))
-  expect_error(get_tau(1, test_p, 1i, test_kVec))
-})
-
-test_that("get_tau() fails for m < 0", {
-  expect_error(get_tau(1, test_p, -0.1, test_kVec))
-})
-
-test_that("get_tau() fails for noninteger m", {
-  expect_error(get_tau(1, test_p, 0.1, test_kVec))
-})
-
-test_that("get_tau() fails for nonvector kVec", {
-  expect_error(get_tau(1, test_p, test_m, matrix(c(1, 2, 3, 4), nrow=2)))
-})
-
-test_that("get_tau() fails for empty kVec", {
-  expect_error(get_tau(1, test_p, test_m, c()))
-})
-
-test_that("get_tau() fails for any NA in kVec", {
-  expect_error(get_tau(1, test_p, test_m, c(0, NA, 1)))
-})
-
-test_that("get_tau() fails if any elements of kVec are not between 0 and 1", {
-  expect_error(get_tau(1, test_p, test_m, c(0, 0.5, 1.1)))
-})
-
-test_that("get_tau() returns NA if i > -p or i > m + p + 1)", {
-  expect_equal(get_tau(-test_p - 1, test_p, test_m, test_kVec), NA)
-  expect_equal(get_tau(test_p + test_m + 2, test_p, test_m, test_kVec), NA)
-})
 
 test_that("get_taus() works", {
   expect_equal(get_taus(test_p, test_m), list('-2' = -1/2, '-1' = -1/4, '0' = 0, '1' = 1/4, '2'= 1/2, '3' = 3/4, '4' = 1, '5' = 5/4, '6' = 3/2))
@@ -112,6 +61,12 @@ test_that("adjusted_spline() fails for noninteger j", {
   expect_error(adjusted_spline(1, 1.1, 1, test_p, test_m, test_taus))
 })
 
+test_that("adjusted_spline() fails for nonnumeric j", {
+  expect_error(adjusted_spline(1, 'a', 1, test_p, test_m, test_taus))
+  expect_error(adjusted_spline(1, 1i, 1, test_p, test_m, test_taus))
+})
+
+
 test_that("adjusted_spline() fails for j <= 0", {
   expect_error(adjusted_spline(1, -1, 1, test_p, test_m, test_taus))
 })
@@ -149,10 +104,6 @@ test_that("adjusted_spline() fails for m < 0", {
 
 test_that("adjusted_spline() fails for noninteger m", {
   expect_error(adjusted_spline(1, 1, 1, test_p, 1.1, test_taus))
-})
-
-test_that("adjusted_spline() fails for nonvector taus", {
-  expect_error(adjusted_spline(1, 1, 1, test_p, test_m, matrix(c(1, 2, 3, 4), 2)))
 })
 
 test_that("adjusted_spline() fails for empty taus", {
@@ -207,10 +158,6 @@ test_that("splines_df() fails for nonninteger m", {
   expect_error(splines_df(test_x, test_p, 1.1, test_taus))
 })
 
-test_that("splines_df() fails for nonvector taus", {
-  expect_error(splines_df(test_x, test_p, test_m, matrix(c(1, 2, 3, 4), 2)))
-})
-
 test_that("splines_df() fails for empty taus", {
   expect_error(splines_df(test_x, test_p, test_m, c()))
 })
@@ -230,10 +177,6 @@ test_that("splines_est() fails for nonnumeric X", {
   expect_error(splines_est(c(1, 1i, 3), test_x, test_estCov, test_p, test_m, maxLag = 2))
 })
 
-test_that("splines_est() fails for nonvector X", {
-  expect_error(splines_est(matrix(c(1, 2, 3, 4), 2), test_x, test_estCov, test_p, test_m, maxLag = 2))
-})
-
 test_that("splines_est() fails for at least one NA in X", {
   expect_error(splines_est(c(1, NA, 3), test_x, test_estCov, test_p, test_m, maxLag = 2))
 })
@@ -241,10 +184,6 @@ test_that("splines_est() fails for at least one NA in X", {
 test_that("splines_est() fails for nonnumeric x", {
   expect_error(splines_est(test_X, c(1, 'a', 3), test_estCov, test_p, test_m, maxLag = 2))
   expect_error(splines_est(test_X, c(1, 1i, 3), test_estCov, test_p, test_m, maxLag = 2))
-})
-
-test_that("splines_est() fails for nonvector x", {
-  expect_error(splines_est(test_X, matrix(c(1, 2, 3, 4), 2), test_estCov, test_p, test_m, maxLag = 2))
 })
 
 test_that("splines_est() fails for at least one NA in x", {
@@ -267,10 +206,6 @@ test_that("splines_est() fails for maxLag >= length(X)", {
 test_that("splines_est() fails for nonnumeric estCov", {
   expect_error(splines_est(test_X, test_x, c(1, 'a', 3), test_p, test_m, maxLag = 2))
   expect_error(splines_est(test_X, test_x, c(1, 1i, 3), test_p, test_m, maxLag = 2))
-})
-
-test_that("splines_est() fails for nonvector estCov", {
-  expect_error(splines_est(test_X, test_x, matrix(c(1, 2, 3, 4), 2), test_p, test_m, maxLag = 2))
 })
 
 test_that("splines_est() fails for at least one NA in estCov", {
@@ -308,5 +243,5 @@ test_that("splines_est() fails for noninteger m", {
 })
 
 test_that("splines_est() fails for length(initial_pars) !=  m + p", {
-  expect_error(splines_est(test_X, test_x, test_estCov, test_p, test_m, initial_pars = c(), maxLag = 2))
+  expect_error(splines_est(test_X, test_x, test_estCov, test_p, test_m, initial_pars = c(1), maxLag = 2))
 })

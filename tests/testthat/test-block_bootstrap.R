@@ -177,26 +177,16 @@ test_that("block_bootstrap fails for alpha being less than 0", {
   expect_error(block_bootstrap(c(1, 2, 3, 4), 2, alpha=-0.01))
 })
 
-test_that("block_bootstrap fails for nonboolean plot", {
-  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, plot = 1))
-  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, plot = 'TRUE'))
-})
-
-test_that("block_bootstrap fails for nonboolean boot_mat", {
-  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, boot_mat = 1))
-  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, boot_mat = 'TRUE'))
-})
-
-test_that("block_bootstrap fails for nonnumeric ylim", {
-  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, ylim = c('a', 1)))
-  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, ylim = c(1i, 1)))
-})
-
-test_that("block_bootstrap fails for ylim not of length 2", {
-  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, ylim = c()))
-  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, ylim = c(-1, 0, 1)))
-})
-
 test_that("block_bootstrap fails for at least type being neither autocovariance or autocorrelation", {
   expect_error(block_bootstrap(c(1, 2, 3, 4), 2, type = "covariance"))
 })
+
+test_that("block_bootstrap fails for boot_type being neither 'moving' or 'circular'", {
+  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, boot_type = 'stationary'))
+})
+
+test_that("block_bootstrap fails for boot_type nonboolean parallel", {
+  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, parallel = 1))
+  expect_error(block_bootstrap(c(1, 2, 3, 4), 2, paralel = 'TRUE'))
+})
+

@@ -11,56 +11,20 @@
 #' @param m The number of nonboundary knots.
 #'
 #' @return A numeric vector representing the knots, including the boundary knots.
-#' @export
 #'
 #' @examples
+#' \dontrun{
 #' generate_knots(3)
+#' }
 generate_knots <- function(m) {
   stopifnot(is.numeric(m), m > 0, m %% 1 == 0)
-  knotVec <- c(0)
-  for(i in 1:m) {
-    knotVec <- c(knotVec, i / (m + 1))
-  }
-  knotVec <- c(knotVec, 1)
+  knotVec <- seq(0, 1, length.out=m + 2)
   return(knotVec)
 }
 
-#' Get a Specific \eqn{\tau_{i}}.
-#'
-#' A helper function that transforms the knots from [generate_knots] into the following form:
-#' For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1,} it is equal to \eqn{\tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1,} it is \eqn{\tau_{i} = \kappa_{i}.}
-#' See Choi, Li & Wang (2013) page 615 for details.
-#' This is a helper function of [get_taus].
-#'
-#' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. https://doi.org/10.1007/s13253-013-0152-z
-#'
-#' @param i The knot index (\eqn{-p} through \eqn{m + p + 1}).
-#' @param p The order of the splines.
-#' @param m The number of nonboundary knots.
-#' @param kVec Knot vector - see [generate_knots].
-#'
-#' @return The numerical value of \eqn{\tau_{i}.}
-#' @export
-#'
-#' @examples
-#' kVec <- generate_knots(2)
-#' get_tau(1, 3, 2, kVec)
-get_tau <- function(i, p, m, kVec) {
-  stopifnot(is.numeric(p), p >= 0, p %% 1 == 0, is.numeric(m), m > 0, m %% 1 == 0,
-            is.vector(kVec), length(kVec) > 0, all(!is.na(kVec)), all(kVec <= 1 & kVec >= 0))
-  if(((i >= -p) & (i <= -1)) | (i >= (m + 2)) & (i <= (m + p + 1))) {
-    return(i / (m + 1))
-  }
-  else if((i >= 0) & (i <= (m + 1))) {
-    return(kVec[i + 1])
-  }
-  else {
-    return(NA)
-  }
-}
 #' Get all \eqn{\tau}.
 #'
-#' A helper function that repeatedly calls [get_tau] to obtain all \eqn{\tau_{i}, i=-p, \dots, m + p + 1,} where each \eqn{\tau_{i}} is as follows.
+#' A helper function to obtain all \eqn{\tau_{i}, i=-p, \dots, m + p + 1,} where each \eqn{\tau_{i}} is as follows.
 #' For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1,} it is equal to \eqn{\tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1,} it is \eqn{\tau_{i} = \kappa_{i}.}
 #' See Choi, Li & Wang (2013, p. 615) for details.
 #'
@@ -70,18 +34,20 @@ get_tau <- function(i, p, m, kVec) {
 #' @param m The number of nonboundary knots.
 #'
 #' @return A numeric vector of all \eqn{\tau_{i}, i = -p, \dots, m + p + 1.}
-#' @export
 #'
 #' @examples
+#' \dontrun{
 #' get_taus(3, 2)
+#' }
 get_taus <- function(p, m) {
   stopifnot(is.numeric(p), p >= 0, p %% 1 == 0, is.numeric(m), m > 0, m %% 1 == 0)
-  kVec <- generate_knots(m)
-  tauVec <- list()
-  for(i in -p:(m + p + 1)) {
-    tauVec[[paste0("", i, "")]] <- get_tau(i, p, m, kVec)
-  }
-  return(tauVec)
+  tauVec_indices <- -p:(m + p + 1)
+  tauVec <- tauVec_indices / (m + 1)
+  tauVec[(p + 1):(p + m + 2)] <- generate_knots(m)
+
+  names(tauVec) <- as.character(tauVec_indices)
+
+  return(as.list(tauVec))
 }
 
 #' Compute Adjusted Splines.
@@ -99,17 +65,18 @@ get_taus <- function(p, m) {
 #' @param l Order of function.
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
-#' @param taus Vector of \eqn{\tau}s, see [get_tau].
+#' @param taus Vector of \eqn{\tau}s, see [get_taus].
 #'
 #' @return A numeric value of the adjusted spline \eqn{f_{j}^{(l)}(x).}
-#' @export
 #'
 #' @examples
+#' \dontrun{
 #' taus <- get_taus(3, 2)
 #' adjusted_spline(1, 2, 1, 3, 2, taus)
+#' }
 adjusted_spline <- function(x, j, l, p, m, taus) {
   stopifnot(is.numeric(x), j %% 1 == 0, is.numeric(j), j > 0, l %% 1 == 0, is.numeric(l), is.numeric(p), p >= 0, p %% 1 == 0,
-            is.numeric(m), m > 0, m %% 1 == 0, is.vector(taus), length(taus) > 0, all(!is.na(taus)))
+            is.numeric(m), m > 0, m %% 1 == 0, length(taus) > 0, all(!is.na(taus)))
   # base case
   if(l == 0) {
     tau1 <- taus[[paste0("", j - p, "")]]
@@ -119,7 +86,7 @@ adjusted_spline <- function(x, j, l, p, m, taus) {
       inner <- tau2^(x + 1) - tau1^(x + 1)
       return(constant * inner)
     }
-    return(0)
+    return(numeric(length(x)))
   }
   else {
     constant <- (m + 1) / l
@@ -146,29 +113,27 @@ adjusted_spline <- function(x, j, l, p, m, taus) {
 #' @param x A vector of lags.
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
-#' @param taus Vector of \eqn{\tau}s, see [get_tau].
+#' @param taus Vector of \eqn{\tau}s, see [get_taus].
 #'
 #' @return A data frame of the above structure.
-#' @export
 #'
 #' @examples
+#' \dontrun{
 #' taus <- get_taus(3, 2)
 #' splines_df(seq(0, 2, by=0.25), 3, 2, taus)
+#' }
 splines_df <- function(x, p, m, taus) {
   stopifnot(is.numeric(x), length(x) > 0, all(!is.na(x)), is.numeric(p), p >= 0, p %% 1 == 0, is.numeric(m), m > 0, m %% 1 == 0,
-            is.vector(taus), length(taus) > 0, all(!is.na(taus)))
-  valsDf <- data.frame('lags' = x)
-  for(j in 1:(m+p)) {
-    jStr <- paste0('j', j)
-    valsDf[, jStr] <- rep(NA, nrow(valsDf))
-  }
+            length(taus) > 0, all(!is.na(taus)))
 
   l <- p - 1
-  for(i in 1:nrow(valsDf)) {
-    for(j in 1:(m+p)) {
-      valsDf[i, j + 1] <- adjusted_spline(valsDf[i, 1]^2, j, l, p, m, taus)
-    }
-  }
+  x_squared <- x * x
+
+  cols <- sapply(1:(m + p), function(j) adjusted_spline(x_squared, j, l, p, m, taus))
+  cols <- matrix(cols, nrow = length(x), ncol = (m + p))
+  colnames(cols) <- paste0('j', 1:(m + p))
+
+  valsDf <- cbind(data.frame(lags = x), cols)
 
   return(valsDf)
 }
@@ -196,15 +161,15 @@ splines_df <- function(x, p, m, taus) {
 #' @param weights A vector of weights, see the description.
 #'
 #' @return The value of the objective function at those parameters.
-#' @export
 #'
 #' @examples
+#' \dontrun{
 #' taus <- get_taus(3, 2)
 #' x <- seq(0, 2, by=0.25)
 #' maxLag <- 4
 #' splines_df <- splines_df(x[1:maxLag], 3, 2, taus)
 #' splines_df$estCov <- exp(-splines_df$lags^2) + 0.001
-#' # pars are the inital parameters used in the minimisation process.
+#' # pars are the initial parameters used in the minimisation process.
 #' pars <- c(0.5, 0.5, 0.5, 0.5, 0.5)
 #' weights <- c()
 #' X <- rnorm(50)
@@ -212,16 +177,13 @@ splines_df <- function(x, p, m, taus) {
 #'   weights <- c(weights, (length(X) - i) / ( (1 - splines_df$estCov[i + 1])^2 ))
 #' }
 #' solve_spline(pars, splines_df, weights)
+#' }
 solve_spline <- function(par, splines_df, weights) {
   if(any(par < 0)) {
     return(10^12)
   }
 
-  splineParVal <- 0
-  for(i in 2:(ncol(splines_df) - 1)) {
-    splineParVal <- splineParVal + par[i - 1] * splines_df[, i]
-  }
-
+  splineParVal <- as.numeric(as.matrix(splines_df[, 2:(ncol(splines_df) - 1)]) %*% par)
   return( sum(weights * (splines_df$estCov - splineParVal)^2) )
 }
 
@@ -232,19 +194,32 @@ solve_spline <- function(par, splines_df, weights) {
 #' where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the splines, \eqn{\tau} is the isotropic distance, \eqn{\beta_{j}} are nonnegative weights and \eqn{f_{j}^{(p)}} are basis functions of order \eqn{p.}
 #' For optimisation, the Nelder-Mead and L-BFGS-B methods are used, the one which selects parameters which minimises the objective function is chosen.
 #'
+#' Due to the weighting scheme, the autocovariance at lag zero cannot be 1,
+#' \deqn{
+#' w_{i} = \frac{N - i}{1 - C(i)}
+#' }
+#'
 #' @references Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. https://doi.org/10.1007/s13253-013-0152-z
 #'
 #' @param X A vector representing observed values of the time series.
-#' @param x A vector of lags.
+#' @param x A vector of lag indices.
 #' @param estCov An estimated autocovariance function to fit to (a vector).
 #' @param p The order of the splines.
 #' @param m The number of nonboundary knots.
 #' @param maxLag An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.
-#' @param inital_pars An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}
+#' @param initial_pars An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}
 #' @param control An optional list of optimisation parameters used in the optimisation process, see \code{control} in [stats::optim].
 #' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
 #'
-#' @return A vector whose values are the spline autocovariance estimates.
+#' @return A vector whose values are the spline autocovariance estimates or a \code{CovEsts} S3 object (list) with the following values
+#' \describe{
+#'  \item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+#'  \item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+#'  \item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the \code{type} parameter.}
+#'  \item{\code{est_used}}{The estimator function used, in this case, 'splines_est'.}
+#' }
+#' If a numeric vector is given for the argument \code{estCov}, then a numeric vector output is given, and if a \code{CovEsts} S3 object is given, a \code{CovEsts} object is given as output.
+#'
 #' @export
 #'
 #' @importFrom stats optim
@@ -257,28 +232,43 @@ solve_spline <- function(par, splines_df, weights) {
 #' estCov <- standard_est(X, maxLag = maxLag)
 #' estimated <- splines_est(X, x, estCov, 3, 2, maxLag = maxLag)
 #' estimated
-splines_est <- function(X, x, estCov, p, m, maxLag = length(X) - 1, type = "autocovariance", inital_pars = c(), control = list('maxit' = 1000)) {
-  stopifnot(is.numeric(X), is.vector(X), all(!is.na(X)), is.numeric(x), is.vector(x), all(!is.na(x)),
-            is.numeric(maxLag), maxLag >= 0, maxLag <= (length(estCov) - 1), is.numeric(estCov),
-            is.vector(estCov), all(!is.na(estCov)), is.numeric(p), p >= 0, p %% 1 == 0,
-            is.numeric(m), m > 0, m %% 1 == 0, type %in% c('autocovariance', 'autocorrelation'))
+splines_est <- function(X, x, estCov, p, m, maxLag = length(X) - 1, type = c("autocovariance", "autocorrelation"), initial_pars = c(), control = list('maxit' = 1000)) {
+  UseMethod("splines_est", estCov)
+}
 
-  if(is.vector(inital_pars)) {
-    stopifnot(length(inital_pars) == p + m)
+#' @describeIn splines_est Method for 'CovEsts' objects.
+#' @export
+splines_est.CovEsts <- function(X, x, estCov, p, m, maxLag = length(X) - 1, type =  c("autocovariance", "autocorrelation"), initial_pars = c(), control = list('maxit' = 1000)) {
+  est <- splines_est.default(X, x, estCov$acf, p, m, maxLag = maxLag, type = type, initial_pars = initial_pars, control = control)
+
+  res <- list(acf = est, lags = x[1:(maxLag + 1)], est_type = type, est_used = 'splines_est')
+  return(structure(res, class = "CovEsts"))
+}
+
+#' @describeIn splines_est Method for numeric vectors.
+#' @export
+splines_est.default <- function(X, x, estCov, p, m, maxLag = length(X) - 1, type =  c("autocovariance", "autocorrelation"), initial_pars = c(), control = list('maxit' = 1000)) {
+  stopifnot(is.numeric(X), all(!is.na(X)), is.numeric(x), all(!is.na(x)), is.numeric(maxLag),
+            maxLag >= 0, maxLag <= (length(estCov) - 1), is.numeric(estCov),
+            all(!is.na(estCov)), is.numeric(p), p >= 0, p %% 1 == 0,
+            is.numeric(m), m > 0, m %% 1 == 0)
+
+  type <- match.arg(type)
+
+  if(is.numeric(initial_pars) && is.atomic(initial_pars)) {
+    stopifnot(length(initial_pars) == p + m)
   }
   taus <- get_taus(p, m)
 
   splines_df <- splines_df(x[1:(maxLag + 1)], p, m, taus)
   splines_df[, 'estCov'] <- estCov
 
-  weights <- c()
-  for(i in 0:maxLag) {
-    weights <- c(weights, (length(X) - i) / ( (1 - estCov[i + 1])^2 ))
-  }
+  weights_indices <- 0:maxLag
+  weights <- (length(X) - weights_indices) / ( (1 - estCov[weights_indices + 1])^2 )
 
   pars <- rep(0.5, ncol(splines_df) - 2)
-  if(length(inital_pars) != 0 && length(inital_pars) == ncol(splines_df - 2)) {
-    pars <- inital_pars
+  if(length(initial_pars) != 0 && length(initial_pars) == ncol(splines_df - 2)) {
+    pars <- initial_pars
   }
   # Add two optim results, one for Nelder-Mead and one for BFGS, mimicking what is done in the optimx package.
   optim_splines <- NA
@@ -319,14 +309,7 @@ splines_est <- function(X, x, estCov, p, m, maxLag = length(X) - 1, type = "auto
     stop("Failed to converge. Try new parameters or increasing the number of iterations.")
   }
 
-  optim_vals <- c()
-  for(i in 1:length(x[1:(maxLag + 1)])) {
-    tempSum <- 0
-    for(j in 2:(ncol(splines_df) - 1)) {
-      tempSum <- tempSum + (optim_splines_betas[j - 1] * splines_df[i, j])
-    }
-    optim_vals <- c(optim_vals, tempSum)
-  }
+  optim_vals <- as.numeric(as.matrix(splines_df[, 2:(ncol(splines_df) - 1)]) %*% optim_splines_betas)
 
   if(length(optim_vals) != length(estCov)) {
     stop("Length of output differs from input")
@@ -335,5 +318,6 @@ splines_est <- function(X, x, estCov, p, m, maxLag = length(X) - 1, type = "auto
   if(type == 'autocorrelation') {
     optim_vals <- optim_vals / optim_vals[1]
   }
+
   return(optim_vals)
 }

@@ -2,15 +2,27 @@
 % Please edit documentation in R/standard_est.R
 \name{to_vario}
 \alias{to_vario}
+\alias{to_vario.default}
+\alias{to_vario.CovEsts}
 \title{Autocovariance to Semivariogram}
 \usage{
 to_vario(estCov)
+
+\method{to_vario}{default}(estCov)
+
+\method{to_vario}{CovEsts}(estCov)
 }
 \arguments{
-\item{estCov}{A vector whose values are an estimate autocovariance function.}
+\item{estCov}{A vector whose values are an estimate autocovariance function or a \code{CovEsts} S3 object.}
 }
 \value{
-A vector whose values are an estimate of the semivariogram.
+A numeric vector whose values are an estimate of the semivariogram or an \code{VarioEsts} S3 object (list) with the following values
+\describe{
+\item{\code{vario}}{A numeric vector whose values are an estimate of the semivariogram.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on, inherited from the argument \code{estCov}.}
+\item{\code{est_used}}{The estimator function used, in this case, 'to_vario'.}
+}
+If a numeric vector is given for the argument \code{estCov}, then a numeric vector output is given, and if a \code{CovEsts} S3 object is given, a \code{VarioEsts} object is given as output.
 }
 \description{
 This function computes an estimated semivariogram using an estimated autocovariance function.
@@ -24,6 +36,13 @@ The semivariogram, \eqn{\gamma(h)} and autocovariance function, \eqn{C(h)}, unde
 When an empirical autocovariance function is considered instead, this relation does not necessarily hold, however,
 it can be used to obtain a function that is close to a semivariogram, see Bilchouris and Olenko (2025).
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{to_vario(default)}: Method for numeric vectors.
+
+\item \code{to_vario(CovEsts)}: Method for \code{CovEsts} objects.
+
+}}
 \examples{
 X <- c(1, 2, 3)
 estCov <- standard_est(X, meanX=mean(X), maxLag = 2, pd=FALSE)

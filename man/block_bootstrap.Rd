@@ -7,16 +7,18 @@
 block_bootstrap(
   X,
   maxLag,
-  x = 1:length(X),
+  x = 0:length(X),
   n_bootstrap = 100,
   l = ceiling(length(X)^(1/3)),
   estimator = standard_est,
-  type = "autocovariance",
+  type = c("autocovariance", "autocorrelation"),
   alpha = 0.05,
-  boot_type = "moving",
-  plot = FALSE,
-  boot_mat = FALSE,
-  ylim = c(-1, 1),
+  boot_type = c("moving", "circular"),
+  parallel = FALSE,
+  ncores = parallel::detectCores() - 1,
+  cl_export = NULL,
+  boot_seed = NULL,
+  cl = NULL,
   ...
 )
 }
@@ -25,7 +27,7 @@ block_bootstrap(
 
 \item{maxLag}{The maximum lag to compute the estimated autocovariance function at.}
 
-\item{x}{A vector of indices. Defaults to the sequence \code{1:length(X)}.}
+\item{x}{A vector of lag indices. Defaults to the sequence \code{0:length(X)}. Must be at least as large as \code{maxLag + 1}.}
 
 \item{n_bootstrap}{The number of times to run moving block bootstrap. Defaults to 100.}
 
@@ -39,17 +41,32 @@ block_bootstrap(
 
 \item{boot_type}{What type of block bootstrap should be used, either 'moving' for moving block bootstrap or 'circular' for circular block bootstrap.}
 
-\item{plot}{A boolean determining whether a plot should be created. By default, no plot is created.}
+\item{parallel}{Whether or not the bootstrap computations should be done in parallel or not. Defaults to \code{FALSE}.}
 
-\item{boot_mat}{A boolean determining whether a bootstrap matrix should be returned or not. By default, no matrix is returned.}
+\item{ncores}{The number of cores to be used in the parallel bootstrap computations. Defaults to the number cores - 1 (threads if hyperthreading is available), calculated from \code{parallel::detectCores() - 1}.}
 
-\item{ylim}{A vector of length two denoting the limits of the y-axis for the plot. Defaults to \code{c(-1, 1)}.}
+\item{cl_export}{A vector of any additional functions or variables to export for parallel computations. This may be required if \code{estimator} is not within the package. Defaults to \code{NULL}.}
+
+\item{boot_seed}{An integer seed for reproducibility. This is used for}
+
+\item{cl}{An optional cluster object created by \code{parallel::makeCluster}. Defaults to \code{NULL}, which creates a temporary PSOCK cluster.}
 
 \item{...}{Optional named arguments to the chosen estimator. See the examples.}
 }
 \value{
-A list containing three items. The first
-A list consisting of three items. The first is the average estimated autocovariance/autocorrelation function for the bootstrap samples, the second is a matrix of the estimated autocovariance/autocorrelation functions from the bootstrapped samples, and the third is a matrix of confidence intervals for each lag. If the option \code{boot_mat = TRUE}, an addition value is returned, a matrix where each row is a bootstrap estimated autocovariance function. If the option \code{plot = TRUE} is used, the plot shows the esitmated autocovariance function in black, the average bootstrap estimated autocovariance function in red and the \eqn{(1 - \alpha)\%} confidence region is the grey shaded area.
+A \code{BootEsts} S3 object (list) with the following values
+\describe{
+\item{\code{acf_avg}}{A numeric vector containing the average autocovariance/autocorrelation bootstrap estimate.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+\item{\code{acf_orig}}{A numeric vector containing the nonbootstrapped autocovariance/autocorrelation estimate.}
+\item{\code{acf_mat}}{A numeric matrix of the a matrix of all of the bootstrap estimates.}
+\item{\code{conf_lower}}{A numeric vector containing the lower bounds for the estimated pointwise confidence interval.}
+\item{\code{conf_upper}}{A numeric vector containing the upper bounds for the estimated pointwise confidence interval.}
+\item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the argument \code{type}.}
+\item{\code{est_used}}{The estimator function used, this depends on the argument \code{estimator}.}
+\item{\code{boot_type}}{The type of estimate, namely 'moving' or 'circular', this depends on the argument \code{boot_type}.}
+\item{\code{alpha}}{A numeric value, which is the \eqn{\alpha} value used to compute the confidence intervals, this depends on the argument \code{alpha}.}
+}
 }
 \description{
 This function performs block bootstrap (moving or circular) to obtain a \eqn{(1-\alpha)\%} confidence-interval for the autocovariance function. It will also compute average autocovariance function across all bootstrapped estimates.
@@ -77,20 +94,22 @@ and the \eqn{(1 - \alpha)\%} confidence intervals are constructed pointwise for 
 The choice of the block length, \eqn{\ell ,} depends on the degree of dependence present in the time series. If the time series has a high degree of dependence, a larger block size should be chosen to ensure the dependency structure is maintained within the block.
 
 Any estimator of the autocovariance function can be used in this function, including a custom estimator not in the package, see the examples.
+
+When \code{parallel = TRUE}, L'Ecuyer-CMRG is used to ensure independent random numbers across workers. The serial version uses the Mersenne-Twister algorithm.
 }
 \examples{
 X <- c(1, 2, 3, 3, 2, 1)
 block_bootstrap(X, 4, n_bootstrap = 3, l = 2, type = 'autocorrelation')
-block_bootstrap(X, 4, n_bootstrap = 3, l = 2, plot =TRUE, type = 'autocovariance')
+block_bootstrap(X, 4, n_bootstrap = 3, l = 2, type = 'autocovariance')
 block_bootstrap(X, 4, n_bootstrap = 3, l = 2, estimator=tapered_est,
     rho = 0.5, window_name = 'blackman', window_params = c(0.16),
     type='autocorrelation')
 my_cov_est <- function(X, maxLag) {
   n <- length(X)
-  covVals <- c()
+  covVals <- rep(0, maxLag + 1)
   for(h in 0:maxLag) {
     covVals_t <- (X[1:(n-h)] - mean(X)) * (X[(1+h):n] - mean(X))
-    covVals <- c(covVals, sum(covVals_t) / (n - h))
+    covVals[h] <- sum(covVals_t) / (n - h)
   }
   return(covVals)
 }
@@ -99,22 +118,29 @@ block_bootstrap(X, 4, n_bootstrap = 3, l = 2, estimator=my_cov_est)
 plot(LakeHuron, main="Lake Huron Levels", ylab="Feet")
 X <- as.vector(LakeHuron)
 block_bootstrap(X, 20, n_bootstrap = 100, l = 40, type = 'autocorrelation')
-block_bootstrap(X, 20, n_bootstrap = 100, l = 40, plot = TRUE, type = 'autocorrelation')
+block_bootstrap(X, 20, n_bootstrap = 100, l = 40, type = 'autocorrelation')
 block_bootstrap(X, 20, n_bootstrap = 100, l = 40, estimator=tapered_est,
     rho = 0.5, window_name = 'blackman', window_params = c(0.16),
-    type='autocorrelation', plot =TRUE)
+    type='autocorrelation')
 
 my_cov_est <- function(X, maxLag) {
   n <- length(X)
-  covVals <- c()
+  covVals <- rep(0, maxLag + 1)
   for(h in 0:maxLag) {
     covVals_t <- (X[1:(n-h)] - mean(X)) * (X[(1+h):n] - mean(X))
-    covVals <- c(covVals, sum(covVals_t) / (n - h))
+    covVals[h] <- sum(covVals_t) / (n - h)
   }
   return(covVals)
 }
 block_bootstrap(X, 20, n_bootstrap = 100, l = 40, estimator = my_cov_est,
-    plot = TRUE, type = 'autocorrelation')
+    type = 'autocorrelation')
+\dontrun{
+library(parallel)
+X <- c(1, 2, 3, 3, 2, 1)
+my_cl <- makePSOCKcluster(2)
+block_bootstrap(X, 4, n_bootstrap = 1000, l = 3, parallel = TRUE, cl = my_cl)
+stopCluster(my_cl)
+}
 }
 \references{
 Chapters 2.5 and 2.7 in Lahiri, S. N. (2003). Resampling Methods for Dependent Data. Springer. https://doi.org/10.1007/978-1-4757-3803-2

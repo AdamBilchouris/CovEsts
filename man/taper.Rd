@@ -4,14 +4,21 @@
 \alias{taper}
 \title{Compute the Function \eqn{a(x; \rho).}}
 \usage{
-taper(x, rho, window_name, window_params = c(1), custom_window = FALSE)
+taper(
+  x,
+  rho,
+  window_name = c("tukey", "triangular", "sine", "power_sine", "blackman",
+    "hann_poisson", "welch"),
+  window_params = c(1),
+  custom_window = FALSE
+)
 }
 \arguments{
 \item{x}{A vector of numbers between 0 and 1 (inclusive).}
 
 \item{rho}{A scale parameter in \eqn{(0, 1].}}
 
-\item{window_name}{The name of the \link{window} function to be used. Possible values are:
+\item{window_name}{The name of the \link{window_ec} function to be used. Possible values are:
 tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example.}
 
 \item{window_params}{A vector of parameters of the window function.}
@@ -22,11 +29,24 @@ tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternative
 A vector of taper values.
 }
 \description{
-This function repeatedly calls \link{taper_single} on all elements of a vector.
+This helper function computes the taper function for a given window function as
+\deqn{a(x; \rho) = \left\{
+\begin{array}{ll}
+   w(2x/\rho)     & 0 \leq x < \frac{1}{2} \rho, \\
+   1              & \frac{1}{2}\rho \leq x \leq \frac{1}{2} \\
+   a(1 - x; \rho) & \frac{1}{2} < x \leq 1
+\end{array} ,
+\right. }
+where \eqn{w(\cdot)} is a continuous increasing function with \eqn{w(0)=0, w(1)=1,}
+\eqn{\rho \in (0, 1],} and \eqn{x \in [0, 1].} The possible window function choices are found in \link{window_ec}.
 }
 \examples{
 X <- c(0.1, 0.2, 0.3)
 taper(X, 0.5, "tukey")
 curve(taper(x, 1, "tukey"), from = 0, to = 1)
 curve(taper(x, 1, "power_sine", c(4)), from = 0, to = 1)
+my_taper <- function(x, ...) {
+  return(x)
+}
+taper(X, 0.5, my_taper, custom_window = TRUE)
 }

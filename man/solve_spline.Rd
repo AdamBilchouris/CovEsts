@@ -32,12 +32,13 @@ where \eqn{\{h_{1} , \dots , h_{L} \}} is a set of lags and \eqn{\{w_{1}, \dots 
 The set of weights is calculated in \link{splines_est}, and they are of the form \eqn{w_{i} = (N - h_{i}) / ((1 - \widehat{C}(h_{i}))^{2}).}
 }
 \examples{
+\dontrun{
 taus <- get_taus(3, 2)
 x <- seq(0, 2, by=0.25)
 maxLag <- 4
 splines_df <- splines_df(x[1:maxLag], 3, 2, taus)
 splines_df$estCov <- exp(-splines_df$lags^2) + 0.001
-# pars are the inital parameters used in the minimisation process.
+# pars are the initial parameters used in the minimisation process.
 pars <- c(0.5, 0.5, 0.5, 0.5, 0.5)
 weights <- c()
 X <- rnorm(50)
@@ -45,6 +46,7 @@ for(i in 0:(maxLag - 1)) {
   weights <- c(weights, (length(X) - i) / ( (1 - splines_df$estCov[i + 1])^2 ))
 }
 solve_spline(pars, splines_df, weights)
+}
 }
 \references{
 Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. https://doi.org/10.1007/s13253-013-0152-z

@@ -2,9 +2,15 @@
 % Please edit documentation in R/metrics.R
 \name{spectral_norm}
 \alias{spectral_norm}
+\alias{spectral_norm.CovEsts}
+\alias{spectral_norm.default}
 \title{Compute the Spectral Norm Between Estimated Functions.}
 \usage{
 spectral_norm(est1, est2)
+
+\method{spectral_norm}{CovEsts}(est1, est2)
+
+\method{spectral_norm}{default}(est1, est2)
 }
 \arguments{
 \item{est1}{A numeric vector representing the first estimated autocovariance function.}
@@ -37,6 +43,13 @@ This matrix is created by \link{cyclic_matrix}.
 
 The spectral norm is defined as the largest eigenvalue of \eqn{D.}
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{spectral_norm(CovEsts)}: Method for \code{CovEsts} objects.
+
+\item \code{spectral_norm(default)}: Method for numeric vectors.
+
+}}
 \examples{
 x <- seq(0, 5, by=0.1)
 estCov1 <- exp(-x^2)

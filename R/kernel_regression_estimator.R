@@ -12,28 +12,20 @@
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
 #'
 #' @return A matrix of size \eqn{N \times N}, where \eqn{N} is the length of the vector X.
-#' @export
 #'
 #' @examples
+#' \dontrun{
 #' X <- c(1, 2, 3, 4)
 #' Xij_mat(X, mean(X))
+#' }
 Xij_mat <- function(X, meanX = mean(X)) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX))
-
-  Xij <- matrix(nrow=length(X), ncol=length(X))
-  for(i in 1:length(X)) {
-    for(j in 1:length(X)) {
-      Xij[i, j] <- (X[i] - meanX) * (X[j] - meanX)
-    }
-  }
-
-  return(Xij)
+  return((X - meanX) %o% (X - meanX))
 }
 
 #' Compute \eqn{\rho(T_{1})} used in the Truncated Kernel Regression Estimator.
 #'
 #' This helper function computes \eqn{\rho(T_{1})} used in the truncated kernel regression estimator, [truncated_est].
-
 #'
 #' @details
 #' This function computes the following value,
@@ -58,57 +50,58 @@ Xij_mat <- function(X, meanX = mean(X)) {
 #' @param T1 The first trunctation point.
 #' @param b Bandwidth parameter, greater than 0.
 #' @param xij_mat The matrix of pairwise covariance values.
-#' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
+#' @param kernel_name The name of the symmetric kernel (see [kernel_symm_ec]) function to be used. Possible values are:
 #' gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel function can be provided, see the examples.
-#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
+#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm_ec] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
 #'
 #' @return The estimated autocovariance function at \eqn{T_{1}}.
-#' @export
 #'
 #' @examples
+#' \dontrun{
 #' X <- c(1, 2, 3, 4)
 #' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), "gaussian", c(), FALSE)
-#' my_kernel <- function(x, theta, params) {
-#'   stopifnot(theta > 0, length(x) >= 1)
-#'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
+#' my_kernel <- function(x, params) {
+#'   stopifnot(params[1] > 0, length(x) >= 1)
+#'   return(exp(-((abs(x) / params[1])^params[2])) * (2 * params[1]  * gamma(1 + 1/params[2])))
 #' }
 #' rho_T1(1:4, mean(X), 1, 0.1, Xij_mat(X, mean(X)), my_kernel, c(0.25), TRUE)
-rho_T1 <- function(x, meanX, T1, b, xij_mat, kernel_name="gaussian", kernel_params=c(), custom_kernel = FALSE) {
+#' }
+rho_T1 <- function(x, meanX, T1, b, xij_mat, kernel_name=c("gaussian", "wave", "rational_quadratic", "bessel_j"), kernel_params=c(), custom_kernel = FALSE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), length(meanX) == 1, is.numeric(meanX), !is.na(meanX),
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(b) == 1, is.numeric(b), !is.na(b), b > 0,
             is.numeric(xij_mat), is.matrix(xij_mat), !any(is.na(xij_mat)), is.logical(custom_kernel))
 
-  numerators <- c()
-  denominators <- c()
+  numerators <- numeric(length(x))
+  denominators <- numeric(length(x))
 
   # Duplicating code as to only have 1 if statement, not length(x) if statements.
   if(custom_kernel) {
-    stopifnot(exists(quote(kernel_name)))
+    stopifnot(is.function(kernel_name))
     for(i in 1:length(x)) {
       tij <- x[i] - x
       t_tij <- T1 - tij
       X_ij <- xij_mat[i, ]
-      K_ij <- kernel_name(t_tij, b, kernel_params)
+      K_ij <- kernel_name(t_tij, c(b, kernel_params))
       numerator <- K_ij * X_ij
       denominator <- K_ij
 
-      numerators <- c(numerators, sum(numerator))
-      denominators <- c(denominators, sum(denominator))
+      numerators[i] <- sum(numerator)
+      denominators[i] <- sum(denominator)
     }
   }
   else {
-    stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
+    kernel_name <- match.arg(kernel_name)
     for(i in 1:length(x)) {
       tij <- x[i] - x
       t_tij <- T1 - tij
       X_ij <- xij_mat[i, ]
-      K_ij <- kernel_symm(t_tij, kernel_name, c(b, kernel_params[1], kernel_params[2]))
+      K_ij <- kernel_symm_ec(t_tij, kernel_name, c(b, kernel_params[1], kernel_params[2]))
       numerator <- K_ij * X_ij
       denominator <- K_ij
 
-      numerators <- c(numerators, sum(numerator))
-      denominators <- c(denominators, sum(denominator))
+      numerators[i] <- sum(numerator)
+      denominators[i] <- sum(denominator)
     }
   }
 
@@ -222,7 +215,7 @@ idct_1d <- function(X) {
 #'
 #' Hall, P., Fisher, N. I., & Hoffmann, B. (1994). On the nonparametric estimation of covariance functions. The Annals of Statistics 22(4), 2115-2134. https://doi.org/10.1214/aos/1176325774
 #'
-#' Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112–137. https://doi.org/10.17713/ajs.v54i1.1975
+#' Bilchouris, A. & Olenko, A (2025). On Nonparametric Estimation of Covariogram. Austrian Statistical Society 54(1), 112-137. https://doi.org/10.17713/ajs.v54i1.1975
 #'
 #' @param X A vector representing observed values of the time series.
 #' @param x A vector of lags.
@@ -230,88 +223,91 @@ idct_1d <- function(X) {
 #' @param T1 The first truncation point, \eqn{T_{1} > 0.}
 #' @param T2 The second truncation point, \eqn{T_{2} > T_{1} > 0.}
 #' @param b Bandwidth parameter, greater than 0.
-#' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
+#' @param kernel_name The name of the symmetric kernel (see [kernel_symm_ec]) function to be used. Possible values are:
 #' gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel function can be provided, see the examples.
-#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
+#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm_ec] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
 #' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
+#' @param parallel Whether or not the computations should be done in parallel or not. Defaults to \code{FALSE}.
+#' @param ncores The number of cores to be used in the parallel computations. Defaults to the number cores - 1 (threads if hyperthreading is available), calculated from \code{parallel::detectCores() - 1}.
+#' @param cl_export A vector of any additional functions or variables to export for parallel computations. This may be required if \code{estimator} is not within the package. Defaults to \code{NULL}.
+#' @param cl An optional cluster object created by \code{parallel::makeCluster}. Defaults to \code{NULL}, which creates a temporary PSOCK cluster.
 #'
-#' @return A vector whose values are the truncated kernel regression estimates.
+#' @return A \code{CovEsts} S3 object (list) with the following values
+#' \describe{
+#'  \item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+#'  \item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+#'  \item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the \code{type} parameter.}
+#'  \item{\code{est_used}}{The estimator function used, in this case, 'truncated_est'.}
+#' }
 #' @export
+#'
+#' @importFrom utils tail
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' truncated_est(X, 1:4, 1:3, 1, 2, 0.1,
 #'                   "gaussian")
 #'
-#' my_kernel <- function(x, theta, params) {
-#'   stopifnot(theta > 0, length(x) >= 1)
-#'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
+#' my_kernel <- function(x, params) {
+#'   stopifnot(params[1] > 0, length(x) >= 1)
+#'   return(exp(-((abs(x) / params[1])^params[2])) * (2 * params[1] * gamma(1 + 1/params[2])))
 #' }
+#'
 #' truncated_est(X, 1:4, 1:3, 1, 2, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
-truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", kernel_params = c(), pd = TRUE, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
+#' \dontrun{
+#' library(parallel)
+#' X <- c(1, 2, 3, 4)
+#' my_cl <- makePSOCKcluster(2)
+#' truncated_est(X, 1:4, 1:3, 1, 2, 0.1, "gaussian", parallel = TRUE, cl = my_cl)
+#' stopCluster(my_cl)
+#' }
+truncated_est <- function(X, x, t, T1, T2, b, kernel_name = c("gaussian", "wave", "rational_quadratic", "bessel_j"), kernel_params = c(), pd = TRUE, type = c("autocovariance", "autocorrelation"), meanX = mean(X), custom_kernel = FALSE, parallel = FALSE, ncores = parallel::detectCores() - 1, cl_export = NULL, cl = NULL) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), length(x) >= 1, is.numeric(x), !any(is.na(x)),
-            length(meanX) == 1, is.numeric(meanX), !is.na(meanX), is.numeric(t), length(t) >= 1,
+            length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t), length(t) >= 1,
             length(T1) == 1, is.numeric(T1), !is.na(T1), T1 > 0, length(T2) == 1, is.numeric(T2),
             !is.na(T2), T2 > T1, length(b) == 1, is.numeric(b), b > 0, is.logical(custom_kernel),
-            type %in% c('autocovariance', 'autocorrelation'), is.logical(pd))
+            is.logical(pd), is.logical(parallel))
 
-  xij_mat <- Xij_mat(X, mean(X))
-  rhoT1 <- rho_T1(x, meanX, T1, b, xij_mat, kernel_name, kernel_params, custom_kernel)
+  type <- match.arg(type)
 
-  outer_x_x <- outer(x, x, '-')
-  vals_truncated_1 <- c()
+  if(custom_kernel) {
+    stopifnot(is.function(kernel_name))
+  }
+
+  # outer_x_x <- outer(x, x, '-')
+  vals_truncated_1 <- numeric(length(t))
 
   t_vals <- t[t <= T1]
-  if(custom_kernel) {
-    stopifnot(exists(quote(kernel_name)))
-    for(tt in t_vals) {
-      K_ij <- kernel_name(tt - outer_x_x, b, kernel_params)
-      vals_truncated_1 <- c(vals_truncated_1, sum(K_ij * xij_mat) / sum(K_ij))
-    }
-  }
-  else {
-    stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
-    for(tt in t_vals) {
-      K_ij <- kernel_symm(tt - outer_x_x, kernel_name, c(b, kernel_params[1], kernel_params[2]))
-      vals_truncated_1 <- c(vals_truncated_1, sum(K_ij * xij_mat) / sum(K_ij))
-    }
-  }
+  vals_truncated_1[1:length(t_vals)] <- adjusted_est(X = X, x = x , t = t_vals, b = b, kernel_name = kernel_name,
+                                                                kernel_params = kernel_params, pd = FALSE, type = "autocovariance",
+                                                                meanX = meanX, custom_kernel = custom_kernel, parallel = parallel,
+                                                                ncores = ncores, cl_export = cl_export, cl = cl)$acf
+  t_T1_T2 <- which(t > T1 & t <= T2)
 
-  vals_truncated_1 <- c(vals_truncated_1, rhoT1 * (T2 - t[t > T1 & t <= T2]) * (T2 - T1)^(-1))
-  vals_truncated_1 <- c(vals_truncated_1, rep(0, length(t[t > T2])))
+  if(length(t_T1_T2) > 0) {
+    xij_mat <- Xij_mat(X, mean(X))
+    rhoT1 <- rho_T1(x, meanX, T1, b, xij_mat, kernel_name, kernel_params, custom_kernel)
+
+    vals_truncated_1[t_T1_T2] <- rhoT1 * (T2 - t[t > T1 & t <= T2]) * (T2 - T1)^(-1)
+    tail_t_T1_T2 <- utils::tail(t_T1_T2, 1)
+    if(tail_t_T1_T2 > length(t)) {
+      vals_truncated_1[(tail_t_T1_T2 + 1):length(vals_truncated_1)] <- 0
+    }
+  }
 
   if(pd) {
-    # Perform DCT
-    vals_truncated_1_dct <- dct_1d(vals_truncated_1)
-
-    # Find the first nonzero negative index.
-    firstNeg <- which(vals_truncated_1_dct[-1] < 0)[1] + 1
-
-    if(length(firstNeg) == 0 || is.na(firstNeg)) {
-      return(vals_truncated_1)
-    }
-
-    # Set values after the first negative index onwards
-    vals_truncated_1_dct[firstNeg:length(vals_truncated_1_dct)] <- 0
-
-    # Inversion
-    vals_truncated_1_idct <- idct_1d(vals_truncated_1_dct)
-
-    if(type == 'autocorrelation') {
-      vals_truncated_1_idct <- vals_truncated_1_idct / vals_truncated_1_idct[1]
-    }
-
-    return(vals_truncated_1_idct)
+    vals_truncated_1 <- make_pd(vals_truncated_1, method.1 = FALSE)
   }
 
   if(type == 'autocorrelation') {
     vals_truncated_1 <- vals_truncated_1 / vals_truncated_1[1]
   }
 
-  return(vals_truncated_1)
+  res <- list(acf = vals_truncated_1, lags = t, est_type = type, est_used = 'truncated_est')
+  return(structure(res, class = "CovEsts"))
 }
 
 #' Compute the Kernel Regression Estimator.
@@ -340,68 +336,113 @@ truncated_est <- function(X, x, t, T1, T2, b, kernel_name = "gaussian", kernel_p
 #' @param x A vector of lags.
 #' @param t The arguments at which the autocovariance function is calculated at.
 #' @param b Bandwidth parameter, greater than 0.
-#' @param kernel_name The name of the symmetric kernel (see [kernel_symm]) function to be used. Possible values are:
+#' @param kernel_name The name of the symmetric kernel (see [kernel_symm_ec]) function to be used. Possible values are:
 #' gaussian, wave, rational_quadratic, and bessel_j. Alternatively, a custom kernel function can be provided, see the examples.
-#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm] for parameters.
+#' @param kernel_params A vector of parameters of the kernel function. See [kernel_symm_ec] for parameters.
 #' @param custom_kernel If a custom kernel is to be used or not. Defaults to \code{FALSE}.
 #' @param pd Whether a positive-definite estimate should be used. Defaults to \code{TRUE}.
 #' @param type Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.
 #' @param meanX The average value of \code{X}. Defaults to \code{mean(X)}.
+#' @param parallel Whether or not the computations should be done in parallel or not. Defaults to \code{FALSE}.
+#' @param ncores The number of cores to be used in the parallel computations. Defaults to the number cores - 1 (threads if hyperthreading is available), calculated from \code{parallel::detectCores() - 1}.
+#' @param cl_export A vector of any additional functions or variables to export for parallel computations. This may be required if \code{estimator} is not within the package. Defaults to \code{NULL}.
+#' @param cl An optional cluster object created by \code{parallel::makeCluster}. Defaults to \code{NULL}, which creates a temporary PSOCK cluster.
 #'
-#' @return A vector whose values are the kernel regression estimates.
+#' @return A \code{CovEsts} S3 object (list) with the following values
+#' \describe{
+#'  \item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+#'  \item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+#'  \item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the \code{type} parameter.}
+#'  \item{\code{est_used}}{The estimator function used, in this case, 'adjusted_est'.}
+#' }
 #' @export
 #'
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' adjusted_est(X, 1:4, 1:3, 0.1, "gaussian")
-#' my_kernel <- function(x, theta, params) {
-#'   stopifnot(theta > 0, length(x) >= 1)
-#'   return(exp(-((abs(x) / theta)^params[1])) * (2 * theta  * gamma(1 + 1/params[1])))
+#' my_kernel <- function(x, params) {
+#'   stopifnot(params[1] > 0, length(x) >= 1)
+#'   return(exp(-((abs(x) / params[1])^params[2])) * (2 * params[1] * gamma(1 + 1/params[2])))
 #' }
 #' adjusted_est(X, 1:4, 1:3, 0.1, my_kernel, c(0.25), custom_kernel = TRUE)
-adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_params=c(), pd = TRUE, type = "autocovariance", meanX = mean(X), custom_kernel = FALSE) {
+#' \dontrun{
+#' library(parallel)
+#' X <- c(1, 2, 3, 4)
+#' my_cl <- makePSOCKcluster(2)
+#' adjusted_est(X, 1:4, 1:3, 0.1, "gaussian", parallel = TRUE, cl = my_cl)
+#' stopCluster(my_cl)
+#' }
+adjusted_est <- function(X, x, t, b, kernel_name = c("gaussian", "wave", "rational_quadratic", "bessel_j"), kernel_params=c(), pd = TRUE, type = c("autocovariance", "autocorrelation"), meanX = mean(X), custom_kernel = FALSE, parallel = FALSE, ncores = parallel::detectCores() - 1, cl_export = NULL, cl = NULL) {
   stopifnot(is.numeric(X), length(X) >= 1, !any(is.na(X)), is.numeric(x), length(x) >= 1, !any(is.na(x)),
             length(meanX) == 1, is.numeric(meanX), !is.na(meanX), !any(is.na(t)), is.numeric(t),
             length(t) >= 1, length(b) == 1, is.numeric(b), b > 0, is.logical(custom_kernel),
-            type %in% c('autocovariance', 'autocorrelation'), is.logical(pd))
+            is.logical(pd), is.logical(parallel))
 
+  type <- match.arg(type)
   outer_x_x <- outer(x, x, '-')
   xij_mat <- Xij_mat(X, meanX)
-  cov_vals <- c()
+  cov_vals <- numeric(length(t))
+
+  kern_func <- NULL
+
+  varList <- c()
+
   if(custom_kernel) {
-    stopifnot(exists(quote(kernel_name)))
-    for(tt in t) {
-      K_ij <- kernel_name(tt - outer_x_x, b, kernel_params)
-      cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))
+    stopifnot(is.function(kernel_name))
+    kern_func <- function(i) {
+      K_ij <- kernel_name(t[i] - outer_x_x, c(b, kernel_params))
+      return(sum(K_ij * xij_mat) / sum(K_ij))
     }
   }
   else {
-    stopifnot(kernel_name %in% c("gaussian", "wave", "rational_quadratic", "bessel_j"))
-    for(tt in t) {
-      K_ij <- kernel_symm(tt - outer_x_x, kernel_name, c(b, kernel_params[1], kernel_params[2]))
-      cov_vals <- c(cov_vals, sum(K_ij * xij_mat) / sum(K_ij))
+    kernel_name <- match.arg(kernel_name)
+    kern_func <- function(i) {
+      K_ij <- kernel_symm_ec(t[i] - outer_x_x, kernel_name, c(b, kernel_params[1], kernel_params[2]))
+      return(sum(K_ij * xij_mat) / sum(K_ij))
+    }
+    varList <- c(varList, "kernel_symm_ec")
+  }
+
+  if(parallel) {
+    # See if the user objects actually exist before wasting time creating the PSOCK cluster.
+    if(!is.null(cl_export)) {
+      missing_exports <- cl_export[!sapply(cl_export, exists, envir = parent.frame())]
+      if(length(missing_exports) > 0) {
+        stop("The following objects in `cl_export` were not found in your environment: ", paste0(missing_exports, collapse = ", "))
+      }
+    }
+
+    if(is.null(cl)) {
+      cl <- parallel::makePSOCKcluster(ncores)
+      on.exit(parallel::stopCluster(cl), add = TRUE)
+    }
+
+    varList <- c("t", "outer_x_x", "xij_mat", "b", "kernel_params", "kern_func", "kernel_symm_ec")
+    parallel::clusterExport(cl, varlist = varList, envir = environment())
+
+    # Export user supplied objects
+    parallel::clusterExport(cl, varlist = cl_export, envir = parent.frame())
+
+    cov_vals <- unlist(parallel::parLapply(cl, 1:length(t), kern_func))
+  }
+
+  else {
+    for(i in 1:length(t)) {
+      cov_vals[i] <- kern_func(i)
     }
   }
 
   if(pd) {
     # Perform DCT and set frequencies whose associated value is <0 to 0.
-    cov_dct <- dct_1d(cov_vals)
-    cov_dct[which(cov_dct < 0)] <- 0
-
-    # Invert and return.
-    cov_idct <- idct_1d(cov_dct)
-
-    if(type == 'autocorrelation') {
-      cov_idct <- cov_idct / cov_idct[1]
-    }
-
-    return(cov_idct)
+     cov_vals <- make_pd(cov_vals, method.1 = TRUE)
   }
 
   if(type == 'autocorrelation') {
     cov_vals <- cov_vals / cov_vals[1]
   }
-  return(cov_vals)
+
+  res <- list(acf = cov_vals, lags = t, est_type = type, est_used = 'adjusted_est')
+  return(structure(res, class = "CovEsts"))
 }
 
 #' Make a Function Positive-Definite
@@ -436,7 +477,15 @@ adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_params=c()
 #' @param x A vector of numeric values of an estimated autocovariance function.
 #' @param method.1 Should method 1 be used (TRUE) or method 2 (FALSE).
 #'
-#' @return A vector that is the adjusted function.
+#' @return A vector that is the adjusted function or a \code{CovEsts} S3 object (list) with the following values
+#' \describe{
+#'  \item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+#'  \item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on, inherited from the argument \code{x}.}
+#'  \item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', inherited from the argument \code{x}.}
+#'  \item{\code{est_used}}{The estimator function used, inherited from the argument \code{x}.}
+#'  \item{\code{correction_method}}{Either 'method.1' or 'method.2' depending on the argument \code{method.1}}
+#' }
+#' If a numeric vector is given for the argument \code{x}, then a numeric vector output is given, and if a \code{CovEsts} S3 object is given, a \code{CovEsts} object is given as output.
 #' @export
 #'
 #' @examples
@@ -445,6 +494,22 @@ adjusted_est <- function(X, x, t, b, kernel_name = "gaussian", kernel_params=c()
 #' check_pd(make_pd(X))
 #' check_pd(make_pd(X, method.1 = FALSE))
 make_pd <- function(x, method.1 = TRUE) {
+  UseMethod("make_pd")
+}
+
+#' @describeIn make_pd Method for `CovEsts` objects.
+#' @export
+make_pd.CovEsts <- function(x, method.1 = TRUE) {
+  idct_x <- make_pd.default(as.numeric(x), method.1)
+
+  res <- list(acf = idct_x, lags = attr(x, 'lags'), est_type = attr(x, 'est_type'),
+              est_used = attr(x, 'est_used'), correction_method = ifelse(method.1, 'method.1', 'method.2'))
+  return(structure(res, class = "CovEsts"))
+}
+
+#' @describeIn make_pd Method for numeric vectors.
+#' @export
+make_pd.default <- function(x, method.1 = TRUE) {
   stopifnot(is.numeric(x), length(x) >= 1, !any(is.na(x)), is.logical(method.1))
   dct_x <- dct_1d(x)
   if(method.1) {

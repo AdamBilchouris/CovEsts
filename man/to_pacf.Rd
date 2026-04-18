@@ -2,22 +2,42 @@
 % Please edit documentation in R/standard_est.R
 \name{to_pacf}
 \alias{to_pacf}
+\alias{to_pacf.CovEsts}
+\alias{to_pacf.default}
 \title{Computes the Standard Estimator of the Autocovariance Function.}
 \usage{
 to_pacf(estCov)
+
+\method{to_pacf}{CovEsts}(estCov)
+
+\method{to_pacf}{default}(estCov)
 }
 \arguments{
 \item{estCov}{A numeric vector representing an estimated autocovariance or autocorrelation function.}
 }
 \value{
-A vector whose values are an estimate partial autocorrelation function.
+A vector whose values are an estimate partial autocorrelation function or a \code{CovEsts} S3 object (list) with the following values
+\describe{
+\item{\code{acf}}{A numeric vector containing the partial autocorrelation estimates.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+\item{\code{est_type}}{The type of estimate, namely 'partial'.}
+\item{\code{est_used}}{The estimator function used, in this case, 'to_pacf'.}
+}
+If a numeric vector is given for the argument \code{estCov}, then a numeric vector output is given, and if a \code{CovEsts} S3 object is given, a \code{CovEsts} object is given as output.
 }
 \description{
 This function computes the partial autocorrelation function from an estimated autocovariance or autocorrelation function.
 }
 \details{
-This function is a translation of the 'uni_pacf' function in src/library/stats/src/pacf.c of the R source code which is an implementation of the Durbin–Levinson algorithm.
+This function is a translation of the 'uni_pacf' function in src/library/stats/src/pacf.c of the R source code which is an implementation of the Durbin-Levinson algorithm.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{to_pacf(CovEsts)}: Method for \code{CovEsts} objects.
+
+\item \code{to_pacf(default)}: Method for numeric vectors.
+
+}}
 \examples{
 X <- c(1, 2, 3)
 to_pacf(standard_est(X, pd = FALSE, maxLag = 2, meanX = mean(X)))

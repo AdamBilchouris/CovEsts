@@ -2,9 +2,15 @@
 % Please edit documentation in R/kernel_regression_estimator.R
 \name{make_pd}
 \alias{make_pd}
+\alias{make_pd.CovEsts}
+\alias{make_pd.default}
 \title{Make a Function Positive-Definite}
 \usage{
 make_pd(x, method.1 = TRUE)
+
+\method{make_pd}{CovEsts}(x, method.1 = TRUE)
+
+\method{make_pd}{default}(x, method.1 = TRUE)
 }
 \arguments{
 \item{x}{A vector of numeric values of an estimated autocovariance function.}
@@ -12,7 +18,15 @@ make_pd(x, method.1 = TRUE)
 \item{method.1}{Should method 1 be used (TRUE) or method 2 (FALSE).}
 }
 \value{
-A vector that is the adjusted function.
+A vector that is the adjusted function or a \code{CovEsts} S3 object (list) with the following values
+\describe{
+\item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on, inherited from the argument \code{x}.}
+\item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', inherited from the argument \code{x}.}
+\item{\code{est_used}}{The estimator function used, inherited from the argument \code{x}.}
+\item{\code{correction_method}}{Either 'method.1' or 'method.2' depending on the argument \code{method.1}}
+}
+If a numeric vector is given for the argument \code{x}, then a numeric vector output is given, and if a \code{CovEsts} S3 object is given, a \code{CovEsts} object is given as output.
 }
 \description{
 This function can make a function positive-definite using the methods proposed by P. Hall and his coauthors.
@@ -38,6 +52,13 @@ where \eqn{\textbf{1}(A)} is the indicator function over the set \eqn{A.}
 \item Perform the Fourier inversion.
 }
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{make_pd(CovEsts)}: Method for \code{CovEsts} objects.
+
+\item \code{make_pd(default)}: Method for numeric vectors.
+
+}}
 \examples{
 X <- c(1, 2, 3, 4)
 make_pd(X)

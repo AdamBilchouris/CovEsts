@@ -4,15 +4,22 @@
 \alias{H2n}
 \title{Compute Normalisation Factor}
 \usage{
-H2n(n, rho, window_name, window_params = c(1), custom_window = FALSE)
+H2n(
+  n,
+  rho,
+  window_name = c("tukey", "triangular", "sine", "power_sine", "blackman",
+    "hann_poisson", "welch"),
+  window_params = c(1),
+  custom_window = FALSE
+)
 }
 \arguments{
 \item{n}{The sample size.}
 
 \item{rho}{A scale parameter in \eqn{(0, 1].}}
 
-\item{window_name}{The name of the \link{window} function to be used. Possible values are:
-tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example for \link{taper_single}.}
+\item{window_name}{The name of the \link{window_ec} function to be used. Possible values are:
+tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example for \link{taper}.}
 
 \item{window_params}{A vector of parameters of the window function.}
 
@@ -22,10 +29,12 @@ tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternative
 A single value being \eqn{H_{2, n}(0)}.
 }
 \description{
-This helper function is used in the computation of the normalisation factor the function \link{tapered_single},
+This helper function is used in the computation of the normalisation factor the function \link{tapered_est},
 \deqn{H_{2, n}(0) = \sum_{s=1}^{n} a((s - 1/2) / n; \rho)^{2}, }
 where \eqn{a(\cdot; \cdot)} is a window function.
 }
 \examples{
+\dontrun{
 H2n(3, 0.6, "tukey")
+}
 }

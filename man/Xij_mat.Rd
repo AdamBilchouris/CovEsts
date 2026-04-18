@@ -19,8 +19,10 @@ This helper function computes the matrix of pairwise values, \eqn{X_{ij},} for t
 \deqn{X_{ij} = (X_{i} - \bar{X}) (X_{j} - \bar{X}) .}
 }
 \examples{
+\dontrun{
 X <- c(1, 2, 3, 4)
 Xij_mat(X, mean(X))
+}
 }
 \references{
 Hall, P. & Patil, P. (1994). Properties of nonparametric estimators of autocovariance for stationary random fields. Probability Theory and Related Fields 99(3), 399-424. https://doi.org/10.1007/bf01199899
