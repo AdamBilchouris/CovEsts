@@ -2,12 +2,18 @@
 % Please edit documentation in R/metrics.R
 \name{nearest_pd}
 \alias{nearest_pd}
+\alias{nearest_pd.CovEsts}
+\alias{nearest_pd.default}
 \title{Compute the Nearest Positive-Definite Matrix.}
 \usage{
 nearest_pd(X)
+
+\method{nearest_pd}{CovEsts}(X)
+
+\method{nearest_pd}{default}(X)
 }
 \arguments{
-\item{X}{Either a numeric vector or a square matrix. If a vector is provided, a matrix will be created of the form found in \link{cyclic_matrix}.}
+\item{X}{Either a numeric square matrix. If a vector is provided, a matrix will be created of the form found in \link{cyclic_matrix}.}
 }
 \value{
 The closest positive-definite autocorrelation matrix.
@@ -27,13 +33,20 @@ Unlike \link{shrinking}, only an autocorrelation matrix can be returned, not an 
 
 The implementation is a translation of https://au.mathworks.com/matlabcentral/fileexchange/42885-nearestspd#functions_tab .
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{nearest_pd(CovEsts)}: Method for \code{CovEsts} objects.
+
+\item \code{nearest_pd(default)}: Method for numeric vectors.
+
+}}
 \examples{
 X <- c(1, 0, -1.1)
 nearest_pd(X)
 check_pd(nearest_pd(X))
 }
 \references{
-Higham, N. J. (1988). Computing a nearest symmetric positive semidefinite matrix. Linear Algebra and its Applications, 103, 103–118. https://doi.org/10.1016/0024-3795(88)90223-6
+Higham, N. J. (1988). Computing a nearest symmetric positive semidefinite matrix. Linear Algebra and its Applications, 103, 103-118. https://doi.org/10.1016/0024-3795(88)90223-6
 
-D'Errico, J. (2025). nearestSPD (https://www.mathwor ks.com/matlabcentral/fileexchange/42885-nearestspd), MATLAB Central File Exchange. Retrieved August 2, 2025.
+D'Errico, J. (2025). nearestSPD (https://www.mathworks.com/matlabcentral/fileexchange/42885-nearestspd), MATLAB Central File Exchange. Retrieved August 2, 2025.
 }

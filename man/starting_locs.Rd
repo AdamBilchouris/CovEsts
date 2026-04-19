@@ -4,7 +4,7 @@
 \alias{starting_locs}
 \title{Random Block Locations}
 \usage{
-starting_locs(N, l, k, boot_type = "moving")
+starting_locs(N, l, k, boot_type = c("moving", "circular"))
 }
 \arguments{
 \item{N}{The length of the observation window.}

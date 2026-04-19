@@ -7,10 +7,12 @@
 tapered_est(
   X,
   rho,
-  window_name,
+  window_name = c("tukey", "triangular", "sine", "power_sine", "blackman",
+    "hann_poisson", "welch"),
   window_params = c(1),
   maxLag = length(X) - 1,
-  type = "autocovariance",
+  x = 0:length(X),
+  type = c("autocovariance", "autocorrelation"),
   meanX = mean(X),
   custom_window = FALSE
 )
@@ -20,12 +22,14 @@ tapered_est(
 
 \item{rho}{A scale parameter in \eqn{(0, 1].}}
 
-\item{window_name}{The name of the \link{window} function to be used. Possible values are:
-tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window function can be provided, see the example in \link{taper_single}.}
+\item{window_name}{The name of the \link{window_ec} function to be used. Possible values are:
+tukey, triangular, sine, power_sine, blackman_window, hann_poisson, welch. Alternatively, a custom window_ec function can be provided, see the example in \link{taper}.}
 
 \item{window_params}{A vector of parameters of the window function.}
 
 \item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
+
+\item{x}{A vector of lag indices. Defaults to the sequence \code{0:length(X)}. Must be at least as large as \code{maxLag + 1}.}
 
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 
@@ -34,11 +38,16 @@ tukey, triangular, power_sine, blackman_window, hann_poisson, welch. Alternative
 \item{custom_window}{If a custom window is to be used or not. Defaults to \code{FALSE}.}
 }
 \value{
-A vector whose values are the estimated tapered autocovariances.
+A \code{CovEsts} S3 object (list) with the following values
+\describe{
+\item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+\item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the \code{type} parameter.}
+\item{\code{est_used}}{The estimator function used, in this case, 'tapered_est'.}
+}
 }
 \description{
 This function computes the tapered autocovariance over a set of lags.
-For each lag, the tapered autocovariance is computed using the function \link{tapered_single}.
 }
 \details{
 This function computes the estimated tapered autocovariance over a set of lags,
@@ -46,8 +55,6 @@ This function computes the estimated tapered autocovariance over a set of lags,
 where \eqn{a(\cdot)} is a window function, \eqn{\rho \in (0, 1]}  is a scale parameter.
 This estimator takes into account the edge effect during estimation, assigning a lower weight to values closer to the boundaries and higher weights for observations closer to the middle.
 This estimator is positive-definite and asymptotically unbiased.
-
-Internally, this function calls \link{tapered_single} for each lag \eqn{h}.
 }
 \examples{
 X <- c(1, 2, 3)

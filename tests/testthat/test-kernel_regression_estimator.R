@@ -116,21 +116,21 @@ test_that("rho_T1 fails for nonpositive T1", {
   expect_error(rho_T1(test_x, test_meanX, -1, 0.01, test_xij))
 })
 
-test_that("rho_T1 fails for h of length not equal to 1", {
+test_that("rho_T1 fails for b of length not equal to 1", {
   expect_error(rho_T1(test_x, test_meanX, 2, c(1, 2), test_xij))
   expect_error(rho_T1(test_x, test_meanX, 2, c(), test_xij))
 })
 
-test_that("rho_T1 fails for nonnumeric h", {
+test_that("rho_T1 fails for nonnumeric b", {
   expect_error(rho_T1(test_x, test_meanX, 2, 'a', test_xij))
   expect_error(rho_T1(test_x, test_meanX, 2, 1i, test_xij))
 })
 
-test_that("rho_T1 fails for NA h", {
+test_that("rho_T1 fails for NA b", {
   expect_error(rho_T1(test_x, test_meanX, 2, NA, test_xij))
 })
 
-test_that("rho_T1 fails for nonpositive h", {
+test_that("rho_T1 fails for nonpositive b", {
   expect_error(rho_T1(test_x, test_meanX, 2, 0, test_xij))
   expect_error(rho_T1(test_x, test_meanX, 2, -1, test_xij))
 })
@@ -161,12 +161,12 @@ test_that("rho_T1 fails for any nonboolean custom_kernel", {
 })
 
 test_that("rho_T1 fails for kernel_name not in 'gaussian' 'wave', 'rational_quadratic', 'bessel_j'", {
-  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_xij, kernel_name = "123", custom_kernel = TRUE))
+  expect_error(rho_T1(test_x, test_meanX, 2, 0, test_xij, kernel_name = "123", custom_kernel = FALSE))
 })
 
 # truncated_est
 test_that("truncated_est works", {
-  expect_equal(truncated_est(test_X, test_x, c(1, 2, 3), 2, 3, 0.01, "gaussian", meanX = test_meanX), c(0, -1, 0))
+  expect_equal(truncated_est(test_X, test_x, c(1, 2, 3), 2, 3, 0.01, "gaussian", meanX = test_meanX)$acf, c(0, -1, 0))
 })
 
 test_that("truncated_est fails for nonnumeric X", {
@@ -246,17 +246,17 @@ test_that("truncated_est fails for T2 <= T1", {
   expect_error(truncated_est(test_X, test_x, 2, 2, 2, 0.01, "gaussian"))
 })
 
-test_that("truncated_est fails for h of length not equal to 1", {
+test_that("truncated_est fails for b of length not equal to 1", {
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, c(1, 2), "gaussian"))
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, c(), "gaussian"))
 })
 
-test_that("truncated_est fails for nonnumeric h", {
+test_that("truncated_est fails for nonnumeric b", {
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, 'a', "gaussian"))
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, 1i, "gaussian"))
 })
 
-test_that("truncated_est fails for nonpositive h", {
+test_that("truncated_est fails for nonpositive b", {
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, 0, "gaussian"))
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, -0.01, "gaussian"))
 })
@@ -271,12 +271,12 @@ test_that("truncated_est fails for nonboolean pd", {
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", pd = 'TRUE'))
 })
 
-test_that("truncated_est fails for nonnumeric mean", {
+test_that("truncated_est fails for nonnumeric meanX", {
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", meanX = 'a'))
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", meanX = 1i))
 })
 
-test_that("truncated_est fails for NA mean", {
+test_that("truncated_est fails for NA meanX", {
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", meanX = NA))
 })
 
@@ -289,9 +289,16 @@ test_that("truncated_est fails for type not 'autocovariance' or 'autocorrelation
   expect_error(truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", type = "covariance"))
 })
 
+test_that("truncated_est fails for nonboolean parallel", {
+  expect_error(truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", parallel = 1))
+  expect_error(truncated_est(test_X, test_x, 2, 2, 3, 0.01, "gaussian", parallel = 'TRUE'))
+})
+
+# Assume the user knows what they're doing if they are working with parallelism.
+
 # adjusted_est_est
 test_that("adjusted_est works", {
-  expect_equal(adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", meanX = test_meanX), c(2/3, -1/3, -1/3))
+  expect_equal(adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", meanX = test_meanX)$acf, c(2/3, -1/3, -1/3))
 })
 
 test_that("adjusted_est fails for nonnumeric X", {
@@ -347,17 +354,17 @@ test_that("adjusted_est fails for empty t", {
   expect_error(adjusted_est(test_X, test_x, c(), 0.01, "gaussian"))
 })
 
-test_that("adjusted_est fails for h of length not equal to 1", {
+test_that("adjusted_est fails for b of length not equal to 1", {
   expect_error(adjusted_est(test_X, test_x, c(1, 2, 3), c(1, 2), "gaussian"))
   expect_error(adjusted_est(test_X, test_x, c(1, 2, 3), c(), "gaussian"))
 })
 
-test_that("adjusted_est fails for nonnumeric h", {
+test_that("adjusted_est fails for nonnumeric b", {
   expect_error(adjusted_est(test_X, test_x, c(1, 2, 3), 'a', "gaussian"))
   expect_error(adjusted_est(test_X, test_x, c(1, 2, 3), 1i, "gaussian"))
 })
 
-test_that("adjusted_est fails for h <= 0", {
+test_that("adjusted_est fails for b <= 0", {
   expect_error(adjusted_est(test_X, test_x, c(1, 2, 3), 0, "gaussian"))
   expect_error(adjusted_est(test_X, test_x, c(1, 2, 3), -0.01, "gaussian"))
 })
@@ -375,6 +382,14 @@ test_that("adjusted_est fails for nonboolean pd", {
 test_that("adjusted_est fails for kernel_name not in 'gaussian' 'wave', 'rational_quadratic', 'bessel_j'", {
   expect_error(adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, kernel_name = "123"))
 })
+
+test_that("adjusted_est fails for nonboolean parallel", {
+  expect_error(adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", parallel = 1))
+  expect_error(adjusted_est(test_X, test_x, c(1, 2, 3), 0.01, "gaussian", parallel = 'TRUE'))
+})
+
+# Assume the user knows what they're doing if they are working with parallelism.
+
 
 # make_pd
 test_that("make_pd works", {

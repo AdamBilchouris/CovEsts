@@ -163,11 +163,6 @@ test_that("check_pd() works", {
   expect_equal(check_pd(test_estCov1), TRUE)
 })
 
-#
-test_that("check_pd() works", {
-  expect_equal(check_pd(test_estCov1), TRUE)
-})
-
 test_that("check_pd() fails for nonnumeric est", {
   expect_error(check_pd(c(1, 'a', 3)))
   expect_error(check_pd(c(1, 1i, 3)))
@@ -247,8 +242,8 @@ test_that("hilbert_schmidt() fails for at least on NA in est1", {
   expect_error(hilbert_schmidt(c(NA, test_estCov1[-1]), test_estCov2))
 })
 
-test_that("mse() fails for at least on NA in est2", {
-  expect_error(mse(test_estCov1, c(NA, test_estCov2[-1])))
+test_that("hilbert_schmidt() fails for at least one NA in est2", {
+  expect_error(hilbert_schmidt(test_estCov1, c(NA, test_estCov2[-1])))
 })
 
 test_that("hilbert_schmidt() fails if est1 is of a different length", {

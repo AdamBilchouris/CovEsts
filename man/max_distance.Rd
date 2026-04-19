@@ -2,9 +2,15 @@
 % Please edit documentation in R/metrics.R
 \name{max_distance}
 \alias{max_distance}
+\alias{max_distance.CovEsts}
+\alias{max_distance.default}
 \title{Maximum Vertical Distance Between Estimated Functions.}
 \usage{
 max_distance(est1, est2, lags = c(), plot = FALSE)
+
+\method{max_distance}{CovEsts}(est1, est2, lags = c(), plot = FALSE)
+
+\method{max_distance}{default}(est1, est2, lags = c(), plot = FALSE)
 }
 \arguments{
 \item{est1}{A numeric vector representing the first estimated autocovariance function.}
@@ -29,6 +35,13 @@ where \eqn{\hat{C}_{1}(\cdot)} and \eqn{\hat{C}_{2}(\cdot)} are estimated autoco
 It assumes that the estimated values are given for the same set of lags.
 The vectors of the function values must be of the same length.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{max_distance(CovEsts)}: Method for \code{CovEsts} objects.
+
+\item \code{max_distance(default)}: Method for numeric vectors.
+
+}}
 \examples{
 x <- seq(0, 5, by=0.1)
 estCov1 <- exp(-x^2)

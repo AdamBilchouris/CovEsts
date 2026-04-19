@@ -17,7 +17,7 @@ adjusted_spline(x, j, l, p, m, taus)
 
 \item{m}{The number of nonboundary knots.}
 
-\item{taus}{Vector of \eqn{\tau}s, see \link{get_tau}.}
+\item{taus}{Vector of \eqn{\tau}s, see \link{get_taus}.}
 }
 \value{
 A numeric value of the adjusted spline \eqn{f_{j}^{(l)}(x).}
@@ -30,8 +30,10 @@ f_{j}^{(l)}(x) = \frac{m + 1}{l} \left( f_{j}^{(l - 1)}(x + 1) - \tau_{j - p} f_
 where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the spline, \eqn{l} is the order of the adjusted spline (the function \eqn{f_{j}^{(l)}(\cdot)}) and \eqn{j = 1, 2, \dots , m + p.}
 }
 \examples{
+\dontrun{
 taus <- get_taus(3, 2)
 adjusted_spline(1, 2, 1, 3, 2, taus)
+}
 }
 \references{
 Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. https://doi.org/10.1007/s13253-013-0152-z

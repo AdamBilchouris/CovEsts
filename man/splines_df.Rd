@@ -13,7 +13,7 @@ splines_df(x, p, m, taus)
 
 \item{m}{The number of nonboundary knots.}
 
-\item{taus}{Vector of \eqn{\tau}s, see \link{get_tau}.}
+\item{taus}{Vector of \eqn{\tau}s, see \link{get_taus}.}
 }
 \value{
 A data frame of the above structure.
@@ -26,6 +26,8 @@ This helper function constructs a data frame with the following structure:
 }
 }
 \examples{
+\dontrun{
 taus <- get_taus(3, 2)
 splines_df(seq(0, 2, by=0.25), 3, 2, taus)
+}
 }

@@ -2,6 +2,8 @@
 % Please edit documentation in R/B_splines_est.R
 \name{splines_est}
 \alias{splines_est}
+\alias{splines_est.CovEsts}
+\alias{splines_est.default}
 \title{Compute the Splines Estimator.}
 \usage{
 splines_est(
@@ -11,15 +13,39 @@ splines_est(
   p,
   m,
   maxLag = length(X) - 1,
-  type = "autocovariance",
-  inital_pars = c(),
+  type = c("autocovariance", "autocorrelation"),
+  initial_pars = c(),
+  control = list(maxit = 1000)
+)
+
+\method{splines_est}{CovEsts}(
+  X,
+  x,
+  estCov,
+  p,
+  m,
+  maxLag = length(X) - 1,
+  type = c("autocovariance", "autocorrelation"),
+  initial_pars = c(),
+  control = list(maxit = 1000)
+)
+
+\method{splines_est}{default}(
+  X,
+  x,
+  estCov,
+  p,
+  m,
+  maxLag = length(X) - 1,
+  type = c("autocovariance", "autocorrelation"),
+  initial_pars = c(),
   control = list(maxit = 1000)
 )
 }
 \arguments{
 \item{X}{A vector representing observed values of the time series.}
 
-\item{x}{A vector of lags.}
+\item{x}{A vector of lag indices.}
 
 \item{estCov}{An estimated autocovariance function to fit to (a vector).}
 
@@ -31,12 +57,19 @@ splines_est(
 
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 
-\item{inital_pars}{An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}}
+\item{initial_pars}{An optional vector of parameters - can be used to fine tune the fit. By default, it is a vector of 0.5 whose length is \eqn{m+p.}}
 
 \item{control}{An optional list of optimisation parameters used in the optimisation process, see \code{control} in \link[stats:optim]{stats::optim}.}
 }
 \value{
-A vector whose values are the spline autocovariance estimates.
+A vector whose values are the spline autocovariance estimates or a \code{CovEsts} S3 object (list) with the following values
+\describe{
+\item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+\item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the \code{type} parameter.}
+\item{\code{est_used}}{The estimator function used, in this case, 'splines_est'.}
+}
+If a numeric vector is given for the argument \code{estCov}, then a numeric vector output is given, and if a \code{CovEsts} S3 object is given, a \code{CovEsts} object is given as output.
 }
 \description{
 Compute the estimated covariance function by using the method from Choi, Li & Wang (2013, pp. 614-617).
@@ -44,6 +77,19 @@ Compute the estimated covariance function by using the method from Choi, Li & Wa
 where \eqn{m} is the number of nonboundary knots, \eqn{p} is the order of the splines, \eqn{\tau} is the isotropic distance, \eqn{\beta_{j}} are nonnegative weights and \eqn{f_{j}^{(p)}} are basis functions of order \eqn{p.}
 For optimisation, the Nelder-Mead and L-BFGS-B methods are used, the one which selects parameters which minimises the objective function is chosen.
 }
+\details{
+Due to the weighting scheme, the autocovariance at lag zero cannot be 1,
+\deqn{
+w_{i} = \frac{N - i}{1 - C(i)}
+}
+}
+\section{Methods (by class)}{
+\itemize{
+\item \code{splines_est(CovEsts)}: Method for 'CovEsts' objects.
+
+\item \code{splines_est(default)}: Method for numeric vectors.
+
+}}
 \examples{
 X <- rnorm(100)
 x <- seq(0, 5, by = 0.25)

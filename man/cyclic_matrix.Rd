@@ -28,6 +28,8 @@ v_{N}     & v_{N - 1} & \cdots & v_{1}     & v_{0}     \\
 }
 }
 \examples{
+\dontrun{
 v <- c(1, 2, 3)
 cyclic_matrix(v)
+}
 }

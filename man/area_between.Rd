@@ -2,9 +2,15 @@
 % Please edit documentation in R/metrics.R
 \name{area_between}
 \alias{area_between}
+\alias{area_between.CovEsts}
+\alias{area_between.default}
 \title{Area Between Estimated Autocovariance Functions.}
 \usage{
 area_between(est1, est2, lags = c(), plot = FALSE)
+
+\method{area_between}{CovEsts}(est1, est2, lags = c(), plot = FALSE)
+
+\method{area_between}{default}(est1, est2, lags = c(), plot = FALSE)
 }
 \arguments{
 \item{est1}{A numeric vector representing the first estimated autocovariance function.}
@@ -32,6 +38,13 @@ To approximate this integral the trapezoidal rule is used.
 
 If \code{lags} is empty, a uniform time grid with a step of 1 will be used which may result in a different area than if lags is specified.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{area_between(CovEsts)}: Method for \code{CovEsts} objects.
+
+\item \code{area_between(default)}: Method for numeric vectors.
+
+}}
 \examples{
 x <- seq(0, 5, by=0.1)
 estCov1 <- exp(-x^2)

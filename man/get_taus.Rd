@@ -15,12 +15,14 @@ get_taus(p, m)
 A numeric vector of all \eqn{\tau_{i}, i = -p, \dots, m + p + 1.}
 }
 \description{
-A helper function that repeatedly calls \link{get_tau} to obtain all \eqn{\tau_{i}, i=-p, \dots, m + p + 1,} where each \eqn{\tau_{i}} is as follows.
+A helper function to obtain all \eqn{\tau_{i}, i=-p, \dots, m + p + 1,} where each \eqn{\tau_{i}} is as follows.
 For \eqn{i = -p , -p + 1, \dots , -2, -1 , m + 2, m + 3, \dots , m + p , m + p + 1,} it is equal to \eqn{\tau_{i} = i / (m + 1)}, and for \eqn{i = 0, \dots , m + 1,} it is \eqn{\tau_{i} = \kappa_{i}.}
 See Choi, Li & Wang (2013, p. 615) for details.
 }
 \examples{
+\dontrun{
 get_taus(3, 2)
+}
 }
 \references{
 Choi, I., Li, B. & Wang, X. (2013). Nonparametric Estimation of Spatial and Space-Time Covariance Function. JABES 18, 611-630. https://doi.org/10.1007/s13253-013-0152-z

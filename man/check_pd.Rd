@@ -2,12 +2,18 @@
 % Please edit documentation in R/metrics.R
 \name{check_pd}
 \alias{check_pd}
+\alias{check_pd.CovEsts}
+\alias{check_pd.default}
 \title{Check if an Autocovariance Function Estimate is Positive-Definite or Not.}
 \usage{
 check_pd(est)
+
+\method{check_pd}{CovEsts}(est)
+
+\method{check_pd}{default}(est)
 }
 \arguments{
-\item{est}{A numeric vector or corresponding cyclic matrix representing an estimated autocovariance function.}
+\item{est}{A numeric vector, corresponding cyclic matrix representing an estimated autocovariance function, or a \code{CovEsts} S3 object.}
 }
 \value{
 A boolean where \code{TRUE} denotes a positive-definite autocovariance function estimate and \code{FALSE} for an estimate that is not positive-definite.
@@ -29,9 +35,15 @@ construct the symmetric matrix
 
 The eigendecomposition of this matrix is computed to determine if all eigenvalues are positive. If so, the estimated autocovariance function is assumed to be positive-definite.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{check_pd(CovEsts)}: Method for \code{CovEsts} objects.
+
+\item \code{check_pd(default)}: Method for numeric vectors.
+
+}}
 \examples{
 x <- seq(0, 5, by=0.1)
 estCov <- exp(-x^2)
 check_pd(estCov)
-check_pd(cyclic_matrix(estCov))
 }

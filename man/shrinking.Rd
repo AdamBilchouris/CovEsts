@@ -2,9 +2,15 @@
 % Please edit documentation in R/corrected_standard_estimator.R
 \name{shrinking}
 \alias{shrinking}
+\alias{shrinking.CovEsts}
+\alias{shrinking.default}
 \title{Linear Shrinking}
 \usage{
 shrinking(estCov, return_matrix = FALSE, target = NULL)
+
+\method{shrinking}{CovEsts}(estCov, return_matrix = FALSE, target = NULL)
+
+\method{shrinking}{default}(estCov, return_matrix = FALSE, target = NULL)
 }
 \arguments{
 \item{estCov}{A vector whose values are an estimate autocovariance/autocorrelation function.}
@@ -14,7 +20,16 @@ shrinking(estCov, return_matrix = FALSE, target = NULL)
 \item{target}{A shrinkage target matrix used in the shrinking process. This should only be used if you wish to use a specific matrix as the target.}
 }
 \value{
-A vector with values of the shrunken autocorrelation function or the corresponding matrix (depending on \code{return_matrix}).
+A vector with values of the shrunken autocorrelation function, the corresponding matrix (depending on \code{return_matrix}), or \code{CovEsts} S3 object (list) with the following values
+\describe{
+\item{\code{acf}}{A numeric vector containing the shrunken autocovariance/autocorrelation estimates.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on, inherited from the argument \code{estCov}.}
+\item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the argument \code{type}.}
+\item{\code{est_used}}{The estimator function used, in this case, inherited from the argument \code{estCov}.}
+\item{\code{correction_method}}{This value is 'shrinking'.}
+\item{\code{lambda}}{The \eqn{\lambda} value obtained during the shrinking process.}
+}
+If a numeric vector is given for the argument \code{estCov}, then a numeric vector output is given, and if a \code{CovEsts} S3 object is given, a \code{CovEsts} object is given as output.
 }
 \description{
 This function corrects an autocovariance/autocorrelation function estimate via linear shrinking of the autocorrelation matrix.
@@ -27,6 +42,13 @@ where \eqn{\widetilde{R}} is the shrunken autocorrelation matrix, \eqn{R} is the
 \eqn{\lambda} is chosen in such a away that largest value which still results in a positive-definite matrix.
 The shrunken matrix will be positive-definite.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{shrinking(CovEsts)}: Method for \code{CovEsts} objects.
+
+\item \code{shrinking(default)}: Method for numeric vectors
+
+}}
 \examples{
 estCorr <- c(1, 0.8, 0.5, -1.2)
 shrinking(estCorr)
@@ -36,5 +58,5 @@ shrinking(estCorr, TRUE, target)
 \references{
 Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation and Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531
 
-Rousseeuw, P. J. & Molenberghs, G. (1993). Transformation of Non Positive Semidefinite Correlation Matrices. Communications in Statistics - Theory and Methods, 22(4), 965–984. 10.1080/03610928308831068
+Rousseeuw, P. J. & Molenberghs, G. (1993). Transformation of Non Positive Semidefinite Correlation Matrices. Communications in Statistics - Theory and Methods, 22(4), 965-984. 10.1080/03610928308831068
 }

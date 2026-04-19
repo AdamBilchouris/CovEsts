@@ -8,7 +8,8 @@ standard_est(
   X,
   pd = TRUE,
   maxLag = length(X) - 1,
-  type = "autocovariance",
+  x = 0:length(X),
+  type = c("autocovariance", "autocorrelation"),
   meanX = mean(X)
 )
 }
@@ -19,16 +20,24 @@ standard_est(
 
 \item{maxLag}{An optional parameter that determines the maximum lag to compute the estimated autocovariance function at. Defaults to \code{length(X) - 1}.}
 
+\item{x}{A vector of lag indices. Defaults to the sequence \code{0:length(X)}. Must be at least as large as \code{maxLag + 1}.}
+
 \item{type}{Compute either the 'autocovariance' or 'autocorrelation'. Defaults to 'autocovariance'.}
 
 \item{meanX}{The average value of \code{X}. Defaults to \code{mean(X)}.}
 }
 \value{
-A vector whose values are the autocovariance estimates.
+A \code{CovEsts} S3 object (list) with the following values
+\describe{
+\item{\code{acf}}{A numeric vector containing the autocovariance/autocorrelation estimates.}
+\item{\code{lags}}{A numeric vector containing the lag indices used to compute the estimates on.}
+\item{\code{est_type}}{The type of estimate, namely 'autocorrelation' or 'autocovariance', this depends on the \code{type} parameter.}
+\item{\code{est_used}}{The estimator function used, in this case, 'standard_est'.}
+}
 }
 \description{
 This function computes the following two estimates of the autocovariance function depending on
-the parameter \code{pd}.
+the parameter \code{pd}, see the Details section.
 }
 \details{
 For \code{pd = TRUE}:

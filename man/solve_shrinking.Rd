@@ -20,12 +20,14 @@ A numeric value that is either equal to \eqn{-}\code{par} or 1.
 This is an objective function used to select \eqn{\lambda \in [0, 1]} in linear shrinking, see \link{shrinking}.
 }
 \examples{
+\dontrun{
 estCorr <- c(1, 0.5, 0)
 corr_mat <- cyclic_matrix(estCorr)
 solve_shrinking(0.5, corr_mat, diag(length(estCorr)))
 }
+}
 \references{
 Devlin, S. J., Gnanadesikan R. & Kettenring, J. R. (1975). Robust Estimation and Outlier Detection with Correlation Coefficients. Biometrika, 62(3), 531-545. 10.1093/biomet/62.3.531
 
-Rousseeuw, P. J. & Molenberghs, G. (1993). Transformation of Non Positive Semidefinite Correlation Matrices. Communications in Statistics - Theory and Methods, 22(4), 965–984. 10.1080/03610928308831068
+Rousseeuw, P. J. & Molenberghs, G. (1993). Transformation of Non Positive Semidefinite Correlation Matrices. Communications in Statistics - Theory and Methods, 22(4), 965-984. 10.1080/03610928308831068
 }
