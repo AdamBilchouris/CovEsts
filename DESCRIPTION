@@ -23,7 +23,7 @@ Suggests:
 Imports:
     graphics,
     grDevices,
-    parallel
+    parallel,
     stats,
     utils,
 Config/testthat/edition: 3
