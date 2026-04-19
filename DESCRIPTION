@@ -25,7 +25,7 @@ Imports:
     grDevices,
     parallel,
     stats,
-    utils,
+    utils
 Config/testthat/edition: 3
 URL: https://github.com/AdamBilchouris/CovEsts
 BugReports: https://github.com/AdamBilchouris/CovEsts/issues
