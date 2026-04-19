@@ -31,7 +31,7 @@ Briefly, the estimators are
 * an estimator utilising splines,
 * kernel correction of estimators,
 * computing the semivariogram from an autocovariance function estimate, and
-* computing the partial autocorelation function from an autocovariance function estimate.
+* computing the partial autocorrelation function from an autocovariance function estimate.
 
 The package also provides several general functions, which are
   
@@ -42,11 +42,10 @@ The package also provides several general functions, which are
 
 ## Installation
 
-You can install the development version of CovEsts from [GitHub](https://github.com/AdamBilchouris/CovEsts) with:
+You can install CovEsts from CRAN using:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("AdamBilchouris/CovEsts")
+install.packages("CovEsts")
 ```
 
 ## Example
