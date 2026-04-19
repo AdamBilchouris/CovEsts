@@ -155,6 +155,11 @@ bootstrap_sample <- function(X, l, k, boot_type = c("moving", "circular")) {
 #' @export
 #'
 #' @importFrom stats quantile
+#' @importFrom parallel makePSOCKcluster
+#' @importFrom parallel stopCluster
+#' @importFrom parallel clusterExport
+#' @importFrom parallel clusterSetRNGStream
+#' @importFrom parallel parLapply
 #'
 #' @examples
 #' X <- c(1, 2, 3, 3, 2, 1)

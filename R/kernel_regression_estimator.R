@@ -357,6 +357,11 @@ truncated_est <- function(X, x, t, T1, T2, b, kernel_name = c("gaussian", "wave"
 #' }
 #' @export
 #'
+#' @importFrom parallel makePSOCKcluster
+#' @importFrom parallel stopCluster
+#' @importFrom parallel clusterExport
+#' @importFrom parallel parLapply
+#'
 #' @examples
 #' X <- c(1, 2, 3, 4)
 #' adjusted_est(X, 1:4, 1:3, 0.1, "gaussian")
